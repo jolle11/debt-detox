@@ -1,0 +1,60 @@
+{
+	"nav": {
+		"title": "💰 Debt Detox",
+		"addDebt": "Ajouter Dette"
+	},
+	"dashboard": {
+		"title": "Vos Financements",
+		"stats": {
+			"totalDebt": "Dette Totale",
+			"monthlyPayment": "Paiement Mensuel",
+			"completed": "Terminées",
+			"averageProgress": "Progrès Moyen",
+			"activeDebts": "{count, plural, =0 {Aucune dette active} =1 {# dette active} other {# dettes actives}}",
+			"monthlyTotal": "Total mensuel",
+			"paidOff": "Dettes remboursées",
+			"ofAllDebts": "De toutes les dettes"
+		},
+		"tabs": {
+			"all": "Toutes",
+			"active": "Actives",
+			"completed": "Terminées"
+		},
+		"debt": {
+			"currentAmount": "Montant actuel",
+			"initialAmount": "Montant initial",
+			"monthlyPayment": "Paiement mensuel",
+			"endDate": "Date de fin",
+			"progress": "Progrès",
+			"status": {
+				"active": "Active",
+				"completed": "Terminée"
+			},
+			"actions": {
+				"viewDetails": "Voir détails",
+				"recordPayment": "Enregistrer paiement",
+				"edit": "Modifier",
+				"delete": "Supprimer"
+			}
+		},
+		"empty": {
+			"title": "Vous n'avez aucun financement enregistré",
+			"description": "Ajoutez votre première dette ou prêt pour commencer le suivi",
+			"addButton": "Ajouter Première Dette"
+		}
+	},
+	"notFound": {
+		"title": "404 - Page introuvable",
+		"description": "Désolé, la page que vous recherchez n'existe pas.",
+		"backHome": "Retour à l'accueil"
+	},
+	"common": {
+		"currency": "€",
+		"loading": "Chargement...",
+		"error": "Erreur",
+		"save": "Enregistrer",
+		"cancel": "Annuler",
+		"delete": "Supprimer",
+		"edit": "Modifier"
+	}
+}

@@ -1,0 +1,60 @@
+{
+	"nav": {
+		"title": "💰 Debt Detox",
+		"addDebt": "Add Debt"
+	},
+	"dashboard": {
+		"title": "Your Financing",
+		"stats": {
+			"totalDebt": "Total Debt",
+			"monthlyPayment": "Monthly Payment",
+			"completed": "Completed",
+			"averageProgress": "Average Progress",
+			"activeDebts": "{count, plural, =0 {No active debts} =1 {# active debt} other {# active debts}}",
+			"monthlyTotal": "Monthly total",
+			"paidOff": "Debts paid off",
+			"ofAllDebts": "Of all debts"
+		},
+		"tabs": {
+			"all": "All",
+			"active": "Active",
+			"completed": "Completed"
+		},
+		"debt": {
+			"currentAmount": "Current amount",
+			"initialAmount": "Initial amount",
+			"monthlyPayment": "Monthly payment",
+			"endDate": "End date",
+			"progress": "Progress",
+			"status": {
+				"active": "Active",
+				"completed": "Completed"
+			},
+			"actions": {
+				"viewDetails": "View details",
+				"recordPayment": "Record payment",
+				"edit": "Edit",
+				"delete": "Delete"
+			}
+		},
+		"empty": {
+			"title": "You don't have any registered financing",
+			"description": "Add your first debt or loan to start tracking",
+			"addButton": "Add First Debt"
+		}
+	},
+	"notFound": {
+		"title": "404 - Page not found",
+		"description": "Sorry, the page you are looking for does not exist.",
+		"backHome": "Back to home"
+	},
+	"common": {
+		"currency": "€",
+		"loading": "Loading...",
+		"error": "Error",
+		"save": "Save",
+		"cancel": "Cancel",
+		"delete": "Delete",
+		"edit": "Edit"
+	}
+}

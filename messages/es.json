@@ -1,0 +1,60 @@
+{
+	"nav": {
+		"title": "💰 Debt Detox",
+		"addDebt": "Añadir Deuda"
+	},
+	"dashboard": {
+		"title": "Tus Financiaciones",
+		"stats": {
+			"totalDebt": "Deuda Total",
+			"monthlyPayment": "Pago Mensual",
+			"completed": "Completadas",
+			"averageProgress": "Progreso Medio",
+			"activeDebts": "{count, plural, =0 {Sin deudas activas} =1 {# deuda activa} other {# deudas activas}}",
+			"monthlyTotal": "Total mensual",
+			"paidOff": "Deudas saldadas",
+			"ofAllDebts": "De todas las deudas"
+		},
+		"tabs": {
+			"all": "Todas",
+			"active": "Activas",
+			"completed": "Completadas"
+		},
+		"debt": {
+			"currentAmount": "Cantidad actual",
+			"initialAmount": "Cantidad inicial",
+			"monthlyPayment": "Pago mensual",
+			"endDate": "Fecha fin",
+			"progress": "Progreso",
+			"status": {
+				"active": "Activa",
+				"completed": "Completada"
+			},
+			"actions": {
+				"viewDetails": "Ver detalles",
+				"recordPayment": "Registrar pago",
+				"edit": "Editar",
+				"delete": "Eliminar"
+			}
+		},
+		"empty": {
+			"title": "No tienes financiaciones registradas",
+			"description": "Añade tu primera deuda o préstamo para empezar a hacer seguimiento",
+			"addButton": "Añadir Primera Deuda"
+		}
+	},
+	"notFound": {
+		"title": "404 - Página no encontrada",
+		"description": "Lo sentimos, la página que buscas no existe.",
+		"backHome": "Volver al inicio"
+	},
+	"common": {
+		"currency": "€",
+		"loading": "Cargando...",
+		"error": "Error",
+		"save": "Guardar",
+		"cancel": "Cancelar",
+		"delete": "Eliminar",
+		"edit": "Editar"
+	}
+}
