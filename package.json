@@ -10,6 +10,7 @@
 		"prepare": "husky"
 	},
 	"dependencies": {
+		"daisyui": "^5.0.50",
 		"next": "15.4.6",
 		"pocketbase": "^0.26.2",
 		"react": "19.1.0",
