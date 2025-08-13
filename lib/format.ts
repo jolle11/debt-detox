@@ -6,7 +6,8 @@ export function formatNumber(value: number, decimals: number = 2): string {
 }
 
 export function formatCurrency(value: number, currency: string = "€"): string {
-	const formatted = formatNumber(value, 2);
+	const decimals = value % 1 === 0 ? 0 : 2;
+	const formatted = formatNumber(value, decimals);
 	return `${formatted} ${currency}`;
 }
 
