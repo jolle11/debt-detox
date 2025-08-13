@@ -3,6 +3,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { mockDebts } from "@/lib/mock-data";
 import StatCard from "@/components/dashboard/stat-card";
 import DebtCard from "@/components/dashboard/debt-card";
+import EmptyState from "@/components/dashboard/empty-state";
 import { MoneyIcon, ClockIcon, CheckCircleIcon, ChartBarIcon } from "@phosphor-icons/react";
 
 export default function Dashboard() {
@@ -93,20 +94,7 @@ export default function Dashboard() {
 					</div>
 
 					{/* Empty state */}
-					{debts.length === 0 && (
-						<div className="text-center py-12">
-							<div className="text-6xl mb-4">📊</div>
-							<h3 className="text-xl font-semibold mb-2">
-								{t("dashboard.empty.title")}
-							</h3>
-							<p className="text-base-content/70 mb-4">
-								{t("dashboard.empty.description")}
-							</p>
-							<button className="btn btn-primary">
-								{t("dashboard.empty.addButton")}
-							</button>
-						</div>
-					)}
+					{debts.length === 0 && <EmptyState />}
 				</div>
 			</div>
 		</div>
