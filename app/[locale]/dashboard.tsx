@@ -6,23 +6,39 @@ import DebtCard from "@/components/dashboard/debt-card";
 import EmptyState from "@/components/dashboard/empty-state";
 import DebtFilterTabs from "@/components/dashboard/debt-filter-tabs";
 import { useDebtFilter } from "@/hooks/use-debt-filter";
-import { MoneyIcon, ClockIcon, CheckCircleIcon, ChartBarIcon } from "@phosphor-icons/react";
+import {
+	MoneyIcon,
+	ClockIcon,
+	CheckCircleIcon,
+	ChartBarIcon,
+} from "@phosphor-icons/react";
 
 export default function Dashboard() {
 	const t = useTranslations();
 	const locale = useLocale();
 
 	const debts = mockDebts;
-	const { activeFilter, setActiveFilter, filteredDebts, counts } = useDebtFilter(debts);
+	const { activeFilter, setActiveFilter, filteredDebts, counts } =
+		useDebtFilter(debts);
 
 	const activeDebts = debts.filter((d) => d.status === "active");
 	const completedDebts = debts.filter((d) => d.status === "completed");
 
-	const totalDebt = activeDebts.reduce((sum, debt) => sum + debt.currentAmount, 0);
-	const totalMonthlyPayment = activeDebts.reduce((sum, debt) => sum + debt.monthlyPayment, 0);
-	const averageProgress = activeDebts.length > 0
-		? Math.round(activeDebts.reduce((sum, debt) => sum + debt.progress, 0) / activeDebts.length)
-		: 0;
+	const totalDebt = activeDebts.reduce(
+		(sum, debt) => sum + debt.currentAmount,
+		0,
+	);
+	const totalMonthlyPayment = activeDebts.reduce(
+		(sum, debt) => sum + debt.monthlyPayment,
+		0,
+	);
+	const averageProgress =
+		activeDebts.length > 0
+			? Math.round(
+					activeDebts.reduce((sum, debt) => sum + debt.progress, 0) /
+						activeDebts.length,
+				)
+			: 0;
 
 	return (
 		<div className="space-y-6">

@@ -1,6 +1,6 @@
+import { DotsThreeIcon } from "@phosphor-icons/react";
 import { useFormatter, useTranslations } from "next-intl";
 import type { Debt } from "@/lib/mock-data";
-import { DotsThreeIcon } from "@phosphor-icons/react";
 
 interface DebtCardProps {
 	debt: Debt;

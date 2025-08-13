@@ -1,9 +1,9 @@
 "use client";
 
+import { CaretDownIcon, CheckIcon, TranslateIcon } from "@phosphor-icons/react";
 import { useLocale } from "next-intl";
 import { startTransition } from "react";
 import { usePathname, useRouter } from "@/i18n/routing";
-import { TranslateIcon, CaretDownIcon, CheckIcon } from "@phosphor-icons/react";
 
 const languages = [
 	{ code: "es", name: "Español", flag: "🇪🇸", nativeName: "Español" },

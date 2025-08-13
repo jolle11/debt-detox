@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { Debt } from "@/lib/mock-data";
 
 export type DebtFilterType = "all" | "active" | "completed";
@@ -22,7 +22,8 @@ export function useDebtFilter(debts: Debt[]) {
 		return {
 			all: debts.length,
 			active: debts.filter((debt) => debt.status === "active").length,
-			completed: debts.filter((debt) => debt.status === "completed").length,
+			completed: debts.filter((debt) => debt.status === "completed")
+				.length,
 		};
 	}, [debts]);
 
