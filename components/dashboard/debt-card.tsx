@@ -1,5 +1,6 @@
 import { DotsThreeIcon } from "@phosphor-icons/react";
 import { useFormatter, useTranslations } from "next-intl";
+import { formatCurrency } from "@/lib/format";
 import type { Debt } from "@/lib/mock-data";
 
 interface DebtCardProps {
@@ -28,8 +29,10 @@ export default function DebtCard({ debt }: DebtCardProps) {
 									{t("dashboard.debt.currentAmount")}:
 								</span>
 								<div className="text-lg font-bold text-primary">
-									{t("common.currency")}
-									{debt.currentAmount.toLocaleString()}
+									{formatCurrency(
+										debt.currentAmount,
+										t("common.currency"),
+									)}
 								</div>
 							</div>
 							<div>
@@ -37,8 +40,10 @@ export default function DebtCard({ debt }: DebtCardProps) {
 									{t("dashboard.debt.initialAmount")}:
 								</span>
 								<div className="text-base-content/70">
-									{t("common.currency")}
-									{debt.initialAmount.toLocaleString()}
+									{formatCurrency(
+										debt.initialAmount,
+										t("common.currency"),
+									)}
 								</div>
 							</div>
 							<div>
@@ -46,8 +51,10 @@ export default function DebtCard({ debt }: DebtCardProps) {
 									{t("dashboard.debt.monthlyPayment")}:
 								</span>
 								<div className="text-secondary">
-									{t("common.currency")}
-									{debt.monthlyPayment}
+									{formatCurrency(
+										debt.monthlyPayment,
+										t("common.currency"),
+									)}
 								</div>
 							</div>
 							<div>

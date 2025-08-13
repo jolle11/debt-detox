@@ -1,6 +1,12 @@
+import {
+	ChartBarIcon,
+	CheckCircleIcon,
+	ClockIcon,
+	MoneyIcon,
+} from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import StatCard from "@/components/dashboard/stat-card";
-import { MoneyIcon, ClockIcon, CheckCircleIcon, ChartBarIcon } from "@phosphor-icons/react";
+import { formatCurrency } from "@/lib/format";
 import type { Debt } from "@/lib/mock-data";
 
 interface SummaryStatsProps {
@@ -32,7 +38,7 @@ export default function SummaryStats({ debts }: SummaryStatsProps) {
 	const stats = [
 		{
 			title: t("dashboard.stats.totalDebt"),
-			value: `${t("common.currency")}${totalDebt.toLocaleString()}`,
+			value: formatCurrency(totalDebt, t("common.currency")),
 			description: t("dashboard.stats.activeDebts", {
 				count: activeDebts.length,
 			}),
@@ -41,7 +47,7 @@ export default function SummaryStats({ debts }: SummaryStatsProps) {
 		},
 		{
 			title: t("dashboard.stats.monthlyPayment"),
-			value: `${t("common.currency")}${totalMonthlyPayment}`,
+			value: formatCurrency(totalMonthlyPayment, t("common.currency")),
 			description: t("dashboard.stats.monthlyTotal"),
 			icon: <ClockIcon size={32} />,
 			variant: "secondary" as const,
