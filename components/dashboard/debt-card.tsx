@@ -1,5 +1,6 @@
 import { useFormatter, useTranslations } from "next-intl";
 import type { Debt } from "@/lib/mock-data";
+import { DotsThreeIcon } from "@phosphor-icons/react";
 
 interface DebtCardProps {
 	debt: Debt;
@@ -89,13 +90,7 @@ export default function DebtCard({ debt }: DebtCardProps) {
 								tabIndex={0}
 								className="btn btn-ghost btn-sm"
 							>
-								<svg
-									className="w-4 h-4"
-									fill="currentColor"
-									viewBox="0 0 20 20"
-								>
-									<path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-								</svg>
+								<DotsThreeIcon size={16} />
 							</label>
 							<ul
 								tabIndex={0}

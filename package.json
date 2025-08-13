@@ -10,6 +10,7 @@
 		"prepare": "husky"
 	},
 	"dependencies": {
+		"@phosphor-icons/react": "^2.1.10",
 		"daisyui": "^5.0.50",
 		"next": "15.4.6",
 		"next-intl": "^4.3.4",
