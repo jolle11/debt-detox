@@ -4,6 +4,8 @@ import { mockDebts } from "@/lib/mock-data";
 import StatCard from "@/components/dashboard/stat-card";
 import DebtCard from "@/components/dashboard/debt-card";
 import EmptyState from "@/components/dashboard/empty-state";
+import DebtFilterTabs from "@/components/dashboard/debt-filter-tabs";
+import { useDebtFilter } from "@/hooks/use-debt-filter";
 import { MoneyIcon, ClockIcon, CheckCircleIcon, ChartBarIcon } from "@phosphor-icons/react";
 
 export default function Dashboard() {
@@ -11,15 +13,16 @@ export default function Dashboard() {
 	const locale = useLocale();
 
 	const debts = mockDebts;
+	const { activeFilter, setActiveFilter, filteredDebts, counts } = useDebtFilter(debts);
 
-	const totalDebt = debts
-		.filter((d) => d.status === "active")
-		.reduce((sum, debt) => sum + debt.currentAmount, 0);
-	const totalMonthlyPayment = debts
-		.filter((d) => d.status === "active")
-		.reduce((sum, debt) => sum + debt.monthlyPayment, 0);
-	const completedDebts = debts.filter((d) => d.status === "completed").length;
-	const activeDebts = debts.filter((d) => d.status === "active").length;
+	const activeDebts = debts.filter((d) => d.status === "active");
+	const completedDebts = debts.filter((d) => d.status === "completed");
+
+	const totalDebt = activeDebts.reduce((sum, debt) => sum + debt.currentAmount, 0);
+	const totalMonthlyPayment = activeDebts.reduce((sum, debt) => sum + debt.monthlyPayment, 0);
+	const averageProgress = activeDebts.length > 0
+		? Math.round(activeDebts.reduce((sum, debt) => sum + debt.progress, 0) / activeDebts.length)
+		: 0;
 
 	return (
 		<div className="space-y-6">
@@ -29,7 +32,7 @@ export default function Dashboard() {
 					title={t("dashboard.stats.totalDebt")}
 					value={`${t("common.currency")}${totalDebt.toLocaleString()}`}
 					description={t("dashboard.stats.activeDebts", {
-						count: activeDebts,
+						count: activeDebts.length,
 					})}
 					icon={<MoneyIcon size={32} />}
 					variant="primary"
@@ -45,7 +48,7 @@ export default function Dashboard() {
 
 				<StatCard
 					title={t("dashboard.stats.completed")}
-					value={completedDebts}
+					value={completedDebts.length}
 					description={t("dashboard.stats.paidOff")}
 					icon={<CheckCircleIcon size={32} />}
 					variant="accent"
@@ -53,18 +56,7 @@ export default function Dashboard() {
 
 				<StatCard
 					title={t("dashboard.stats.averageProgress")}
-					value={`${
-						activeDebts > 0
-							? Math.round(
-									debts
-										.filter((d) => d.status === "active")
-										.reduce(
-											(sum, debt) => sum + debt.progress,
-											0,
-										) / activeDebts,
-								)
-							: 0
-					}%`}
+					value={`${averageProgress}%`}
 					description={t("dashboard.stats.ofAllDebts")}
 					icon={<ChartBarIcon size={32} />}
 					variant="info"
@@ -78,23 +70,20 @@ export default function Dashboard() {
 						{t("dashboard.title")}
 					</h2>
 
-					{/* Filter tabs */}
-					<div className="tabs tabs-boxed mb-6">
-						<a className="tab tab-active">
-							{t("dashboard.tabs.all")}
-						</a>
-						<a className="tab">{t("dashboard.tabs.active")}</a>
-						<a className="tab">{t("dashboard.tabs.completed")}</a>
-					</div>
+					<DebtFilterTabs
+						activeFilter={activeFilter}
+						onFilterChange={setActiveFilter}
+						counts={counts}
+					/>
 
 					<div className="space-y-4">
-						{debts.map((debt) => (
+						{filteredDebts.map((debt) => (
 							<DebtCard key={debt.id} debt={debt} />
 						))}
 					</div>
 
 					{/* Empty state */}
-					{debts.length === 0 && <EmptyState />}
+					{filteredDebts.length === 0 && <EmptyState />}
 				</div>
 			</div>
 		</div>
