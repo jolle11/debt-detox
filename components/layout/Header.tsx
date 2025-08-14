@@ -21,7 +21,7 @@ export default function Header() {
 							{t("nav.title")}
 						</h1>
 					</div>
-					<div className="flex-none flex gap-2">
+					<div className="flex-none flex items-center gap-2">
 						<LanguageSelector />
 						{user ? (
 							<>
