@@ -48,6 +48,45 @@
 		"description": "Lo sentimos, la página que buscas no existe.",
 		"backHome": "Volver al inicio"
 	},
+	"auth": {
+		"login": {
+			"title": "¡Bienvenido!",
+			"subtitle": "Accede a tu cuenta para gestionar tus deudas",
+			"email": "Email",
+			"password": "Contraseña",
+			"submit": "Iniciar Sesión",
+			"submitting": "Iniciando sesión...",
+			"noAccount": "¿No tienes cuenta?",
+			"signUpLink": "Regístrate aquí",
+			"error": "Error al iniciar sesión"
+		},
+		"register": {
+			"title": "Crear Cuenta",
+			"subtitle": "Únete para tomar control de tus finanzas",
+			"name": "Nombre",
+			"nameOptional": "opcional",
+			"email": "Email",
+			"password": "Contraseña",
+			"confirmPassword": "Confirmar Contraseña",
+			"submit": "Crear Cuenta",
+			"submitting": "Creando cuenta...",
+			"hasAccount": "¿Ya tienes cuenta?",
+			"signInLink": "Inicia sesión",
+			"error": "Error al registrarse",
+			"passwordMismatch": "Las contraseñas no coinciden"
+		},
+		"logout": "Cerrar Sesión",
+		"loginButton": "Iniciar Sesión",
+		"loginRegisterButton": "Iniciar Sesión / Registro",
+		"restricted": {
+			"title": "Acceso Restringido",
+			"message": "Debes iniciar sesión para acceder a esta página."
+		},
+		"welcome": {
+			"title": "¡Bienvenido a Debt Detox!",
+			"message": "Toma control de tus compromisos financieros. Inicia sesión para comenzar a gestionar tus deudas y préstamos."
+		}
+	},
 	"common": {
 		"currency": "€",
 		"loading": "Cargando...",

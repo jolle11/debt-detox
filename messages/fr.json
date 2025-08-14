@@ -48,6 +48,45 @@
 		"description": "Désolé, la page que vous recherchez n'existe pas.",
 		"backHome": "Retour à l'accueil"
 	},
+	"auth": {
+		"login": {
+			"title": "Bienvenue !",
+			"subtitle": "Connectez-vous à votre compte pour gérer vos dettes",
+			"email": "Email",
+			"password": "Mot de passe",
+			"submit": "Se connecter",
+			"submitting": "Connexion...",
+			"noAccount": "Pas de compte ?",
+			"signUpLink": "Inscrivez-vous ici",
+			"error": "Erreur de connexion"
+		},
+		"register": {
+			"title": "Créer un compte",
+			"subtitle": "Rejoignez-nous pour prendre le contrôle de vos finances",
+			"name": "Nom",
+			"nameOptional": "optionnel",
+			"email": "Email",
+			"password": "Mot de passe",
+			"confirmPassword": "Confirmer le mot de passe",
+			"submit": "Créer un compte",
+			"submitting": "Création du compte...",
+			"hasAccount": "Vous avez déjà un compte ?",
+			"signInLink": "Se connecter",
+			"error": "Erreur lors de la création du compte",
+			"passwordMismatch": "Les mots de passe ne correspondent pas"
+		},
+		"logout": "Se déconnecter",
+		"loginButton": "Se connecter",
+		"loginRegisterButton": "Se connecter / S'inscrire",
+		"restricted": {
+			"title": "Accès restreint",
+			"message": "Vous devez vous connecter pour accéder à cette page."
+		},
+		"welcome": {
+			"title": "Bienvenue sur Debt Detox !",
+			"message": "Prenez le contrôle de vos engagements financiers. Connectez-vous pour commencer à gérer vos dettes et prêts."
+		}
+	},
 	"common": {
 		"currency": "€",
 		"loading": "Chargement...",

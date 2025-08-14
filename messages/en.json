@@ -48,6 +48,45 @@
 		"description": "Sorry, the page you are looking for does not exist.",
 		"backHome": "Back to home"
 	},
+	"auth": {
+		"login": {
+			"title": "Welcome!",
+			"subtitle": "Sign in to your account to manage your debts",
+			"email": "Email",
+			"password": "Password",
+			"submit": "Sign In",
+			"submitting": "Signing in...",
+			"noAccount": "Don't have an account?",
+			"signUpLink": "Sign up here",
+			"error": "Error signing in"
+		},
+		"register": {
+			"title": "Create Account",
+			"subtitle": "Join to take control of your finances",
+			"name": "Name",
+			"nameOptional": "optional",
+			"email": "Email",
+			"password": "Password",
+			"confirmPassword": "Confirm Password",
+			"submit": "Create Account",
+			"submitting": "Creating account...",
+			"hasAccount": "Already have an account?",
+			"signInLink": "Sign in",
+			"error": "Error creating account",
+			"passwordMismatch": "Passwords don't match"
+		},
+		"logout": "Sign Out",
+		"loginButton": "Sign In",
+		"loginRegisterButton": "Sign In / Register",
+		"restricted": {
+			"title": "Access Restricted",
+			"message": "You must sign in to access this page."
+		},
+		"welcome": {
+			"title": "Welcome to Debt Detox!",
+			"message": "Take control of your financial commitments. Sign in to start managing your debts and loans."
+		}
+	},
 	"common": {
 		"currency": "€",
 		"loading": "Loading...",

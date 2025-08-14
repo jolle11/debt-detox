@@ -6,6 +6,7 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Header from "@/components/layout/Header";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const inconsolata = Inconsolata({
 	variable: "--font-inconsolata",
@@ -44,12 +45,14 @@ export default async function LocaleLayout({
 				}}
 			>
 				<NextIntlClientProvider messages={messages}>
-					<div className="min-h-screen bg-base-200">
-						<Header />
-						<main className="container mx-auto p-4">
-							{children}
-						</main>
-					</div>
+					<AuthProvider>
+						<div className="min-h-screen bg-base-200">
+							<Header />
+							<main className="container mx-auto p-4">
+								{children}
+							</main>
+						</div>
+					</AuthProvider>
 				</NextIntlClientProvider>
 			</body>
 		</html>
