@@ -1,9 +1,12 @@
 "use client";
 
+import { SignOutIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
 import LanguageSelector from "@/components/language-selector";
+import MobileMenu from "@/components/layout/MobileMenu";
+import MobileMenuButton from "@/components/layout/MobileMenuButton";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -11,6 +14,7 @@ export default function Header() {
 	const t = useTranslations();
 	const { user, logout } = useAuth();
 	const [showAuthModal, setShowAuthModal] = useState(false);
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	return (
 		<>
@@ -21,7 +25,9 @@ export default function Header() {
 							{t("nav.title")}
 						</h1>
 					</div>
-					<div className="flex-none flex items-center gap-2">
+
+					{/* Desktop Navigation */}
+					<div className="flex-none hidden md:flex items-center gap-2">
 						<LanguageSelector />
 						{user ? (
 							<>
@@ -34,49 +40,26 @@ export default function Header() {
 										role="button"
 										className="btn btn-ghost btn-sm gap-2"
 									>
-										<div className="avatar placeholder">
-											<div className="bg-primary text-primary-content rounded-full w-6 h-6">
-												<span className="text-xs">
-													{user.name
-														? user.name
-																.charAt(0)
-																.toUpperCase()
-														: user.email
-																.charAt(0)
-																.toUpperCase()}
-												</span>
-											</div>
-										</div>
+										<UserAvatar user={user} size="sm" />
 										<span className="hidden sm:inline truncate max-w-24">
 											{user.name || user.email}
 										</span>
 									</div>
 									<ul
 										tabIndex={0}
-										className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+										className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow-xl border-2 border-primary/20"
 									>
 										<li className="menu-title">
-											<span>{user.email}</span>
+											<span className="font-bold text-primary text-sm">
+												{user.email}
+											</span>
 										</li>
 										<li>
 											<button
 												onClick={logout}
-												className="text-error"
+												className="text-error font-bold hover:bg-error hover:text-white active:bg-error/90 transition-all duration-200 hover:scale-[1.02]"
 											>
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													className="h-4 w-4"
-													fill="none"
-													viewBox="0 0 24 24"
-													stroke="currentColor"
-												>
-													<path
-														strokeLinecap="round"
-														strokeLinejoin="round"
-														strokeWidth={2}
-														d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-													/>
-												</svg>
+												<SignOutIcon className="h-4 w-4" />
 												{t("auth.logout")}
 											</button>
 										</li>
@@ -93,7 +76,18 @@ export default function Header() {
 						)}
 						<ThemeToggle />
 					</div>
+
+					<MobileMenuButton
+						isOpen={isMobileMenuOpen}
+						onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+					/>
 				</div>
+
+				<MobileMenu
+					isOpen={isMobileMenuOpen}
+					onClose={() => setIsMobileMenuOpen(false)}
+					onAuthModalOpen={() => setShowAuthModal(true)}
+				/>
 			</header>
 
 			<AuthModal
