@@ -1,6 +1,7 @@
 "use client";
 
 import { SignOutIcon } from "@phosphor-icons/react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
@@ -8,6 +9,7 @@ import LanguageSelector from "@/components/language-selector";
 import MobileMenu from "@/components/layout/MobileMenu";
 import MobileMenuButton from "@/components/layout/MobileMenuButton";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import UserAvatar from "@/components/ui/UserAvatar";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function Header() {
@@ -21,9 +23,12 @@ export default function Header() {
 			<header className="bg-base-200 shadow-lg">
 				<div className="navbar container mx-auto">
 					<div className="flex-1">
-						<h1 className="btn btn-ghost text-xl font-bold">
+						<Link
+							href="/"
+							className="btn btn-ghost text-xl font-bold"
+						>
 							{t("nav.title")}
-						</h1>
+						</Link>
 					</div>
 
 					{/* Desktop Navigation */}
@@ -53,6 +58,14 @@ export default function Header() {
 											<span className="font-bold text-primary text-sm">
 												{user.email}
 											</span>
+										</li>
+										<li>
+											<Link
+												href="/profile"
+												className="font-medium hover:bg-primary hover:text-white active:bg-primary/90 transition-all duration-200 hover:scale-[1.02]"
+											>
+												{t("nav.profile") || "Profile"}
+											</Link>
 										</li>
 										<li>
 											<button

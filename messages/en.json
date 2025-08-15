@@ -1,7 +1,8 @@
 {
 	"nav": {
 		"title": "💰 Debt Detox",
-		"addDebt": "Add Debt"
+		"addDebt": "Add Debt",
+		"profile": "Profile"
 	},
 	"dashboard": {
 		"title": "Your Financing",
@@ -95,5 +96,33 @@
 		"cancel": "Cancel",
 		"delete": "Delete",
 		"edit": "Edit"
+	},
+	"profile": {
+		"title": "User Profile",
+		"subtitle": "Manage your account settings",
+		"profileInfo": "Profile Information",
+		"name": "Name",
+		"email": "Email",
+		"password": "Password",
+		"noName": "No name set",
+		"editProfile": "Edit Profile",
+		"namePlaceholder": "Enter your name",
+		"emailPlaceholder": "Enter your email",
+		"save": "Save",
+		"cancel": "Cancel",
+		"changePassword": "Change Password",
+		"resetPassword": "Reset Password",
+		"currentPassword": "Current Password",
+		"newPassword": "New Password",
+		"confirmPassword": "Confirm New Password",
+		"passwordDescription": "Change your current password",
+		"profileUpdated": "Profile updated successfully!",
+		"updateError": "Failed to update profile",
+		"passwordChanged": "Password changed successfully!",
+		"passwordError": "Failed to change password",
+		"passwordMismatch": "Passwords don't match",
+		"editName": "Edit Name",
+		"notLoggedIn": "Not logged in",
+		"loginRequired": "Please log in to view your profile"
 	}
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { SignOutIcon } from "@phosphor-icons/react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import LanguageSelector from "@/components/language-selector";
 import ThemeToggle from "@/components/ui/ThemeToggle";
@@ -58,6 +59,14 @@ export default function MobileMenu({
 						<button className="btn btn-primary w-full">
 							+ {t("nav.addDebt")}
 						</button>
+
+						<Link
+							href="/profile"
+							className="btn btn-outline w-full"
+							onClick={onClose}
+						>
+							{t("nav.profile") || "Profile"}
+						</Link>
 
 						<button
 							onClick={handleLogout}

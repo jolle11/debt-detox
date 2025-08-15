@@ -1,7 +1,8 @@
 {
 	"nav": {
 		"title": "💰 Debt Detox",
-		"addDebt": "Schuld Hinzufügen"
+		"addDebt": "Schuld Hinzufügen",
+		"profile": "Profil"
 	},
 	"dashboard": {
 		"title": "Ihre Finanzierungen",
@@ -95,5 +96,33 @@
 		"cancel": "Abbrechen",
 		"delete": "Löschen",
 		"edit": "Bearbeiten"
+	},
+	"profile": {
+		"title": "Benutzerprofil",
+		"subtitle": "Verwalten Sie Ihre Kontoeinstellungen",
+		"profileInfo": "Profilinformationen",
+		"name": "Name",
+		"email": "E-Mail",
+		"password": "Passwort",
+		"noName": "Kein Name festgelegt",
+		"editProfile": "Profil bearbeiten",
+		"namePlaceholder": "Geben Sie Ihren Namen ein",
+		"emailPlaceholder": "Geben Sie Ihre E-Mail ein",
+		"save": "Speichern",
+		"cancel": "Abbrechen",
+		"changePassword": "Passwort ändern",
+		"resetPassword": "Passwort zurücksetzen",
+		"currentPassword": "Aktuelles Passwort",
+		"newPassword": "Neues Passwort",
+		"confirmPassword": "Neues Passwort bestätigen",
+		"passwordDescription": "Ändern Sie Ihr aktuelles Passwort",
+		"profileUpdated": "Profil erfolgreich aktualisiert!",
+		"updateError": "Fehler beim Aktualisieren des Profils",
+		"passwordChanged": "Passwort erfolgreich geändert!",
+		"passwordError": "Fehler beim Ändern des Passworts",
+		"passwordMismatch": "Passwörter stimmen nicht überein",
+		"editName": "Name bearbeiten",
+		"notLoggedIn": "Nicht angemeldet",
+		"loginRequired": "Bitte melden Sie sich an, um Ihr Profil anzuzeigen"
 	}
 }

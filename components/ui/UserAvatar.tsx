@@ -10,8 +10,13 @@ interface UserAvatarProps {
 
 export default function UserAvatar({ user, size = "sm" }: UserAvatarProps) {
 	const sizeClasses = {
-		sm: "w-6 h-6 text-xs",
-		md: "w-8 h-8 text-sm",
+		sm: "w-8 h-8",
+		md: "w-12 h-12",
+	};
+
+	const textClasses = {
+		sm: "text-sm",
+		md: "text-lg",
 	};
 
 	const initial = user.name
@@ -19,14 +24,12 @@ export default function UserAvatar({ user, size = "sm" }: UserAvatarProps) {
 		: user.email?.charAt(0).toUpperCase() || "U";
 
 	return (
-		<div className="avatar placeholder">
-			<div
-				className={`bg-primary text-primary-content rounded-full ${sizeClasses[size]}`}
-			>
-				<span className={size === "sm" ? "text-xs" : "text-sm"}>
-					{initial}
-				</span>
-			</div>
+		<div
+			className={`${sizeClasses[size]} bg-primary text-primary-content rounded-full flex items-center justify-center font-semibold`}
+		>
+			<span className={textClasses[size]}>
+				{initial}
+			</span>
 		</div>
 	);
 }
