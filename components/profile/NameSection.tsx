@@ -3,7 +3,8 @@
 import { useTranslations } from "next-intl";
 import type { RecordModel } from "pocketbase";
 import { useEffect, useState } from "react";
-import pb from "@/lib/pocketbase";
+import FormInput from "@/components/ui/FormInput";
+import { useProfileUpdate } from "@/hooks/useProfileUpdate";
 import ProfileForm from "./ProfileForm";
 
 interface NameSectionProps {
@@ -31,38 +32,19 @@ export default function NameSection({
 		}
 	}, [user]);
 
-	const [isEditing, setIsEditing] = useState(false);
-	const [loading, setLoading] = useState(false);
+	const { isEditing, loading, handleUpdate, startEditing, cancelEditing } =
+		useProfileUpdate({
+			user,
+			refreshUser,
+			onMessage,
+			successMessage:
+				t("profileUpdated") || "Profile updated successfully!",
+			errorMessage: t("updateError") || "Failed to update profile",
+		});
 
-	const handleUpdate = async (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		setLoading(true);
-		onMessage({ type: "", text: "" });
-
-		try {
-			await pb
-				.collection(user?.collectionName || "users")
-				.update(user?.id, {
-					name: formData.name,
-				});
-
-			await refreshUser();
-			onMessage({
-				type: "success",
-				text: t("profileUpdated") || "Profile updated successfully!",
-			});
-			setIsEditing(false);
-		} catch (error: any) {
-			onMessage({
-				type: "error",
-				text:
-					error?.message ||
-					t("updateError") ||
-					"Failed to update profile",
-			});
-		} finally {
-			setLoading(false);
-		}
+		await handleUpdate({ name: formData.name });
 	};
 
 	return (
@@ -72,11 +54,11 @@ export default function NameSection({
 			loading={loading}
 			onEdit={() => {
 				setFormData({ name: user?.name || "" });
-				setIsEditing(true);
+				startEditing();
 			}}
-			onSubmit={handleUpdate}
+			onSubmit={handleSubmit}
 			onCancel={() => {
-				setIsEditing(false);
+				cancelEditing();
 				setFormData({ name: user?.name || "" });
 			}}
 			editButtonText={t("editName") || "Edit Name"}
@@ -88,25 +70,18 @@ export default function NameSection({
 				</div>
 			}
 		>
-			<div className="form-control">
-				<label className="label pb-2">
-					<span className="label-text font-medium">
-						{t("name") || "Name"}
-					</span>
-				</label>
-				<input
-					type="text"
-					className="input input-bordered w-full"
-					value={formData.name}
-					onChange={(e) =>
-						setFormData({
-							...formData,
-							name: e.target.value,
-						})
-					}
-					placeholder={t("namePlaceholder") || "Enter your name"}
-				/>
-			</div>
+			<FormInput
+				label={t("name") || "Name"}
+				type="text"
+				value={formData.name}
+				onChange={(value) =>
+					setFormData({
+						...formData,
+						name: value,
+					})
+				}
+				placeholder={t("namePlaceholder") || "Enter your name"}
+			/>
 		</ProfileForm>
 	);
 }
