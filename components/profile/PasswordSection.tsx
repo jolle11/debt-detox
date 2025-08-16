@@ -3,7 +3,9 @@
 import { useTranslations } from "next-intl";
 import type { RecordModel } from "pocketbase";
 import { useState } from "react";
-import pb from "@/lib/pocketbase";
+import FormInput from "@/components/ui/FormInput";
+import { usePasswordValidation } from "@/hooks/usePasswordValidation";
+import { useProfileUpdate } from "@/hooks/useProfileUpdate";
 import ProfileForm from "./ProfileForm";
 
 interface PasswordSectionProps {
@@ -17,72 +19,62 @@ export default function PasswordSection({
 }: PasswordSectionProps) {
 	const t = useTranslations("profile");
 
-	const [isChanging, setIsChanging] = useState(false);
 	const [passwordData, setPasswordData] = useState({
 		currentPassword: "",
 		newPassword: "",
 		confirmPassword: "",
 	});
-	const [loading, setLoading] = useState(false);
+
+	const { validatePasswordChange } = usePasswordValidation(t);
+
+	const { isEditing, loading, handleUpdate, startEditing, cancelEditing } =
+		useProfileUpdate({
+			user,
+			onMessage,
+			successMessage:
+				t("passwordChanged") || "Password changed successfully!",
+			errorMessage: t("passwordError") || "Failed to change password",
+		});
+
+	const resetPasswordData = () => {
+		setPasswordData({
+			currentPassword: "",
+			newPassword: "",
+			confirmPassword: "",
+		});
+	};
 
 	const handlePasswordChange = async (e: React.FormEvent) => {
 		e.preventDefault();
-		setLoading(true);
-		onMessage({ type: "", text: "" });
 
-		if (passwordData.newPassword !== passwordData.confirmPassword) {
-			onMessage({
-				type: "error",
-				text: t("passwordMismatch") || "Passwords don't match",
-			});
-			setLoading(false);
-			return;
-		}
-
-		try {
-			await pb.collection("users").update(user?.id, {
+		const success = await handleUpdate(
+			{
 				oldPassword: passwordData.currentPassword,
 				password: passwordData.newPassword,
 				passwordConfirm: passwordData.confirmPassword,
-			});
+			},
+			() =>
+				validatePasswordChange(
+					passwordData.newPassword,
+					passwordData.confirmPassword,
+				),
+		);
 
-			onMessage({
-				type: "success",
-				text: t("passwordChanged") || "Password changed successfully!",
-			});
-			setIsChanging(false);
-			setPasswordData({
-				currentPassword: "",
-				newPassword: "",
-				confirmPassword: "",
-			});
-		} catch (error: any) {
-			onMessage({
-				type: "error",
-				text:
-					error?.message ||
-					t("passwordError") ||
-					"Failed to change password",
-			});
-		} finally {
-			setLoading(false);
+		if (success) {
+			resetPasswordData();
 		}
 	};
 
 	return (
 		<ProfileForm
 			title={t("password") || "Password"}
-			isEditing={isChanging}
+			isEditing={isEditing}
 			loading={loading}
-			onEdit={() => setIsChanging(true)}
+			onEdit={() => startEditing()}
 			onSubmit={handlePasswordChange}
 			onCancel={() => {
-				setIsChanging(false);
-				setPasswordData({
-					currentPassword: "",
-					newPassword: "",
-					confirmPassword: "",
-				});
+				cancelEditing();
+				resetPasswordData();
 			}}
 			editButtonText={t("changePassword") || "Change Password"}
 			submitButtonText={t("changePassword") || "Change Password"}
@@ -92,65 +84,44 @@ export default function PasswordSection({
 				</p>
 			}
 		>
-			<div className="form-control">
-				<label className="label pb-2">
-					<span className="label-text font-medium">
-						{t("currentPassword") || "Current Password"}
-					</span>
-				</label>
-				<input
-					type="password"
-					className="input input-bordered w-full"
-					value={passwordData.currentPassword}
-					onChange={(e) =>
-						setPasswordData({
-							...passwordData,
-							currentPassword: e.target.value,
-						})
-					}
-					required
-				/>
-			</div>
+			<FormInput
+				label={t("currentPassword") || "Current Password"}
+				type="password"
+				value={passwordData.currentPassword}
+				onChange={(value) =>
+					setPasswordData({
+						...passwordData,
+						currentPassword: value,
+					})
+				}
+				required
+			/>
 
-			<div className="form-control">
-				<label className="label pb-2">
-					<span className="label-text font-medium">
-						{t("newPassword") || "New Password"}
-					</span>
-				</label>
-				<input
-					type="password"
-					className="input input-bordered w-full"
-					value={passwordData.newPassword}
-					onChange={(e) =>
-						setPasswordData({
-							...passwordData,
-							newPassword: e.target.value,
-						})
-					}
-					required
-				/>
-			</div>
+			<FormInput
+				label={t("newPassword") || "New Password"}
+				type="password"
+				value={passwordData.newPassword}
+				onChange={(value) =>
+					setPasswordData({
+						...passwordData,
+						newPassword: value,
+					})
+				}
+				required
+			/>
 
-			<div className="form-control">
-				<label className="label pb-2">
-					<span className="label-text font-medium">
-						{t("confirmPassword") || "Confirm New Password"}
-					</span>
-				</label>
-				<input
-					type="password"
-					className="input input-bordered w-full"
-					value={passwordData.confirmPassword}
-					onChange={(e) =>
-						setPasswordData({
-							...passwordData,
-							confirmPassword: e.target.value,
-						})
-					}
-					required
-				/>
-			</div>
+			<FormInput
+				label={t("confirmPassword") || "Confirm New Password"}
+				type="password"
+				value={passwordData.confirmPassword}
+				onChange={(value) =>
+					setPasswordData({
+						...passwordData,
+						confirmPassword: value,
+					})
+				}
+				required
+			/>
 		</ProfileForm>
 	);
 }
