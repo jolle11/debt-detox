@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import type { RecordModel } from "pocketbase";
 import { useEffect, useState } from "react";
 import pb from "@/lib/pocketbase";
+import ProfileForm from "./ProfileForm";
 
 interface NameSectionProps {
 	user: RecordModel;
@@ -65,72 +66,47 @@ export default function NameSection({
 	};
 
 	return (
-		<>
-			<div className="divider">{t("name") || "Name"}</div>
-
-			{!isEditing ? (
-				<div className="space-y-4">
-					<div>
-						<p className="text-base-content text-lg">
-							{user.name || t("noName") || "No name set"}
-						</p>
-					</div>
-
-					<button
-						className="btn btn-outline btn-sm"
-						onClick={() => {
-							setFormData({ name: user?.name || "" });
-							setIsEditing(true);
-						}}
-					>
-						{t("editName") || "Edit Name"}
-					</button>
+		<ProfileForm
+			title={t("name") || "Name"}
+			isEditing={isEditing}
+			loading={loading}
+			onEdit={() => {
+				setFormData({ name: user?.name || "" });
+				setIsEditing(true);
+			}}
+			onSubmit={handleUpdate}
+			onCancel={() => {
+				setIsEditing(false);
+				setFormData({ name: user?.name || "" });
+			}}
+			editButtonText={t("editName") || "Edit Name"}
+			displayContent={
+				<div>
+					<p className="text-base-content text-lg">
+						{user.name || t("noName") || "No name set"}
+					</p>
 				</div>
-			) : (
-				<form onSubmit={handleUpdate} className="space-y-6">
-					<div className="form-control">
-						<label className="label pb-2">
-							<span className="label-text font-medium">
-								{t("name") || "Name"}
-							</span>
-						</label>
-						<input
-							type="text"
-							className="input input-bordered w-full"
-							value={formData.name}
-							onChange={(e) =>
-								setFormData({
-									...formData,
-									name: e.target.value,
-								})
-							}
-							placeholder={
-								t("namePlaceholder") || "Enter your name"
-							}
-						/>
-					</div>
-
-					<div className="flex gap-3 pt-2">
-						<button
-							type="submit"
-							className={`btn btn-primary btn-sm ${loading ? "loading" : ""}`}
-							disabled={loading}
-						>
-							{t("save") || "Save"}
-						</button>
-						<button
-							type="button"
-							className="btn btn-ghost btn-sm"
-							onClick={() => {
-								setIsEditing(false);
-								setFormData({ name: user?.name || "" });
-							}}
-						>
-							{t("cancel") || "Cancel"}
-						</button>
-					</div>
-				</form>
-			)}
-		</>
+			}
+		>
+			<div className="form-control">
+				<label className="label pb-2">
+					<span className="label-text font-medium">
+						{t("name") || "Name"}
+					</span>
+				</label>
+				<input
+					type="text"
+					className="input input-bordered w-full"
+					value={formData.name}
+					onChange={(e) =>
+						setFormData({
+							...formData,
+							name: e.target.value,
+						})
+					}
+					placeholder={t("namePlaceholder") || "Enter your name"}
+				/>
+			</div>
+		</ProfileForm>
 	);
 }

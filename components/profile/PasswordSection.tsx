@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import type { RecordModel } from "pocketbase";
 import { useState } from "react";
 import pb from "@/lib/pocketbase";
+import ProfileForm from "./ProfileForm";
 
 interface PasswordSectionProps {
 	user: RecordModel;
@@ -69,110 +70,87 @@ export default function PasswordSection({
 	};
 
 	return (
-		<>
-			<div className="divider">{t("password") || "Password"}</div>
+		<ProfileForm
+			title={t("password") || "Password"}
+			isEditing={isChanging}
+			loading={loading}
+			onEdit={() => setIsChanging(true)}
+			onSubmit={handlePasswordChange}
+			onCancel={() => {
+				setIsChanging(false);
+				setPasswordData({
+					currentPassword: "",
+					newPassword: "",
+					confirmPassword: "",
+				});
+			}}
+			editButtonText={t("changePassword") || "Change Password"}
+			submitButtonText={t("changePassword") || "Change Password"}
+			displayContent={
+				<p className="text-base-content/70">
+					{t("passwordDescription") || "Change your current password"}
+				</p>
+			}
+		>
+			<div className="form-control">
+				<label className="label pb-2">
+					<span className="label-text font-medium">
+						{t("currentPassword") || "Current Password"}
+					</span>
+				</label>
+				<input
+					type="password"
+					className="input input-bordered w-full"
+					value={passwordData.currentPassword}
+					onChange={(e) =>
+						setPasswordData({
+							...passwordData,
+							currentPassword: e.target.value,
+						})
+					}
+					required
+				/>
+			</div>
 
-			{!isChanging ? (
-				<div className="space-y-4">
-					<p className="text-base-content/70">
-						{t("passwordDescription") ||
-							"Change your current password"}
-					</p>
+			<div className="form-control">
+				<label className="label pb-2">
+					<span className="label-text font-medium">
+						{t("newPassword") || "New Password"}
+					</span>
+				</label>
+				<input
+					type="password"
+					className="input input-bordered w-full"
+					value={passwordData.newPassword}
+					onChange={(e) =>
+						setPasswordData({
+							...passwordData,
+							newPassword: e.target.value,
+						})
+					}
+					required
+				/>
+			</div>
 
-					<button
-						className="btn btn-outline"
-						onClick={() => setIsChanging(true)}
-					>
-						{t("changePassword") || "Change Password"}
-					</button>
-				</div>
-			) : (
-				<form onSubmit={handlePasswordChange} className="space-y-6">
-					<div className="form-control">
-						<label className="label pb-2">
-							<span className="label-text font-medium">
-								{t("currentPassword") || "Current Password"}
-							</span>
-						</label>
-						<input
-							type="password"
-							className="input input-bordered w-full"
-							value={passwordData.currentPassword}
-							onChange={(e) =>
-								setPasswordData({
-									...passwordData,
-									currentPassword: e.target.value,
-								})
-							}
-							required
-						/>
-					</div>
-
-					<div className="form-control">
-						<label className="label pb-2">
-							<span className="label-text font-medium">
-								{t("newPassword") || "New Password"}
-							</span>
-						</label>
-						<input
-							type="password"
-							className="input input-bordered w-full"
-							value={passwordData.newPassword}
-							onChange={(e) =>
-								setPasswordData({
-									...passwordData,
-									newPassword: e.target.value,
-								})
-							}
-							required
-						/>
-					</div>
-
-					<div className="form-control">
-						<label className="label pb-2">
-							<span className="label-text font-medium">
-								{t("confirmPassword") || "Confirm New Password"}
-							</span>
-						</label>
-						<input
-							type="password"
-							className="input input-bordered w-full"
-							value={passwordData.confirmPassword}
-							onChange={(e) =>
-								setPasswordData({
-									...passwordData,
-									confirmPassword: e.target.value,
-								})
-							}
-							required
-						/>
-					</div>
-
-					<div className="flex gap-3 pt-2">
-						<button
-							type="submit"
-							className={`btn btn-primary ${loading ? "loading" : ""}`}
-							disabled={loading}
-						>
-							{t("changePassword") || "Change Password"}
-						</button>
-						<button
-							type="button"
-							className="btn btn-ghost"
-							onClick={() => {
-								setIsChanging(false);
-								setPasswordData({
-									currentPassword: "",
-									newPassword: "",
-									confirmPassword: "",
-								});
-							}}
-						>
-							{t("cancel") || "Cancel"}
-						</button>
-					</div>
-				</form>
-			)}
-		</>
+			<div className="form-control">
+				<label className="label pb-2">
+					<span className="label-text font-medium">
+						{t("confirmPassword") || "Confirm New Password"}
+					</span>
+				</label>
+				<input
+					type="password"
+					className="input input-bordered w-full"
+					value={passwordData.confirmPassword}
+					onChange={(e) =>
+						setPasswordData({
+							...passwordData,
+							confirmPassword: e.target.value,
+						})
+					}
+					required
+				/>
+			</div>
+		</ProfileForm>
 	);
 }
