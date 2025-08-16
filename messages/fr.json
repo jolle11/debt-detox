@@ -88,6 +88,25 @@
 			"message": "Prenez le contrôle de vos engagements financiers. Connectez-vous pour commencer à gérer vos dettes et prêts."
 		}
 	},
+	"debt": {
+		"create": {
+			"title": "Nouveau Financement",
+			"name": "Nom du Produit",
+			"namePlaceholder": "ex: Prêt Hypothécaire",
+			"entity": "Institution Financière",
+			"entityPlaceholder": "ex: Banque Santander",
+			"startDate": "Date de Début",
+			"endDate": "Date de Fin",
+			"initialAmount": "Montant Initial (optionnel)",
+			"finalAmount": "Montant Final",
+			"tin": "TIN (%) - optionnel",
+			"tae": "TAE (%) - optionnel",
+			"submit": "Créer le Financement",
+			"submitting": "Création...",
+			"success": "Financement créé avec succès !",
+			"error": "Erreur lors de la création du financement"
+		}
+	},
 	"common": {
 		"currency": "€",
 		"loading": "Chargement...",

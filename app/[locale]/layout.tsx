@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Header from "@/components/layout/Header";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { DebtsProvider } from "@/contexts/DebtsContext";
 
 const inconsolata = Inconsolata({
 	variable: "--font-inconsolata",
@@ -46,12 +47,14 @@ export default async function LocaleLayout({
 			>
 				<NextIntlClientProvider messages={messages}>
 					<AuthProvider>
-						<div className="min-h-screen bg-base-200">
-							<Header />
-							<main className="container mx-auto p-4">
-								{children}
-							</main>
-						</div>
+						<DebtsProvider>
+							<div className="min-h-screen bg-base-200">
+								<Header />
+								<main className="container mx-auto p-4">
+									{children}
+								</main>
+							</div>
+						</DebtsProvider>
 					</AuthProvider>
 				</NextIntlClientProvider>
 			</body>

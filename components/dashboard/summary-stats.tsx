@@ -6,8 +6,14 @@ import {
 } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import StatCard from "@/components/dashboard/stat-card";
-import { formatCurrency } from "@/lib/format";
-import type { Debt } from "@/lib/mock-data";
+import {
+	calculateCurrentAmount,
+	calculateDebtStatus,
+	calculateMonthlyPayment,
+	calculateProgress,
+	formatCurrency,
+} from "@/lib/format";
+import type { Debt } from "@/lib/types";
 
 interface SummaryStatsProps {
 	debts: Debt[];
@@ -16,22 +22,42 @@ interface SummaryStatsProps {
 export default function SummaryStats({ debts }: SummaryStatsProps) {
 	const t = useTranslations();
 
-	const activeDebts = debts.filter((d) => d.status === "active");
-	const completedDebts = debts.filter((d) => d.status === "completed");
+	const activeDebts = debts.filter(
+		(d) => calculateDebtStatus(d.end_date) === "active",
+	);
+	const completedDebts = debts.filter(
+		(d) => calculateDebtStatus(d.end_date) === "completed",
+	);
 
 	const totalDebt = activeDebts.reduce(
-		(sum, debt) => sum + debt.currentAmount,
+		(sum, debt) =>
+			sum +
+			calculateCurrentAmount(
+				debt.final_amount,
+				debt.start_date,
+				debt.end_date,
+			),
 		0,
 	);
 	const totalMonthlyPayment = activeDebts.reduce(
-		(sum, debt) => sum + debt.monthlyPayment,
+		(sum, debt) =>
+			sum +
+			calculateMonthlyPayment(
+				debt.final_amount,
+				debt.start_date,
+				debt.end_date,
+			),
 		0,
 	);
 	const averageProgress =
 		activeDebts.length > 0
 			? Math.round(
-					activeDebts.reduce((sum, debt) => sum + debt.progress, 0) /
-						activeDebts.length,
+					activeDebts.reduce(
+						(sum, debt) =>
+							sum +
+							calculateProgress(debt.start_date, debt.end_date),
+						0,
+					) / activeDebts.length,
 				)
 			: 0;
 

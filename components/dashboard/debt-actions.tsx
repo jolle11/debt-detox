@@ -1,6 +1,7 @@
 import { DotsThreeIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
-import type { Debt } from "@/lib/mock-data";
+import { calculateDebtStatus } from "@/lib/format";
+import type { Debt } from "@/lib/types";
 
 interface DebtActionsProps {
 	debt: Debt;
@@ -8,6 +9,7 @@ interface DebtActionsProps {
 
 export default function DebtActions({ debt }: DebtActionsProps) {
 	const t = useTranslations();
+	const status = calculateDebtStatus(debt.end_date);
 
 	const actions = [
 		{
@@ -36,12 +38,10 @@ export default function DebtActions({ debt }: DebtActionsProps) {
 		<div className="flex flex-col gap-2 ml-4">
 			<div
 				className={`badge ${
-					debt.status === "completed"
-						? "badge-success"
-						: "badge-primary"
+					status === "completed" ? "badge-success" : "badge-primary"
 				}`}
 			>
-				{debt.status === "completed"
+				{status === "completed"
 					? t("dashboard.debt.status.completed")
 					: t("dashboard.debt.status.active")}
 			</div>

@@ -1,10 +1,10 @@
 "use client";
 import { useTranslations, useLocale } from "next-intl";
-import { mockDebts } from "@/lib/mock-data";
 import SummaryStats from "@/components/dashboard/summary-stats";
 import DebtsList from "@/components/dashboard/debts-list";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import AuthModal from "@/components/auth/AuthModal";
+import { useDebtsContext } from "@/contexts/DebtsContext";
 import { useState } from "react";
 
 export default function Dashboard() {
@@ -12,8 +12,7 @@ export default function Dashboard() {
 	const tAuth = useTranslations("auth");
 	const locale = useLocale();
 	const [showAuthModal, setShowAuthModal] = useState(false);
-
-	const debts = mockDebts;
+	const { debts, isLoading, error } = useDebtsContext();
 
 	const authFallback = (
 		<div className="flex items-center justify-center min-h-[60vh]">
@@ -39,11 +38,23 @@ export default function Dashboard() {
 	return (
 		<ProtectedRoute fallback={authFallback}>
 			<div className="space-y-6">
-				{/* Summary Cards */}
-				<SummaryStats debts={debts} />
+				{isLoading ? (
+					<div className="flex justify-center items-center h-64">
+						<span className="loading loading-spinner loading-lg"></span>
+					</div>
+				) : error ? (
+					<div className="alert alert-error">
+						<span>{error}</span>
+					</div>
+				) : (
+					<>
+						{/* Summary Cards */}
+						<SummaryStats debts={debts} />
 
-				{/* Debt List */}
-				<DebtsList debts={debts} />
+						{/* Debt List */}
+						<DebtsList debts={debts} />
+					</>
+				)}
 			</div>
 		</ProtectedRoute>
 	);

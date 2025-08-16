@@ -97,6 +97,25 @@
 		"delete": "Eliminar",
 		"edit": "Editar"
 	},
+	"debt": {
+		"create": {
+			"title": "Nueva Financiación",
+			"name": "Nombre del Producto",
+			"namePlaceholder": "Ej: Préstamo Hipotecario",
+			"entity": "Entidad Financiera",
+			"entityPlaceholder": "Ej: Banco Santander",
+			"startDate": "Fecha de Inicio",
+			"endDate": "Fecha de Finalización",
+			"initialAmount": "Cantidad Inicial (opcional)",
+			"finalAmount": "Cantidad Final",
+			"tin": "TIN (%) - opcional",
+			"tae": "TAE (%) - opcional",
+			"submit": "Crear Financiación",
+			"submitting": "Creando...",
+			"success": "¡Financiación creada correctamente!",
+			"error": "Error al crear la financiación"
+		}
+	},
 	"profile": {
 		"title": "Perfil de Usuario",
 		"subtitle": "Gestiona la configuración de tu cuenta",

@@ -3,7 +3,7 @@ import DebtCard from "@/components/dashboard/debt-card";
 import DebtFilterTabs from "@/components/dashboard/debt-filter-tabs";
 import EmptyState from "@/components/dashboard/empty-state";
 import { useDebtFilter } from "@/hooks/use-debt-filter";
-import type { Debt } from "@/lib/mock-data";
+import type { Debt } from "@/lib/types";
 
 interface DebtsListProps {
 	debts: Debt[];

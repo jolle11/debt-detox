@@ -1,6 +1,10 @@
 import { useFormatter, useTranslations } from "next-intl";
-import { formatCurrency } from "@/lib/format";
-import type { Debt } from "@/lib/mock-data";
+import {
+	calculateCurrentAmount,
+	calculateMonthlyPayment,
+	formatCurrency,
+} from "@/lib/format";
+import type { Debt } from "@/lib/types";
 
 interface DebtInfoProps {
 	debt: Debt;
@@ -10,25 +14,39 @@ export default function DebtInfo({ debt }: DebtInfoProps) {
 	const t = useTranslations();
 	const format = useFormatter();
 
+	const currentAmount = calculateCurrentAmount(
+		debt.final_amount,
+		debt.start_date,
+		debt.end_date,
+	);
+	const monthlyPayment = calculateMonthlyPayment(
+		debt.final_amount,
+		debt.start_date,
+		debt.end_date,
+	);
+
 	const infoItems = [
 		{
 			label: t("dashboard.debt.currentAmount"),
-			value: formatCurrency(debt.currentAmount, t("common.currency")),
+			value: formatCurrency(currentAmount, t("common.currency")),
 			className: "text-lg font-bold text-primary",
 		},
 		{
 			label: t("dashboard.debt.initialAmount"),
-			value: formatCurrency(debt.initialAmount, t("common.currency")),
+			value: formatCurrency(
+				debt.initial_amount || debt.final_amount,
+				t("common.currency"),
+			),
 			className: "text-base-content/70",
 		},
 		{
 			label: t("dashboard.debt.monthlyPayment"),
-			value: formatCurrency(debt.monthlyPayment, t("common.currency")),
+			value: formatCurrency(monthlyPayment, t("common.currency")),
 			className: "text-secondary",
 		},
 		{
 			label: t("dashboard.debt.endDate"),
-			value: format.dateTime(new Date(debt.endDate), {
+			value: format.dateTime(new Date(debt.end_date), {
 				year: "numeric",
 				month: "2-digit",
 				day: "2-digit",

@@ -88,6 +88,25 @@
 			"message": "Take control of your financial commitments. Sign in to start managing your debts and loans."
 		}
 	},
+	"debt": {
+		"create": {
+			"title": "New Financing",
+			"name": "Product Name",
+			"namePlaceholder": "e.g.: Mortgage Loan",
+			"entity": "Financial Institution",
+			"entityPlaceholder": "e.g.: Santander Bank",
+			"startDate": "Start Date",
+			"endDate": "End Date",
+			"initialAmount": "Initial Amount (optional)",
+			"finalAmount": "Final Amount",
+			"tin": "TIN (%) - optional",
+			"tae": "TAE (%) - optional",
+			"submit": "Create Financing",
+			"submitting": "Creating...",
+			"success": "Financing created successfully!",
+			"error": "Error creating financing"
+		}
+	},
 	"common": {
 		"currency": "€",
 		"loading": "Loading...",

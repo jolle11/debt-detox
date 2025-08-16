@@ -5,17 +5,21 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
+import CreateDebtModal from "@/components/debt/CreateDebtModal";
 import LanguageSelector from "@/components/language-selector";
 import MobileMenu from "@/components/layout/MobileMenu";
 import MobileMenuButton from "@/components/layout/MobileMenuButton";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import UserAvatar from "@/components/ui/UserAvatar";
 import { useAuth } from "@/contexts/AuthContext";
+import { useDebtsContext } from "@/contexts/DebtsContext";
 
 export default function Header() {
 	const t = useTranslations();
 	const { user, logout } = useAuth();
+	const { refetch } = useDebtsContext();
 	const [showAuthModal, setShowAuthModal] = useState(false);
+	const [showCreateDebtModal, setShowCreateDebtModal] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	return (
@@ -36,7 +40,10 @@ export default function Header() {
 						<LanguageSelector />
 						{user ? (
 							<>
-								<button className="btn btn-primary btn-sm">
+								<button
+									className="btn btn-primary btn-sm"
+									onClick={() => setShowCreateDebtModal(true)}
+								>
 									+ {t("nav.addDebt")}
 								</button>
 								<div className="dropdown dropdown-end">
@@ -100,12 +107,21 @@ export default function Header() {
 					isOpen={isMobileMenuOpen}
 					onClose={() => setIsMobileMenuOpen(false)}
 					onAuthModalOpen={() => setShowAuthModal(true)}
+					onCreateDebtModalOpen={() => setShowCreateDebtModal(true)}
 				/>
 			</header>
 
 			<AuthModal
 				isOpen={showAuthModal}
 				onClose={() => setShowAuthModal(false)}
+			/>
+
+			<CreateDebtModal
+				isOpen={showCreateDebtModal}
+				onClose={() => setShowCreateDebtModal(false)}
+				onSuccess={() => {
+					refetch();
+				}}
 			/>
 		</>
 	);

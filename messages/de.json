@@ -88,6 +88,25 @@
 			"message": "Übernehmen Sie die Kontrolle über Ihre finanziellen Verpflichtungen. Melden Sie sich an, um Ihre Schulden und Kredite zu verwalten."
 		}
 	},
+	"debt": {
+		"create": {
+			"title": "Neue Finanzierung",
+			"name": "Produktname",
+			"namePlaceholder": "z.B.: Hypothekendarlehen",
+			"entity": "Finanzinstitut",
+			"entityPlaceholder": "z.B.: Santander Bank",
+			"startDate": "Startdatum",
+			"endDate": "Enddatum",
+			"initialAmount": "Anfangsbetrag (optional)",
+			"finalAmount": "Endbetrag",
+			"tin": "TIN (%) - optional",
+			"tae": "TAE (%) - optional",
+			"submit": "Finanzierung Erstellen",
+			"submitting": "Erstelle...",
+			"success": "Finanzierung erfolgreich erstellt!",
+			"error": "Fehler beim Erstellen der Finanzierung"
+		}
+	},
 	"common": {
 		"currency": "€",
 		"loading": "Laden...",

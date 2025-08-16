@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import type { Debt } from "@/lib/mock-data";
+import { calculateDebtStatus } from "@/lib/format";
+import type { Debt } from "@/lib/types";
 
 export type DebtFilterType = "all" | "active" | "completed";
 
@@ -9,9 +10,14 @@ export function useDebtFilter(debts: Debt[]) {
 	const filteredDebts = useMemo(() => {
 		switch (activeFilter) {
 			case "active":
-				return debts.filter((debt) => debt.status === "active");
+				return debts.filter(
+					(debt) => calculateDebtStatus(debt.end_date) === "active",
+				);
 			case "completed":
-				return debts.filter((debt) => debt.status === "completed");
+				return debts.filter(
+					(debt) =>
+						calculateDebtStatus(debt.end_date) === "completed",
+				);
 			case "all":
 			default:
 				return debts;
@@ -21,9 +27,12 @@ export function useDebtFilter(debts: Debt[]) {
 	const counts = useMemo(() => {
 		return {
 			all: debts.length,
-			active: debts.filter((debt) => debt.status === "active").length,
-			completed: debts.filter((debt) => debt.status === "completed")
-				.length,
+			active: debts.filter(
+				(debt) => calculateDebtStatus(debt.end_date) === "active",
+			).length,
+			completed: debts.filter(
+				(debt) => calculateDebtStatus(debt.end_date) === "completed",
+			).length,
 		};
 	}, [debts]);
 

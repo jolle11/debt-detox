@@ -12,12 +12,14 @@ interface MobileMenuProps {
 	isOpen: boolean;
 	onClose: () => void;
 	onAuthModalOpen: () => void;
+	onCreateDebtModalOpen: () => void;
 }
 
 export default function MobileMenu({
 	isOpen,
 	onClose,
 	onAuthModalOpen,
+	onCreateDebtModalOpen,
 }: MobileMenuProps) {
 	const t = useTranslations();
 	const { user, logout } = useAuth();
@@ -29,6 +31,11 @@ export default function MobileMenu({
 
 	const handleAuthModalOpen = () => {
 		onAuthModalOpen();
+		onClose();
+	};
+
+	const handleCreateDebtModalOpen = () => {
+		onCreateDebtModalOpen();
 		onClose();
 	};
 
@@ -56,7 +63,10 @@ export default function MobileMenu({
 							</div>
 						</div>
 
-						<button className="btn btn-primary w-full">
+						<button
+							className="btn btn-primary w-full"
+							onClick={handleCreateDebtModalOpen}
+						>
 							+ {t("nav.addDebt")}
 						</button>
 
