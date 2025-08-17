@@ -2,7 +2,8 @@ import { calculateDebtStatus } from "@/lib/format";
 import type { Debt } from "@/lib/types";
 import DebtActions from "./debt-actions";
 import DebtInfo from "./debt-info";
-import DebtProgress from "./debt-progress";
+import DebtPaymentStatus from "./debt-payment-status";
+import DebtProgressWithPayments from "./debt-progress-with-payments";
 
 interface DebtCardProps {
 	debt: Debt;
@@ -25,7 +26,10 @@ export default function DebtCard({ debt, onEdit, onDelete }: DebtCardProps) {
 							{debt.entity}
 						</p>
 						<DebtInfo debt={debt} />
-						<DebtProgress debt={debt} />
+						<DebtProgressWithPayments debt={debt} />
+						<div className="mt-3">
+							<DebtPaymentStatus debt={debt} />
+						</div>
 					</div>
 					<DebtActions
 						debt={debt}

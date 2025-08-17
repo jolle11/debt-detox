@@ -40,14 +40,30 @@ export default function DebtInfo({ debt }: DebtInfoProps) {
 			value: formatCurrency(debt.monthly_amount, t("common.currency")),
 			className: "text-secondary",
 		},
-		{
-			label: t("dashboard.debt.finalPayment"),
-			value: formatCurrency(
-				debt.final_payment || 0,
-				t("common.currency"),
-			),
-			className: "text-accent",
-		},
+		...(debt.down_payment && debt.down_payment > 0
+			? [
+					{
+						label: t("debt.create.downPayment"),
+						value: formatCurrency(
+							debt.down_payment,
+							t("common.currency"),
+						),
+						className: "text-info",
+					},
+				]
+			: []),
+		...(debt.final_payment && debt.final_payment > 0
+			? [
+					{
+						label: t("dashboard.debt.finalPayment"),
+						value: formatCurrency(
+							debt.final_payment,
+							t("common.currency"),
+						),
+						className: "text-accent",
+					},
+				]
+			: []),
 		{
 			label: t("dashboard.debt.finalPaymentDate"),
 			value: format.dateTime(new Date(debt.final_payment_date), {
