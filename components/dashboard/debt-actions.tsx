@@ -57,7 +57,7 @@ export default function DebtActions({ debt, onEdit }: DebtActionsProps) {
 				>
 					{actions.map((action) => (
 						<li key={action.key}>
-							<a 
+							<a
 								className={action.className}
 								onClick={() => {
 									if (action.key === "edit" && onEdit) {

@@ -27,9 +27,7 @@ export default function UserAvatar({ user, size = "sm" }: UserAvatarProps) {
 		<div
 			className={`${sizeClasses[size]} bg-primary text-primary-content rounded-full flex items-center justify-center font-semibold`}
 		>
-			<span className={textClasses[size]}>
-				{initial}
-			</span>
+			<span className={textClasses[size]}>{initial}</span>
 		</div>
 	);
 }

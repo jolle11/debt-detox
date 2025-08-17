@@ -26,7 +26,7 @@ export default function EditDebtModal({
 		debtData: Omit<Debt, "created" | "updated" | "deleted">,
 	) => {
 		if (!debt?.id) return;
-		
+
 		try {
 			await editDebt(debt.id, debtData);
 			onSuccess?.();

@@ -1,15 +1,13 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import FormInput from "@/components/ui/FormInput";
 import type { Debt } from "@/lib/types";
 
 interface EditDebtFormProps {
 	debt: Debt;
-	onSubmit: (
-		debt: Omit<Debt, "created" | "updated" | "deleted">,
-	) => void;
+	onSubmit: (debt: Omit<Debt, "created" | "updated" | "deleted">) => void;
 	onCancel: () => void;
 	isSubmitting?: boolean;
 }
@@ -26,14 +24,14 @@ export default function EditDebtForm({
 		if (!dateString) {
 			return "";
 		}
-		
+
 		// Crear un objeto Date y extraer la fecha en formato YYYY-MM-DD
 		const date = new Date(dateString);
 		if (isNaN(date.getTime())) {
 			return "";
 		}
-		
-		return date.toISOString().split('T')[0];
+
+		return date.toISOString().split("T")[0];
 	};
 
 	const [formData, setFormData] = useState({
@@ -54,11 +52,15 @@ export default function EditDebtForm({
 			name: debt.name || "",
 			entity: debt.entity || "",
 			down_payment: debt.down_payment?.toString() || "",
-			first_payment_date: formatDateForInput(debt.first_payment_date || ""),
+			first_payment_date: formatDateForInput(
+				debt.first_payment_date || "",
+			),
 			monthly_amount: debt.monthly_amount?.toString() || "",
 			number_of_payments: debt.number_of_payments?.toString() || "",
 			final_payment: debt.final_payment?.toString() || "",
-			final_payment_date: formatDateForInput(debt.final_payment_date || ""),
+			final_payment_date: formatDateForInput(
+				debt.final_payment_date || "",
+			),
 			tin: debt.tin?.toString() || "",
 			tae: debt.tae?.toString() || "",
 		});

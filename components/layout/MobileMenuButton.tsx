@@ -5,13 +5,13 @@ interface MobileMenuButtonProps {
 	onClick: () => void;
 }
 
-export default function MobileMenuButton({ isOpen, onClick }: MobileMenuButtonProps) {
+export default function MobileMenuButton({
+	isOpen,
+	onClick,
+}: MobileMenuButtonProps) {
 	return (
 		<div className="flex-none md:hidden">
-			<button
-				className="btn btn-square btn-ghost"
-				onClick={onClick}
-			>
+			<button className="btn btn-square btn-ghost" onClick={onClick}>
 				{isOpen ? (
 					<XIcon className="h-6 w-6" />
 				) : (
