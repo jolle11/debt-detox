@@ -5,6 +5,7 @@ import DebtsList from "@/components/dashboard/debts-list";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import AuthModal from "@/components/auth/AuthModal";
 import EditDebtModal from "@/components/debt/EditDebtModal";
+import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
 import { useDebtsContext } from "@/contexts/DebtsContext";
 import { useState } from "react";
 import type { Debt } from "@/lib/types";
@@ -15,6 +16,7 @@ export default function Dashboard() {
 	const locale = useLocale();
 	const [showAuthModal, setShowAuthModal] = useState(false);
 	const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
+	const [deletingDebt, setDeletingDebt] = useState<Debt | null>(null);
 	const { debts, isLoading, error, refetch } = useDebtsContext();
 
 	const authFallback = (
@@ -55,7 +57,7 @@ export default function Dashboard() {
 						<SummaryStats debts={debts} />
 
 						{/* Debt List */}
-						<DebtsList debts={debts} onEdit={setEditingDebt} />
+						<DebtsList debts={debts} onEdit={setEditingDebt} onDelete={setDeletingDebt} />
 					</>
 				)}
 			</div>
@@ -64,6 +66,14 @@ export default function Dashboard() {
 				debt={editingDebt}
 				isOpen={!!editingDebt}
 				onClose={() => setEditingDebt(null)}
+				onSuccess={refetch}
+			/>
+			
+			{/* Delete Debt Modal */}
+			<DeleteDebtModal
+				debt={deletingDebt}
+				isOpen={!!deletingDebt}
+				onClose={() => setDeletingDebt(null)}
 				onSuccess={refetch}
 			/>
 		</ProtectedRoute>

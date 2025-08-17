@@ -6,9 +6,14 @@ import type { Debt } from "@/lib/types";
 interface DebtActionsProps {
 	debt: Debt;
 	onEdit?: (debt: Debt) => void;
+	onDelete?: (debt: Debt) => void;
 }
 
-export default function DebtActions({ debt, onEdit }: DebtActionsProps) {
+export default function DebtActions({
+	debt,
+	onEdit,
+	onDelete,
+}: DebtActionsProps) {
 	const t = useTranslations();
 	const status = calculateDebtStatus(debt.final_payment_date);
 
@@ -62,6 +67,11 @@ export default function DebtActions({ debt, onEdit }: DebtActionsProps) {
 								onClick={() => {
 									if (action.key === "edit" && onEdit) {
 										onEdit(debt);
+									} else if (
+										action.key === "delete" &&
+										onDelete
+									) {
+										onDelete(debt);
 									}
 								}}
 							>

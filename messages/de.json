@@ -119,6 +119,16 @@
 			"submitting": "Speichert...",
 			"success": "Finanzierung erfolgreich aktualisiert!",
 			"error": "Fehler beim Aktualisieren der Finanzierung"
+		},
+		"delete": {
+			"title": "Finanzierung Löschen",
+			"confirmation": "Sind Sie sicher, dass Sie diese Finanzierung löschen möchten?",
+			"description": "Die Finanzierung \"{name}\" und alle zugehörigen Daten werden dauerhaft gelöscht.",
+			"warning": "Diese Aktion kann nicht rückgängig gemacht werden.",
+			"confirm": "Ja, löschen",
+			"cancel": "Abbrechen",
+			"success": "Finanzierung erfolgreich gelöscht!",
+			"error": "Fehler beim Löschen der Finanzierung"
 		}
 	},
 	"common": {

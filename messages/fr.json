@@ -119,6 +119,16 @@
 			"submitting": "Enregistrement...",
 			"success": "Financement mis à jour avec succès !",
 			"error": "Erreur lors de la mise à jour du financement"
+		},
+		"delete": {
+			"title": "Supprimer le Financement",
+			"confirmation": "Êtes-vous sûr de vouloir supprimer ce financement ?",
+			"description": "Le financement \"{name}\" et toutes ses données associées seront supprimés définitivement.",
+			"warning": "Cette action ne peut pas être annulée.",
+			"confirm": "Oui, supprimer",
+			"cancel": "Annuler",
+			"success": "Financement supprimé avec succès !",
+			"error": "Erreur lors de la suppression du financement"
 		}
 	},
 	"common": {

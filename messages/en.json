@@ -115,6 +115,16 @@
 			"submitting": "Saving...",
 			"success": "Financing updated successfully!",
 			"error": "Error updating financing"
+		},
+		"delete": {
+			"title": "Delete Financing",
+			"confirmation": "Are you sure you want to delete this financing?",
+			"description": "The financing \"{name}\" and all its associated data will be permanently deleted.",
+			"warning": "This action cannot be undone.",
+			"confirm": "Yes, delete",
+			"cancel": "Cancel",
+			"success": "Financing deleted successfully!",
+			"error": "Error deleting financing"
 		}
 	},
 	"common": {

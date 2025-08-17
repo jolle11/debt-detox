@@ -124,6 +124,16 @@
 			"submitting": "Guardando...",
 			"success": "¡Financiación actualizada correctamente!",
 			"error": "Error al actualizar la financiación"
+		},
+		"delete": {
+			"title": "Eliminar Financiación",
+			"confirmation": "¿Estás seguro de que quieres eliminar esta financiación?",
+			"description": "Se eliminará permanentemente la financiación \"{name}\" y todos sus datos asociados.",
+			"warning": "Esta acción no se puede deshacer.",
+			"confirm": "Sí, eliminar",
+			"cancel": "Cancelar",
+			"success": "¡Financiación eliminada correctamente!",
+			"error": "Error al eliminar la financiación"
 		}
 	},
 	"profile": {

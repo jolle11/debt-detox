@@ -7,9 +7,10 @@ import DebtProgress from "./debt-progress";
 interface DebtCardProps {
 	debt: Debt;
 	onEdit?: (debt: Debt) => void;
+	onDelete?: (debt: Debt) => void;
 }
 
-export default function DebtCard({ debt, onEdit }: DebtCardProps) {
+export default function DebtCard({ debt, onEdit, onDelete }: DebtCardProps) {
 	const status = calculateDebtStatus(debt.final_payment_date);
 
 	return (
@@ -26,7 +27,11 @@ export default function DebtCard({ debt, onEdit }: DebtCardProps) {
 						<DebtInfo debt={debt} />
 						<DebtProgress debt={debt} />
 					</div>
-					<DebtActions debt={debt} onEdit={onEdit} />
+					<DebtActions
+						debt={debt}
+						onEdit={onEdit}
+						onDelete={onDelete}
+					/>
 				</div>
 			</div>
 		</div>
