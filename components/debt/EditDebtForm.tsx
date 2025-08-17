@@ -43,8 +43,6 @@ export default function EditDebtForm({
 		number_of_payments: debt.number_of_payments?.toString() || "",
 		final_payment: debt.final_payment?.toString() || "",
 		final_payment_date: formatDateForInput(debt.final_payment_date || ""),
-		tin: debt.tin?.toString() || "",
-		tae: debt.tae?.toString() || "",
 	});
 
 	useEffect(() => {
@@ -61,8 +59,6 @@ export default function EditDebtForm({
 			final_payment_date: formatDateForInput(
 				debt.final_payment_date || "",
 			),
-			tin: debt.tin?.toString() || "",
-			tae: debt.tae?.toString() || "",
 		});
 	}, [debt]);
 
@@ -90,8 +86,6 @@ export default function EditDebtForm({
 				? Number(formData.final_payment)
 				: undefined,
 			final_payment_date: formData.final_payment_date,
-			tin: formData.tin ? Number(formData.tin) : undefined,
-			tae: formData.tae ? Number(formData.tae) : undefined,
 		};
 
 		onSubmit(debtData);
@@ -195,28 +189,6 @@ export default function EditDebtForm({
 							value={formData.final_payment}
 							onChange={(value) =>
 								handleInputChange("final_payment", value)
-							}
-							placeholder="0.00"
-						/>
-					</div>
-
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-						<FormInput
-							label={t("debt.create.tin")}
-							type="number"
-							value={formData.tin}
-							onChange={(value) =>
-								handleInputChange("tin", value)
-							}
-							placeholder="0.00"
-						/>
-
-						<FormInput
-							label={t("debt.create.tae")}
-							type="number"
-							value={formData.tae}
-							onChange={(value) =>
-								handleInputChange("tae", value)
 							}
 							placeholder="0.00"
 						/>

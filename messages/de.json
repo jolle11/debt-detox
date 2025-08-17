@@ -108,8 +108,6 @@
 			"monthlyAmount": "Monatlicher Betrag",
 			"numberOfPayments": "Anzahl der Raten",
 			"finalPayment": "Betrag der Letzten Rate (optional)",
-			"tin": "TIN (%) - optional",
-			"tae": "TAE (%) - optional",
 			"submit": "Finanzierung Erstellen",
 			"submitting": "Erstelle...",
 			"success": "Finanzierung erfolgreich erstellt!",

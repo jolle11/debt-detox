@@ -104,8 +104,6 @@
 			"monthlyAmount": "Monthly Amount",
 			"numberOfPayments": "Number of Payments",
 			"finalPayment": "Final Payment Amount (optional)",
-			"tin": "TIN (%) - optional",
-			"tae": "TAE (%) - optional",
 			"submit": "Create Financing",
 			"submitting": "Creating...",
 			"success": "Financing created successfully!",

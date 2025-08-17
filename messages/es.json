@@ -113,8 +113,6 @@
 			"monthlyAmount": "Importe Mensual",
 			"numberOfPayments": "Número de Cuotas",
 			"finalPayment": "Importe de la Última Cuota (opcional)",
-			"tin": "TIN (%) - opcional",
-			"tae": "TAE (%) - opcional",
 			"submit": "Crear Financiación",
 			"submitting": "Creando...",
 			"success": "¡Financiación creada correctamente!",
