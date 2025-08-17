@@ -11,12 +11,15 @@ export function useDebtFilter(debts: Debt[]) {
 		switch (activeFilter) {
 			case "active":
 				return debts.filter(
-					(debt) => calculateDebtStatus(debt.end_date) === "active",
+					(debt) =>
+						calculateDebtStatus(debt.final_payment_date) ===
+						"active",
 				);
 			case "completed":
 				return debts.filter(
 					(debt) =>
-						calculateDebtStatus(debt.end_date) === "completed",
+						calculateDebtStatus(debt.final_payment_date) ===
+						"completed",
 				);
 			case "all":
 			default:
@@ -28,10 +31,13 @@ export function useDebtFilter(debts: Debt[]) {
 		return {
 			all: debts.length,
 			active: debts.filter(
-				(debt) => calculateDebtStatus(debt.end_date) === "active",
+				(debt) =>
+					calculateDebtStatus(debt.final_payment_date) === "active",
 			).length,
 			completed: debts.filter(
-				(debt) => calculateDebtStatus(debt.end_date) === "completed",
+				(debt) =>
+					calculateDebtStatus(debt.final_payment_date) ===
+					"completed",
 			).length,
 		};
 	}, [debts]);

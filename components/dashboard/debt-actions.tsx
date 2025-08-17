@@ -9,7 +9,7 @@ interface DebtActionsProps {
 
 export default function DebtActions({ debt }: DebtActionsProps) {
 	const t = useTranslations();
-	const status = calculateDebtStatus(debt.end_date);
+	const status = calculateDebtStatus(debt.final_payment_date);
 
 	const actions = [
 		{

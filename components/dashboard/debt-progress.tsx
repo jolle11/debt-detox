@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { calculateDebtStatus, calculateProgress } from "@/lib/format";
+import { calculateDebtStatus, calculatePaymentProgress } from "@/lib/format";
 import type { Debt } from "@/lib/types";
 
 interface DebtProgressProps {
@@ -8,14 +8,15 @@ interface DebtProgressProps {
 
 export default function DebtProgress({ debt }: DebtProgressProps) {
 	const t = useTranslations();
-	const progress = calculateProgress(debt.start_date, debt.end_date);
-	const status = calculateDebtStatus(debt.end_date);
+	const { percentage, paidPayments, totalPayments } =
+		calculatePaymentProgress(debt);
+	const status = calculateDebtStatus(debt.final_payment_date);
 
 	return (
-		<div className="mt-4">
+		<div className="mt-4 space-y-2">
 			<div className="flex justify-between text-sm mb-1">
 				<span>{t("dashboard.debt.progress")}</span>
-				<span>{progress}%</span>
+				<span>{percentage}%</span>
 			</div>
 			<progress
 				className={`progress ${
@@ -23,9 +24,15 @@ export default function DebtProgress({ debt }: DebtProgressProps) {
 						? "progress-success"
 						: "progress-primary"
 				} w-full`}
-				value={progress}
+				value={percentage}
 				max="100"
 			/>
+			<div className="flex justify-between text-xs text-base-content/70">
+				<span>{t("dashboard.debt.paymentsProgress")}</span>
+				<span>
+					{paidPayments} / {totalPayments}
+				</span>
+			</div>
 		</div>
 	);
 }

@@ -7,10 +7,9 @@ import {
 import { useTranslations } from "next-intl";
 import StatCard from "@/components/dashboard/stat-card";
 import {
-	calculateCurrentAmount,
 	calculateDebtStatus,
-	calculateMonthlyPayment,
-	calculateProgress,
+	calculatePaymentProgress,
+	calculateRemainingAmount,
 	formatCurrency,
 } from "@/lib/format";
 import type { Debt } from "@/lib/types";
@@ -23,30 +22,18 @@ export default function SummaryStats({ debts }: SummaryStatsProps) {
 	const t = useTranslations();
 
 	const activeDebts = debts.filter(
-		(d) => calculateDebtStatus(d.end_date) === "active",
+		(d) => calculateDebtStatus(d.final_payment_date) === "active",
 	);
 	const completedDebts = debts.filter(
-		(d) => calculateDebtStatus(d.end_date) === "completed",
+		(d) => calculateDebtStatus(d.final_payment_date) === "completed",
 	);
 
 	const totalDebt = activeDebts.reduce(
-		(sum, debt) =>
-			sum +
-			calculateCurrentAmount(
-				debt.final_amount,
-				debt.start_date,
-				debt.end_date,
-			),
+		(sum, debt) => sum + calculateRemainingAmount(debt),
 		0,
 	);
 	const totalMonthlyPayment = activeDebts.reduce(
-		(sum, debt) =>
-			sum +
-			calculateMonthlyPayment(
-				debt.final_amount,
-				debt.start_date,
-				debt.end_date,
-			),
+		(sum, debt) => sum + debt.monthly_amount,
 		0,
 	);
 	const averageProgress =
@@ -54,8 +41,7 @@ export default function SummaryStats({ debts }: SummaryStatsProps) {
 			? Math.round(
 					activeDebts.reduce(
 						(sum, debt) =>
-							sum +
-							calculateProgress(debt.start_date, debt.end_date),
+							sum + calculatePaymentProgress(debt).percentage,
 						0,
 					) / activeDebts.length,
 				)

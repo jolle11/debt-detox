@@ -9,7 +9,7 @@ interface DebtCardProps {
 }
 
 export default function DebtCard({ debt }: DebtCardProps) {
-	const status = calculateDebtStatus(debt.end_date);
+	const status = calculateDebtStatus(debt.final_payment_date);
 
 	return (
 		<div

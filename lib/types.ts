@@ -2,10 +2,12 @@ export interface Debt {
 	id?: string;
 	name: string;
 	entity: string;
-	start_date: string;
-	end_date: string;
-	initial_amount?: number;
-	final_amount: number;
+	down_payment?: number; // Entrada/pago inicial
+	first_payment_date: string; // Fecha de la primera cuota
+	monthly_amount: number; // Importe mensual
+	number_of_payments: number; // Número de cuotas
+	final_payment?: number; // Importe de la última cuota
+	final_payment_date: string; // Fecha de la última cuota
 	tin?: number;
 	tae?: number;
 	product_image?: string;

@@ -23,10 +23,12 @@ export default function CreateDebtForm({
 	const [formData, setFormData] = useState({
 		name: "",
 		entity: "",
-		start_date: "",
-		end_date: "",
-		initial_amount: "",
-		final_amount: "",
+		down_payment: "",
+		first_payment_date: "",
+		monthly_amount: "",
+		number_of_payments: "",
+		final_payment: "",
+		final_payment_date: "",
 		tin: "",
 		tae: "",
 	});
@@ -44,12 +46,16 @@ export default function CreateDebtForm({
 		const debtData: Omit<Debt, "id" | "created" | "updated" | "deleted"> = {
 			name: formData.name,
 			entity: formData.entity,
-			start_date: formData.start_date,
-			end_date: formData.end_date,
-			final_amount: Number(formData.final_amount),
-			initial_amount: formData.initial_amount
-				? Number(formData.initial_amount)
+			down_payment: formData.down_payment
+				? Number(formData.down_payment)
 				: undefined,
+			first_payment_date: formData.first_payment_date,
+			monthly_amount: Number(formData.monthly_amount),
+			number_of_payments: Number(formData.number_of_payments),
+			final_payment: formData.final_payment
+				? Number(formData.final_payment)
+				: undefined,
+			final_payment_date: formData.final_payment_date,
 			tin: formData.tin ? Number(formData.tin) : undefined,
 			tae: formData.tae ? Number(formData.tae) : undefined,
 		};
@@ -87,48 +93,76 @@ export default function CreateDebtForm({
 						/>
 					</div>
 
+					{/* Entrada */}
+					<div className="grid grid-cols-1 gap-4">
+						<FormInput
+							label={t("debt.create.downPayment")}
+							type="number"
+							value={formData.down_payment}
+							onChange={(value) =>
+								handleInputChange("down_payment", value)
+							}
+							placeholder="0.00"
+						/>
+					</div>
+
+					{/* Fechas de cuotas */}
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<FormInput
-							label={t("debt.create.startDate")}
+							label={t("debt.create.firstPaymentDate")}
 							type="date"
-							value={formData.start_date}
+							value={formData.first_payment_date}
 							onChange={(value) =>
-								handleInputChange("start_date", value)
+								handleInputChange("first_payment_date", value)
 							}
 							required
 						/>
 
 						<FormInput
-							label={t("debt.create.endDate")}
+							label={t("debt.create.finalPaymentDate")}
 							type="date"
-							value={formData.end_date}
+							value={formData.final_payment_date}
 							onChange={(value) =>
-								handleInputChange("end_date", value)
+								handleInputChange("final_payment_date", value)
 							}
 							required
 						/>
 					</div>
 
+					{/* Importes y cuotas */}
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<FormInput
-							label={t("debt.create.initialAmount")}
+							label={t("debt.create.monthlyAmount")}
 							type="number"
-							value={formData.initial_amount}
+							value={formData.monthly_amount}
 							onChange={(value) =>
-								handleInputChange("initial_amount", value)
-							}
-							placeholder="0.00"
-						/>
-
-						<FormInput
-							label={t("debt.create.finalAmount")}
-							type="number"
-							value={formData.final_amount}
-							onChange={(value) =>
-								handleInputChange("final_amount", value)
+								handleInputChange("monthly_amount", value)
 							}
 							placeholder="0.00"
 							required
+						/>
+
+						<FormInput
+							label={t("debt.create.numberOfPayments")}
+							type="number"
+							value={formData.number_of_payments}
+							onChange={(value) =>
+								handleInputChange("number_of_payments", value)
+							}
+							placeholder="12"
+							required
+						/>
+					</div>
+
+					<div className="grid grid-cols-1 gap-4">
+						<FormInput
+							label={t("debt.create.finalPayment")}
+							type="number"
+							value={formData.final_payment}
+							onChange={(value) =>
+								handleInputChange("final_payment", value)
+							}
+							placeholder="0.00"
 						/>
 					</div>
 
