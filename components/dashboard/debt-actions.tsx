@@ -5,9 +5,10 @@ import type { Debt } from "@/lib/types";
 
 interface DebtActionsProps {
 	debt: Debt;
+	onEdit?: (debt: Debt) => void;
 }
 
-export default function DebtActions({ debt }: DebtActionsProps) {
+export default function DebtActions({ debt, onEdit }: DebtActionsProps) {
 	const t = useTranslations();
 	const status = calculateDebtStatus(debt.final_payment_date);
 
@@ -56,7 +57,16 @@ export default function DebtActions({ debt }: DebtActionsProps) {
 				>
 					{actions.map((action) => (
 						<li key={action.key}>
-							<a className={action.className}>{action.label}</a>
+							<a 
+								className={action.className}
+								onClick={() => {
+									if (action.key === "edit" && onEdit) {
+										onEdit(debt);
+									}
+								}}
+							>
+								{action.label}
+							</a>
 						</li>
 					))}
 				</ul>

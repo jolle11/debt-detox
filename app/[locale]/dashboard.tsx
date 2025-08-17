@@ -4,15 +4,18 @@ import SummaryStats from "@/components/dashboard/summary-stats";
 import DebtsList from "@/components/dashboard/debts-list";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import AuthModal from "@/components/auth/AuthModal";
+import EditDebtModal from "@/components/debt/EditDebtModal";
 import { useDebtsContext } from "@/contexts/DebtsContext";
 import { useState } from "react";
+import type { Debt } from "@/lib/types";
 
 export default function Dashboard() {
 	const t = useTranslations();
 	const tAuth = useTranslations("auth");
 	const locale = useLocale();
 	const [showAuthModal, setShowAuthModal] = useState(false);
-	const { debts, isLoading, error } = useDebtsContext();
+	const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
+	const { debts, isLoading, error, refetch } = useDebtsContext();
 
 	const authFallback = (
 		<div className="flex items-center justify-center min-h-[60vh]">
@@ -52,10 +55,17 @@ export default function Dashboard() {
 						<SummaryStats debts={debts} />
 
 						{/* Debt List */}
-						<DebtsList debts={debts} />
+						<DebtsList debts={debts} onEdit={setEditingDebt} />
 					</>
 				)}
 			</div>
+			{/* Edit Debt Modal */}
+			<EditDebtModal
+				debt={editingDebt}
+				isOpen={!!editingDebt}
+				onClose={() => setEditingDebt(null)}
+				onSuccess={refetch}
+			/>
 		</ProtectedRoute>
 	);
 }

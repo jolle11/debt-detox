@@ -110,6 +110,13 @@
 			"submitting": "Creating...",
 			"success": "Financing created successfully!",
 			"error": "Error creating financing"
+		},
+		"edit": {
+			"title": "Edit Financing",
+			"submit": "Save Changes",
+			"submitting": "Saving...",
+			"success": "Financing updated successfully!",
+			"error": "Error updating financing"
 		}
 	},
 	"common": {

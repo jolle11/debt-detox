@@ -7,9 +7,10 @@ import type { Debt } from "@/lib/types";
 
 interface DebtsListProps {
 	debts: Debt[];
+	onEdit?: (debt: Debt) => void;
 }
 
-export default function DebtsList({ debts }: DebtsListProps) {
+export default function DebtsList({ debts, onEdit }: DebtsListProps) {
 	const t = useTranslations();
 	const { activeFilter, setActiveFilter, filteredDebts, counts } =
 		useDebtFilter(debts);
@@ -29,7 +30,7 @@ export default function DebtsList({ debts }: DebtsListProps) {
 
 				<div className="space-y-4">
 					{filteredDebts.map((debt) => (
-						<DebtCard key={debt.id} debt={debt} />
+						<DebtCard key={debt.id} debt={debt} onEdit={onEdit} />
 					))}
 				</div>
 

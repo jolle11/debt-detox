@@ -119,6 +119,13 @@
 			"submitting": "Creando...",
 			"success": "¡Financiación creada correctamente!",
 			"error": "Error al crear la financiación"
+		},
+		"edit": {
+			"title": "Editar Financiación",
+			"submit": "Guardar Cambios",
+			"submitting": "Guardando...",
+			"success": "¡Financiación actualizada correctamente!",
+			"error": "Error al actualizar la financiación"
 		}
 	},
 	"profile": {

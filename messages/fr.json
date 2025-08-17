@@ -114,6 +114,13 @@
 			"submitting": "Création...",
 			"success": "Financement créé avec succès !",
 			"error": "Erreur lors de la création du financement"
+		},
+		"edit": {
+			"title": "Modifier le Financement",
+			"submit": "Enregistrer les Modifications",
+			"submitting": "Enregistrement...",
+			"success": "Financement mis à jour avec succès !",
+			"error": "Erreur lors de la mise à jour du financement"
 		}
 	},
 	"common": {

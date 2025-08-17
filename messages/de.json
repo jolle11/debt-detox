@@ -114,6 +114,13 @@
 			"submitting": "Erstelle...",
 			"success": "Finanzierung erfolgreich erstellt!",
 			"error": "Fehler beim Erstellen der Finanzierung"
+		},
+		"edit": {
+			"title": "Finanzierung Bearbeiten",
+			"submit": "Änderungen Speichern",
+			"submitting": "Speichert...",
+			"success": "Finanzierung erfolgreich aktualisiert!",
+			"error": "Fehler beim Aktualisieren der Finanzierung"
 		}
 	},
 	"common": {
