@@ -94,10 +94,6 @@ export default function EditDebtForm({
 	return (
 		<div className="card bg-base-100 shadow-xl">
 			<div className="card-body">
-				<h2 className="card-title text-2xl mb-6">
-					{t("debt.edit.title")}
-				</h2>
-
 				<form onSubmit={handleSubmit} className="space-y-4">
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<FormInput
