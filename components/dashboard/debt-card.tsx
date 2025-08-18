@@ -33,7 +33,9 @@ export default function DebtCard({ debt, onEdit, onDelete }: DebtCardProps) {
 							{debt.entity}
 						</p>
 						<DebtInfo debt={debt} />
-						<DebtProgressWithPayments debt={debt} />
+						<div className="mt-4">
+							<DebtProgressWithPayments debt={debt} />
+						</div>
 						<div className="mt-3">
 							<DebtPaymentStatus debt={debt} />
 						</div>
