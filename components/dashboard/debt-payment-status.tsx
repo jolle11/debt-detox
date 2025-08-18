@@ -52,8 +52,8 @@ export default function DebtPaymentStatus({ debt }: DebtPaymentStatusProps) {
 
 	if (isDebtCompleted) {
 		return (
-			<div className="flex items-center gap-2 text-sm">
-				<div className="badge badge-success">Completada</div>
+			<div className="flex items-center gap-3">
+				<div className="badge badge-success badge-lg">Completada</div>
 			</div>
 		);
 	}
@@ -62,24 +62,28 @@ export default function DebtPaymentStatus({ debt }: DebtPaymentStatusProps) {
 	const firstPaymentDate = new Date(debt.first_payment_date);
 	if (currentDate < firstPaymentDate) {
 		return (
-			<div className="flex items-center gap-2 text-sm">
-				<div className="badge badge-neutral">Pendiente de inicio</div>
+			<div className="flex items-center gap-3">
+				<div className="badge badge-neutral badge-lg">
+					Pendiente de inicio
+				</div>
 			</div>
 		);
 	}
 
 	return (
-		<div className="flex items-center gap-2 text-sm">
+		<div className="flex items-center gap-3">
 			{isCurrentMonthPaid ? (
-				<div className="badge badge-success">Mensualidad pagada</div>
+				<div className="badge badge-success badge-lg">
+					Mensualidad pagada
+				</div>
 			) : (
 				<button
 					onClick={handleMarkAsPaid}
 					disabled={isProcessing || isLoading}
-					className="btn btn-sm btn-primary"
+					className="btn btn-primary"
 				>
 					{isProcessing ? (
-						<span className="loading loading-spinner loading-xs"></span>
+						<span className="loading loading-spinner loading-sm"></span>
 					) : (
 						"Marcar como pagada"
 					)}

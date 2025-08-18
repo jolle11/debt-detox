@@ -131,287 +131,264 @@ export default function DebtDetailPage() {
 	const paymentStats = calculatePaymentStats();
 
 	return (
-		<div className="container mx-auto px-4 py-8">
-			{/* Header */}
-			<div className="flex items-center gap-4 mb-6">
-				<button
-					onClick={() => router.back()}
-					className="btn btn-ghost btn-sm"
+		<div className="container mx-auto px-4 py-6">
+			{/* Compact Header */}
+			<div className="flex items-center justify-between mb-4">
+				<div className="flex items-center gap-3">
+					<button
+						onClick={() => router.back()}
+						className="btn btn-ghost btn-sm"
+					>
+						<ArrowLeftIcon className="w-4 h-4" />
+						Volver
+					</button>
+					<div>
+						<h1 className="text-xl font-bold">{debt.name}</h1>
+						<p className="text-sm text-base-content/70">
+							{debt.entity}
+						</p>
+					</div>
+				</div>
+				<div
+					className={`badge ${status === "completed" ? "badge-success" : status === "active" ? "badge-primary" : "badge-warning"}`}
 				>
-					<ArrowLeftIcon className="w-4 h-4" />
-					Volver
-				</button>
-				<div>
-					<h1 className="text-2xl font-bold">{debt.name}</h1>
-					<p className="text-base-content/70">{debt.entity}</p>
+					{status === "completed"
+						? "Completado"
+						: status === "active"
+							? "Activo"
+							: "Pendiente"}
 				</div>
 			</div>
 
-			{/* Main Content */}
-			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-				{/* Left Column - Main Info */}
-				<div className="lg:col-span-2 space-y-6">
-					{/* Product Image */}
-					{debt.product_image && (
-						<div className="card bg-base-100 shadow-lg">
-							<div className="card-body">
-								<h2 className="card-title">
-									<FileTextIcon className="w-5 h-5" />
-									Imagen del Producto
+			{/* Quick Stats Row */}
+			<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+				<div className="bg-base-100 rounded-xl border border-base-300 p-4 hover:shadow-lg transition-shadow duration-200">
+					<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+						Total
+					</div>
+					<div className="text-xl font-bold text-primary">
+						{formatCurrency(totalAmount)}
+					</div>
+				</div>
+				<div className="bg-base-100 rounded-xl border border-base-300 p-4 hover:shadow-lg transition-shadow duration-200">
+					<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+						Pagado
+					</div>
+					<div className="text-xl font-bold text-success">
+						{formatCurrency(paymentStats.effectivePaidAmount)}
+					</div>
+				</div>
+				<div className="bg-base-100 rounded-xl border border-base-300 p-4 hover:shadow-lg transition-shadow duration-200">
+					<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+						Cuotas
+					</div>
+					<div className="text-xl font-bold text-info">
+						{paymentStats.effectivePaidPayments}/
+						{debt.number_of_payments}
+					</div>
+				</div>
+				<div className="bg-base-100 rounded-xl border border-base-300 p-4 hover:shadow-lg transition-shadow duration-200">
+					<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+						Mensual
+					</div>
+					<div className="text-xl font-bold text-secondary">
+						{formatCurrency(debt.monthly_amount)}
+					</div>
+				</div>
+			</div>
+
+			{/* Main Content - More compact grid */}
+			<div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
+				{/* Main Content - Reorganized into 4 columns */}
+				<div className="xl:col-span-3 space-y-4">
+					{/* Progress Section */}
+					<div className="card bg-base-100 shadow-sm">
+						<div className="card-body p-4">
+							<h2 className="card-title text-lg mb-2">
+								<TargetIcon className="w-5 h-5" />
+								Progreso y Pagos
+							</h2>
+							<DebtProgressWithPayments debt={debt} />
+							<div className="mt-3">
+								<DebtPaymentStatus debt={debt} />
+							</div>
+						</div>
+					</div>
+
+					{/* Combined Details Section */}
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+						{/* Payment Details */}
+						<div className="card bg-base-100 shadow">
+							<div className="card-body p-5">
+								<h2 className="card-title text-xl mb-4">
+									<CreditCardIcon className="w-6 h-6" />
+									Detalles de Pago
 								</h2>
-								<div className="mt-4">
-									<img
-										src={debt.product_image}
-										alt={debt.name}
-										className="w-full max-w-md mx-auto rounded-lg shadow-md"
-									/>
+								<div className="grid grid-cols-2 gap-4">
+									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
+										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+											Cuotas Pagadas
+										</div>
+										<div className="text-2xl font-bold text-success">
+											{paymentStats.effectivePaidPayments}
+										</div>
+										<div className="text-base text-base-content/70 mt-1">
+											de {debt.number_of_payments}
+										</div>
+									</div>
+									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
+										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+											Pendientes
+										</div>
+										<div className="text-2xl font-bold text-warning">
+											{paymentStats.pendingPayments}
+										</div>
+										<div className="text-base text-base-content/70 mt-1">
+											restantes
+										</div>
+									</div>
+									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
+										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+											Importe Pagado
+										</div>
+										<div className="text-lg font-bold text-success">
+											{formatCurrency(
+												paymentStats.effectivePaidAmount,
+											)}
+										</div>
+									</div>
+									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
+										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+											Por Pagar
+										</div>
+										<div className="text-lg font-bold text-warning">
+											{formatCurrency(
+												Math.max(
+													0,
+													paymentStats.pendingAmount,
+												),
+											)}
+										</div>
+									</div>
 								</div>
+							</div>
+						</div>
+
+						{/* Structure Details */}
+						<div className="card bg-base-100 shadow">
+							<div className="card-body p-5">
+								<h2 className="card-title text-xl mb-4">
+									<FileTextIcon className="w-6 h-6" />
+									Estructura
+								</h2>
+								<div className="space-y-4">
+									{debt.down_payment !== undefined &&
+										debt.down_payment !== null && (
+											<div className="flex justify-between items-center">
+												<span className="text-base text-base-content/70">
+													Entrada:
+												</span>
+												<span className="font-medium text-lg">
+													{debt.down_payment > 0
+														? formatCurrency(
+																debt.down_payment,
+															)
+														: "No aplica"}
+												</span>
+											</div>
+										)}
+									<div className="flex justify-between items-center">
+										<span className="text-base text-base-content/70">
+											Cuota mensual:
+										</span>
+										<span className="font-medium text-lg">
+											{formatCurrency(
+												debt.monthly_amount,
+											)}
+										</span>
+									</div>
+									<div className="flex justify-between items-center">
+										<span className="text-base text-base-content/70">
+											Duración:
+										</span>
+										<span className="font-medium text-lg">
+											{debt.number_of_payments} meses
+										</span>
+									</div>
+									{debt.final_payment !== undefined &&
+										debt.final_payment !== null && (
+											<div className="flex justify-between items-center">
+												<span className="text-base text-base-content/70">
+													Cuota final:
+												</span>
+												<span className="font-medium text-lg">
+													{debt.final_payment > 0
+														? formatCurrency(
+																debt.final_payment,
+															)
+														: "No aplica"}
+												</span>
+											</div>
+										)}
+									<div className="bg-base-300 rounded-lg p-4 mt-6">
+										<div className="flex justify-between items-center">
+											<span className="text-base font-medium">
+												Total:
+											</span>
+											<span className="font-bold text-2xl">
+												{formatCurrency(totalAmount)}
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* Product Image - Only show if exists, more compact */}
+					{debt.product_image && (
+						<div className="card bg-base-100 shadow-sm">
+							<div className="card-body p-4">
+								<h2 className="card-title text-lg mb-2">
+									<FileTextIcon className="w-5 h-5" />
+									Producto
+								</h2>
+								<img
+									src={debt.product_image}
+									alt={debt.name}
+									className="w-full max-w-sm mx-auto rounded-lg shadow-sm"
+								/>
 							</div>
 						</div>
 					)}
-
-					{/* Payment Progress */}
-					<div className="card bg-base-100 shadow-lg">
-						<div className="card-body">
-							<h2 className="card-title">
-								<TargetIcon className="w-5 h-5" />
-								Progreso de Pagos
-							</h2>
-							<div className="mt-4">
-								<DebtProgressWithPayments debt={debt} />
-								<div className="mt-4">
-									<DebtPaymentStatus debt={debt} />
-								</div>
-							</div>
-						</div>
-					</div>
-
-					{/* Payment Summary */}
-					<div className="card bg-base-100 shadow-lg">
-						<div className="card-body">
-							<h2 className="card-title">
-								<CreditCardIcon className="w-5 h-5" />
-								Resumen de Pagos
-							</h2>
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-								<div className="stat">
-									<div className="stat-title">
-										Cuotas Pagadas
-									</div>
-									<div className="stat-value text-lg text-success">
-										{paymentStats.effectivePaidPayments}
-									</div>
-									<div className="stat-desc">
-										de {debt.number_of_payments} cuotas
-										{paymentStats.registeredPaidPayments !==
-											paymentStats.expectedPaidPayments && (
-											<span className="text-xs block">
-												(
-												{
-													paymentStats.registeredPaidPayments
-												}{" "}
-												registradas +{" "}
-												{paymentStats.expectedPaidPayments -
-													paymentStats.registeredPaidPayments}{" "}
-												estimadas)
-											</span>
-										)}
-									</div>
-								</div>
-								<div className="stat">
-									<div className="stat-title">
-										Importe Pagado
-									</div>
-									<div className="stat-value text-lg text-success">
-										{formatCurrency(
-											paymentStats.effectivePaidAmount,
-										)}
-									</div>
-									<div className="stat-desc">
-										de {formatCurrency(totalAmount)}
-										{paymentStats.totalRegisteredAmount >
-											0 && (
-											<span className="text-xs block">
-												(
-												{formatCurrency(
-													(debt.down_payment || 0) +
-														paymentStats.totalRegisteredAmount,
-												)}{" "}
-												registrado)
-											</span>
-										)}
-									</div>
-								</div>
-								<div className="stat">
-									<div className="stat-title">
-										Cuotas Pendientes
-									</div>
-									<div className="stat-value text-lg text-warning">
-										{paymentStats.pendingPayments}
-									</div>
-									<div className="stat-desc">
-										cuotas restantes
-									</div>
-								</div>
-								<div className="stat">
-									<div className="stat-title">
-										Importe Pendiente
-									</div>
-									<div className="stat-value text-lg text-warning">
-										{formatCurrency(
-											Math.max(
-												0,
-												paymentStats.pendingAmount,
-											),
-										)}
-									</div>
-									<div className="stat-desc">por pagar</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					{/* Payment Structure */}
-					<div className="card bg-base-100 shadow-lg">
-						<div className="card-body">
-							<h2 className="card-title">
-								<FileTextIcon className="w-5 h-5" />
-								Estructura de la Financiación
-							</h2>
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-								{debt.down_payment && (
-									<div className="stat">
-										<div className="stat-title">
-											Entrada
-										</div>
-										<div className="stat-value text-lg">
-											{formatCurrency(debt.down_payment)}
-										</div>
-										<div className="stat-desc">
-											pagada al inicio
-										</div>
-									</div>
-								)}
-								<div className="stat">
-									<div className="stat-title">
-										Cuota Mensual
-									</div>
-									<div className="stat-value text-lg">
-										{formatCurrency(debt.monthly_amount)}
-									</div>
-									<div className="stat-desc">
-										durante {debt.number_of_payments} meses
-									</div>
-								</div>
-								{debt.final_payment && (
-									<div className="stat">
-										<div className="stat-title">
-											Cuota Final
-										</div>
-										<div className="stat-value text-lg">
-											{formatCurrency(debt.final_payment)}
-										</div>
-										<div className="stat-desc">
-											al finalizar
-										</div>
-									</div>
-								)}
-								<div className="stat">
-									<div className="stat-title">
-										Total Financiado
-									</div>
-									<div className="stat-value text-lg">
-										{formatCurrency(totalAmount)}
-									</div>
-									<div className="stat-desc">
-										importe completo
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
 
-				{/* Right Column - Summary */}
+				{/* Sidebar - Dates and Additional Info */}
 				<div className="space-y-6">
-					{/* Financial Summary */}
-					<div className="card bg-base-100 shadow-lg">
-						<div className="card-body">
-							<h2 className="card-title">
-								<CurrencyDollarIcon className="w-5 h-5" />
-								Resumen Financiero
-							</h2>
-							<div className="space-y-4 mt-4">
-								<div className="stat">
-									<div className="stat-title">
-										Importe Total
-									</div>
-									<div className="stat-value text-xl">
-										{formatCurrency(totalAmount)}
-									</div>
-								</div>
-								<div
-									className={`badge ${status === "completed" ? "badge-success" : status === "active" ? "badge-primary" : "badge-warning"} badge-lg`}
-								>
-									{status === "completed"
-										? "Completado"
-										: status === "active"
-											? "Activo"
-											: "Pendiente"}
-								</div>
-							</div>
-						</div>
-					</div>
-
 					{/* Dates */}
-					<div className="card bg-base-100 shadow-lg">
-						<div className="card-body">
-							<h2 className="card-title">
-								<CalendarIcon className="w-5 h-5" />
-								Fechas Importantes
+					<div className="card bg-base-100 shadow">
+						<div className="card-body p-5">
+							<h2 className="card-title text-xl mb-4">
+								<CalendarIcon className="w-6 h-6" />
+								Fechas
 							</h2>
-							<div className="space-y-3 mt-4">
-								<div className="flex items-center gap-3">
-									<CalendarCheckIcon className="w-4 h-4 text-primary" />
-									<div>
-										<div className="text-sm text-base-content/70">
-											Primera Cuota
-										</div>
-										<div className="font-medium">
-											{formatDate(
-												debt.first_payment_date,
-											)}
-										</div>
+							<div className="space-y-5">
+								<div>
+									<div className="text-base text-base-content/70 mb-2">
+										Primera Cuota
+									</div>
+									<div className="text-lg font-medium">
+										{formatDate(debt.first_payment_date)}
 									</div>
 								</div>
-								<div className="flex items-center gap-3">
-									<CalendarCheckIcon className="w-4 h-4 text-primary" />
-									<div>
-										<div className="text-sm text-base-content/70">
-											Última Cuota
-										</div>
-										<div className="font-medium">
-											{formatDate(
-												debt.final_payment_date,
-											)}
-										</div>
+								<div>
+									<div className="text-base text-base-content/70 mb-2">
+										Última Cuota
+									</div>
+									<div className="text-lg font-medium">
+										{formatDate(debt.final_payment_date)}
 									</div>
 								</div>
-							</div>
-						</div>
-					</div>
-
-					{/* Entity Info */}
-					<div className="card bg-base-100 shadow-lg">
-						<div className="card-body">
-							<h2 className="card-title">
-								<BuildingsIcon className="w-5 h-5" />
-								Entidad
-							</h2>
-							<div className="mt-4">
-								<p className="text-lg font-medium">
-									{debt.entity}
-								</p>
 							</div>
 						</div>
 					</div>
