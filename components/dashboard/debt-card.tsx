@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { calculateDebtStatus } from "@/lib/format";
 import type { Debt } from "@/lib/types";
 import DebtActions from "./debt-actions";
@@ -13,10 +14,16 @@ interface DebtCardProps {
 
 export default function DebtCard({ debt, onEdit, onDelete }: DebtCardProps) {
 	const status = calculateDebtStatus(debt.final_payment_date);
+	const router = useRouter();
+
+	const handleCardClick = () => {
+		router.push(`/debt/${debt.id}`);
+	};
 
 	return (
 		<div
-			className={`card bg-base-100 shadow-lg ${status === "completed" ? "opacity-75" : ""}`}
+			className={`card bg-base-100 shadow-lg cursor-pointer hover:shadow-xl transition-shadow ${status === "completed" ? "opacity-75" : ""}`}
+			onClick={handleCardClick}
 		>
 			<div className="card-body">
 				<div className="flex justify-between items-start">
@@ -31,11 +38,13 @@ export default function DebtCard({ debt, onEdit, onDelete }: DebtCardProps) {
 							<DebtPaymentStatus debt={debt} />
 						</div>
 					</div>
-					<DebtActions
-						debt={debt}
-						onEdit={onEdit}
-						onDelete={onDelete}
-					/>
+					<div onClick={(e) => e.stopPropagation()}>
+						<DebtActions
+							debt={debt}
+							onEdit={onEdit}
+							onDelete={onDelete}
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
