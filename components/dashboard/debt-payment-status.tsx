@@ -25,7 +25,8 @@ export default function DebtPaymentStatus({ debt }: DebtPaymentStatusProps) {
 	);
 	const isCurrentMonthPaid = currentPaymentStatus?.paid || false;
 
-	const handleMarkAsPaid = async () => {
+	const handleMarkAsPaid = async (e: React.MouseEvent) => {
+		e.stopPropagation();
 		if (isProcessing || !debt.id) return;
 
 		setIsProcessing(true);
