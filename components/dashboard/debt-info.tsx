@@ -23,12 +23,12 @@ export default function DebtInfo({ debt }: DebtInfoProps) {
 		{
 			label: t("dashboard.debt.totalAmount"),
 			value: formatCurrency(totalAmount, t("common.currency")),
-			className: "text-base-content/70",
+			className: "text-lg font-bold text-base-content",
 		},
 		{
 			label: t("dashboard.debt.paidAmount"),
 			value: formatCurrency(paidAmount, t("common.currency")),
-			className: "text-success",
+			className: "text-lg font-bold text-success",
 		},
 		{
 			label: t("dashboard.debt.remainingAmount"),
@@ -38,7 +38,7 @@ export default function DebtInfo({ debt }: DebtInfoProps) {
 		{
 			label: t("dashboard.debt.monthlyAmount"),
 			value: formatCurrency(debt.monthly_amount, t("common.currency")),
-			className: "text-secondary",
+			className: "text-lg font-bold text-secondary",
 		},
 		...(debt.down_payment && debt.down_payment > 0
 			? [
@@ -48,7 +48,7 @@ export default function DebtInfo({ debt }: DebtInfoProps) {
 							debt.down_payment,
 							t("common.currency"),
 						),
-						className: "text-info",
+						className: "text-lg font-bold text-info",
 					},
 				]
 			: []),
@@ -60,7 +60,7 @@ export default function DebtInfo({ debt }: DebtInfoProps) {
 							debt.final_payment,
 							t("common.currency"),
 						),
-						className: "text-accent",
+						className: "text-lg font-bold text-accent",
 					},
 				]
 			: []),
@@ -71,15 +71,17 @@ export default function DebtInfo({ debt }: DebtInfoProps) {
 				month: "2-digit",
 				day: "2-digit",
 			}),
-			className: "text-base-content/70",
+			className: "text-base font-medium text-base-content/70",
 		},
 	];
 
 	return (
-		<div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+		<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 			{infoItems.map((item, index) => (
 				<div key={index}>
-					<span className="font-semibold">{item.label}:</span>
+					<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+						{item.label}
+					</div>
 					<div className={item.className}>{item.value}</div>
 				</div>
 			))}

@@ -42,7 +42,7 @@ export default function Dashboard() {
 
 	return (
 		<ProtectedRoute fallback={authFallback}>
-			<div className="space-y-6">
+			<div className="space-y-4">
 				{isLoading ? (
 					<div className="flex justify-center items-center h-64">
 						<span className="loading loading-spinner loading-lg"></span>

@@ -17,9 +17,9 @@ export default function DebtsList({ debts, onEdit, onDelete }: DebtsListProps) {
 		useDebtFilter(debts);
 
 	return (
-		<div className="card bg-base-200 shadow-xl">
-			<div className="card-body">
-				<h2 className="card-title text-2xl mb-4">
+		<div className="card bg-base-100 shadow">
+			<div className="card-body p-5">
+				<h2 className="card-title text-xl mb-4">
 					{t("dashboard.title")}
 				</h2>
 

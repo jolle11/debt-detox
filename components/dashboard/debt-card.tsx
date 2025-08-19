@@ -22,14 +22,14 @@ export default function DebtCard({ debt, onEdit, onDelete }: DebtCardProps) {
 
 	return (
 		<div
-			className={`card bg-base-100 shadow-lg cursor-pointer hover:shadow-xl transition-shadow ${status === "completed" ? "opacity-75" : ""}`}
+			className={`card bg-base-100 shadow cursor-pointer hover:shadow-lg transition-shadow ${status === "completed" ? "opacity-75" : ""}`}
 			onClick={handleCardClick}
 		>
-			<div className="card-body">
+			<div className="card-body p-5">
 				<div className="flex justify-between items-start">
 					<div className="flex-1">
-						<h3 className="card-title text-lg">{debt.name}</h3>
-						<p className="text-sm text-base-content/70 mb-2">
+						<h3 className="card-title text-xl">{debt.name}</h3>
+						<p className="text-base text-base-content/70 mb-2">
 							{debt.entity}
 						</p>
 						<DebtInfo debt={debt} />
