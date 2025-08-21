@@ -17,6 +17,7 @@ import { calculateDebtStatus, formatCurrency } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
 import DebtProgressWithPayments from "@/components/dashboard/debt-progress-with-payments";
 import DebtPaymentStatus from "@/components/dashboard/debt-payment-status";
+import DebtPaymentsList from "@/components/dashboard/debt-payments-list";
 import { usePayments } from "@/hooks/usePayments";
 
 export default function DebtDetailPage() {
@@ -344,6 +345,13 @@ export default function DebtDetailPage() {
 							</div>
 						</div>
 					</div>
+
+					{/* Payments List */}
+					<DebtPaymentsList
+						debt={debt}
+						payments={payments}
+						isLoading={paymentsLoading}
+					/>
 
 					{/* Product Image - Only show if exists, more compact */}
 					{debt.product_image && (
