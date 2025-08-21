@@ -102,65 +102,19 @@ export function calculatePaidAmountWithPayments(
 ): number {
 	let paidAmount = debt.down_payment || 0; // Entrada siempre está pagada
 
-	// Calcular cuántas cuotas deberían estar pagadas por fecha
-	const now = new Date();
-	const firstPayment = new Date(debt.first_payment_date);
-
-	if (now < firstPayment) {
-		// Aún no ha empezado a pagar cuotas, solo entrada
-		return paidAmount;
-	}
-
-	// Calcular cuotas que deberían estar pagadas por fecha
-	const monthsElapsed =
-		Math.max(
-			0,
-			Math.floor(
-				(now.getTime() - firstPayment.getTime()) /
-					(30.44 * 24 * 60 * 60 * 1000),
-			),
-		) + 1; // +1 porque el primer mes cuenta
-
-	const estimatedPaidPayments = Math.min(
-		monthsElapsed,
-		debt.number_of_payments,
-	);
-
-	// Crear un mapa de pagos registrados por mes/año
-	const paymentMap = new Map<string, Payment>();
-	payments.forEach((payment) => {
-		const key = `${payment.year}-${payment.month}`;
-		paymentMap.set(key, payment);
-	});
-
-	// Calcular monto pagado mes por mes
+	// Calcular monto pagado solo de pagos registrados explícitamente
 	let monthlyPaidAmount = 0;
-	const startDate = new Date(firstPayment);
-
-	for (let i = 0; i < estimatedPaidPayments; i++) {
-		const paymentDate = new Date(startDate);
-		paymentDate.setMonth(paymentDate.getMonth() + i);
-
-		const year = paymentDate.getFullYear();
-		const month = paymentDate.getMonth() + 1;
-		const key = `${year}-${month}`;
-
-		const registeredPayment = paymentMap.get(key);
-
-		if (registeredPayment && registeredPayment.paid) {
-			// Usar el monto real registrado
+	payments.forEach((payment) => {
+		if (payment.paid) {
 			monthlyPaidAmount +=
-				registeredPayment.actual_amount ||
-				registeredPayment.planned_amount;
-		} else {
-			// Usar el monto mensual por defecto (asumiendo que se pagó según fecha)
-			monthlyPaidAmount += debt.monthly_amount;
+				payment.actual_amount || payment.planned_amount;
 		}
-	}
+	});
 
 	paidAmount += monthlyPaidAmount;
 
 	// Agregar pago final si corresponde
+	const now = new Date();
 	const finalPayment = new Date(debt.final_payment_date);
 	if (now >= finalPayment && debt.final_payment) {
 		paidAmount += debt.final_payment;
@@ -264,24 +218,8 @@ export function calculatePaymentProgressWithPayments(
 	// Total de cuotas mensuales
 	const totalPayments = debt.number_of_payments;
 
-	// Calcular cuántas cuotas deberían estar pagadas por fecha
-	const now = new Date();
-	const firstPayment = new Date(debt.first_payment_date);
-
-	let paidPayments = 0;
-
-	if (now >= firstPayment) {
-		const monthsElapsed =
-			Math.max(
-				0,
-				Math.floor(
-					(now.getTime() - firstPayment.getTime()) /
-						(30.44 * 24 * 60 * 60 * 1000),
-				),
-			) + 1;
-
-		paidPayments = Math.min(monthsElapsed, debt.number_of_payments);
-	}
+	// Contar solo los pagos registrados explícitamente
+	const paidPayments = payments.filter((payment) => payment.paid).length;
 
 	const totalAmount = calculateTotalAmount(debt);
 	const paidAmount = calculatePaidAmountWithPayments(debt, payments);
