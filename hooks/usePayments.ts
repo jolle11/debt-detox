@@ -30,6 +30,12 @@ interface UsePaymentsReturn {
 		month: number,
 		year: number,
 	) => Payment | null;
+	generateHistoricalPayments: (
+		debtId: string,
+		firstPaymentDate: string,
+		monthlyAmount: number,
+		numberOfPayments: number,
+	) => Promise<void>;
 }
 
 export function usePayments(debtId?: string): UsePaymentsReturn {
@@ -158,6 +164,70 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		);
 	};
 
+	const generateHistoricalPayments = async (
+		debtId: string,
+		firstPaymentDate: string,
+		monthlyAmount: number,
+		numberOfPayments: number,
+	) => {
+		try {
+			const now = new Date();
+			const startDate = new Date(firstPaymentDate);
+			
+			// Solo generar pagos históricos si la primera cuota es anterior a hoy
+			if (startDate >= now) {
+				return; // Es una financiación nueva, no generar pagos históricos
+			}
+
+			const historicalPayments = [];
+
+			for (let i = 0; i < numberOfPayments; i++) {
+				const paymentDate = new Date(startDate);
+				paymentDate.setMonth(paymentDate.getMonth() + i);
+
+				// Solo generar pagos para fechas anteriores a hoy
+				if (paymentDate < now) {
+					const year = paymentDate.getFullYear();
+					const month = paymentDate.getMonth() + 1;
+
+					// Verificar si ya existe un pago para este mes/año
+					const existingPayments = await pb
+						.collection(COLLECTIONS.PAYMENTS)
+						.getFullList({
+							filter: `debt_id = "${debtId}" && month = ${month} && year = ${year} && deleted = null`,
+						});
+
+					if (existingPayments.length === 0) {
+						// Crear pago histórico automático (marcado como pagado)
+						historicalPayments.push({
+							debt_id: debtId,
+							month,
+							year,
+							planned_amount: monthlyAmount,
+							actual_amount: monthlyAmount,
+							paid: true,
+							paid_date: new Date(paymentDate.getFullYear(), paymentDate.getMonth(), 1).toISOString(),
+						});
+					}
+				} else {
+					// Llegamos a fechas futuras, parar
+					break;
+				}
+			}
+
+			// Crear todos los pagos históricos en batch
+			for (const payment of historicalPayments) {
+				await pb.collection(COLLECTIONS.PAYMENTS).create(payment);
+			}
+
+			// Refrescar la lista
+			await fetchPayments();
+		} catch (err) {
+			console.error("Error generating historical payments:", err);
+			throw err;
+		}
+	};
+
 	useEffect(() => {
 		fetchPayments();
 	}, [debtId]);
@@ -170,5 +240,6 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		markPaymentAsPaid,
 		markMultiplePaymentsAsPaid,
 		getPaymentStatus,
+		generateHistoricalPayments,
 	};
 }
