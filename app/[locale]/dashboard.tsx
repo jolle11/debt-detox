@@ -57,7 +57,11 @@ export default function Dashboard() {
 						<SummaryStats debts={debts} />
 
 						{/* Debt List */}
-						<DebtsList debts={debts} onEdit={setEditingDebt} onDelete={setDeletingDebt} />
+						<DebtsList
+							debts={debts}
+							onEdit={setEditingDebt}
+							onDelete={setDeletingDebt}
+						/>
 					</>
 				)}
 			</div>
@@ -68,7 +72,7 @@ export default function Dashboard() {
 				onClose={() => setEditingDebt(null)}
 				onSuccess={refetch}
 			/>
-			
+
 			{/* Delete Debt Modal */}
 			<DeleteDebtModal
 				debt={deletingDebt}

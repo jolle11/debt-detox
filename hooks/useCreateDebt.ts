@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { usePayments } from "@/hooks/usePayments";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt } from "@/lib/types";
-import { usePayments } from "@/hooks/usePayments";
 
 interface UseCreateDebtReturn {
 	createDebt: (
@@ -32,16 +32,18 @@ export function useCreateDebt(): UseCreateDebtReturn {
 				throw new Error("Usuario no autenticado");
 			}
 
-			const createdDebt = await pb.collection(COLLECTIONS.DEBTS).create(debtData);
-			
+			const createdDebt = await pb
+				.collection(COLLECTIONS.DEBTS)
+				.create(debtData);
+
 			// Generar pagos históricos automáticamente si es una financiación a medias
 			await generateHistoricalPayments(
 				createdDebt.id,
 				debtData.first_payment_date,
 				debtData.monthly_amount,
-				debtData.number_of_payments
+				debtData.number_of_payments,
 			);
-			
+
 			setSuccess(true);
 		} catch (err) {
 			const errorMessage =

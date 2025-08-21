@@ -173,7 +173,7 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		try {
 			const now = new Date();
 			const startDate = new Date(firstPaymentDate);
-			
+
 			// Solo generar pagos históricos si la primera cuota es anterior a hoy
 			if (startDate >= now) {
 				return; // Es una financiación nueva, no generar pagos históricos
@@ -206,7 +206,11 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 							planned_amount: monthlyAmount,
 							actual_amount: monthlyAmount,
 							paid: true,
-							paid_date: new Date(paymentDate.getFullYear(), paymentDate.getMonth(), 1).toISOString(),
+							paid_date: new Date(
+								paymentDate.getFullYear(),
+								paymentDate.getMonth(),
+								1,
+							).toISOString(),
 						});
 					}
 				} else {
