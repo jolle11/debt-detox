@@ -79,15 +79,32 @@ export default function DebtDetailPage() {
 			return 0; // Aún no ha empezado
 		}
 
-		// Calcular meses transcurridos desde la primera cuota
-		const monthsElapsed =
-			Math.max(
-				0,
-				Math.floor(
-					(now.getTime() - firstPayment.getTime()) /
-						(30.44 * 24 * 60 * 60 * 1000),
-				),
-			) + 1; // +1 porque el primer mes cuenta
+		// Calcular meses transcurridos basado en fechas exactas
+		let monthsElapsed = 0;
+		const currentDate = new Date(
+			now.getFullYear(),
+			now.getMonth(),
+			now.getDate(),
+		);
+		const startDate = new Date(
+			firstPayment.getFullYear(),
+			firstPayment.getMonth(),
+			firstPayment.getDate(),
+		);
+
+		// Calcular diferencia en meses
+		const yearsDiff = currentDate.getFullYear() - startDate.getFullYear();
+		const monthsDiff = currentDate.getMonth() - startDate.getMonth();
+
+		monthsElapsed = yearsDiff * 12 + monthsDiff;
+
+		// Si la fecha actual es anterior al día del primer pago del mes, no contar ese mes
+		if (currentDate.getDate() < startDate.getDate()) {
+			monthsElapsed--;
+		}
+
+		// Asegurar que no sea negativo y no exceda el total
+		monthsElapsed = Math.max(0, monthsElapsed + 1);
 
 		return Math.min(monthsElapsed, debt.number_of_payments);
 	};
