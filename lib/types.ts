@@ -7,7 +7,7 @@ export interface Debt {
 	monthly_amount: number; // Importe mensual
 	number_of_payments: number; // Número de cuotas
 	final_payment?: number; // Importe de la última cuota
-	final_payment_date: string; // Fecha de la última cuota
+	final_payment_date?: string; // Fecha de la última cuota (opcional)
 	product_image?: string;
 	created?: string;
 	updated?: string;

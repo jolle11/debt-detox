@@ -38,8 +38,32 @@ export default function CreateDebtForm({
 		}));
 	};
 
+	const calculateFinalPaymentDate = (
+		firstPaymentDate: string,
+		numberOfPayments: number,
+	): string => {
+		const firstDate = new Date(firstPaymentDate);
+		// Add (numberOfPayments - 1) months to get the final payment date
+		const finalDate = new Date(firstDate);
+		finalDate.setMonth(finalDate.getMonth() + numberOfPayments - 1);
+		return finalDate.toISOString().split("T")[0];
+	};
+
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
+
+		// Calculate final payment date if not provided
+		let finalPaymentDate = formData.final_payment_date;
+		if (
+			!finalPaymentDate &&
+			formData.first_payment_date &&
+			formData.number_of_payments
+		) {
+			finalPaymentDate = calculateFinalPaymentDate(
+				formData.first_payment_date,
+				Number(formData.number_of_payments),
+			);
+		}
 
 		const debtData: Omit<Debt, "id" | "created" | "updated" | "deleted"> = {
 			name: formData.name,
@@ -53,7 +77,7 @@ export default function CreateDebtForm({
 			final_payment: formData.final_payment
 				? Number(formData.final_payment)
 				: undefined,
-			final_payment_date: formData.final_payment_date,
+			final_payment_date: finalPaymentDate,
 		};
 
 		onSubmit(debtData);
@@ -117,7 +141,6 @@ export default function CreateDebtForm({
 							onChange={(value) =>
 								handleInputChange("final_payment_date", value)
 							}
-							required
 						/>
 					</div>
 
