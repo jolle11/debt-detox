@@ -24,11 +24,6 @@ export default function DebtActions({
 			className: "",
 		},
 		{
-			key: "recordPayment",
-			label: t("dashboard.debt.actions.recordPayment"),
-			className: "",
-		},
-		{
 			key: "edit",
 			label: t("dashboard.debt.actions.edit"),
 			className: "",
