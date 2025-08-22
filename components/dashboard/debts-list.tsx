@@ -9,9 +9,15 @@ interface DebtsListProps {
 	debts: Debt[];
 	onEdit?: (debt: Debt) => void;
 	onDelete?: (debt: Debt) => void;
+	onAddDebt?: () => void;
 }
 
-export default function DebtsList({ debts, onEdit, onDelete }: DebtsListProps) {
+export default function DebtsList({
+	debts,
+	onEdit,
+	onDelete,
+	onAddDebt,
+}: DebtsListProps) {
 	const t = useTranslations();
 	const { activeFilter, setActiveFilter, filteredDebts, counts } =
 		useDebtFilter(debts);
@@ -41,7 +47,12 @@ export default function DebtsList({ debts, onEdit, onDelete }: DebtsListProps) {
 				</div>
 
 				{/* Empty state */}
-				{filteredDebts.length === 0 && <EmptyState />}
+				{filteredDebts.length === 0 && (
+					<EmptyState
+						filterType={activeFilter}
+						onAddDebt={onAddDebt}
+					/>
+				)}
 			</div>
 		</div>
 	);

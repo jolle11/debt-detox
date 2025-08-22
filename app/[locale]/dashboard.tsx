@@ -4,6 +4,7 @@ import SummaryStats from "@/components/dashboard/summary-stats";
 import DebtsList from "@/components/dashboard/debts-list";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import AuthModal from "@/components/auth/AuthModal";
+import CreateDebtModal from "@/components/debt/CreateDebtModal";
 import EditDebtModal from "@/components/debt/EditDebtModal";
 import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
 import { useDebtsContext } from "@/contexts/DebtsContext";
@@ -15,6 +16,7 @@ export default function Dashboard() {
 	const tAuth = useTranslations("auth");
 	const locale = useLocale();
 	const [showAuthModal, setShowAuthModal] = useState(false);
+	const [showCreateModal, setShowCreateModal] = useState(false);
 	const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
 	const [deletingDebt, setDeletingDebt] = useState<Debt | null>(null);
 	const { debts, isLoading, error, refetch } = useDebtsContext();
@@ -61,10 +63,19 @@ export default function Dashboard() {
 							debts={debts}
 							onEdit={setEditingDebt}
 							onDelete={setDeletingDebt}
+							onAddDebt={() => setShowCreateModal(true)}
 						/>
 					</>
 				)}
 			</div>
+
+			{/* Create Debt Modal */}
+			<CreateDebtModal
+				isOpen={showCreateModal}
+				onClose={() => setShowCreateModal(false)}
+				onSuccess={refetch}
+			/>
+
 			{/* Edit Debt Modal */}
 			<EditDebtModal
 				debt={editingDebt}
