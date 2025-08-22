@@ -442,7 +442,9 @@ export default function DebtDetailPage() {
 										Última Cuota
 									</div>
 									<div className="text-lg font-medium">
-										{formatDate(debt.final_payment_date)}
+										{debt.final_payment_date 
+											? formatDate(debt.final_payment_date)
+											: "No especificada"}
 									</div>
 								</div>
 							</div>

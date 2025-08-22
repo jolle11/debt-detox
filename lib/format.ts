@@ -20,8 +20,11 @@ import type { Payment } from "./types";
 // Nuevo modelo de cálculos basado en cuotas y fechas específicas
 
 export function calculateDebtStatus(
-	finalPaymentDate: string,
+	finalPaymentDate: string | undefined,
 ): "active" | "completed" {
+	if (!finalPaymentDate) {
+		return "active";
+	}
 	const now = new Date();
 	const finalDate = new Date(finalPaymentDate);
 	return finalDate <= now ? "completed" : "active";
@@ -46,11 +49,18 @@ export function calculatePaidAmount(debt: {
 	monthly_amount: number;
 	number_of_payments: number;
 	final_payment?: number;
-	final_payment_date: string;
+	final_payment_date?: string;
 }): number {
 	const now = new Date();
 	const firstPayment = new Date(debt.first_payment_date);
-	const finalPayment = new Date(debt.final_payment_date);
+	
+	// If no final payment date, calculate it
+	const finalPaymentDate = debt.final_payment_date || (() => {
+		const calculatedDate = new Date(firstPayment);
+		calculatedDate.setMonth(calculatedDate.getMonth() + debt.number_of_payments - 1);
+		return calculatedDate.toISOString().split("T")[0];
+	})();
+	const finalPayment = new Date(finalPaymentDate);
 
 	let paidAmount = debt.down_payment || 0; // Entrada siempre está pagada
 
@@ -113,7 +123,7 @@ export function calculatePaidAmountWithPayments(
 		monthly_amount: number;
 		number_of_payments: number;
 		final_payment?: number;
-		final_payment_date: string;
+		final_payment_date?: string;
 	},
 	payments: Payment[] = [],
 ): number {
@@ -132,9 +142,11 @@ export function calculatePaidAmountWithPayments(
 
 	// Agregar pago final si corresponde
 	const now = new Date();
-	const finalPayment = new Date(debt.final_payment_date);
-	if (now >= finalPayment && debt.final_payment) {
-		paidAmount += debt.final_payment;
+	if (debt.final_payment_date) {
+		const finalPayment = new Date(debt.final_payment_date);
+		if (now >= finalPayment && debt.final_payment) {
+			paidAmount += debt.final_payment;
+		}
 	}
 
 	return paidAmount;
@@ -146,7 +158,7 @@ export function calculateRemainingAmount(debt: {
 	monthly_amount: number;
 	number_of_payments: number;
 	final_payment?: number;
-	final_payment_date: string;
+	final_payment_date?: string;
 }): number {
 	const totalAmount = calculateTotalAmount(debt);
 	const paidAmount = calculatePaidAmount(debt);
@@ -160,7 +172,7 @@ export function calculatePaymentProgress(debt: {
 	monthly_amount: number;
 	number_of_payments: number;
 	final_payment?: number;
-	final_payment_date: string;
+	final_payment_date?: string;
 }): {
 	percentage: number;
 	paidPayments: number;
@@ -168,7 +180,14 @@ export function calculatePaymentProgress(debt: {
 } {
 	const now = new Date();
 	const firstPayment = new Date(debt.first_payment_date);
-	const finalPayment = new Date(debt.final_payment_date);
+	
+	// If no final payment date, calculate it
+	const finalPaymentDate = debt.final_payment_date || (() => {
+		const calculatedDate = new Date(firstPayment);
+		calculatedDate.setMonth(calculatedDate.getMonth() + debt.number_of_payments - 1);
+		return calculatedDate.toISOString().split("T")[0];
+	})();
+	const finalPayment = new Date(finalPaymentDate);
 
 	// Contar pagos totales (cuotas mensuales + cuota final si existe)
 	let totalPayments = debt.number_of_payments;
@@ -241,7 +260,7 @@ export function calculatePaymentProgressWithPayments(
 		monthly_amount: number;
 		number_of_payments: number;
 		final_payment?: number;
-		final_payment_date: string;
+		final_payment_date?: string;
 	},
 	payments: Payment[] = [],
 ): {
@@ -271,7 +290,7 @@ export function calculateRemainingAmountWithPayments(
 		monthly_amount: number;
 		number_of_payments: number;
 		final_payment?: number;
-		final_payment_date: string;
+		final_payment_date?: string;
 	},
 	payments: Payment[] = [],
 ): number {

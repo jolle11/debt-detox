@@ -50,8 +50,8 @@ export default function DebtPaymentStatus({ debt, onPaymentUpdate }: DebtPayment
 	};
 
 	// Verificar si la deuda ya está completada
-	const debtEndDate = new Date(debt.final_payment_date);
-	const isDebtCompleted = currentDate > debtEndDate;
+	const debtEndDate = debt.final_payment_date ? new Date(debt.final_payment_date) : null;
+	const isDebtCompleted = debtEndDate && currentDate > debtEndDate;
 
 	if (isDebtCompleted) {
 		return (

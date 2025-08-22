@@ -66,11 +66,13 @@ export default function DebtInfo({ debt }: DebtInfoProps) {
 			: []),
 		{
 			label: t("dashboard.debt.finalPaymentDate"),
-			value: format.dateTime(new Date(debt.final_payment_date), {
-				year: "numeric",
-				month: "2-digit",
-				day: "2-digit",
-			}),
+			value: debt.final_payment_date 
+				? format.dateTime(new Date(debt.final_payment_date), {
+					year: "numeric",
+					month: "2-digit",
+					day: "2-digit",
+				})
+				: "No especificada",
 			className: "text-base font-medium text-base-content/70",
 		},
 	];
