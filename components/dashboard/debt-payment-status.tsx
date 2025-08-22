@@ -6,9 +6,10 @@ import type { Debt } from "@/lib/types";
 
 interface DebtPaymentStatusProps {
 	debt: Debt;
+	onPaymentUpdate?: () => void;
 }
 
-export default function DebtPaymentStatus({ debt }: DebtPaymentStatusProps) {
+export default function DebtPaymentStatus({ debt, onPaymentUpdate }: DebtPaymentStatusProps) {
 	const { markPaymentAsPaid, getPaymentStatus, isLoading } = usePayments(
 		debt.id,
 	);
@@ -38,6 +39,8 @@ export default function DebtPaymentStatus({ debt }: DebtPaymentStatusProps) {
 				debt.monthly_amount,
 				debt.monthly_amount,
 			);
+			// Notify parent component to refresh its data
+			onPaymentUpdate?.();
 		} catch (error) {
 			console.error("Error al marcar pago:", error);
 			// Aquí podrías mostrar un toast de error

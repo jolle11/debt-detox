@@ -1,22 +1,24 @@
 "use client";
 
-import { usePayments } from "@/hooks/usePayments";
 import {
 	calculatePaidAmountWithPayments,
 	calculatePaymentProgressWithPayments,
 	calculateRemainingAmountWithPayments,
 	calculateTotalAmount,
 } from "@/lib/format";
-import type { Debt } from "@/lib/types";
+import type { Debt, Payment } from "@/lib/types";
 
 interface DebtProgressWithPaymentsProps {
 	debt: Debt;
+	payments: Payment[];
+	isLoading?: boolean;
 }
 
 export default function DebtProgressWithPayments({
 	debt,
+	payments,
+	isLoading = false,
 }: DebtProgressWithPaymentsProps) {
-	const { payments, isLoading } = usePayments(debt.id);
 
 	if (isLoading) {
 		return (

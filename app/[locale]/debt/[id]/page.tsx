@@ -31,7 +31,7 @@ export default function DebtDetailPage() {
 	const [debt, setDebt] = useState<Debt | null>(null);
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const { payments, isLoading: paymentsLoading } = usePayments(debt?.id);
+	const { payments, isLoading: paymentsLoading, refetch: refetchPayments } = usePayments(debt?.id);
 
 	useEffect(() => {
 		const debtId = params.id as string;
@@ -250,9 +250,16 @@ export default function DebtDetailPage() {
 								<TargetIcon className="w-5 h-5" />
 								Progreso y Pagos
 							</h2>
-							<DebtProgressWithPayments debt={debt} />
+							<DebtProgressWithPayments 
+								debt={debt} 
+								payments={payments}
+								isLoading={paymentsLoading}
+							/>
 							<div className="mt-3">
-								<DebtPaymentStatus debt={debt} />
+								<DebtPaymentStatus 
+									debt={debt} 
+									onPaymentUpdate={refetchPayments}
+								/>
 							</div>
 						</div>
 					</div>
