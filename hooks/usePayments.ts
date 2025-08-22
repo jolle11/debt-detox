@@ -64,7 +64,7 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 					sort: "-year,-month",
 				});
 
-			setPayments(records as Payment[]);
+			setPayments(records as unknown as Payment[]);
 		} catch (err) {
 			const errorMessage =
 				err instanceof Error

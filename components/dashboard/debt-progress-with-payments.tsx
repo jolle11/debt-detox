@@ -1,5 +1,6 @@
 "use client";
 
+import { usePayments } from "@/hooks/usePayments";
 import {
 	calculatePaidAmountWithPayments,
 	calculatePaymentProgressWithPayments,
@@ -10,15 +11,22 @@ import type { Debt, Payment } from "@/lib/types";
 
 interface DebtProgressWithPaymentsProps {
 	debt: Debt;
-	payments: Payment[];
+	payments?: Payment[];
 	isLoading?: boolean;
 }
 
 export default function DebtProgressWithPayments({
 	debt,
-	payments,
-	isLoading = false,
+	payments: externalPayments,
+	isLoading: externalLoading = false,
 }: DebtProgressWithPaymentsProps) {
+	// Use external payments if provided, otherwise fetch them locally
+	const { payments: localPayments, isLoading: localLoading } = usePayments(
+		externalPayments ? undefined : debt.id,
+	);
+
+	const payments = externalPayments || localPayments;
+	const isLoading = externalPayments ? externalLoading : localLoading;
 
 	if (isLoading) {
 		return (

@@ -31,7 +31,7 @@ export function useDebts(): UseDebtsReturn {
 				sort: "-created",
 			});
 
-			setDebts(records as Debt[]);
+			setDebts(records as unknown as Debt[]);
 		} catch (err) {
 			const errorMessage =
 				err instanceof Error
