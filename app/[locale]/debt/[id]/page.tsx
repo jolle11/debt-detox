@@ -11,6 +11,8 @@ import {
 	BuildingsIcon,
 	CalendarCheckIcon,
 	TargetIcon,
+	PencilIcon,
+	TrashIcon,
 } from "@phosphor-icons/react";
 import { useDebtsContext } from "@/contexts/DebtsContext";
 import { calculateDebtStatus, formatCurrency } from "@/lib/format";
@@ -18,13 +20,17 @@ import type { Debt, Payment } from "@/lib/types";
 import DebtProgressWithPayments from "@/components/dashboard/debt-progress-with-payments";
 import DebtPaymentStatus from "@/components/dashboard/debt-payment-status";
 import DebtPaymentsList from "@/components/dashboard/debt-payments-list";
+import EditDebtModal from "@/components/debt/EditDebtModal";
+import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
 import { usePayments } from "@/hooks/usePayments";
 
 export default function DebtDetailPage() {
 	const params = useParams();
 	const router = useRouter();
-	const { debts } = useDebtsContext();
+	const { debts, refetch } = useDebtsContext();
 	const [debt, setDebt] = useState<Debt | null>(null);
+	const [showEditModal, setShowEditModal] = useState(false);
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const { payments, isLoading: paymentsLoading } = usePayments(debt?.id);
 
 	useEffect(() => {
@@ -160,11 +166,29 @@ export default function DebtDetailPage() {
 						<ArrowLeftIcon className="w-4 h-4" />
 						Volver
 					</button>
-					<div>
-						<h1 className="text-xl font-bold">{debt.name}</h1>
-						<p className="text-sm text-base-content/70">
-							{debt.entity}
-						</p>
+					<div className="flex items-center gap-2">
+						<div>
+							<h1 className="text-xl font-bold">{debt.name}</h1>
+							<p className="text-sm text-base-content/70">
+								{debt.entity}
+							</p>
+						</div>
+						<div className="flex items-center gap-1">
+							<button
+								onClick={() => setShowEditModal(true)}
+								className="btn btn-ghost btn-sm"
+								title="Editar"
+							>
+								<PencilIcon className="w-4 h-4" />
+							</button>
+							<button
+								onClick={() => setShowDeleteModal(true)}
+								className="btn btn-ghost btn-sm text-error hover:bg-error/10"
+								title="Eliminar"
+							>
+								<TrashIcon className="w-4 h-4" />
+							</button>
+						</div>
 					</div>
 				</div>
 				<div
@@ -419,6 +443,28 @@ export default function DebtDetailPage() {
 					</div>
 				</div>
 			</div>
+
+			{/* Edit Modal */}
+			<EditDebtModal
+				debt={debt}
+				isOpen={showEditModal}
+				onClose={() => setShowEditModal(false)}
+				onSuccess={() => {
+					refetch();
+					setShowEditModal(false);
+				}}
+			/>
+
+			{/* Delete Modal */}
+			<DeleteDebtModal
+				debt={debt}
+				isOpen={showDeleteModal}
+				onClose={() => setShowDeleteModal(false)}
+				onSuccess={() => {
+					refetch();
+					router.push("/"); // Redirect to dashboard after delete
+				}}
+			/>
 		</div>
 	);
 }
