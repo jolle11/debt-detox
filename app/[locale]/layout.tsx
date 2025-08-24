@@ -6,6 +6,7 @@ import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Header from "@/components/layout/Header";
+import SessionGuard from "@/components/auth/SessionGuard";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { DebtsProvider } from "@/contexts/DebtsContext";
 
@@ -53,6 +54,7 @@ export default async function LocaleLayout({
 								<main className="container mx-auto p-4">
 									{children}
 								</main>
+								<SessionGuard />
 							</div>
 						</DebtsProvider>
 					</AuthProvider>

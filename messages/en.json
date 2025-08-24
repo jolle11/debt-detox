@@ -89,6 +89,12 @@
 		"welcome": {
 			"title": "Welcome to Debt Detox!",
 			"message": "Take control of your financial commitments. Sign in to start managing your debts and loans."
+		},
+		"session": {
+			"expired": "Your session has expired. Please sign in again.",
+			"checking": "Checking session...",
+			"invalid": "Invalid session",
+			"close": "Close"
 		}
 	},
 	"debt": {

@@ -89,6 +89,12 @@
 		"welcome": {
 			"title": "¡Bienvenido a Debt Detox!",
 			"message": "Toma control de tus compromisos financieros. Inicia sesión para comenzar a gestionar tus deudas y préstamos."
+		},
+		"session": {
+			"expired": "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+			"checking": "Verificando sesión...",
+			"invalid": "Sesión inválida",
+			"close": "Cerrar"
 		}
 	},
 	"common": {

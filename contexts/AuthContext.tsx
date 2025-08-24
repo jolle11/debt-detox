@@ -22,6 +22,8 @@ interface AuthContextType {
 	logout: () => void;
 	loading: boolean;
 	refreshUser: () => Promise<void>;
+	isSessionValid: () => Promise<boolean>;
+	checkAuthStatus: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,9 +33,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		// Check if user is already authenticated
-		setUser(pb.authStore.model);
-		setLoading(false);
+		// Check authentication status on mount
+		checkAuthStatus();
 
 		// Listen for auth changes
 		pb.authStore.onChange(() => {
@@ -95,6 +96,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		}
 	};
 
+	const isSessionValid = async (): Promise<boolean> => {
+		try {
+			// If no token exists, session is invalid
+			if (!pb.authStore.token || !pb.authStore.model) {
+				return false;
+			}
+
+			// Try to refresh the authentication to check if token is still valid
+			await pb.collection("users").authRefresh();
+			return true;
+		} catch (error) {
+			// If refresh fails, token is expired or invalid
+			console.warn("Session validation failed:", error);
+			return false;
+		}
+	};
+
+	const checkAuthStatus = async () => {
+		setLoading(true);
+		try {
+			// First check if there's a stored auth state
+			if (pb.authStore.model && pb.authStore.token) {
+				// Validate if the session is still active
+				const isValid = await isSessionValid();
+				if (isValid) {
+					setUser(pb.authStore.model);
+				} else {
+					// Session expired, clear auth state
+					pb.authStore.clear();
+					setUser(null);
+				}
+			} else {
+				setUser(null);
+			}
+		} catch (error) {
+			console.error("Auth status check failed:", error);
+			// On error, clear auth state
+			pb.authStore.clear();
+			setUser(null);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	const value = {
 		user,
 		login,
@@ -102,6 +147,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		logout,
 		loading,
 		refreshUser,
+		isSessionValid,
+		checkAuthStatus,
 	};
 
 	return (

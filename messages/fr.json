@@ -91,6 +91,12 @@
 		"welcome": {
 			"title": "Bienvenue sur Debt Detox !",
 			"message": "Prenez le contrôle de vos engagements financiers. Connectez-vous pour commencer à gérer vos dettes et prêts."
+		},
+		"session": {
+			"expired": "Votre session a expiré. Veuillez vous reconnecter.",
+			"checking": "Vérification de la session...",
+			"invalid": "Session invalide",
+			"close": "Fermer"
 		}
 	},
 	"debt": {

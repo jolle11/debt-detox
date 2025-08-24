@@ -91,6 +91,12 @@
 		"welcome": {
 			"title": "Willkommen bei Debt Detox!",
 			"message": "Übernehmen Sie die Kontrolle über Ihre finanziellen Verpflichtungen. Melden Sie sich an, um Ihre Schulden und Kredite zu verwalten."
+		},
+		"session": {
+			"expired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+			"checking": "Sitzung wird überprüft...",
+			"invalid": "Ungültige Sitzung",
+			"close": "Schließen"
 		}
 	},
 	"debt": {
