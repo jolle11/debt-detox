@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { usePayments } from "@/hooks/usePayments";
+import { useTranslations } from "next-intl";
 import type { Debt } from "@/lib/types";
 
 interface DebtPaymentStatusProps {
@@ -14,6 +15,7 @@ export default function DebtPaymentStatus({ debt, onPaymentUpdate }: DebtPayment
 		debt.id,
 	);
 	const [isProcessing, setIsProcessing] = useState(false);
+	const t = useTranslations("paymentStatus");
 
 	const currentDate = new Date();
 	const currentMonth = currentDate.getMonth() + 1; // getMonth() returns 0-11
@@ -56,7 +58,7 @@ export default function DebtPaymentStatus({ debt, onPaymentUpdate }: DebtPayment
 	if (isDebtCompleted) {
 		return (
 			<div className="flex items-center gap-3">
-				<div className="badge badge-success badge-lg">Completada</div>
+				<div className="badge badge-success badge-lg">{t("completed")}</div>
 			</div>
 		);
 	}
@@ -67,7 +69,7 @@ export default function DebtPaymentStatus({ debt, onPaymentUpdate }: DebtPayment
 		return (
 			<div className="flex items-center gap-3">
 				<div className="badge badge-neutral badge-lg">
-					Pendiente de inicio
+					{t("pendingStart")}
 				</div>
 			</div>
 		);
@@ -77,7 +79,7 @@ export default function DebtPaymentStatus({ debt, onPaymentUpdate }: DebtPayment
 		<div className="flex items-center gap-3">
 			{isCurrentMonthPaid ? (
 				<div className="badge badge-success badge-lg">
-					Mensualidad pagada
+					{t("monthlyPaid")}
 				</div>
 			) : (
 				<button
@@ -88,7 +90,7 @@ export default function DebtPaymentStatus({ debt, onPaymentUpdate }: DebtPayment
 					{isProcessing ? (
 						<span className="loading loading-spinner loading-sm"></span>
 					) : (
-						"Marcar como pagada"
+						t("markAsPaid")
 					)}
 				</button>
 			)}

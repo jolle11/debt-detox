@@ -1,6 +1,7 @@
 "use client";
 
 import { usePayments } from "@/hooks/usePayments";
+import { useTranslations } from "next-intl";
 import {
 	calculatePaidAmountWithPayments,
 	calculatePaymentProgressWithPayments,
@@ -20,6 +21,7 @@ export default function DebtProgressWithPayments({
 	payments: externalPayments,
 	isLoading: externalLoading = false,
 }: DebtProgressWithPaymentsProps) {
+	const t = useTranslations("debtProgress");
 	// Use external payments if provided, otherwise fetch them locally
 	const { payments: localPayments, isLoading: localLoading } = usePayments(
 		externalPayments ? undefined : debt.id,
@@ -75,10 +77,10 @@ export default function DebtProgressWithPayments({
 			{/* Información de cuotas mejorada */}
 			<div className="flex justify-between items-center">
 				<span className="text-lg font-medium">
-					Cuotas: {progress.paidPayments}/{progress.totalPayments}
+					{t("paymentsLabel")}: {progress.paidPayments}/{progress.totalPayments}
 				</span>
 				<span className="text-base text-base-content/70">
-					{progress.totalPayments - progress.paidPayments} restantes
+					{progress.totalPayments - progress.paidPayments} {t("remaining")}
 				</span>
 			</div>
 		</div>

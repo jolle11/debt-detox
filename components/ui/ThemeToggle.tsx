@@ -1,15 +1,17 @@
 "use client";
 
 import { type ThemeMode, useTheme } from "@/hooks/useTheme";
-
-const themes: { value: ThemeMode; label: string; icon: string }[] = [
-	{ value: "light", label: "Claro", icon: "☀️" },
-	{ value: "dark", label: "Oscuro", icon: "🌙" },
-	{ value: "system", label: "Sistema", icon: "💻" },
-];
+import { useTranslations } from "next-intl";
 
 export default function ThemeToggle() {
 	const { theme, changeTheme } = useTheme();
+	const t = useTranslations("theme");
+	
+	const themes: { value: ThemeMode; label: string; icon: string }[] = [
+		{ value: "light", label: t("light"), icon: "☀️" },
+		{ value: "dark", label: t("dark"), icon: "🌙" },
+		{ value: "system", label: t("system"), icon: "💻" },
+	];
 
 	return (
 		<div className="dropdown dropdown-end">
@@ -17,7 +19,7 @@ export default function ThemeToggle() {
 				tabIndex={0}
 				role="button"
 				className="btn btn-ghost btn-circle"
-				title="Cambiar tema"
+				title={t("changeTheme")}
 			>
 				<span className="text-lg">
 					{themes.find((t) => t.value === theme)?.icon || "💻"}

@@ -163,5 +163,105 @@
 		"editName": "Edit Name",
 		"notLoggedIn": "Not logged in",
 		"loginRequired": "Please log in to view your profile"
+	},
+	"theme": {
+		"light": "Light",
+		"dark": "Dark",
+		"system": "System",
+		"changeTheme": "Change theme"
+	},
+	"paymentStatus": {
+		"completed": "Completed",
+		"pendingStart": "Pending start",
+		"monthlyPaid": "Monthly payment paid",
+		"markAsPaid": "Mark as paid"
+	},
+	"debtDetail": {
+		"notFound": {
+			"title": "Financing not found",
+			"description": "The requested financing could not be found.",
+			"backButton": "Back"
+		},
+		"navigation": {
+			"back": "Back"
+		},
+		"actions": {
+			"edit": "Edit",
+			"delete": "Delete"
+		},
+		"status": {
+			"completed": "Completed",
+			"active": "Active",
+			"pending": "Pending"
+		},
+		"summary": {
+			"total": "Total",
+			"paid": "Paid",
+			"payments": "Payments",
+			"monthly": "Monthly"
+		},
+		"sections": {
+			"progress": "Progress and Payments",
+			"paymentDetails": "Payment Details",
+			"structure": "Structure",
+			"product": "Product",
+			"dates": "Dates"
+		},
+		"paymentDetails": {
+			"paidPayments": "Paid Payments",
+			"of": "of",
+			"pending": "Pending",
+			"remaining": "remaining",
+			"paidAmount": "Paid Amount",
+			"toPay": "To Pay"
+		},
+		"structure": {
+			"downPayment": "Down Payment",
+			"monthlyPayment": "Monthly Payment",
+			"duration": "Duration",
+			"finalPayment": "Final Payment",
+			"total": "Total",
+			"months": "months",
+			"notApplicable": "Not applicable"
+		},
+		"dates": {
+			"firstPayment": "First Payment",
+			"lastPayment": "Last Payment",
+			"notSpecified": "Not specified"
+		}
+	},
+	"paymentsList": {
+		"title": "Payment List",
+		"paymentsCompleted": "payments completed",
+		"statsPaid": "Paid",
+		"statsOverdue": "Overdue",
+		"statsPending": "Pending",
+		"headers": {
+			"period": "Period",
+			"status": "Status",
+			"plannedAmount": "Planned Amount",
+			"actualAmount": "Actual Amount",
+			"paymentDate": "Payment Date"
+		},
+		"statusPaid": "Paid",
+		"statusOverdue": "Overdue",
+		"statusPending": "Pending",
+		"totalLabel": "Total",
+		"noPayments": "No payments recorded for this financing."
+	},
+	"debtProgress": {
+		"paymentsLabel": "Payments",
+		"remaining": "remaining"
+	},
+	"emptyStates": {
+		"active": {
+			"title": "You have no active financing",
+			"description": "All your financing are completed or you have none registered",
+			"buttonText": "Add Financing"
+		},
+		"completed": {
+			"title": "You have no completed financing",
+			"description": "You haven't completed any financing yet"
+		}
 	}
 }

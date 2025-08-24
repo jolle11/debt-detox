@@ -167,5 +167,105 @@
 		"editName": "Modifier le Nom",
 		"notLoggedIn": "Non connecté",
 		"loginRequired": "Veuillez vous connecter pour voir votre profil"
+	},
+	"theme": {
+		"light": "Clair",
+		"dark": "Sombre",
+		"system": "Système",
+		"changeTheme": "Changer le thème"
+	},
+	"paymentStatus": {
+		"completed": "Terminée",
+		"pendingStart": "En attente de début",
+		"monthlyPaid": "Paiement mensuel payé",
+		"markAsPaid": "Marquer comme payé"
+	},
+	"debtDetail": {
+		"notFound": {
+			"title": "Financement introuvable",
+			"description": "Le financement demandé n'a pas pu être trouvé.",
+			"backButton": "Retour"
+		},
+		"navigation": {
+			"back": "Retour"
+		},
+		"actions": {
+			"edit": "Modifier",
+			"delete": "Supprimer"
+		},
+		"status": {
+			"completed": "Terminé",
+			"active": "Actif",
+			"pending": "En attente"
+		},
+		"summary": {
+			"total": "Total",
+			"paid": "Payé",
+			"payments": "Paiements",
+			"monthly": "Mensuel"
+		},
+		"sections": {
+			"progress": "Progrès et Paiements",
+			"paymentDetails": "Détails de Paiement",
+			"structure": "Structure",
+			"product": "Produit",
+			"dates": "Dates"
+		},
+		"paymentDetails": {
+			"paidPayments": "Paiements Effectués",
+			"of": "de",
+			"pending": "En attente",
+			"remaining": "restants",
+			"paidAmount": "Montant Payé",
+			"toPay": "À Payer"
+		},
+		"structure": {
+			"downPayment": "Acompte",
+			"monthlyPayment": "Paiement Mensuel",
+			"duration": "Durée",
+			"finalPayment": "Paiement Final",
+			"total": "Total",
+			"months": "mois",
+			"notApplicable": "Non applicable"
+		},
+		"dates": {
+			"firstPayment": "Premier Paiement",
+			"lastPayment": "Dernier Paiement",
+			"notSpecified": "Non spécifiée"
+		}
+	},
+	"paymentsList": {
+		"title": "Liste des Paiements",
+		"paymentsCompleted": "paiements effectués",
+		"statsPaid": "Payés",
+		"statsOverdue": "En retard",
+		"statsPending": "En attente",
+		"headers": {
+			"period": "Période",
+			"status": "Statut",
+			"plannedAmount": "Montant Prévu",
+			"actualAmount": "Montant Réel",
+			"paymentDate": "Date de Paiement"
+		},
+		"statusPaid": "Payé",
+		"statusOverdue": "En retard",
+		"statusPending": "En attente",
+		"totalLabel": "Total",
+		"noPayments": "Aucun paiement enregistré pour ce financement."
+	},
+	"debtProgress": {
+		"paymentsLabel": "Paiements",
+		"remaining": "restants"
+	},
+	"emptyStates": {
+		"active": {
+			"title": "Vous n'avez aucun financement actif",
+			"description": "Tous vos financements sont terminés ou vous n'en avez aucun enregistré",
+			"buttonText": "Ajouter Financement"
+		},
+		"completed": {
+			"title": "Vous n'avez aucun financement terminé",
+			"description": "Vous n'avez encore terminé aucun financement"
+		}
 	}
 }

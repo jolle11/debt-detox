@@ -6,6 +6,7 @@ import {
 	CreditCard,
 	XCircle,
 } from "@phosphor-icons/react";
+import { useTranslations, useLocale } from "next-intl";
 import { formatCurrency } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
 
@@ -20,6 +21,8 @@ export default function DebtPaymentsList({
 	payments,
 	isLoading,
 }: DebtPaymentsListProps) {
+	const t = useTranslations("paymentsList");
+	const locale = useLocale();
 	// Generate all expected payments based on debt structure
 	const generateAllExpectedPayments = () => {
 		const expectedPayments: Array<{
@@ -66,14 +69,14 @@ export default function DebtPaymentsList({
 
 	const formatMonthYear = (month: number, year: number) => {
 		const date = new Date(year, month - 1, 1);
-		return date.toLocaleDateString("es-ES", {
+		return date.toLocaleDateString(locale, {
 			month: "long",
 			year: "numeric",
 		});
 	};
 
 	const formatPaymentDate = (dateString: string) => {
-		return new Date(dateString).toLocaleDateString("es-ES", {
+		return new Date(dateString).toLocaleDateString(locale, {
 			day: "numeric",
 			month: "short",
 			year: "numeric",
@@ -95,7 +98,7 @@ export default function DebtPaymentsList({
 				<div className="card-body p-4">
 					<h2 className="card-title text-lg mb-4">
 						<CreditCard className="w-5 h-5" />
-						Listado de Pagos
+						{t("title")}
 					</h2>
 					<div className="flex items-center justify-center py-8">
 						<div className="loading loading-spinner loading-lg"></div>
@@ -111,11 +114,10 @@ export default function DebtPaymentsList({
 				<div className="flex items-center justify-between mb-4">
 					<h2 className="card-title text-lg">
 						<CreditCard className="w-5 h-5" />
-						Listado de Pagos
+						{t("title")}
 					</h2>
 					<div className="text-sm text-base-content/70">
-						{totalPaidPayments}/{debt.number_of_payments} pagos
-						realizados
+						{totalPaidPayments}/{debt.number_of_payments} {t("paymentsCompleted")}
 					</div>
 				</div>
 
@@ -125,20 +127,20 @@ export default function DebtPaymentsList({
 						<div className="text-lg font-bold text-success">
 							{totalPaidPayments}
 						</div>
-						<div className="text-xs text-success/80">Pagados</div>
+						<div className="text-xs text-success/80">{t("statsPaid")}</div>
 					</div>
 					<div className="text-center p-2 bg-error/10 rounded-lg">
 						<div className="text-lg font-bold text-error">
 							{totalOverduePayments}
 						</div>
-						<div className="text-xs text-error/80">Vencidos</div>
+						<div className="text-xs text-error/80">{t("statsOverdue")}</div>
 					</div>
 					<div className="text-center p-2 bg-warning/10 rounded-lg">
 						<div className="text-lg font-bold text-warning">
 							{totalPendingPayments}
 						</div>
 						<div className="text-xs text-warning/80">
-							Pendientes
+							{t("statsPending")}
 						</div>
 					</div>
 				</div>
@@ -148,11 +150,11 @@ export default function DebtPaymentsList({
 					<table className="table table-sm">
 						<thead>
 							<tr>
-								<th>Período</th>
-								<th>Estado</th>
-								<th className="text-right">Importe Planeado</th>
-								<th className="text-right">Importe Real</th>
-								<th>Fecha de Pago</th>
+								<th>{t("headers.period")}</th>
+								<th>{t("headers.status")}</th>
+								<th className="text-right">{t("headers.plannedAmount")}</th>
+								<th className="text-right">{t("headers.actualAmount")}</th>
+								<th>{t("headers.paymentDate")}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -194,21 +196,21 @@ export default function DebtPaymentsList({
 														<>
 															<CheckCircle className="w-4 h-4 text-success" />
 															<span className="badge badge-success badge-sm">
-																Pagado
+																{t("statusPaid")}
 															</span>
 														</>
 													) : isOverdue ? (
 														<>
 															<XCircle className="w-4 h-4 text-error" />
 															<span className="badge badge-error badge-sm">
-																Vencido
+																{t("statusOverdue")}
 															</span>
 														</>
 													) : (
 														<>
 															<Calendar className="w-4 h-4 text-warning" />
 															<span className="badge badge-warning badge-sm">
-																Pendiente
+																{t("statusPending")}
 															</span>
 														</>
 													)}
@@ -255,7 +257,7 @@ export default function DebtPaymentsList({
 						</tbody>
 						<tfoot>
 							<tr className="font-medium border-t-2">
-								<td colSpan={2}>Total</td>
+								<td colSpan={2}>{t("totalLabel")}</td>
 								<td className="text-right font-mono">
 									{formatCurrency(
 										debt.monthly_amount *
@@ -285,7 +287,7 @@ export default function DebtPaymentsList({
 				{allExpectedPayments.length === 0 && (
 					<div className="text-center py-8 text-base-content/50">
 						<Calendar className="w-12 h-12 mx-auto mb-3 opacity-50" />
-						<p>No hay pagos registrados para esta financiación.</p>
+						<p>{t("noPayments")}</p>
 					</div>
 				)}
 			</div>

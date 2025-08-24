@@ -167,5 +167,105 @@
 		"editName": "Name bearbeiten",
 		"notLoggedIn": "Nicht angemeldet",
 		"loginRequired": "Bitte melden Sie sich an, um Ihr Profil anzuzeigen"
+	},
+	"theme": {
+		"light": "Hell",
+		"dark": "Dunkel",
+		"system": "System",
+		"changeTheme": "Design ändern"
+	},
+	"paymentStatus": {
+		"completed": "Abgeschlossen",
+		"pendingStart": "Ausstehender Start",
+		"monthlyPaid": "Monatliche Rate bezahlt",
+		"markAsPaid": "Als bezahlt markieren"
+	},
+	"debtDetail": {
+		"notFound": {
+			"title": "Finanzierung nicht gefunden",
+			"description": "Die angeforderte Finanzierung konnte nicht gefunden werden.",
+			"backButton": "Zurück"
+		},
+		"navigation": {
+			"back": "Zurück"
+		},
+		"actions": {
+			"edit": "Bearbeiten",
+			"delete": "Löschen"
+		},
+		"status": {
+			"completed": "Abgeschlossen",
+			"active": "Aktiv",
+			"pending": "Ausstehend"
+		},
+		"summary": {
+			"total": "Gesamt",
+			"paid": "Bezahlt",
+			"payments": "Raten",
+			"monthly": "Monatlich"
+		},
+		"sections": {
+			"progress": "Fortschritt und Zahlungen",
+			"paymentDetails": "Zahlungsdetails",
+			"structure": "Struktur",
+			"product": "Produkt",
+			"dates": "Daten"
+		},
+		"paymentDetails": {
+			"paidPayments": "Bezahlte Raten",
+			"of": "von",
+			"pending": "Ausstehend",
+			"remaining": "verbleibend",
+			"paidAmount": "Bezahlter Betrag",
+			"toPay": "Zu bezahlen"
+		},
+		"structure": {
+			"downPayment": "Anzahlung",
+			"monthlyPayment": "Monatliche Rate",
+			"duration": "Laufzeit",
+			"finalPayment": "Schlusszahlung",
+			"total": "Gesamt",
+			"months": "Monate",
+			"notApplicable": "Nicht zutreffend"
+		},
+		"dates": {
+			"firstPayment": "Erste Rate",
+			"lastPayment": "Letzte Rate",
+			"notSpecified": "Nicht angegeben"
+		}
+	},
+	"paymentsList": {
+		"title": "Zahlungsliste",
+		"paymentsCompleted": "Zahlungen abgeschlossen",
+		"statsPaid": "Bezahlt",
+		"statsOverdue": "Überfällig",
+		"statsPending": "Ausstehend",
+		"headers": {
+			"period": "Zeitraum",
+			"status": "Status",
+			"plannedAmount": "Geplanter Betrag",
+			"actualAmount": "Tatsächlicher Betrag",
+			"paymentDate": "Zahlungsdatum"
+		},
+		"statusPaid": "Bezahlt",
+		"statusOverdue": "Überfällig",
+		"statusPending": "Ausstehend",
+		"totalLabel": "Gesamt",
+		"noPayments": "Keine Zahlungen für diese Finanzierung erfasst."
+	},
+	"debtProgress": {
+		"paymentsLabel": "Raten",
+		"remaining": "verbleibend"
+	},
+	"emptyStates": {
+		"active": {
+			"title": "Sie haben keine aktiven Finanzierungen",
+			"description": "Alle Ihre Finanzierungen sind abgeschlossen oder Sie haben keine registriert",
+			"buttonText": "Finanzierung hinzufügen"
+		},
+		"completed": {
+			"title": "Sie haben keine abgeschlossenen Finanzierungen",
+			"description": "Sie haben noch keine Finanzierung abgeschlossen"
+		}
 	}
 }

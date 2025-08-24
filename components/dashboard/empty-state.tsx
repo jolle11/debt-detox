@@ -18,15 +18,14 @@ export default function EmptyState({
 		switch (filterType) {
 			case "active":
 				return {
-					title: "No tienes financiaciones activas",
-					description:
-						"Todas tus financiaciones están completadas o no tienes ninguna registrada",
-					buttonText: "Añadir Financiación",
+					title: t("emptyStates.active.title"),
+					description: t("emptyStates.active.description"),
+					buttonText: t("emptyStates.active.buttonText"),
 				};
 			case "completed":
 				return {
-					title: "No tienes financiaciones completadas",
-					description: "Aún no has completado ninguna financiación",
+					title: t("emptyStates.completed.title"),
+					description: t("emptyStates.completed.description"),
 					buttonText: null, // No mostrar botón en completadas
 				};
 			default:

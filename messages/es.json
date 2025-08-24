@@ -163,5 +163,105 @@
 		"editName": "Editar Nombre",
 		"notLoggedIn": "No has iniciado sesión",
 		"loginRequired": "Por favor, inicia sesión para ver tu perfil"
+	},
+	"theme": {
+		"light": "Claro",
+		"dark": "Oscuro",
+		"system": "Sistema",
+		"changeTheme": "Cambiar tema"
+	},
+	"paymentStatus": {
+		"completed": "Completada",
+		"pendingStart": "Pendiente de inicio",
+		"monthlyPaid": "Mensualidad pagada",
+		"markAsPaid": "Marcar como pagada"
+	},
+	"debtDetail": {
+		"notFound": {
+			"title": "Financiación no encontrada",
+			"description": "No se pudo encontrar la financiación solicitada.",
+			"backButton": "Volver"
+		},
+		"navigation": {
+			"back": "Volver"
+		},
+		"actions": {
+			"edit": "Editar",
+			"delete": "Eliminar"
+		},
+		"status": {
+			"completed": "Completado",
+			"active": "Activo",
+			"pending": "Pendiente"
+		},
+		"summary": {
+			"total": "Total",
+			"paid": "Pagado",
+			"payments": "Cuotas",
+			"monthly": "Mensual"
+		},
+		"sections": {
+			"progress": "Progreso y Pagos",
+			"paymentDetails": "Detalles de Pago",
+			"structure": "Estructura",
+			"product": "Producto",
+			"dates": "Fechas"
+		},
+		"paymentDetails": {
+			"paidPayments": "Cuotas Pagadas",
+			"of": "de",
+			"pending": "Pendientes",
+			"remaining": "restantes",
+			"paidAmount": "Importe Pagado",
+			"toPay": "Por Pagar"
+		},
+		"structure": {
+			"downPayment": "Entrada",
+			"monthlyPayment": "Cuota mensual",
+			"duration": "Duración",
+			"finalPayment": "Cuota final",
+			"total": "Total",
+			"months": "meses",
+			"notApplicable": "No aplica"
+		},
+		"dates": {
+			"firstPayment": "Primera Cuota",
+			"lastPayment": "Última Cuota",
+			"notSpecified": "No especificada"
+		}
+	},
+	"paymentsList": {
+		"title": "Listado de Pagos",
+		"paymentsCompleted": "pagos realizados",
+		"statsPaid": "Pagados",
+		"statsOverdue": "Vencidos",
+		"statsPending": "Pendientes",
+		"headers": {
+			"period": "Período",
+			"status": "Estado",
+			"plannedAmount": "Importe Planeado",
+			"actualAmount": "Importe Real",
+			"paymentDate": "Fecha de Pago"
+		},
+		"statusPaid": "Pagado",
+		"statusOverdue": "Vencido",
+		"statusPending": "Pendiente",
+		"totalLabel": "Total",
+		"noPayments": "No hay pagos registrados para esta financiación."
+	},
+	"debtProgress": {
+		"paymentsLabel": "Cuotas",
+		"remaining": "restantes"
+	},
+	"emptyStates": {
+		"active": {
+			"title": "No tienes financiaciones activas",
+			"description": "Todas tus financiaciones están completadas o no tienes ninguna registrada",
+			"buttonText": "Añadir Financiación"
+		},
+		"completed": {
+			"title": "No tienes financiaciones completadas",
+			"description": "Aún no has completado ninguna financiación"
+		}
 	}
 }

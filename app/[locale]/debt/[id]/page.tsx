@@ -342,7 +342,7 @@ export default function DebtDetailPage() {
 														? formatCurrency(
 																debt.down_payment,
 															)
-														: "No aplica"}
+														: t("structure.notApplicable")}
 												</span>
 											</div>
 										)}
@@ -375,7 +375,7 @@ export default function DebtDetailPage() {
 														? formatCurrency(
 																debt.final_payment,
 															)
-														: "No aplica"}
+														: t("structure.notApplicable")}
 												</span>
 											</div>
 										)}

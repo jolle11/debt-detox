@@ -1,7 +1,10 @@
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import "./globals.css";
 
 export default function NotFound() {
+	const t = useTranslations("notFound");
+	
 	return (
 		<html lang="es">
 			<head>
@@ -10,19 +13,19 @@ export default function NotFound() {
 					name="viewport"
 					content="width=device-width, initial-scale=1"
 				/>
-				<title>404 - Página no encontrada | Debt Detox</title>
+				<title>{t("title")} | Debt Detox</title>
 			</head>
 			<body>
 				<div className="min-h-screen flex items-center justify-center bg-base-100">
 					<div className="text-center">
 						<h1 className="text-4xl font-bold mb-4">
-							404 - Página no encontrada
+							{t("title")}
 						</h1>
 						<p className="text-lg mb-6">
-							Lo sentimos, la página que buscas no existe.
+							{t("description")}
 						</p>
 						<Link href="/" className="btn btn-primary">
-							Volver al inicio
+							{t("backHome")}
 						</Link>
 					</div>
 				</div>
