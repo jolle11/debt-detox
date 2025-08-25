@@ -144,7 +144,8 @@
 		"save": "Enregistrer",
 		"cancel": "Annuler",
 		"delete": "Supprimer",
-		"edit": "Modifier"
+		"edit": "Modifier",
+		"back": "Retour"
 	},
 	"profile": {
 		"title": "Profil Utilisateur",

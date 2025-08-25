@@ -104,7 +104,8 @@
 		"save": "Guardar",
 		"cancel": "Cancelar",
 		"delete": "Eliminar",
-		"edit": "Editar"
+		"edit": "Editar",
+		"back": "Volver"
 	},
 	"debt": {
 		"create": {

@@ -2,6 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
 	ArrowLeftIcon,
 	CalendarIcon,
@@ -25,13 +26,18 @@ import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
 import { usePayments } from "@/hooks/usePayments";
 
 export default function DebtDetailPage() {
+	const t = useTranslations();
 	const params = useParams();
 	const router = useRouter();
 	const { debts, refetch } = useDebtsContext();
 	const [debt, setDebt] = useState<Debt | null>(null);
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const { payments, isLoading: paymentsLoading, refetch: refetchPayments } = usePayments(debt?.id);
+	const {
+		payments,
+		isLoading: paymentsLoading,
+		refetch: refetchPayments,
+	} = usePayments(debt?.id);
 
 	useEffect(() => {
 		const debtId = params.id as string;
@@ -45,16 +51,16 @@ export default function DebtDetailPage() {
 				<div className="flex items-center justify-center min-h-[50vh]">
 					<div className="text-center">
 						<h2 className="text-xl font-semibold mb-2">
-							Financiación no encontrada
+							{t("debtDetail.notFound.title")}
 						</h2>
 						<p className="text-base-content/70 mb-4">
-							No se pudo encontrar la financiación solicitada.
+							{t("debtDetail.notFound.description")}
 						</p>
 						<button
 							onClick={() => router.back()}
 							className="btn btn-primary"
 						>
-							Volver
+							{t("common.back")}
 						</button>
 					</div>
 				</div>
@@ -164,7 +170,7 @@ export default function DebtDetailPage() {
 						className="btn btn-ghost btn-sm"
 					>
 						<ArrowLeftIcon className="w-4 h-4" />
-						Volver
+						{t("common.back")}
 					</button>
 					<div className="flex items-center gap-2">
 						<div>
@@ -177,14 +183,14 @@ export default function DebtDetailPage() {
 							<button
 								onClick={() => setShowEditModal(true)}
 								className="btn btn-ghost btn-sm"
-								title="Editar"
+								title={t("common.edit")}
 							>
 								<PencilIcon className="w-4 h-4" />
 							</button>
 							<button
 								onClick={() => setShowDeleteModal(true)}
 								className="btn btn-ghost btn-sm text-error hover:bg-error/10"
-								title="Eliminar"
+								title={t("common.delete")}
 							>
 								<TrashIcon className="w-4 h-4" />
 							</button>
@@ -195,10 +201,10 @@ export default function DebtDetailPage() {
 					className={`badge ${status === "completed" ? "badge-success" : status === "active" ? "badge-primary" : "badge-warning"}`}
 				>
 					{status === "completed"
-						? "Completado"
+						? t("debtDetail.status.completed")
 						: status === "active"
-							? "Activo"
-							: "Pendiente"}
+							? t("debtDetail.status.active")
+							: t("debtDetail.status.pending")}
 				</div>
 			</div>
 
@@ -206,7 +212,7 @@ export default function DebtDetailPage() {
 			<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
 				<div className="bg-base-100 rounded-xl border border-base-300 p-4 hover:shadow-lg transition-shadow duration-200">
 					<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-						Total
+						{t("debtDetail.summary.total")}
 					</div>
 					<div className="text-xl font-bold text-primary">
 						{formatCurrency(totalAmount)}
@@ -214,7 +220,7 @@ export default function DebtDetailPage() {
 				</div>
 				<div className="bg-base-100 rounded-xl border border-base-300 p-4 hover:shadow-lg transition-shadow duration-200">
 					<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-						Pagado
+						{t("debtDetail.summary.paid")}
 					</div>
 					<div className="text-xl font-bold text-success">
 						{formatCurrency(paymentStats.effectivePaidAmount)}
@@ -222,7 +228,7 @@ export default function DebtDetailPage() {
 				</div>
 				<div className="bg-base-100 rounded-xl border border-base-300 p-4 hover:shadow-lg transition-shadow duration-200">
 					<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-						Cuotas
+						{t("debtDetail.summary.payments")}
 					</div>
 					<div className="text-xl font-bold text-info">
 						{paymentStats.effectivePaidPayments}/
@@ -231,7 +237,7 @@ export default function DebtDetailPage() {
 				</div>
 				<div className="bg-base-100 rounded-xl border border-base-300 p-4 hover:shadow-lg transition-shadow duration-200">
 					<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-						Mensual
+						{t("debtDetail.summary.monthly")}
 					</div>
 					<div className="text-xl font-bold text-secondary">
 						{formatCurrency(debt.monthly_amount)}
@@ -248,16 +254,16 @@ export default function DebtDetailPage() {
 						<div className="card-body p-4">
 							<h2 className="card-title text-lg mb-2">
 								<TargetIcon className="w-5 h-5" />
-								Progreso y Pagos
+								{t("debtDetail.sections.progress")}
 							</h2>
-							<DebtProgressWithPayments 
-								debt={debt} 
+							<DebtProgressWithPayments
+								debt={debt}
 								payments={payments}
 								isLoading={paymentsLoading}
 							/>
 							<div className="mt-3">
-								<DebtPaymentStatus 
-									debt={debt} 
+								<DebtPaymentStatus
+									debt={debt}
 									onPaymentUpdate={refetchPayments}
 								/>
 							</div>
@@ -271,34 +277,34 @@ export default function DebtDetailPage() {
 							<div className="card-body p-5">
 								<h2 className="card-title text-xl mb-4">
 									<CreditCardIcon className="w-6 h-6" />
-									Detalles de Pago
+									{t("debtDetail.sections.paymentDetails")}
 								</h2>
 								<div className="grid grid-cols-2 gap-4">
 									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
 										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-											Cuotas Pagadas
+											{t("debtDetail.paymentDetails.paidPayments")}
 										</div>
 										<div className="text-2xl font-bold text-success">
 											{paymentStats.effectivePaidPayments}
 										</div>
 										<div className="text-base text-base-content/70 mt-1">
-											de {debt.number_of_payments}
+											{t("debtDetail.paymentDetails.of")} {debt.number_of_payments}
 										</div>
 									</div>
 									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
 										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-											Pendientes
+											{t("debtDetail.paymentDetails.pending")}
 										</div>
 										<div className="text-2xl font-bold text-warning">
 											{paymentStats.pendingPayments}
 										</div>
 										<div className="text-base text-base-content/70 mt-1">
-											restantes
+											{t("debtDetail.paymentDetails.remaining")}
 										</div>
 									</div>
 									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
 										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-											Importe Pagado
+											{t("debtDetail.paymentDetails.paidAmount")}
 										</div>
 										<div className="text-lg font-bold text-success">
 											{formatCurrency(
@@ -308,7 +314,7 @@ export default function DebtDetailPage() {
 									</div>
 									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
 										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-											Por Pagar
+											{t("debtDetail.paymentDetails.toPay")}
 										</div>
 										<div className="text-lg font-bold text-warning">
 											{formatCurrency(
@@ -328,27 +334,29 @@ export default function DebtDetailPage() {
 							<div className="card-body p-5">
 								<h2 className="card-title text-xl mb-4">
 									<FileTextIcon className="w-6 h-6" />
-									Estructura
+									{t("debtDetail.sections.structure")}
 								</h2>
 								<div className="space-y-4">
 									{debt.down_payment !== undefined &&
 										debt.down_payment !== null && (
 											<div className="flex justify-between items-center">
 												<span className="text-base text-base-content/70">
-													Entrada:
+													{t("debtDetail.structure.downPayment")}:
 												</span>
 												<span className="font-medium text-lg">
 													{debt.down_payment > 0
 														? formatCurrency(
 																debt.down_payment,
 															)
-														: t("structure.notApplicable")}
+														: t(
+																"debtDetail.structure.notApplicable",
+															)}
 												</span>
 											</div>
 										)}
 									<div className="flex justify-between items-center">
 										<span className="text-base text-base-content/70">
-											Cuota mensual:
+											{t("debtDetail.structure.monthlyPayment")}:
 										</span>
 										<span className="font-medium text-lg">
 											{formatCurrency(
@@ -358,31 +366,33 @@ export default function DebtDetailPage() {
 									</div>
 									<div className="flex justify-between items-center">
 										<span className="text-base text-base-content/70">
-											Duración:
+											{t("debtDetail.structure.duration")}:
 										</span>
 										<span className="font-medium text-lg">
-											{debt.number_of_payments} meses
+											{debt.number_of_payments} {t("debtDetail.structure.months")}
 										</span>
 									</div>
 									{debt.final_payment !== undefined &&
 										debt.final_payment !== null && (
 											<div className="flex justify-between items-center">
 												<span className="text-base text-base-content/70">
-													Cuota final:
+													{t("debtDetail.structure.finalPayment")}:
 												</span>
 												<span className="font-medium text-lg">
 													{debt.final_payment > 0
 														? formatCurrency(
 																debt.final_payment,
 															)
-														: t("structure.notApplicable")}
+														: t(
+																"debtDetail.structure.notApplicable",
+															)}
 												</span>
 											</div>
 										)}
 									<div className="bg-base-300 rounded-lg p-4 mt-6">
 										<div className="flex justify-between items-center">
 											<span className="text-base font-medium">
-												Total:
+												{t("debtDetail.structure.total")}:
 											</span>
 											<span className="font-bold text-2xl">
 												{formatCurrency(totalAmount)}
@@ -407,7 +417,7 @@ export default function DebtDetailPage() {
 							<div className="card-body p-4">
 								<h2 className="card-title text-lg mb-2">
 									<FileTextIcon className="w-5 h-5" />
-									Producto
+									{t("debtDetail.sections.product")}
 								</h2>
 								<img
 									src={debt.product_image}
@@ -426,12 +436,12 @@ export default function DebtDetailPage() {
 						<div className="card-body p-5">
 							<h2 className="card-title text-xl mb-4">
 								<CalendarIcon className="w-6 h-6" />
-								Fechas
+								{t("debtDetail.sections.dates")}
 							</h2>
 							<div className="space-y-5">
 								<div>
 									<div className="text-base text-base-content/70 mb-2">
-										Primera Cuota
+										{t("debtDetail.dates.firstPayment")}
 									</div>
 									<div className="text-lg font-medium">
 										{formatDate(debt.first_payment_date)}
@@ -439,12 +449,14 @@ export default function DebtDetailPage() {
 								</div>
 								<div>
 									<div className="text-base text-base-content/70 mb-2">
-										Última Cuota
+										{t("debtDetail.dates.lastPayment")}
 									</div>
 									<div className="text-lg font-medium">
-										{debt.final_payment_date 
-											? formatDate(debt.final_payment_date)
-											: "No especificada"}
+										{debt.final_payment_date
+											? formatDate(
+													debt.final_payment_date,
+												)
+											: t("debtDetail.dates.notSpecified")}
 									</div>
 								</div>
 							</div>
