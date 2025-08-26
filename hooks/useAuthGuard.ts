@@ -33,7 +33,6 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 			const isValid = await isSessionValid();
 			if (!isValid) {
 				onSessionExpired?.();
-				await checkAuthStatus(); // This will clear the invalid session
 			}
 		} catch (error) {
 			console.error("Session check failed:", error);

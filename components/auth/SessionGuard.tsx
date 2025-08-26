@@ -19,18 +19,8 @@ export default function SessionGuard() {
 		},
 	});
 
-	// Check session immediately when component mounts (useful for returning users)
-	useEffect(() => {
-		const checkOnMount = async () => {
-			try {
-				await checkSession();
-			} catch (error) {
-				console.error("Initial session check failed:", error);
-			}
-		};
-		
-		checkOnMount();
-	}, [checkSession]);
+	// Session checks are handled by the useAuthGuard hook's periodic checks
+	// Manual check only on user activity or visibility changes
 
 	if (!showExpiredNotification) return null;
 
