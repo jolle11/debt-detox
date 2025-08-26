@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface UseAuthGuardOptions {
@@ -15,7 +15,7 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 	} = options;
 	
 	const { user, isSessionValid, checkAuthStatus } = useAuth();
-	const intervalRef = useRef<NodeJS.Timeout>();
+	const intervalRef = useRef<NodeJS.Timeout | null>(null);
 	const lastActivityRef = useRef<number>(Date.now());
 	const isCheckingRef = useRef<boolean>(false);
 
@@ -25,7 +25,7 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 	};
 
 	// Check session validity periodically
-	const performSessionCheck = async () => {
+	const performSessionCheck = useCallback(async () => {
 		if (!user || isCheckingRef.current) return;
 		
 		isCheckingRef.current = true;
@@ -39,10 +39,10 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 		} finally {
 			isCheckingRef.current = false;
 		}
-	};
+	}, [user, isSessionValid, onSessionExpired]);
 
 	// Check session when tab becomes visible (user returns to app)
-	const handleVisibilityChange = async () => {
+	const handleVisibilityChange = useCallback(async () => {
 		if (document.visibilityState === 'visible' && user) {
 			const timeSinceLastActivity = Date.now() - lastActivityRef.current;
 			// If more than 30 minutes have passed, check session
@@ -50,7 +50,7 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 				await performSessionCheck();
 			}
 		}
-	};
+	}, [user, performSessionCheck]);
 
 	useEffect(() => {
 		if (!user) return;
@@ -70,13 +70,14 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 		return () => {
 			if (intervalRef.current) {
 				clearInterval(intervalRef.current);
+				intervalRef.current = null;
 			}
 			document.removeEventListener('visibilitychange', handleVisibilityChange);
 			activities.forEach(event => {
 				document.removeEventListener(event, updateActivity);
 			});
 		};
-	}, [user, checkInterval]);
+	}, [user, checkInterval, performSessionCheck, handleVisibilityChange]);
 
 	return {
 		checkSession: performSessionCheck,
