@@ -24,12 +24,13 @@ import DebtPaymentsList from "@/components/dashboard/debt-payments-list";
 import EditDebtModal from "@/components/debt/EditDebtModal";
 import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
 import { usePayments } from "@/hooks/usePayments";
+import SkeletonDebtDetail from "@/components/ui/skeletons/SkeletonDebtDetail";
 
 export default function DebtDetailPage() {
 	const t = useTranslations();
 	const params = useParams();
 	const router = useRouter();
-	const { debts, refetch } = useDebtsContext();
+	const { debts, isLoading: debtsLoading, refetch } = useDebtsContext();
 	const [debt, setDebt] = useState<Debt | null>(null);
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -44,6 +45,10 @@ export default function DebtDetailPage() {
 		const foundDebt = debts.find((d) => d.id === debtId);
 		setDebt(foundDebt || null);
 	}, [params.id, debts]);
+
+	if (debtsLoading || paymentsLoading) {
+		return <SkeletonDebtDetail />;
+	}
 
 	if (!debt) {
 		return (

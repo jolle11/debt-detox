@@ -10,6 +10,8 @@ import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
 import { useDebtsContext } from "@/contexts/DebtsContext";
 import { useState } from "react";
 import type { Debt } from "@/lib/types";
+import SkeletonSummaryStats from "@/components/ui/skeletons/SkeletonSummaryStats";
+import SkeletonDebtsList from "@/components/ui/skeletons/SkeletonDebtsList";
 
 export default function Dashboard() {
 	const t = useTranslations();
@@ -46,9 +48,10 @@ export default function Dashboard() {
 		<ProtectedRoute fallback={authFallback}>
 			<div className="space-y-4">
 				{isLoading ? (
-					<div className="flex justify-center items-center h-64">
-						<span className="loading loading-spinner loading-lg"></span>
-					</div>
+					<>
+						<SkeletonSummaryStats />
+						<SkeletonDebtsList />
+					</>
 				) : error ? (
 					<div className="alert alert-error">
 						<span>{error}</span>

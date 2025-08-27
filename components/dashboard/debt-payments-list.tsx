@@ -9,6 +9,7 @@ import {
 import { useTranslations, useLocale } from "next-intl";
 import { formatCurrency } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
+import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
 
 interface DebtPaymentsListProps {
 	debt: Debt;
@@ -93,19 +94,7 @@ export default function DebtPaymentsList({
 	const totalPendingPayments = debt.number_of_payments - totalPaidPayments;
 
 	if (isLoading) {
-		return (
-			<div className="card bg-base-100 shadow-sm">
-				<div className="card-body p-4">
-					<h2 className="card-title text-lg mb-4">
-						<CreditCard className="w-5 h-5" />
-						{t("title")}
-					</h2>
-					<div className="flex items-center justify-center py-8">
-						<div className="loading loading-spinner loading-lg"></div>
-					</div>
-				</div>
-			</div>
-		);
+		return <SkeletonPaymentsList />;
 	}
 
 	return (
