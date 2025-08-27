@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import SkeletonAuthCheck from "@/components/ui/skeletons/SkeletonAuthCheck";
 
 interface ProtectedRouteProps {
 	children: ReactNode;
@@ -17,11 +18,7 @@ export default function ProtectedRoute({
 	const t = useTranslations("auth.restricted");
 
 	if (loading) {
-		return (
-			<div className="flex items-center justify-center min-h-screen">
-				<span className="loading loading-spinner loading-lg"></span>
-			</div>
-		);
+		return <SkeletonAuthCheck />;
 	}
 
 	if (!user) {
