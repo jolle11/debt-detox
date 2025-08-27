@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePayments } from "@/hooks/usePayments";
 import { useTranslations } from "next-intl";
 import {
@@ -22,6 +23,8 @@ export default function DebtProgressWithPayments({
 	isLoading: externalLoading = false,
 }: DebtProgressWithPaymentsProps) {
 	const t = useTranslations("debtProgress");
+	const [animatedPercentage, setAnimatedPercentage] = useState(0);
+	
 	// Use external payments if provided, otherwise fetch them locally
 	const { payments: localPayments, isLoading: localLoading } = usePayments(
 		externalPayments ? undefined : debt.id,
@@ -29,6 +32,35 @@ export default function DebtProgressWithPayments({
 
 	const payments = externalPayments || localPayments;
 	const isLoading = externalPayments ? externalLoading : localLoading;
+
+	const totalAmount = calculateTotalAmount(debt);
+	const paidAmount = calculatePaidAmountWithPayments(debt, payments);
+	const remainingAmount = calculateRemainingAmountWithPayments(
+		debt,
+		payments,
+	);
+	const progress = calculatePaymentProgressWithPayments(debt, payments);
+	
+	// Check if we have unrealistic data (indicates initial calculation issue)
+	const hasValidData = paidAmount <= totalAmount * 1.1; // Allow 10% margin for rounding
+	
+	// Use validated progress data
+	const validatedProgress = {
+		...progress,
+		percentage: !hasValidData || isNaN(progress.percentage) ? 0 : Math.min(progress.percentage, 100)
+	};
+
+	// Animate from 0 to final percentage when data is valid
+	useEffect(() => {
+		if (hasValidData && validatedProgress.percentage > 0) {
+			const timer = setTimeout(() => {
+				setAnimatedPercentage(validatedProgress.percentage);
+			}, 100); // Small delay to ensure smooth animation
+			return () => clearTimeout(timer);
+		} else {
+			setAnimatedPercentage(0);
+		}
+	}, [hasValidData, validatedProgress.percentage]);
 
 	if (isLoading) {
 		return (
@@ -39,14 +71,6 @@ export default function DebtProgressWithPayments({
 		);
 	}
 
-	const totalAmount = calculateTotalAmount(debt);
-	const paidAmount = calculatePaidAmountWithPayments(debt, payments);
-	const remainingAmount = calculateRemainingAmountWithPayments(
-		debt,
-		payments,
-	);
-	const progress = calculatePaymentProgressWithPayments(debt, payments);
-
 	return (
 		<div className="space-y-4">
 			{/* Barra de progreso mejorada */}
@@ -54,22 +78,22 @@ export default function DebtProgressWithPayments({
 				<div className="flex-1">
 					<div className="w-full bg-base-300 rounded-full h-4">
 						<div
-							className="bg-primary h-4 rounded-full transition-all duration-500 flex items-center justify-end pr-2"
+							className="bg-primary h-4 rounded-full flex items-center justify-end pr-2 transition-all duration-700 ease-out"
 							style={{
-								width: `${Math.max(progress.percentage, 5)}%`,
+								width: `${animatedPercentage > 0 ? Math.max(animatedPercentage, 5) : 0}%`,
 							}}
 						>
-							{progress.percentage > 15 && (
+							{animatedPercentage > 15 && (
 								<span className="text-sm font-medium text-primary-content">
-									{progress.percentage}%
+									{Math.round(animatedPercentage)}%
 								</span>
 							)}
 						</div>
 					</div>
 				</div>
-				{progress.percentage <= 15 && (
+				{animatedPercentage <= 15 && (
 					<span className="text-lg font-semibold text-primary">
-						{progress.percentage}%
+						{Math.round(animatedPercentage)}%
 					</span>
 				)}
 			</div>
