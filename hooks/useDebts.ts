@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt } from "@/lib/types";
 
@@ -8,50 +8,45 @@ interface UseDebtsReturn {
 	debts: Debt[];
 	isLoading: boolean;
 	error: string | null;
-	refetch: () => Promise<void>;
+	refetch: () => void;
 }
 
+const fetchDebts = async (): Promise<Debt[]> => {
+	if (!pb.authStore.isValid) {
+		return [];
+	}
+
+	try {
+		const records = await pb.collection(COLLECTIONS.DEBTS).getFullList({
+			filter: "deleted = null",
+			sort: "-created",
+		});
+
+		return records as unknown as Debt[];
+	} catch (err) {
+		const errorMessage =
+			err instanceof Error ? err.message : "Error al cargar las deudas";
+		console.error("Error fetching debts:", err);
+		throw new Error(errorMessage);
+	}
+};
+
 export function useDebts(): UseDebtsReturn {
-	const [debts, setDebts] = useState<Debt[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
-
-	const fetchDebts = async () => {
-		setIsLoading(true);
-		setError(null);
-
-		try {
-			if (!pb.authStore.isValid) {
-				setDebts([]);
-				return;
-			}
-
-			const records = await pb.collection(COLLECTIONS.DEBTS).getFullList({
-				filter: "deleted = null",
-				sort: "-created",
-			});
-
-			setDebts(records as unknown as Debt[]);
-		} catch (err) {
-			const errorMessage =
-				err instanceof Error
-					? err.message
-					: "Error al cargar las deudas";
-			setError(errorMessage);
-			console.error("Error fetching debts:", err);
-		} finally {
-			setIsLoading(false);
-		}
-	};
-
-	useEffect(() => {
-		fetchDebts();
-	}, []);
+	const {
+		data: debts = [],
+		isLoading,
+		error,
+		refetch,
+	} = useQuery({
+		queryKey: ["debts"],
+		queryFn: fetchDebts,
+		enabled: pb.authStore.isValid, // Solo ejecuta si está autenticado
+	});
 
 	return {
 		debts,
 		isLoading,
-		error,
-		refetch: fetchDebts,
+		error: error?.message || null,
+		refetch,
 	};
 }

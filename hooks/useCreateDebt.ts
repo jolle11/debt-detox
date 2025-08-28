@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { usePayments } from "@/hooks/usePayments";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt } from "@/lib/types";
@@ -15,19 +15,13 @@ interface UseCreateDebtReturn {
 }
 
 export function useCreateDebt(): UseCreateDebtReturn {
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
-	const [success, setSuccess] = useState(false);
+	const queryClient = useQueryClient();
 	const { generateHistoricalPayments } = usePayments();
 
-	const createDebt = async (
-		debtData: Omit<Debt, "id" | "created" | "updated" | "deleted">,
-	) => {
-		setIsLoading(true);
-		setError(null);
-		setSuccess(false);
-
-		try {
+	const mutation = useMutation({
+		mutationFn: async (
+			debtData: Omit<Debt, "id" | "created" | "updated" | "deleted">,
+		) => {
 			if (!pb.authStore.isValid) {
 				throw new Error("Usuario no autenticado");
 			}
@@ -44,21 +38,18 @@ export function useCreateDebt(): UseCreateDebtReturn {
 				debtData.number_of_payments,
 			);
 
-			setSuccess(true);
-		} catch (err) {
-			const errorMessage =
-				err instanceof Error ? err.message : "Error desconocido";
-			setError(errorMessage);
-			throw err;
-		} finally {
-			setIsLoading(false);
-		}
-	};
+			return createdDebt;
+		},
+		onSuccess: () => {
+			// Invalidar cache de debts para refetch automático
+			queryClient.invalidateQueries({ queryKey: ["debts"] });
+		},
+	});
 
 	return {
-		createDebt,
-		isLoading,
-		error,
-		success,
+		createDebt: mutation.mutateAsync,
+		isLoading: mutation.isPending,
+		error: mutation.error?.message || null,
+		success: mutation.isSuccess,
 	};
 }

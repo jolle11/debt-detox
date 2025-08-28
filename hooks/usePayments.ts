@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Payment } from "@/lib/types";
 
@@ -8,7 +8,7 @@ interface UsePaymentsReturn {
 	payments: Payment[];
 	isLoading: boolean;
 	error: string | null;
-	refetch: () => Promise<void>;
+	refetch: () => void;
 	markPaymentAsPaid: (
 		debtId: string,
 		month: number,
@@ -38,53 +38,60 @@ interface UsePaymentsReturn {
 	) => Promise<void>;
 }
 
+const fetchPayments = async (debtId?: string): Promise<Payment[]> => {
+	if (!pb.authStore.isValid) {
+		return [];
+	}
+
+	try {
+		const filter = debtId
+			? `debt_id = "${debtId}" && deleted = null`
+			: "deleted = null";
+
+		const records = await pb
+			.collection(COLLECTIONS.PAYMENTS)
+			.getFullList({
+				filter,
+				sort: "-year,-month",
+			});
+
+		return records as unknown as Payment[];
+	} catch (err) {
+		const errorMessage =
+			err instanceof Error ? err.message : "Error al cargar los pagos";
+		console.error("Error fetching payments:", err);
+		throw new Error(errorMessage);
+	}
+};
+
 export function usePayments(debtId?: string): UsePaymentsReturn {
-	const [payments, setPayments] = useState<Payment[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
+	const queryClient = useQueryClient();
 
-	const fetchPayments = async () => {
-		setIsLoading(true);
-		setError(null);
+	const {
+		data: payments = [],
+		isLoading,
+		error,
+		refetch,
+	} = useQuery({
+		queryKey: ["payments", debtId],
+		queryFn: () => fetchPayments(debtId),
+		enabled: pb.authStore.isValid,
+	});
 
-		try {
-			if (!pb.authStore.isValid) {
-				setPayments([]);
-				return;
-			}
-
-			const filter = debtId
-				? `debt_id = "${debtId}" && deleted = null`
-				: "deleted = null";
-
-			const records = await pb
-				.collection(COLLECTIONS.PAYMENTS)
-				.getFullList({
-					filter,
-					sort: "-year,-month",
-				});
-
-			setPayments(records as unknown as Payment[]);
-		} catch (err) {
-			const errorMessage =
-				err instanceof Error
-					? err.message
-					: "Error al cargar los pagos";
-			setError(errorMessage);
-			console.error("Error fetching payments:", err);
-		} finally {
-			setIsLoading(false);
-		}
-	};
-
-	const markPaymentAsPaid = async (
-		debtId: string,
-		month: number,
-		year: number,
-		plannedAmount: number,
-		actualAmount?: number,
-	) => {
-		try {
+	const markPaymentMutation = useMutation({
+		mutationFn: async ({
+			debtId,
+			month,
+			year,
+			plannedAmount,
+			actualAmount,
+		}: {
+			debtId: string;
+			month: number;
+			year: number;
+			plannedAmount: number;
+			actualAmount?: number;
+		}) => {
 			// Buscar si ya existe un payment para este mes/año
 			const existingPayments = await pb
 				.collection(COLLECTIONS.PAYMENTS)
@@ -97,14 +104,14 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 			if (existingPayments.length > 0) {
 				// Actualizar el payment existente
 				const payment = existingPayments[0];
-				await pb.collection(COLLECTIONS.PAYMENTS).update(payment.id, {
+				return await pb.collection(COLLECTIONS.PAYMENTS).update(payment.id, {
 					paid: true,
 					paid_date: new Date().toISOString(),
 					actual_amount: amountToPay,
 				});
 			} else {
 				// Crear un nuevo payment
-				await pb.collection(COLLECTIONS.PAYMENTS).create({
+				return await pb.collection(COLLECTIONS.PAYMENTS).create({
 					debt_id: debtId,
 					month,
 					year,
@@ -114,13 +121,29 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 					paid_date: new Date().toISOString(),
 				});
 			}
+		},
+		onSuccess: () => {
+			// Invalidar cache de payments para refetch automático
+			queryClient.invalidateQueries({ queryKey: ["payments"] });
+			// También invalidar debts ya que los pagos afectan el progreso
+			queryClient.invalidateQueries({ queryKey: ["debts"] });
+		},
+	});
 
-			// Refrescar la lista
-			await fetchPayments();
-		} catch (err) {
-			console.error("Error marking payment as paid:", err);
-			throw err;
-		}
+	const markPaymentAsPaid = async (
+		debtId: string,
+		month: number,
+		year: number,
+		plannedAmount: number,
+		actualAmount?: number,
+	) => {
+		return markPaymentMutation.mutateAsync({
+			debtId,
+			month,
+			year,
+			plannedAmount,
+			actualAmount,
+		});
 	};
 
 	const markMultiplePaymentsAsPaid = async (
@@ -224,23 +247,19 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 				await pb.collection(COLLECTIONS.PAYMENTS).create(payment);
 			}
 
-			// Refrescar la lista
-			await fetchPayments();
+			// Invalidar cache para refetch automático
+			queryClient.invalidateQueries({ queryKey: ["payments"] });
 		} catch (err) {
 			console.error("Error generating historical payments:", err);
 			throw err;
 		}
 	};
 
-	useEffect(() => {
-		fetchPayments();
-	}, [debtId]);
-
 	return {
 		payments,
 		isLoading,
-		error,
-		refetch: fetchPayments,
+		error: error?.message || null,
+		refetch,
 		markPaymentAsPaid,
 		markMultiplePaymentsAsPaid,
 		getPaymentStatus,

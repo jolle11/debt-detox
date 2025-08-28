@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS } from "@/lib/types";
 
@@ -11,37 +11,30 @@ interface UseDeleteDebtReturn {
 }
 
 export function useDeleteDebt(): UseDeleteDebtReturn {
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
+	const queryClient = useQueryClient();
 
-	const deleteDebt = async (debtId: string) => {
-		setIsLoading(true);
-		setError(null);
-
-		try {
+	const mutation = useMutation({
+		mutationFn: async (debtId: string) => {
 			if (!pb.authStore.isValid) {
 				throw new Error("Usuario no autenticado");
 			}
 
 			// Soft delete: set the deleted field to current date
-			await pb.collection(COLLECTIONS.DEBTS).update(debtId, {
+			const deletedDebt = await pb.collection(COLLECTIONS.DEBTS).update(debtId, {
 				deleted: new Date().toISOString(),
 			});
-		} catch (err) {
-			const errorMessage =
-				err instanceof Error
-					? err.message
-					: "Error al eliminar la financiación";
-			setError(errorMessage);
-			throw err;
-		} finally {
-			setIsLoading(false);
-		}
-	};
+
+			return deletedDebt;
+		},
+		onSuccess: () => {
+			// Invalidar cache de debts para refetch automático
+			queryClient.invalidateQueries({ queryKey: ["debts"] });
+		},
+	});
 
 	return {
-		deleteDebt,
-		isLoading,
-		error,
+		deleteDebt: mutation.mutateAsync,
+		isLoading: mutation.isPending,
+		error: mutation.error?.message || null,
 	};
 }
