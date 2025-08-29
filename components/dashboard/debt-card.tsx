@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import { calculateDebtStatus } from "@/lib/format";
-import type { Debt } from "@/lib/types";
+import type { Debt, Payment } from "@/lib/types";
 import DebtActions from "./debt-actions";
 import DebtInfo from "./debt-info";
 import DebtPaymentStatus from "./debt-payment-status";
@@ -8,11 +8,12 @@ import DebtProgressWithPayments from "./debt-progress-with-payments";
 
 interface DebtCardProps {
 	debt: Debt;
+	payments: Payment[];
 	onEdit?: (debt: Debt) => void;
 	onDelete?: (debt: Debt) => void;
 }
 
-export default function DebtCard({ debt, onEdit, onDelete }: DebtCardProps) {
+export default function DebtCard({ debt, payments, onEdit, onDelete }: DebtCardProps) {
 	const status = calculateDebtStatus(debt.final_payment_date);
 	const router = useRouter();
 
@@ -34,10 +35,17 @@ export default function DebtCard({ debt, onEdit, onDelete }: DebtCardProps) {
 						</p>
 						<DebtInfo debt={debt} />
 						<div className="mt-4">
-							<DebtProgressWithPayments debt={debt} />
+							<DebtProgressWithPayments 
+								debt={debt} 
+								payments={payments.filter(p => p.debt_id === debt.id)}
+								isLoading={false}
+							/>
 						</div>
 						<div className="mt-3">
-							<DebtPaymentStatus debt={debt} />
+							<DebtPaymentStatus 
+								debt={debt} 
+								payments={payments.filter(p => p.debt_id === debt.id)}
+							/>
 						</div>
 					</div>
 					<div onClick={(e) => e.stopPropagation()}>

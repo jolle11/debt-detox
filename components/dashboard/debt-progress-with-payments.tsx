@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePayments } from "@/hooks/usePayments";
 import { useTranslations } from "next-intl";
 import {
 	calculatePaidAmountWithPayments,
@@ -25,13 +24,9 @@ export default function DebtProgressWithPayments({
 	const t = useTranslations("debtProgress");
 	const [animatedPercentage, setAnimatedPercentage] = useState(0);
 	
-	// Use external payments if provided, otherwise fetch them locally
-	const { payments: localPayments, isLoading: localLoading } = usePayments(
-		externalPayments ? undefined : debt.id,
-	);
-
-	const payments = externalPayments || localPayments;
-	const isLoading = externalPayments ? externalLoading : localLoading;
+	// Use external payments if provided, no local fetch needed
+	const payments = externalPayments || [];
+	const isLoading = externalLoading;
 
 	const totalAmount = calculateTotalAmount(debt);
 	const paidAmount = calculatePaidAmountWithPayments(debt, payments);
