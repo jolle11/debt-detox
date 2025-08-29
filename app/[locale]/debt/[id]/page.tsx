@@ -34,6 +34,7 @@ export default function DebtDetailPage() {
 	const [debt, setDebt] = useState<Debt | null>(null);
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [isClient, setIsClient] = useState(false);
 	const {
 		payments,
 		isLoading: paymentsLoading,
@@ -41,15 +42,21 @@ export default function DebtDetailPage() {
 	} = usePayments(debt?.id);
 
 	useEffect(() => {
+		setIsClient(true);
+	}, []);
+
+	useEffect(() => {
 		const debtId = params.id as string;
 		const foundDebt = debts.find((d) => d.id === debtId);
 		setDebt(foundDebt || null);
 	}, [params.id, debts]);
 
-	if (debtsLoading || paymentsLoading) {
+	// Show loading skeleton during SSR or while loading
+	if (!isClient || debtsLoading || paymentsLoading) {
 		return <SkeletonDebtDetail />;
 	}
 
+	// Show not found only after client-side hydration
 	if (!debt) {
 		return (
 			<div className="container mx-auto px-4 py-8">
@@ -73,6 +80,7 @@ export default function DebtDetailPage() {
 		);
 	}
 
+
 	const status = calculateDebtStatus(debt.final_payment_date);
 	const totalAmount =
 		(debt.down_payment || 0) +
@@ -80,6 +88,7 @@ export default function DebtDetailPage() {
 		(debt.final_payment || 0);
 
 	const formatDate = (dateString: string) => {
+		if (typeof window === 'undefined') return dateString; // SSR fallback
 		return new Date(dateString).toLocaleDateString("es-ES", {
 			year: "numeric",
 			month: "long",
@@ -89,6 +98,7 @@ export default function DebtDetailPage() {
 
 	// Calcular cuotas que deberían estar pagadas según fechas
 	const calculateExpectedPaidPayments = () => {
+		if (typeof window === 'undefined') return 0; // SSR
 		const now = new Date();
 		const firstPayment = new Date(debt.first_payment_date);
 
@@ -269,7 +279,7 @@ export default function DebtDetailPage() {
 							<div className="mt-3">
 								<DebtPaymentStatus
 									debt={debt}
-									onPaymentUpdate={refetchPayments}
+									payments={payments}
 								/>
 							</div>
 						</div>
@@ -476,7 +486,6 @@ export default function DebtDetailPage() {
 				isOpen={showEditModal}
 				onClose={() => setShowEditModal(false)}
 				onSuccess={() => {
-					refetch();
 					setShowEditModal(false);
 				}}
 			/>
@@ -487,7 +496,6 @@ export default function DebtDetailPage() {
 				isOpen={showDeleteModal}
 				onClose={() => setShowDeleteModal(false)}
 				onSuccess={() => {
-					refetch();
 					router.push("/"); // Redirect to dashboard after delete
 				}}
 			/>
