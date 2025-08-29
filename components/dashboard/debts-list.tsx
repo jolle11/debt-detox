@@ -3,10 +3,11 @@ import DebtCard from "@/components/dashboard/debt-card";
 import DebtFilterTabs from "@/components/dashboard/debt-filter-tabs";
 import EmptyState from "@/components/dashboard/empty-state";
 import { useDebtFilter } from "@/hooks/use-debt-filter";
-import type { Debt } from "@/lib/types";
+import type { Debt, Payment } from "@/lib/types";
 
 interface DebtsListProps {
 	debts: Debt[];
+	payments: Payment[];
 	onEdit?: (debt: Debt) => void;
 	onDelete?: (debt: Debt) => void;
 	onAddDebt?: () => void;
@@ -14,6 +15,7 @@ interface DebtsListProps {
 
 export default function DebtsList({
 	debts,
+	payments,
 	onEdit,
 	onDelete,
 	onAddDebt,
@@ -40,6 +42,7 @@ export default function DebtsList({
 						<DebtCard
 							key={debt.id}
 							debt={debt}
+							payments={payments}
 							onEdit={onEdit}
 							onDelete={onDelete}
 						/>

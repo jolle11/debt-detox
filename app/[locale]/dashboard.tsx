@@ -8,6 +8,7 @@ import CreateDebtModal from "@/components/debt/CreateDebtModal";
 import EditDebtModal from "@/components/debt/EditDebtModal";
 import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
 import { useDebtsContext } from "@/contexts/DebtsContext";
+import { usePayments } from "@/hooks/usePayments";
 import { useState } from "react";
 import type { Debt } from "@/lib/types";
 import SkeletonSummaryStats from "@/components/ui/skeletons/SkeletonSummaryStats";
@@ -22,6 +23,9 @@ export default function Dashboard() {
 	const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
 	const [deletingDebt, setDeletingDebt] = useState<Debt | null>(null);
 	const { debts, isLoading, error, refetch } = useDebtsContext();
+	
+	// Centralizar payments para todos los componentes del dashboard
+	const { payments, isLoading: paymentsLoading } = usePayments();
 
 	const authFallback = (
 		<div className="flex items-center justify-center min-h-[60vh]">
@@ -47,7 +51,7 @@ export default function Dashboard() {
 	return (
 		<ProtectedRoute fallback={authFallback}>
 			<div className="space-y-4">
-				{isLoading ? (
+				{isLoading || paymentsLoading ? (
 					<>
 						<SkeletonSummaryStats />
 						<SkeletonDebtsList />
@@ -64,6 +68,7 @@ export default function Dashboard() {
 						{/* Debt List */}
 						<DebtsList
 							debts={debts}
+							payments={payments}
 							onEdit={setEditingDebt}
 							onDelete={setDeletingDebt}
 							onAddDebt={() => setShowCreateModal(true)}
@@ -76,7 +81,6 @@ export default function Dashboard() {
 			<CreateDebtModal
 				isOpen={showCreateModal}
 				onClose={() => setShowCreateModal(false)}
-				onSuccess={refetch}
 			/>
 
 			{/* Edit Debt Modal */}
@@ -84,7 +88,6 @@ export default function Dashboard() {
 				debt={editingDebt}
 				isOpen={!!editingDebt}
 				onClose={() => setEditingDebt(null)}
-				onSuccess={refetch}
 			/>
 
 			{/* Delete Debt Modal */}
@@ -92,7 +95,6 @@ export default function Dashboard() {
 				debt={deletingDebt}
 				isOpen={!!deletingDebt}
 				onClose={() => setDeletingDebt(null)}
-				onSuccess={refetch}
 			/>
 		</ProtectedRoute>
 	);
