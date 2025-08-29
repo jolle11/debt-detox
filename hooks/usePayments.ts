@@ -136,8 +136,8 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		year: number,
 		plannedAmount: number,
 		actualAmount?: number,
-	) => {
-		return markPaymentMutation.mutateAsync({
+	): Promise<void> => {
+		await markPaymentMutation.mutateAsync({
 			debtId,
 			month,
 			year,

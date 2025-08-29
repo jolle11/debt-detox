@@ -44,8 +44,8 @@ export function useEditDebt(): UseEditDebtReturn {
 	const editDebt = async (
 		debtId: string,
 		debtData: Omit<Debt, "created" | "updated" | "deleted">,
-	) => {
-		return mutation.mutateAsync({ debtId, debtData });
+	): Promise<void> => {
+		await mutation.mutateAsync({ debtId, debtData });
 	};
 
 	return {

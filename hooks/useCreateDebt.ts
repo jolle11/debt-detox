@@ -46,8 +46,14 @@ export function useCreateDebt(): UseCreateDebtReturn {
 		},
 	});
 
+	const createDebt = async (
+		debtData: Omit<Debt, "id" | "created" | "updated" | "deleted">,
+	): Promise<void> => {
+		await mutation.mutateAsync(debtData);
+	};
+
 	return {
-		createDebt: mutation.mutateAsync,
+		createDebt,
 		isLoading: mutation.isPending,
 		error: mutation.error?.message || null,
 		success: mutation.isSuccess,

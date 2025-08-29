@@ -8,7 +8,7 @@ interface DebtsContextType {
 	debts: Debt[];
 	isLoading: boolean;
 	error: string | null;
-	refetch: () => Promise<void>;
+	refetch: () => void;
 }
 
 const DebtsContext = createContext<DebtsContextType | undefined>(undefined);

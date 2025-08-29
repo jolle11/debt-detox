@@ -32,8 +32,12 @@ export function useDeleteDebt(): UseDeleteDebtReturn {
 		},
 	});
 
+	const deleteDebt = async (debtId: string): Promise<void> => {
+		await mutation.mutateAsync(debtId);
+	};
+
 	return {
-		deleteDebt: mutation.mutateAsync,
+		deleteDebt,
 		isLoading: mutation.isPending,
 		error: mutation.error?.message || null,
 	};
