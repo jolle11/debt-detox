@@ -7,7 +7,7 @@ import {
 	XCircle,
 } from "@phosphor-icons/react";
 import { useTranslations, useLocale } from "next-intl";
-import { formatCurrency } from "@/lib/format";
+import { useCurrency } from "@/hooks/useCurrency";
 import type { Debt, Payment } from "@/lib/types";
 import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
 
@@ -24,6 +24,7 @@ export default function DebtPaymentsList({
 }: DebtPaymentsListProps) {
 	const t = useTranslations("paymentsList");
 	const locale = useLocale();
+	const { formatCurrency } = useCurrency();
 	// Generate all expected payments based on debt structure
 	const generateAllExpectedPayments = () => {
 		const expectedPayments: Array<{

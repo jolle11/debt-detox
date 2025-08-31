@@ -5,6 +5,7 @@ import { useState } from "react";
 import EmailSection from "./EmailSection";
 import NameSection from "./NameSection";
 import PasswordSection from "./PasswordSection";
+import CurrencySection from "./CurrencySection";
 
 interface ProfileSettingsProps {
 	user: RecordModel;
@@ -34,6 +35,12 @@ export default function ProfileSettings({
 			/>
 
 			<EmailSection user={user} />
+
+			<CurrencySection
+				user={user}
+				refreshUser={refreshUser}
+				onMessage={setMessage}
+			/>
 
 			<PasswordSection user={user} onMessage={setMessage} />
 		</div>

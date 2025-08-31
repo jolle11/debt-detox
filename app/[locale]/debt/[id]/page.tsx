@@ -16,7 +16,8 @@ import {
 	TrashIcon,
 } from "@phosphor-icons/react";
 import { useDebtsContext } from "@/contexts/DebtsContext";
-import { calculateDebtStatus, formatCurrency } from "@/lib/format";
+import { calculateDebtStatus } from "@/lib/format";
+import { useCurrency } from "@/hooks/useCurrency";
 import type { Debt, Payment } from "@/lib/types";
 import DebtProgressWithPayments from "@/components/dashboard/debt-progress-with-payments";
 import DebtPaymentStatus from "@/components/dashboard/debt-payment-status";
@@ -31,6 +32,7 @@ export default function DebtDetailPage() {
 	const params = useParams();
 	const router = useRouter();
 	const { debts, isLoading: debtsLoading, refetch } = useDebtsContext();
+	const { formatCurrency } = useCurrency();
 	const [debt, setDebt] = useState<Debt | null>(null);
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);

@@ -3,8 +3,8 @@ import {
 	calculatePaidAmount,
 	calculateRemainingAmount,
 	calculateTotalAmount,
-	formatCurrency,
 } from "@/lib/format";
+import { useCurrency } from "@/hooks/useCurrency";
 import type { Debt } from "@/lib/types";
 
 interface DebtInfoProps {
@@ -14,6 +14,7 @@ interface DebtInfoProps {
 export default function DebtInfo({ debt }: DebtInfoProps) {
 	const t = useTranslations();
 	const format = useFormatter();
+	const { formatCurrency } = useCurrency();
 
 	const totalAmount = calculateTotalAmount(debt);
 	const paidAmount = calculatePaidAmount(debt);
@@ -22,32 +23,29 @@ export default function DebtInfo({ debt }: DebtInfoProps) {
 	const infoItems = [
 		{
 			label: t("dashboard.debt.totalAmount"),
-			value: formatCurrency(totalAmount, t("common.currency")),
+			value: formatCurrency(totalAmount),
 			className: "text-lg font-bold text-base-content",
 		},
 		{
 			label: t("dashboard.debt.paidAmount"),
-			value: formatCurrency(paidAmount, t("common.currency")),
+			value: formatCurrency(paidAmount),
 			className: "text-lg font-bold text-success",
 		},
 		{
 			label: t("dashboard.debt.remainingAmount"),
-			value: formatCurrency(remainingAmount, t("common.currency")),
+			value: formatCurrency(remainingAmount),
 			className: "text-lg font-bold text-primary",
 		},
 		{
 			label: t("dashboard.debt.monthlyAmount"),
-			value: formatCurrency(debt.monthly_amount, t("common.currency")),
+			value: formatCurrency(debt.monthly_amount),
 			className: "text-lg font-bold text-secondary",
 		},
 		...(debt.down_payment && debt.down_payment > 0
 			? [
 					{
 						label: t("debt.create.downPayment"),
-						value: formatCurrency(
-							debt.down_payment,
-							t("common.currency"),
-						),
+						value: formatCurrency(debt.down_payment),
 						className: "text-lg font-bold text-info",
 					},
 				]
@@ -56,10 +54,7 @@ export default function DebtInfo({ debt }: DebtInfoProps) {
 			? [
 					{
 						label: t("dashboard.debt.finalPayment"),
-						value: formatCurrency(
-							debt.final_payment,
-							t("common.currency"),
-						),
+						value: formatCurrency(debt.final_payment),
 						className: "text-lg font-bold text-accent",
 					},
 				]

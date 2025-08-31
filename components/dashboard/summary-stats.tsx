@@ -10,8 +10,8 @@ import {
 	calculateDebtStatus,
 	calculatePaymentProgress,
 	calculateRemainingAmount,
-	formatCurrency,
 } from "@/lib/format";
+import { useCurrency } from "@/hooks/useCurrency";
 import type { Debt } from "@/lib/types";
 
 interface SummaryStatsProps {
@@ -20,6 +20,7 @@ interface SummaryStatsProps {
 
 export default function SummaryStats({ debts }: SummaryStatsProps) {
 	const t = useTranslations();
+	const { formatCurrency } = useCurrency();
 
 	const activeDebts = debts.filter(
 		(d) => calculateDebtStatus(d.final_payment_date) === "active",
@@ -50,7 +51,7 @@ export default function SummaryStats({ debts }: SummaryStatsProps) {
 	const stats = [
 		{
 			title: t("dashboard.stats.totalDebt"),
-			value: formatCurrency(totalDebt, t("common.currency")),
+			value: formatCurrency(totalDebt),
 			description: t("dashboard.stats.activeDebts", {
 				count: activeDebts.length,
 			}),
@@ -59,7 +60,7 @@ export default function SummaryStats({ debts }: SummaryStatsProps) {
 		},
 		{
 			title: t("dashboard.stats.monthlyPayment"),
-			value: formatCurrency(totalMonthlyPayment, t("common.currency")),
+			value: formatCurrency(totalMonthlyPayment),
 			description: t("dashboard.stats.monthlyTotal"),
 			icon: <ClockIcon size={32} />,
 			variant: "secondary" as const,
