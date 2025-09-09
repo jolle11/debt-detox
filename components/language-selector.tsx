@@ -26,7 +26,7 @@ export default function LanguageSelector() {
 	const currentLanguage = languages.find((lang) => lang.code === locale);
 
 	return (
-		<div className="dropdown dropdown-end">
+		<div className="dropdown dropdown-start">
 			<div
 				tabIndex={0}
 				role="button"
