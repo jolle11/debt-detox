@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
-import LanguageSelector from "@/components/language-selector";
-import { DemoProvider } from "@/components/demo/DemoProvider";
 import DemoContainer from "@/components/demo/DemoContainer";
+import { DemoProvider } from "@/components/demo/DemoProvider";
+import LanguageSelector from "@/components/language-selector";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function LandingPage() {
 	const t = useTranslations();
@@ -15,11 +16,12 @@ export default function LandingPage() {
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10">
-			{/* Header with Language Selector */}
-			<div className="absolute top-4 right-4 z-10">
+			{/* Header with Language and Theme Selectors */}
+			<div className="absolute top-4 right-10 z-10 flex items-center gap-2">
 				<LanguageSelector />
+				<ThemeToggle />
 			</div>
-			
+
 			{/* Hero Section */}
 			<div className="hero min-h-screen">
 				<div className="hero-content text-center">
@@ -38,9 +40,15 @@ export default function LandingPage() {
 							<div className="card bg-base-100 shadow-xl">
 								<div className="card-body items-center text-center">
 									<div className="text-4xl mb-2">📊</div>
-									<h3 className="card-title">{tLanding("features.trackProgress.title")}</h3>
+									<h3 className="card-title">
+										{tLanding(
+											"features.trackProgress.title",
+										)}
+									</h3>
 									<p className="text-sm">
-										{tLanding("features.trackProgress.description")}
+										{tLanding(
+											"features.trackProgress.description",
+										)}
 									</p>
 								</div>
 							</div>
@@ -48,9 +56,13 @@ export default function LandingPage() {
 							<div className="card bg-base-100 shadow-xl">
 								<div className="card-body items-center text-center">
 									<div className="text-4xl mb-2">🎯</div>
-									<h3 className="card-title">{tLanding("features.setGoals.title")}</h3>
+									<h3 className="card-title">
+										{tLanding("features.setGoals.title")}
+									</h3>
 									<p className="text-sm">
-										{tLanding("features.setGoals.description")}
+										{tLanding(
+											"features.setGoals.description",
+										)}
 									</p>
 								</div>
 							</div>
@@ -58,9 +70,15 @@ export default function LandingPage() {
 							<div className="card bg-base-100 shadow-xl">
 								<div className="card-body items-center text-center">
 									<div className="text-4xl mb-2">📈</div>
-									<h3 className="card-title">{tLanding("features.stayMotivated.title")}</h3>
+									<h3 className="card-title">
+										{tLanding(
+											"features.stayMotivated.title",
+										)}
+									</h3>
 									<p className="text-sm">
-										{tLanding("features.stayMotivated.description")}
+										{tLanding(
+											"features.stayMotivated.description",
+										)}
 									</p>
 								</div>
 							</div>
@@ -85,7 +103,9 @@ export default function LandingPage() {
 			<div className="py-20 bg-base-200">
 				<div className="container mx-auto px-4">
 					<div className="text-center mb-16">
-						<h2 className="text-4xl font-bold mb-4">{tLanding("details.title")}</h2>
+						<h2 className="text-4xl font-bold mb-4">
+							{tLanding("details.title")}
+						</h2>
 						<p className="text-xl text-base-content/70">
 							{tLanding("details.subtitle")}
 						</p>
@@ -96,7 +116,9 @@ export default function LandingPage() {
 							<div className="bg-primary/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
 								<span className="text-2xl">💰</span>
 							</div>
-							<h3 className="font-semibold mb-2">{tLanding("details.amountTracking.title")}</h3>
+							<h3 className="font-semibold mb-2">
+								{tLanding("details.amountTracking.title")}
+							</h3>
 							<p className="text-sm text-base-content/70">
 								{tLanding("details.amountTracking.description")}
 							</p>
@@ -106,7 +128,9 @@ export default function LandingPage() {
 							<div className="bg-secondary/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
 								<span className="text-2xl">📅</span>
 							</div>
-							<h3 className="font-semibold mb-2">{tLanding("details.dateManagement.title")}</h3>
+							<h3 className="font-semibold mb-2">
+								{tLanding("details.dateManagement.title")}
+							</h3>
 							<p className="text-sm text-base-content/70">
 								{tLanding("details.dateManagement.description")}
 							</p>
@@ -116,9 +140,15 @@ export default function LandingPage() {
 							<div className="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
 								<span className="text-2xl">📊</span>
 							</div>
-							<h3 className="font-semibold mb-2">{tLanding("details.progressVisualization.title")}</h3>
+							<h3 className="font-semibold mb-2">
+								{tLanding(
+									"details.progressVisualization.title",
+								)}
+							</h3>
 							<p className="text-sm text-base-content/70">
-								{tLanding("details.progressVisualization.description")}
+								{tLanding(
+									"details.progressVisualization.description",
+								)}
 							</p>
 						</div>
 
@@ -126,7 +156,9 @@ export default function LandingPage() {
 							<div className="bg-success/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
 								<span className="text-2xl">🏦</span>
 							</div>
-							<h3 className="font-semibold mb-2">{tLanding("details.entityDetails.title")}</h3>
+							<h3 className="font-semibold mb-2">
+								{tLanding("details.entityDetails.title")}
+							</h3>
 							<p className="text-sm text-base-content/70">
 								{tLanding("details.entityDetails.description")}
 							</p>
@@ -139,15 +171,19 @@ export default function LandingPage() {
 			<div className="py-20 bg-base-100">
 				<div className="container mx-auto px-4">
 					<div className="text-center mb-16">
-						<h2 className="text-4xl font-bold mb-4">{tLanding("demo.title")}</h2>
+						<h2 className="text-4xl font-bold mb-4">
+							{tLanding("demo.title")}
+						</h2>
 						<p className="text-xl text-base-content/70">
 							{tLanding("demo.subtitle")}
 						</p>
 					</div>
-					
+
 					<div className="max-w-6xl mx-auto">
 						<DemoProvider>
-							<DemoContainer onLoginClick={() => setShowAuthModal(true)} />
+							<DemoContainer
+								onLoginClick={() => setShowAuthModal(true)}
+							/>
 						</DemoProvider>
 					</div>
 				</div>
@@ -156,7 +192,9 @@ export default function LandingPage() {
 			{/* CTA Section */}
 			<div className="py-20">
 				<div className="container mx-auto px-4 text-center">
-					<h2 className="text-4xl font-bold mb-4">{tLanding("cta.title")}</h2>
+					<h2 className="text-4xl font-bold mb-4">
+						{tLanding("cta.title")}
+					</h2>
 					<p className="text-xl text-base-content/70 mb-8">
 						{tLanding("cta.subtitle")}
 					</p>
