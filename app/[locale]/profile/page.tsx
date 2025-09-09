@@ -1,20 +1,21 @@
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
-import NotLoggedIn from "@/components/profile/NotLoggedIn";
 import ProfileSettings from "@/components/profile/ProfileSettings";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import SkeletonProfile from "@/components/ui/skeletons/SkeletonProfile";
+import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 
 export default function ProfilePage() {
-	const { user, loading, refreshUser } = useAuth();
+	const { user, loading } = useAuthRedirect();
+	const { refreshUser } = useAuth();
 
 	if (loading) {
 		return <SkeletonProfile />;
 	}
 
 	if (!user) {
-		return <NotLoggedIn />;
+		return null;
 	}
 
 	return (

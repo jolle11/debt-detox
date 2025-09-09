@@ -3,7 +3,7 @@ import { useTranslations, useLocale } from "next-intl";
 import SummaryStats from "@/components/dashboard/summary-stats";
 import DebtsList from "@/components/dashboard/debts-list";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import AuthModal from "@/components/auth/AuthModal";
+import LandingPage from "@/components/landing/LandingPage";
 import CreateDebtModal from "@/components/debt/CreateDebtModal";
 import EditDebtModal from "@/components/debt/EditDebtModal";
 import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
@@ -16,9 +16,7 @@ import SkeletonDebtsList from "@/components/ui/skeletons/SkeletonDebtsList";
 
 export default function Dashboard() {
 	const t = useTranslations();
-	const tAuth = useTranslations("auth");
 	const locale = useLocale();
-	const [showAuthModal, setShowAuthModal] = useState(false);
 	const [showCreateModal, setShowCreateModal] = useState(false);
 	const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
 	const [deletingDebt, setDeletingDebt] = useState<Debt | null>(null);
@@ -27,26 +25,7 @@ export default function Dashboard() {
 	// Centralizar payments para todos los componentes del dashboard
 	const { payments, isLoading: paymentsLoading } = usePayments();
 
-	const authFallback = (
-		<div className="flex items-center justify-center min-h-[60vh]">
-			<div className="text-center space-y-4">
-				<h2 className="text-3xl font-bold">{tAuth("welcome.title")}</h2>
-				<p className="text-gray-600 max-w-md">
-					{tAuth("welcome.message")}
-				</p>
-				<button
-					className="btn btn-primary btn-lg"
-					onClick={() => setShowAuthModal(true)}
-				>
-					{tAuth("loginRegisterButton")}
-				</button>
-				<AuthModal
-					isOpen={showAuthModal}
-					onClose={() => setShowAuthModal(false)}
-				/>
-			</div>
-		</div>
-	);
+	const authFallback = <LandingPage />;
 
 	return (
 		<ProtectedRoute fallback={authFallback}>

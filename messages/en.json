@@ -97,6 +97,50 @@
 			"close": "Close"
 		}
 	},
+	"landing": {
+		"hero": {
+			"subtitle": "Take control of your financial commitments",
+			"features": "Free to use • No hidden fees • Your data stays private"
+		},
+		"features": {
+			"trackProgress": {
+				"title": "Track Progress",
+				"description": "Monitor your debt payments and see how close you are to freedom"
+			},
+			"setGoals": {
+				"title": "Set Goals",
+				"description": "Plan your payment strategy with built-in savings calculator"
+			},
+			"stayMotivated": {
+				"title": "Stay Motivated",
+				"description": "Visual progress tracking keeps you motivated on your journey"
+			}
+		},
+		"details": {
+			"title": "Everything You Need",
+			"subtitle": "Powerful features to help you become debt-free",
+			"amountTracking": {
+				"title": "Amount Tracking",
+				"description": "Track initial and final amounts with automatic calculations"
+			},
+			"dateManagement": {
+				"title": "Date Management",
+				"description": "Set start and end dates to stay on track"
+			},
+			"progressVisualization": {
+				"title": "Progress Visualization",
+				"description": "See your progress with beautiful charts and percentages"
+			},
+			"entityDetails": {
+				"title": "Entity Details",
+				"description": "Store contracting entity info and financial details"
+			}
+		},
+		"cta": {
+			"title": "Ready to Get Started?",
+			"subtitle": "Join thousands of people taking control of their financial future"
+		}
+	},
 	"debt": {
 		"create": {
 			"title": "New Financing",

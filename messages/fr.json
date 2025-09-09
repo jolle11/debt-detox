@@ -99,6 +99,50 @@
 			"close": "Fermer"
 		}
 	},
+	"landing": {
+		"hero": {
+			"subtitle": "Prenez le contrôle de vos engagements financiers",
+			"features": "Gratuit • Aucuns frais cachés • Vos données restent privées"
+		},
+		"features": {
+			"trackProgress": {
+				"title": "Suivre le Progrès",
+				"description": "Surveillez vos paiements de dettes et voyez à quel point vous êtes proche de la liberté"
+			},
+			"setGoals": {
+				"title": "Définir des Objectifs",
+				"description": "Planifiez votre stratégie de paiement avec calculatrice d'épargne intégrée"
+			},
+			"stayMotivated": {
+				"title": "Restez Motivé",
+				"description": "Le suivi visuel du progrès vous maintient motivé dans votre parcours"
+			}
+		},
+		"details": {
+			"title": "Tout Ce Dont Vous Avez Besoin",
+			"subtitle": "Fonctionnalités puissantes pour vous aider à devenir libre de dettes",
+			"amountTracking": {
+				"title": "Suivi des Montants",
+				"description": "Suivez les montants initiaux et finaux avec calculs automatiques"
+			},
+			"dateManagement": {
+				"title": "Gestion des Dates",
+				"description": "Définissez les dates de début et de fin pour rester sur la bonne voie"
+			},
+			"progressVisualization": {
+				"title": "Visualisation du Progrès",
+				"description": "Voyez votre progrès avec de beaux graphiques et pourcentages"
+			},
+			"entityDetails": {
+				"title": "Détails de l'Entité",
+				"description": "Stockez les informations de l'entité contractante et les détails financiers"
+			}
+		},
+		"cta": {
+			"title": "Prêt à Commencer ?",
+			"subtitle": "Rejoignez des milliers de personnes prenant le contrôle de leur avenir financier"
+		}
+	},
 	"debt": {
 		"create": {
 			"title": "Nouveau Financement",

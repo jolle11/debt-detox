@@ -18,6 +18,7 @@ import {
 import { useDebtsContext } from "@/contexts/DebtsContext";
 import { calculateDebtStatus } from "@/lib/format";
 import { useCurrency } from "@/hooks/useCurrency";
+import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 import type { Debt, Payment } from "@/lib/types";
 import DebtProgressWithPayments from "@/components/dashboard/debt-progress-with-payments";
 import DebtPaymentStatus from "@/components/dashboard/debt-payment-status";
@@ -31,6 +32,7 @@ export default function DebtDetailPage() {
 	const t = useTranslations();
 	const params = useParams();
 	const router = useRouter();
+	const { user, loading: authLoading } = useAuthRedirect();
 	const { debts, isLoading: debtsLoading, refetch } = useDebtsContext();
 	const { formatCurrency } = useCurrency();
 	const [debt, setDebt] = useState<Debt | null>(null);
@@ -54,7 +56,7 @@ export default function DebtDetailPage() {
 	}, [params.id, debts]);
 
 	// Show loading skeleton during SSR or while loading
-	if (!isClient || debtsLoading || paymentsLoading) {
+	if (!isClient || authLoading || debtsLoading || paymentsLoading || !user) {
 		return <SkeletonDebtDetail />;
 	}
 

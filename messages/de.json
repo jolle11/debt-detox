@@ -99,6 +99,50 @@
 			"close": "Schließen"
 		}
 	},
+	"landing": {
+		"hero": {
+			"subtitle": "Übernehmen Sie die Kontrolle über Ihre finanziellen Verpflichtungen",
+			"features": "Kostenlos • Keine versteckten Gebühren • Ihre Daten bleiben privat"
+		},
+		"features": {
+			"trackProgress": {
+				"title": "Fortschritt Verfolgen",
+				"description": "Überwachen Sie Ihre Schuldenzahlungen und sehen Sie, wie nah Sie der Freiheit sind"
+			},
+			"setGoals": {
+				"title": "Ziele Setzen",
+				"description": "Planen Sie Ihre Zahlungsstrategie mit eingebautem Sparrechner"
+			},
+			"stayMotivated": {
+				"title": "Bleiben Sie Motiviert",
+				"description": "Visuelle Fortschrittsverfolgung hält Sie auf Ihrem Weg motiviert"
+			}
+		},
+		"details": {
+			"title": "Alles Was Sie Brauchen",
+			"subtitle": "Mächtige Funktionen, um Ihnen zu helfen, schuldenfrei zu werden",
+			"amountTracking": {
+				"title": "Betragsverfolgung",
+				"description": "Verfolgen Sie Anfangs- und Endbeträge mit automatischen Berechnungen"
+			},
+			"dateManagement": {
+				"title": "Datumsverwaltung",
+				"description": "Setzen Sie Start- und Enddaten, um auf Kurs zu bleiben"
+			},
+			"progressVisualization": {
+				"title": "Fortschrittsvisualisierung",
+				"description": "Sehen Sie Ihren Fortschritt mit schönen Diagrammen und Prozentsätzen"
+			},
+			"entityDetails": {
+				"title": "Entitätsdetails",
+				"description": "Speichern Sie Informationen zur Vertragspartei und Finanzdetails"
+			}
+		},
+		"cta": {
+			"title": "Bereit Loszulegen?",
+			"subtitle": "Treten Sie Tausenden von Menschen bei, die die Kontrolle über ihre finanzielle Zukunft übernehmen"
+		}
+	},
 	"debt": {
 		"create": {
 			"title": "Neue Finanzierung",

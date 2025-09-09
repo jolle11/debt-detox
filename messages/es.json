@@ -97,6 +97,50 @@
 			"close": "Cerrar"
 		}
 	},
+	"landing": {
+		"hero": {
+			"subtitle": "Toma control de tus compromisos financieros",
+			"features": "Gratuito • Sin tarifas ocultas • Tus datos permanecen privados"
+		},
+		"features": {
+			"trackProgress": {
+				"title": "Seguir Progreso",
+				"description": "Monitorea tus pagos de deudas y ve qué tan cerca estás de la libertad"
+			},
+			"setGoals": {
+				"title": "Establecer Metas",
+				"description": "Planifica tu estrategia de pago con calculadora de ahorros integrada"
+			},
+			"stayMotivated": {
+				"title": "Mantente Motivado",
+				"description": "El seguimiento visual del progreso te mantiene motivado en tu viaje"
+			}
+		},
+		"details": {
+			"title": "Todo Lo Que Necesitas",
+			"subtitle": "Funcionalidades potentes para ayudarte a liberarte de deudas",
+			"amountTracking": {
+				"title": "Seguimiento de Cantidades",
+				"description": "Rastrea cantidades iniciales y finales con cálculos automáticos"
+			},
+			"dateManagement": {
+				"title": "Gestión de Fechas",
+				"description": "Establece fechas de inicio y fin para mantenerte en el buen camino"
+			},
+			"progressVisualization": {
+				"title": "Visualización de Progreso",
+				"description": "Ve tu progreso con hermosos gráficos y porcentajes"
+			},
+			"entityDetails": {
+				"title": "Detalles de Entidad",
+				"description": "Almacena información de entidad contratante y detalles financieros"
+			}
+		},
+		"cta": {
+			"title": "¿Listo para Empezar?",
+			"subtitle": "Únete a miles de personas tomando control de su futuro financiero"
+		}
+	},
 	"common": {
 		"currency": "€",
 		"loading": "Cargando...",
