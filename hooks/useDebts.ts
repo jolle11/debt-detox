@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt } from "@/lib/types";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface UseDebtsReturn {
 	debts: Debt[];
@@ -32,15 +33,19 @@ const fetchDebts = async (): Promise<Debt[]> => {
 };
 
 export function useDebts(): UseDebtsReturn {
+	const { user } = useAuth();
+	
 	const {
 		data: debts = [],
 		isLoading,
 		error,
 		refetch,
 	} = useQuery({
-		queryKey: ["debts"],
+		queryKey: ["debts", user?.id], // Include user ID in query key
 		queryFn: fetchDebts,
-		enabled: pb.authStore.isValid, // Solo ejecuta si está autenticado
+		enabled: !!user, // Solo ejecuta si hay usuario autenticado
+		staleTime: 5 * 60 * 1000, // 5 minutes
+		gcTime: 10 * 60 * 1000, // 10 minutes
 	});
 
 	return {

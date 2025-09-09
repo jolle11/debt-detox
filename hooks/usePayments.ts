@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Payment } from "@/lib/types";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface UsePaymentsReturn {
 	payments: Payment[];
@@ -66,6 +67,7 @@ const fetchPayments = async (debtId?: string): Promise<Payment[]> => {
 
 export function usePayments(debtId?: string): UsePaymentsReturn {
 	const queryClient = useQueryClient();
+	const { user } = useAuth();
 
 	const {
 		data: payments = [],
@@ -73,9 +75,11 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		error,
 		refetch,
 	} = useQuery({
-		queryKey: ["payments", debtId],
+		queryKey: ["payments", debtId, user?.id], // Include user ID in query key
 		queryFn: () => fetchPayments(debtId),
-		enabled: pb.authStore.isValid,
+		enabled: !!user, // Solo ejecuta si hay usuario autenticado
+		staleTime: 5 * 60 * 1000, // 5 minutes
+		gcTime: 10 * 60 * 1000, // 10 minutes
 	});
 
 	const markPaymentMutation = useMutation({

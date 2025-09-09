@@ -3,6 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import Header from "@/components/layout/Header";
 import SessionGuard from "@/components/auth/SessionGuard";
+import { useAuthSync } from "@/hooks/useAuthSync";
 
 interface ClientLayoutProps {
 	children: React.ReactNode;
@@ -10,6 +11,9 @@ interface ClientLayoutProps {
 
 export default function ClientLayout({ children }: ClientLayoutProps) {
 	const { user, loading } = useAuth();
+	
+	// Sync queries with auth state changes
+	useAuthSync();
 
 	// Show loading state while checking auth
 	if (loading) {
