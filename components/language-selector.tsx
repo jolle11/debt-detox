@@ -60,7 +60,7 @@ export default function LanguageSelector() {
 									{language.nativeName}
 								</span>
 								<span className="text-xs opacity-70">
-									{language.name}
+									{language.code}
 								</span>
 							</div>
 							{locale === language.code && (
