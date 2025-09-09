@@ -17,8 +17,10 @@ export default function LandingPage() {
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10">
 			{/* Header with Language and Theme Selectors */}
-			<div className="absolute top-4 right-10 z-10 flex items-center gap-2">
+			<div className="absolute top-4 left-4 z-10">
 				<LanguageSelector />
+			</div>
+			<div className="absolute top-4 right-4 z-10">
 				<ThemeToggle />
 			</div>
 
