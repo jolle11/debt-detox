@@ -141,6 +141,16 @@
 		"cta": {
 			"title": "Bereit Loszulegen?",
 			"subtitle": "Treten Sie Tausenden von Menschen bei, die die Kontrolle über ihre finanzielle Zukunft übernehmen"
+		},
+		"demo": {
+			"title": "Interaktive Vorschau",
+			"subtitle": "Entdecken Sie, wie Debt Detox mit Beispieldaten funktioniert",
+			"cta": "Mein Konto Erstellen",
+			"bottomCta": {
+				"title": "Gefällt Ihnen Was Sie Sehen?",
+				"subtitle": "Erstellen Sie Ihr kostenloses Konto und verwalten Sie Ihre echten Schulden",
+				"button": "Kostenlos Starten"
+			}
 		}
 	},
 	"debt": {
@@ -229,7 +239,10 @@
 		"completed": "Abgeschlossen",
 		"pendingStart": "Ausstehender Start",
 		"monthlyPaid": "Monatliche Rate bezahlt",
-		"markAsPaid": "Als bezahlt markieren"
+		"markAsPaid": "Als bezahlt markieren",
+		"allPaymentsCompleted": "Alle Zahlungen abgeschlossen",
+		"nextPayment": "Nächste Zahlung",
+		"paymentsCompleted": "Zahlungen abgeschlossen"
 	},
 	"debtDetail": {
 		"notFound": {

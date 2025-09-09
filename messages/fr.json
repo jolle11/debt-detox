@@ -141,6 +141,16 @@
 		"cta": {
 			"title": "Prêt à Commencer ?",
 			"subtitle": "Rejoignez des milliers de personnes prenant le contrôle de leur avenir financier"
+		},
+		"demo": {
+			"title": "Aperçu Interactif",
+			"subtitle": "Explorez comment fonctionne Debt Detox avec des données d'exemple",
+			"cta": "Créer Mon Compte",
+			"bottomCta": {
+				"title": "Vous Aimez Ce Que Vous Voyez ?",
+				"subtitle": "Créez votre compte gratuit et commencez à gérer vos vraies dettes",
+				"button": "Commencer Gratuitement"
+			}
 		}
 	},
 	"debt": {
@@ -229,7 +239,10 @@
 		"completed": "Terminée",
 		"pendingStart": "En attente de début",
 		"monthlyPaid": "Paiement mensuel payé",
-		"markAsPaid": "Marquer comme payé"
+		"markAsPaid": "Marquer comme payé",
+		"allPaymentsCompleted": "Tous les paiements terminés",
+		"nextPayment": "Prochain paiement",
+		"paymentsCompleted": "paiements terminés"
 	},
 	"debtDetail": {
 		"notFound": {
