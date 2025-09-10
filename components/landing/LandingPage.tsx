@@ -113,7 +113,7 @@ export default function LandingPage() {
 						</p>
 					</div>
 
-					<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 						<div className="text-center">
 							<div className="bg-primary/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
 								<span className="text-2xl">💰</span>
@@ -135,22 +135,6 @@ export default function LandingPage() {
 							</h3>
 							<p className="text-sm text-base-content/70">
 								{tLanding("details.dateManagement.description")}
-							</p>
-						</div>
-
-						<div className="text-center">
-							<div className="bg-accent/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-								<span className="text-2xl">📊</span>
-							</div>
-							<h3 className="font-semibold mb-2">
-								{tLanding(
-									"details.progressVisualization.title",
-								)}
-							</h3>
-							<p className="text-sm text-base-content/70">
-								{tLanding(
-									"details.progressVisualization.description",
-								)}
 							</p>
 						</div>
 

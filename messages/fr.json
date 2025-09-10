@@ -245,6 +245,7 @@
 		"paymentsCompleted": "paiements terminés"
 	},
 	"debtDetail": {
+		"title": "Détail de la Dette",
 		"notFound": {
 			"title": "Financement introuvable",
 			"description": "Le financement demandé n'a pas pu être trouvé.",

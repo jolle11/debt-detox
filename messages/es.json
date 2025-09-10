@@ -241,6 +241,7 @@
 		"paymentsCompleted": "cuotas completadas"
 	},
 	"debtDetail": {
+		"title": "Detalle de Deuda",
 		"notFound": {
 			"title": "Financiación no encontrada",
 			"description": "No se pudo encontrar la financiación solicitada.",

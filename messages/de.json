@@ -245,6 +245,7 @@
 		"paymentsCompleted": "Zahlungen abgeschlossen"
 	},
 	"debtDetail": {
+		"title": "Schulden-Detail",
 		"notFound": {
 			"title": "Finanzierung nicht gefunden",
 			"description": "Die angeforderte Finanzierung konnte nicht gefunden werden.",

@@ -241,6 +241,7 @@
 		"paymentsCompleted": "payments completed"
 	},
 	"debtDetail": {
+		"title": "Debt Detail",
 		"notFound": {
 			"title": "Financing not found",
 			"description": "The requested financing could not be found.",
