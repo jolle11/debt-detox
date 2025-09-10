@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import { Inconsolata } from "next/font/google";
 import "../globals.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import ClientLayout from "@/components/layout/ClientLayout";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { DebtsProvider } from "@/contexts/DebtsContext";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { routing } from "@/i18n/routing";
 import { queryClient } from "@/lib/query-client";
-import ClientLayout from "@/components/layout/ClientLayout";
 
 const inconsolata = Inconsolata({
 	variable: "--font-inconsolata",
@@ -40,6 +40,12 @@ export default async function LocaleLayout({
 
 	return (
 		<html lang={locale}>
+			<head>
+				<script
+					defer
+					src="https://assets.onedollarstats.com/stonks.js"
+				/>
+			</head>
 			<body
 				className={`${inconsolata.variable} antialiased`}
 				style={{
