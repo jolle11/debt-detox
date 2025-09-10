@@ -80,7 +80,7 @@ export const mockPayments: Payment[] = [
 			collectionName: "payments",
 		};
 	}),
-	
+
 	// iPhone - 8 cuotas pagadas de 12 (ACTIVA - 67% progreso)
 	// Empezó en enero 2025, ha pagado Ene-Ago (8 de 12)
 	...Array.from({ length: 8 }, (_, i) => {
@@ -102,7 +102,7 @@ export const mockPayments: Payment[] = [
 			collectionName: "payments",
 		};
 	}),
-	
+
 	// Sofá - COMPLETADO (4 cuotas pagadas - 100%)
 	...Array.from({ length: 4 }, (_, i) => {
 		const date = new Date(2024, 10 + i, 1); // Nov 2024 - Feb 2025

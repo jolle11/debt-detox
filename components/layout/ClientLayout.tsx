@@ -1,8 +1,8 @@
 "use client";
 
-import { useAuth } from "@/contexts/AuthContext";
-import Header from "@/components/layout/Header";
 import SessionGuard from "@/components/auth/SessionGuard";
+import Header from "@/components/layout/Header";
+import { useAuth } from "@/contexts/AuthContext";
 import { useAuthSync } from "@/hooks/useAuthSync";
 
 interface ClientLayoutProps {
@@ -11,7 +11,7 @@ interface ClientLayoutProps {
 
 export default function ClientLayout({ children }: ClientLayoutProps) {
 	const { user, loading } = useAuth();
-	
+
 	// Sync queries with auth state changes
 	useAuthSync();
 
@@ -29,9 +29,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 		return (
 			<div className="min-h-screen bg-base-200">
 				<Header />
-				<main className="container mx-auto p-4">
-					{children}
-				</main>
+				<main className="container mx-auto p-4">{children}</main>
 				<SessionGuard />
 			</div>
 		);

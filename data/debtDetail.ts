@@ -43,14 +43,14 @@ export interface DebtProductImageProps extends DebtDetailProps {}
 export const debtStatusConfig = {
 	completed: {
 		badge: "badge-success",
-		key: "debtDetail.status.completed"
+		key: "debtDetail.status.completed",
 	},
 	active: {
-		badge: "badge-primary", 
-		key: "debtDetail.status.active"
+		badge: "badge-primary",
+		key: "debtDetail.status.active",
 	},
 	pending: {
 		badge: "badge-warning",
-		key: "debtDetail.status.pending"
-	}
+		key: "debtDetail.status.pending",
+	},
 } as const;

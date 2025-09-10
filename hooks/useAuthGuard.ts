@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface UseAuthGuardOptions {
@@ -9,11 +9,11 @@ interface UseAuthGuardOptions {
 }
 
 export function useAuthGuard(options: UseAuthGuardOptions = {}) {
-	const { 
+	const {
 		checkInterval = 5 * 60 * 1000, // 5 minutes
-		onSessionExpired 
+		onSessionExpired,
 	} = options;
-	
+
 	const { user, isSessionValid, checkAuthStatus } = useAuth();
 	const intervalRef = useRef<NodeJS.Timeout | null>(null);
 	const lastActivityRef = useRef<number>(Date.now());
@@ -27,7 +27,7 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 	// Check session validity periodically
 	const performSessionCheck = useCallback(async () => {
 		if (!user || isCheckingRef.current) return;
-		
+
 		isCheckingRef.current = true;
 		try {
 			const isValid = await isSessionValid();
@@ -43,7 +43,7 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 
 	// Check session when tab becomes visible (user returns to app)
 	const handleVisibilityChange = useCallback(async () => {
-		if (document.visibilityState === 'visible' && user) {
+		if (document.visibilityState === "visible" && user) {
 			const timeSinceLastActivity = Date.now() - lastActivityRef.current;
 			// If more than 30 minutes have passed, check session
 			if (timeSinceLastActivity > 30 * 60 * 1000) {
@@ -59,11 +59,11 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 		intervalRef.current = setInterval(performSessionCheck, checkInterval);
 
 		// Listen for visibility changes (tab focus)
-		document.addEventListener('visibilitychange', handleVisibilityChange);
+		document.addEventListener("visibilitychange", handleVisibilityChange);
 
 		// Listen for user activity to update last activity time
-		const activities = ['mousedown', 'keydown', 'scroll', 'touchstart'];
-		activities.forEach(event => {
+		const activities = ["mousedown", "keydown", "scroll", "touchstart"];
+		activities.forEach((event) => {
 			document.addEventListener(event, updateActivity, { passive: true });
 		});
 
@@ -72,8 +72,11 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 				clearInterval(intervalRef.current);
 				intervalRef.current = null;
 			}
-			document.removeEventListener('visibilitychange', handleVisibilityChange);
-			activities.forEach(event => {
+			document.removeEventListener(
+				"visibilitychange",
+				handleVisibilityChange,
+			);
+			activities.forEach((event) => {
 				document.removeEventListener(event, updateActivity);
 			});
 		};

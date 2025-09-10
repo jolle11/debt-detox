@@ -1,9 +1,9 @@
-import { calculateDebtStatus } from "@/lib/format";
-import type { Debt, Payment } from "@/lib/types";
 import DebtActions from "@/components/dashboard/debt-actions";
 import DebtInfo from "@/components/dashboard/debt-info";
-import DemoDebtPaymentStatus from "./DemoDebtPaymentStatus";
 import DebtProgressWithPayments from "@/components/dashboard/debt-progress-with-payments";
+import { calculateDebtStatus } from "@/lib/format";
+import type { Debt, Payment } from "@/lib/types";
+import DemoDebtPaymentStatus from "./DemoDebtPaymentStatus";
 
 interface DemoDebtCardProps {
 	debt: Debt;
@@ -13,12 +13,12 @@ interface DemoDebtCardProps {
 	onDelete?: (debt: Debt) => void;
 }
 
-export default function DemoDebtCard({ 
-	debt, 
-	payments, 
+export default function DemoDebtCard({
+	debt,
+	payments,
 	onDebtClick,
-	onEdit, 
-	onDelete 
+	onEdit,
+	onDelete,
 }: DemoDebtCardProps) {
 	const status = calculateDebtStatus(debt.final_payment_date);
 
@@ -40,16 +40,20 @@ export default function DemoDebtCard({
 						</p>
 						<DebtInfo debt={debt} />
 						<div className="mt-4">
-							<DebtProgressWithPayments 
-								debt={debt} 
-								payments={payments.filter(p => p.debt_id === debt.id)}
+							<DebtProgressWithPayments
+								debt={debt}
+								payments={payments.filter(
+									(p) => p.debt_id === debt.id,
+								)}
 								isLoading={false}
 							/>
 						</div>
 						<div className="mt-3">
-							<DemoDebtPaymentStatus 
-								debt={debt} 
-								payments={payments.filter(p => p.debt_id === debt.id)}
+							<DemoDebtPaymentStatus
+								debt={debt}
+								payments={payments.filter(
+									(p) => p.debt_id === debt.id,
+								)}
 							/>
 						</div>
 					</div>

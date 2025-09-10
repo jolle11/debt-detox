@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt, type Payment } from "@/lib/types";
 
@@ -11,7 +11,10 @@ interface DebtPaymentStatusProps {
 	payments: Payment[];
 }
 
-export default function DebtPaymentStatus({ debt, payments }: DebtPaymentStatusProps) {
+export default function DebtPaymentStatus({
+	debt,
+	payments,
+}: DebtPaymentStatusProps) {
 	const queryClient = useQueryClient();
 	const [isProcessing, setIsProcessing] = useState(false);
 	const t = useTranslations("paymentStatus");
@@ -68,11 +71,13 @@ export default function DebtPaymentStatus({ debt, payments }: DebtPaymentStatusP
 			if (existingPayments.length > 0) {
 				// Actualizar el payment existente
 				const payment = existingPayments[0];
-				return await pb.collection(COLLECTIONS.PAYMENTS).update(payment.id, {
-					paid: true,
-					paid_date: new Date().toISOString(),
-					actual_amount: amountToPay,
-				});
+				return await pb
+					.collection(COLLECTIONS.PAYMENTS)
+					.update(payment.id, {
+						paid: true,
+						paid_date: new Date().toISOString(),
+						actual_amount: amountToPay,
+					});
 			} else {
 				// Crear un nuevo payment
 				return await pb.collection(COLLECTIONS.PAYMENTS).create({
@@ -116,13 +121,17 @@ export default function DebtPaymentStatus({ debt, payments }: DebtPaymentStatusP
 	};
 
 	// Verificar si la deuda ya está completada
-	const debtEndDate = debt.final_payment_date ? new Date(debt.final_payment_date) : null;
+	const debtEndDate = debt.final_payment_date
+		? new Date(debt.final_payment_date)
+		: null;
 	const isDebtCompleted = debtEndDate && currentDate > debtEndDate;
 
 	if (isDebtCompleted) {
 		return (
 			<div className="flex items-center gap-3">
-				<div className="badge badge-success badge-lg">{t("completed")}</div>
+				<div className="badge badge-success badge-lg">
+					{t("completed")}
+				</div>
 			</div>
 		);
 	}

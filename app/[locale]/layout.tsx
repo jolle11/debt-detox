@@ -51,9 +51,7 @@ export default async function LocaleLayout({
 					<QueryClientProvider client={queryClient}>
 						<AuthProvider>
 							<DebtsProvider>
-								<ClientLayout>
-									{children}
-								</ClientLayout>
+								<ClientLayout>{children}</ClientLayout>
 							</DebtsProvider>
 						</AuthProvider>
 					</QueryClientProvider>

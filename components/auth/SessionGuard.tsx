@@ -1,12 +1,13 @@
 "use client";
 
-import { useAuthGuard } from "@/hooks/useAuthGuard";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { useAuthGuard } from "@/hooks/useAuthGuard";
 
 export default function SessionGuard() {
 	const t = useTranslations();
-	const [showExpiredNotification, setShowExpiredNotification] = useState(false);
+	const [showExpiredNotification, setShowExpiredNotification] =
+		useState(false);
 
 	const { checkSession } = useAuthGuard({
 		checkInterval: 5 * 60 * 1000, // Check every 5 minutes

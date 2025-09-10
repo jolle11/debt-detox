@@ -1,7 +1,7 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { FileTextIcon } from "@phosphor-icons/react";
+import { useTranslations } from "next-intl";
 import type { DebtStructureProps } from "@/data/debtDetail";
 
 export default function DebtStructure({
@@ -29,9 +29,10 @@ export default function DebtStructure({
 			isString: true,
 		},
 		{
-			key: "finalPayment", 
+			key: "finalPayment",
 			value: debt.final_payment,
-			show: debt.final_payment !== undefined && debt.final_payment !== null,
+			show:
+				debt.final_payment !== undefined && debt.final_payment !== null,
 		},
 	];
 
@@ -45,19 +46,23 @@ export default function DebtStructure({
 				<div className="space-y-4">
 					{structureItems.map(({ key, value, show, isString }) => {
 						if (!show) return null;
-						
+
 						return (
-							<div key={key} className="flex justify-between items-center">
+							<div
+								key={key}
+								className="flex justify-between items-center"
+							>
 								<span className="text-base text-base-content/70">
 									{t(`debtDetail.structure.${key}`)}:
 								</span>
 								<span className="font-medium text-lg">
-									{isString 
-										? value 
+									{isString
+										? value
 										: value && value > 0
 											? formatCurrency(value)
-											: t("debtDetail.structure.notApplicable")
-									}
+											: t(
+													"debtDetail.structure.notApplicable",
+												)}
 								</span>
 							</div>
 						);

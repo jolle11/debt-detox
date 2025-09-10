@@ -4,10 +4,10 @@ import { useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
 import LanguageSelector from "@/components/language-selector";
 import ThemeToggle from "@/components/ui/ThemeToggle";
-import HeroSection from "./HeroSection";
-import DetailsSection from "./DetailsSection";
-import DemoSection from "./DemoSection";
 import CTASection from "./CTASection";
+import DemoSection from "./DemoSection";
+import DetailsSection from "./DetailsSection";
+import HeroSection from "./HeroSection";
 
 export default function LandingPage() {
 	const [showAuthModal, setShowAuthModal] = useState(false);

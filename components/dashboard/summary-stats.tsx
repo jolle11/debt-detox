@@ -6,12 +6,12 @@ import {
 } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import StatCard from "@/components/dashboard/stat-card";
+import { useCurrency } from "@/hooks/useCurrency";
 import {
 	calculateDebtStatus,
 	calculatePaymentProgress,
 	calculateRemainingAmount,
 } from "@/lib/format";
-import { useCurrency } from "@/hooks/useCurrency";
 import type { Debt } from "@/lib/types";
 
 interface SummaryStatsProps {

@@ -1,13 +1,9 @@
 "use client";
 
+import { ArrowLeftIcon, PencilIcon, TrashIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
-import {
-	ArrowLeftIcon,
-	PencilIcon,
-	TrashIcon,
-} from "@phosphor-icons/react";
+import { type DebtHeaderProps, debtStatusConfig } from "@/data/debtDetail";
 import { calculateDebtStatus } from "@/lib/format";
-import { debtStatusConfig, type DebtHeaderProps } from "@/data/debtDetail";
 
 export default function DebtHeader({
 	debt,
@@ -22,10 +18,7 @@ export default function DebtHeader({
 	return (
 		<div className="flex items-center justify-between mb-4">
 			<div className="flex items-center gap-3">
-				<button
-					onClick={onBack}
-					className="btn btn-ghost btn-sm"
-				>
+				<button onClick={onBack} className="btn btn-ghost btn-sm">
 					<ArrowLeftIcon className="w-4 h-4" />
 					{t("common.back")}
 				</button>

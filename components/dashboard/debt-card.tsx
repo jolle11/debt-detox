@@ -13,7 +13,12 @@ interface DebtCardProps {
 	onDelete?: (debt: Debt) => void;
 }
 
-export default function DebtCard({ debt, payments, onEdit, onDelete }: DebtCardProps) {
+export default function DebtCard({
+	debt,
+	payments,
+	onEdit,
+	onDelete,
+}: DebtCardProps) {
 	const status = calculateDebtStatus(debt.final_payment_date);
 	const router = useRouter();
 
@@ -35,16 +40,20 @@ export default function DebtCard({ debt, payments, onEdit, onDelete }: DebtCardP
 						</p>
 						<DebtInfo debt={debt} />
 						<div className="mt-4">
-							<DebtProgressWithPayments 
-								debt={debt} 
-								payments={payments.filter(p => p.debt_id === debt.id)}
+							<DebtProgressWithPayments
+								debt={debt}
+								payments={payments.filter(
+									(p) => p.debt_id === debt.id,
+								)}
 								isLoading={false}
 							/>
 						</div>
 						<div className="mt-3">
-							<DebtPaymentStatus 
-								debt={debt} 
-								payments={payments.filter(p => p.debt_id === debt.id)}
+							<DebtPaymentStatus
+								debt={debt}
+								payments={payments.filter(
+									(p) => p.debt_id === debt.id,
+								)}
 							/>
 						</div>
 					</div>

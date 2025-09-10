@@ -21,7 +21,7 @@ export default function Dashboard() {
 	const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
 	const [deletingDebt, setDeletingDebt] = useState<Debt | null>(null);
 	const { debts, isLoading, error, refetch } = useDebtsContext();
-	
+
 	// Centralizar payments para todos los componentes del dashboard
 	const { payments, isLoading: paymentsLoading } = usePayments();
 

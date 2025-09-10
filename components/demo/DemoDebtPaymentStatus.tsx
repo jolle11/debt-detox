@@ -1,6 +1,9 @@
-import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { formatCurrency, calculatePaymentProgressWithPayments } from "@/lib/format";
+import { useState } from "react";
+import {
+	calculatePaymentProgressWithPayments,
+	formatCurrency,
+} from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
 
 interface DemoDebtPaymentStatusProps {
@@ -8,13 +11,17 @@ interface DemoDebtPaymentStatusProps {
 	payments: Payment[];
 }
 
-export default function DemoDebtPaymentStatus({ debt, payments }: DemoDebtPaymentStatusProps) {
+export default function DemoDebtPaymentStatus({
+	debt,
+	payments,
+}: DemoDebtPaymentStatusProps) {
 	const t = useTranslations();
 	const tPayment = useTranslations("paymentStatus");
 	const tDashboard = useTranslations("dashboard");
 	const [showDemoAlert, setShowDemoAlert] = useState(false);
 
-	const { paidPayments, totalPayments } = calculatePaymentProgressWithPayments(debt, payments);
+	const { paidPayments, totalPayments } =
+		calculatePaymentProgressWithPayments(debt, payments);
 	const nextPaymentNumber = paidPayments + 1;
 
 	const handleMarkAsPaid = () => {
@@ -35,11 +42,12 @@ export default function DemoDebtPaymentStatus({ debt, payments }: DemoDebtPaymen
 			{showDemoAlert && (
 				<div className="alert alert-info alert-sm">
 					<span className="text-xs">
-						¡Esta es solo una demo! Regístrate para gestionar pagos reales.
+						¡Esta es solo una demo! Regístrate para gestionar pagos
+						reales.
 					</span>
 				</div>
 			)}
-			
+
 			<div className="flex items-center justify-between text-sm">
 				<span className="text-base-content/70">
 					{tPayment("nextPayment")} #{nextPaymentNumber}
@@ -48,7 +56,7 @@ export default function DemoDebtPaymentStatus({ debt, payments }: DemoDebtPaymen
 					{formatCurrency(debt.monthly_amount)}
 				</span>
 			</div>
-			
+
 			<button
 				onClick={handleMarkAsPaid}
 				className="btn btn-primary"
@@ -56,7 +64,7 @@ export default function DemoDebtPaymentStatus({ debt, payments }: DemoDebtPaymen
 			>
 				{tPayment("markAsPaid")}
 			</button>
-			
+
 			<div className="text-xs text-base-content/50">
 				{paidPayments} / {totalPayments} {tPayment("paymentsCompleted")}
 			</div>

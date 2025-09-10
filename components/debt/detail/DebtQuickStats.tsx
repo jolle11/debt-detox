@@ -44,9 +44,7 @@ export default function DebtQuickStats({
 					<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
 						{t(`debtDetail.summary.${key}`)}
 					</div>
-					<div className={`text-xl font-bold ${color}`}>
-						{value}
-					</div>
+					<div className={`text-xl font-bold ${color}`}>{value}</div>
 				</div>
 			))}
 		</div>

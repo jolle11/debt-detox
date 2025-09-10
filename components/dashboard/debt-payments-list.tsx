@@ -7,9 +7,9 @@ import {
 	XCircle,
 } from "@phosphor-icons/react";
 import { useTranslations, useLocale } from "next-intl";
+import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
 import { useCurrency } from "@/hooks/useCurrency";
 import type { Debt, Payment } from "@/lib/types";
-import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
 
 interface DebtPaymentsListProps {
 	debt: Debt;
@@ -110,7 +110,8 @@ export default function DebtPaymentsList({
 						{t("title")}
 					</h2>
 					<div className="text-sm text-base-content/70">
-						{totalPaidPayments}/{debt.number_of_payments} {t("paymentsCompleted")}
+						{totalPaidPayments}/{debt.number_of_payments}{" "}
+						{t("paymentsCompleted")}
 					</div>
 				</div>
 
@@ -120,13 +121,17 @@ export default function DebtPaymentsList({
 						<div className="text-lg font-bold text-success">
 							{totalPaidPayments}
 						</div>
-						<div className="text-xs text-success/80">{t("statsPaid")}</div>
+						<div className="text-xs text-success/80">
+							{t("statsPaid")}
+						</div>
 					</div>
 					<div className="text-center p-2 bg-error/10 rounded-lg">
 						<div className="text-lg font-bold text-error">
 							{totalOverduePayments}
 						</div>
-						<div className="text-xs text-error/80">{t("statsOverdue")}</div>
+						<div className="text-xs text-error/80">
+							{t("statsOverdue")}
+						</div>
 					</div>
 					<div className="text-center p-2 bg-warning/10 rounded-lg">
 						<div className="text-lg font-bold text-warning">
@@ -145,8 +150,12 @@ export default function DebtPaymentsList({
 							<tr>
 								<th>{t("headers.period")}</th>
 								<th>{t("headers.status")}</th>
-								<th className="text-right">{t("headers.plannedAmount")}</th>
-								<th className="text-right">{t("headers.actualAmount")}</th>
+								<th className="text-right">
+									{t("headers.plannedAmount")}
+								</th>
+								<th className="text-right">
+									{t("headers.actualAmount")}
+								</th>
 								<th>{t("headers.paymentDate")}</th>
 							</tr>
 						</thead>
@@ -189,21 +198,27 @@ export default function DebtPaymentsList({
 														<>
 															<CheckCircle className="w-4 h-4 text-success" />
 															<span className="badge badge-success badge-sm">
-																{t("statusPaid")}
+																{t(
+																	"statusPaid",
+																)}
 															</span>
 														</>
 													) : isOverdue ? (
 														<>
 															<XCircle className="w-4 h-4 text-error" />
 															<span className="badge badge-error badge-sm">
-																{t("statusOverdue")}
+																{t(
+																	"statusOverdue",
+																)}
 															</span>
 														</>
 													) : (
 														<>
 															<Calendar className="w-4 h-4 text-warning" />
 															<span className="badge badge-warning badge-sm">
-																{t("statusPending")}
+																{t(
+																	"statusPending",
+																)}
 															</span>
 														</>
 													)}

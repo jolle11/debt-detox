@@ -20,9 +20,11 @@ export function useDeleteDebt(): UseDeleteDebtReturn {
 			}
 
 			// Soft delete: set the deleted field to current date
-			const deletedDebt = await pb.collection(COLLECTIONS.DEBTS).update(debtId, {
-				deleted: new Date().toISOString(),
-			});
+			const deletedDebt = await pb
+				.collection(COLLECTIONS.DEBTS)
+				.update(debtId, {
+					deleted: new Date().toISOString(),
+				});
 
 			return deletedDebt;
 		},

@@ -1,7 +1,7 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { CreditCardIcon } from "@phosphor-icons/react";
+import { useTranslations } from "next-intl";
 import type { DebtPaymentDetailsProps } from "@/data/debtDetail";
 
 export default function DebtPaymentDetails({
@@ -48,24 +48,34 @@ export default function DebtPaymentDetails({
 					{t("debtDetail.sections.paymentDetails")}
 				</h2>
 				<div className="grid grid-cols-2 gap-4">
-					{paymentData.map(({ key, value, subtitle, color, textSize = "text-2xl" }) => (
-						<div
-							key={key}
-							className="bg-base-200 rounded-xl border border-base-300 p-4"
-						>
-							<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-								{t(`debtDetail.paymentDetails.${key}`)}
-							</div>
-							<div className={`${textSize} font-bold ${color}`}>
-								{value}
-							</div>
-							{subtitle && (
-								<div className="text-base text-base-content/70 mt-1">
-									{subtitle}
+					{paymentData.map(
+						({
+							key,
+							value,
+							subtitle,
+							color,
+							textSize = "text-2xl",
+						}) => (
+							<div
+								key={key}
+								className="bg-base-200 rounded-xl border border-base-300 p-4"
+							>
+								<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+									{t(`debtDetail.paymentDetails.${key}`)}
 								</div>
-							)}
-						</div>
-					))}
+								<div
+									className={`${textSize} font-bold ${color}`}
+								>
+									{value}
+								</div>
+								{subtitle && (
+									<div className="text-base text-base-content/70 mt-1">
+										{subtitle}
+									</div>
+								)}
+							</div>
+						),
+					)}
 				</div>
 			</div>
 		</div>

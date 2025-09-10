@@ -47,7 +47,9 @@ export default function CurrencySection({
 		await handleUpdate({ currency: formData.currency });
 	};
 
-	const currentCurrency = CURRENCIES.find(c => c.code === (user?.currency || "EUR"));
+	const currentCurrency = CURRENCIES.find(
+		(c) => c.code === (user?.currency || "EUR"),
+	);
 
 	return (
 		<ProfileForm
@@ -67,7 +69,9 @@ export default function CurrencySection({
 			displayContent={
 				<div>
 					<p className="text-base-content text-lg">
-						{currentCurrency ? `${currentCurrency.name} (${currentCurrency.symbol})` : "Euro (€)"}
+						{currentCurrency
+							? `${currentCurrency.name} (${currentCurrency.symbol})`
+							: "Euro (€)"}
 					</p>
 				</div>
 			}

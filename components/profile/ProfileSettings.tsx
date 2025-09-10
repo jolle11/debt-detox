@@ -2,10 +2,10 @@
 
 import type { RecordModel } from "pocketbase";
 import { useState } from "react";
+import CurrencySection from "./CurrencySection";
 import EmailSection from "./EmailSection";
 import NameSection from "./NameSection";
 import PasswordSection from "./PasswordSection";
-import CurrencySection from "./CurrencySection";
 
 interface ProfileSettingsProps {
 	user: RecordModel;

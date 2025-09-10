@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, type ReactNode, useContext } from "react";
 import { mockDebts, mockPayments } from "@/lib/mock-data";
 import type { Debt, Payment } from "@/lib/types";
 

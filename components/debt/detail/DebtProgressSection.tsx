@@ -1,9 +1,9 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { TargetIcon } from "@phosphor-icons/react";
-import DebtProgressWithPayments from "@/components/dashboard/debt-progress-with-payments";
+import { useTranslations } from "next-intl";
 import DebtPaymentStatus from "@/components/dashboard/debt-payment-status";
+import DebtProgressWithPayments from "@/components/dashboard/debt-progress-with-payments";
 import type { DebtDetailProps } from "@/data/debtDetail";
 
 export default function DebtProgressSection({
@@ -26,10 +26,7 @@ export default function DebtProgressSection({
 					isLoading={isLoading || false}
 				/>
 				<div className="mt-3">
-					<DebtPaymentStatus
-						debt={debt}
-						payments={payments}
-					/>
+					<DebtPaymentStatus debt={debt} payments={payments} />
 				</div>
 			</div>
 		</div>

@@ -1,9 +1,9 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Payment } from "@/lib/types";
-import { useAuth } from "@/contexts/AuthContext";
 
 interface UsePaymentsReturn {
 	payments: Payment[];
@@ -49,12 +49,10 @@ const fetchPayments = async (debtId?: string): Promise<Payment[]> => {
 			? `debt_id = "${debtId}" && deleted = null`
 			: "deleted = null";
 
-		const records = await pb
-			.collection(COLLECTIONS.PAYMENTS)
-			.getFullList({
-				filter,
-				sort: "-year,-month",
-			});
+		const records = await pb.collection(COLLECTIONS.PAYMENTS).getFullList({
+			filter,
+			sort: "-year,-month",
+		});
 
 		return records as unknown as Payment[];
 	} catch (err) {
@@ -108,11 +106,13 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 			if (existingPayments.length > 0) {
 				// Actualizar el payment existente
 				const payment = existingPayments[0];
-				return await pb.collection(COLLECTIONS.PAYMENTS).update(payment.id, {
-					paid: true,
-					paid_date: new Date().toISOString(),
-					actual_amount: amountToPay,
-				});
+				return await pb
+					.collection(COLLECTIONS.PAYMENTS)
+					.update(payment.id, {
+						paid: true,
+						paid_date: new Date().toISOString(),
+						actual_amount: amountToPay,
+					});
 			} else {
 				// Crear un nuevo payment
 				return await pb.collection(COLLECTIONS.PAYMENTS).create({

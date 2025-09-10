@@ -1,16 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import type { Debt } from "@/lib/types";
 import DemoDashboard from "./DemoDashboard";
 import DemoDebtDetail from "./DemoDebtDetail";
-import type { Debt } from "@/lib/types";
 
 interface DemoContainerProps {
 	onLoginClick: () => void;
 }
 
 export default function DemoContainer({ onLoginClick }: DemoContainerProps) {
-	const [currentView, setCurrentView] = useState<"dashboard" | "debt-detail">("dashboard");
+	const [currentView, setCurrentView] = useState<"dashboard" | "debt-detail">(
+		"dashboard",
+	);
 	const [selectedDebt, setSelectedDebt] = useState<Debt | null>(null);
 
 	const handleDebtClick = (debt: Debt) => {

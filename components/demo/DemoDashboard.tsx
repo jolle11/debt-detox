@@ -3,16 +3,19 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import SummaryStats from "@/components/dashboard/summary-stats";
+import type { Debt } from "@/lib/types";
 import DemoDebtsList from "./DemoDebtsList";
 import { useDemoContext } from "./DemoProvider";
-import type { Debt } from "@/lib/types";
 
 interface DemoDashboardProps {
 	onLoginClick: () => void;
 	onDebtClick?: (debt: Debt) => void;
 }
 
-export default function DemoDashboard({ onLoginClick, onDebtClick }: DemoDashboardProps) {
+export default function DemoDashboard({
+	onLoginClick,
+	onDebtClick,
+}: DemoDashboardProps) {
 	const t = useTranslations();
 	const tLanding = useTranslations("landing");
 	const { debts, payments } = useDemoContext();
@@ -23,13 +26,19 @@ export default function DemoDashboard({ onLoginClick, onDebtClick }: DemoDashboa
 	const demoHandlers = {
 		onEdit: (debt: Debt) => {
 			// En la demo, simplemente mostramos un mensaje
-			alert("¡Esta es solo una demo! Regístrate para editar tus deudas reales.");
+			alert(
+				"¡Esta es solo una demo! Regístrate para editar tus deudas reales.",
+			);
 		},
 		onDelete: (debt: Debt) => {
-			alert("¡Esta es solo una demo! Regístrate para gestionar tus deudas reales.");
+			alert(
+				"¡Esta es solo una demo! Regístrate para gestionar tus deudas reales.",
+			);
 		},
 		onAddDebt: () => {
-			alert("¡Esta es solo una demo! Regístrate para añadir tus deudas reales.");
+			alert(
+				"¡Esta es solo una demo! Regístrate para añadir tus deudas reales.",
+			);
 		},
 	};
 

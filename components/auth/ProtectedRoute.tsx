@@ -2,8 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import SkeletonAuthCheck from "@/components/ui/skeletons/SkeletonAuthCheck";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ProtectedRouteProps {
 	children: ReactNode;

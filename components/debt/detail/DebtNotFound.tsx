@@ -19,10 +19,7 @@ export default function DebtNotFound({ onBack }: DebtNotFoundProps) {
 					<p className="text-base-content/70 mb-4">
 						{t("debtDetail.notFound.description")}
 					</p>
-					<button
-						onClick={onBack}
-						className="btn btn-primary"
-					>
+					<button onClick={onBack} className="btn btn-primary">
 						{t("common.back")}
 					</button>
 				</div>

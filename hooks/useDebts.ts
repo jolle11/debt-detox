@@ -1,9 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt } from "@/lib/types";
-import { useAuth } from "@/contexts/AuthContext";
 
 interface UseDebtsReturn {
 	debts: Debt[];
@@ -34,7 +34,7 @@ const fetchDebts = async (): Promise<Debt[]> => {
 
 export function useDebts(): UseDebtsReturn {
 	const { user } = useAuth();
-	
+
 	const {
 		data: debts = [],
 		isLoading,

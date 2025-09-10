@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 import {
 	calculatePaidAmountWithPayments,
 	calculatePaymentProgressWithPayments,
@@ -23,7 +23,7 @@ export default function DebtProgressWithPayments({
 }: DebtProgressWithPaymentsProps) {
 	const t = useTranslations("debtProgress");
 	const [animatedPercentage, setAnimatedPercentage] = useState(0);
-	
+
 	// Use external payments if provided, no local fetch needed
 	const payments = externalPayments || [];
 	const isLoading = externalLoading;
@@ -35,14 +35,17 @@ export default function DebtProgressWithPayments({
 		payments,
 	);
 	const progress = calculatePaymentProgressWithPayments(debt, payments);
-	
+
 	// Check if we have unrealistic data (indicates initial calculation issue)
 	const hasValidData = paidAmount <= totalAmount * 1.1; // Allow 10% margin for rounding
-	
+
 	// Use validated progress data
 	const validatedProgress = {
 		...progress,
-		percentage: !hasValidData || isNaN(progress.percentage) ? 0 : Math.min(progress.percentage, 100)
+		percentage:
+			!hasValidData || isNaN(progress.percentage)
+				? 0
+				: Math.min(progress.percentage, 100),
 	};
 
 	// Animate from 0 to final percentage when data is valid
@@ -96,10 +99,12 @@ export default function DebtProgressWithPayments({
 			{/* Información de cuotas mejorada */}
 			<div className="flex justify-between items-center">
 				<span className="text-lg font-medium">
-					{t("paymentsLabel")}: {progress.paidPayments}/{progress.totalPayments}
+					{t("paymentsLabel")}: {progress.paidPayments}/
+					{progress.totalPayments}
 				</span>
 				<span className="text-base text-base-content/70">
-					{progress.totalPayments - progress.paidPayments} {t("remaining")}
+					{progress.totalPayments - progress.paidPayments}{" "}
+					{t("remaining")}
 				</span>
 			</div>
 		</div>

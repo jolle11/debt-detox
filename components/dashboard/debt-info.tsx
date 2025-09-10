@@ -1,10 +1,10 @@
 import { useFormatter, useTranslations } from "next-intl";
+import { useCurrency } from "@/hooks/useCurrency";
 import {
 	calculatePaidAmount,
 	calculateRemainingAmount,
 	calculateTotalAmount,
 } from "@/lib/format";
-import { useCurrency } from "@/hooks/useCurrency";
 import type { Debt } from "@/lib/types";
 
 interface DebtInfoProps {
@@ -61,12 +61,12 @@ export default function DebtInfo({ debt }: DebtInfoProps) {
 			: []),
 		{
 			label: t("dashboard.debt.finalPaymentDate"),
-			value: debt.final_payment_date 
+			value: debt.final_payment_date
 				? format.dateTime(new Date(debt.final_payment_date), {
-					year: "numeric",
-					month: "2-digit",
-					day: "2-digit",
-				})
+						year: "numeric",
+						month: "2-digit",
+						day: "2-digit",
+					})
 				: "No especificada",
 			className: "text-base font-medium text-base-content/70",
 		},

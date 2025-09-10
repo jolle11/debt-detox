@@ -1,22 +1,22 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { 
-	ArrowLeftIcon, 
-	PencilIcon, 
-	TrashIcon,
+import {
+	ArrowLeftIcon,
 	CalendarIcon,
 	CreditCardIcon,
 	FileTextIcon,
-	TargetIcon
+	PencilIcon,
+	TargetIcon,
+	TrashIcon,
 } from "@phosphor-icons/react";
-import { useDemoContext } from "./DemoProvider";
-import { calculateDebtStatus } from "@/lib/format";
-import { useCurrency } from "@/hooks/useCurrency";
-import type { Debt } from "@/lib/types";
-import DebtProgressWithPayments from "@/components/dashboard/debt-progress-with-payments";
-import DemoDebtPaymentStatus from "./DemoDebtPaymentStatus";
+import { useTranslations } from "next-intl";
 import DebtPaymentsList from "@/components/dashboard/debt-payments-list";
+import DebtProgressWithPayments from "@/components/dashboard/debt-progress-with-payments";
+import { useCurrency } from "@/hooks/useCurrency";
+import { calculateDebtStatus } from "@/lib/format";
+import type { Debt } from "@/lib/types";
+import DemoDebtPaymentStatus from "./DemoDebtPaymentStatus";
+import { useDemoContext } from "./DemoProvider";
 
 interface DemoDebtDetailProps {
 	debt: Debt;
@@ -24,12 +24,16 @@ interface DemoDebtDetailProps {
 	onLoginClick: () => void;
 }
 
-export default function DemoDebtDetail({ debt, onBack, onLoginClick }: DemoDebtDetailProps) {
+export default function DemoDebtDetail({
+	debt,
+	onBack,
+	onLoginClick,
+}: DemoDebtDetailProps) {
 	const t = useTranslations();
 	const tLanding = useTranslations("landing");
 	const { formatCurrency } = useCurrency();
 	const { payments } = useDemoContext();
-	
+
 	const status = calculateDebtStatus(debt.final_payment_date);
 	const totalAmount =
 		(debt.down_payment || 0) +
@@ -45,18 +49,22 @@ export default function DemoDebtDetail({ debt, onBack, onLoginClick }: DemoDebtD
 	};
 
 	// Calcular estadísticas de pagos para la demo
-	const debtPayments = payments.filter(p => p.debt_id === debt.id);
-	const paidPayments = debtPayments.filter(p => p.paid).length;
-	const totalPaid = (debt.down_payment || 0) + debtPayments
-		.filter(p => p.paid)
-		.reduce((sum, p) => sum + (p.actual_amount || p.planned_amount), 0);
-	
+	const debtPayments = payments.filter((p) => p.debt_id === debt.id);
+	const paidPayments = debtPayments.filter((p) => p.paid).length;
+	const totalPaid =
+		(debt.down_payment || 0) +
+		debtPayments
+			.filter((p) => p.paid)
+			.reduce((sum, p) => sum + (p.actual_amount || p.planned_amount), 0);
+
 	const pendingPayments = debt.number_of_payments - paidPayments;
 	const pendingAmount = totalAmount - totalPaid;
 
 	// Handlers para la demo
 	const demoAlert = () => {
-		alert("¡Esta es solo una demo! Regístrate para gestionar tus deudas reales.");
+		alert(
+			"¡Esta es solo una demo! Regístrate para gestionar tus deudas reales.",
+		);
 	};
 
 	return (
@@ -84,10 +92,7 @@ export default function DemoDebtDetail({ debt, onBack, onLoginClick }: DemoDebtD
 			{/* Header */}
 			<div className="flex items-center justify-between mb-4">
 				<div className="flex items-center gap-3">
-					<button
-						onClick={onBack}
-						className="btn btn-ghost btn-sm"
-					>
+					<button onClick={onBack} className="btn btn-ghost btn-sm">
 						<ArrowLeftIcon className="w-4 h-4" />
 						{t("common.back")}
 					</button>
@@ -199,29 +204,38 @@ export default function DemoDebtDetail({ debt, onBack, onLoginClick }: DemoDebtD
 								<div className="grid grid-cols-2 gap-4">
 									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
 										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-											{t("debtDetail.paymentDetails.paidPayments")}
+											{t(
+												"debtDetail.paymentDetails.paidPayments",
+											)}
 										</div>
 										<div className="text-2xl font-bold text-success">
 											{paidPayments}
 										</div>
 										<div className="text-base text-base-content/70 mt-1">
-											{t("debtDetail.paymentDetails.of")} {debt.number_of_payments}
+											{t("debtDetail.paymentDetails.of")}{" "}
+											{debt.number_of_payments}
 										</div>
 									</div>
 									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
 										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-											{t("debtDetail.paymentDetails.pending")}
+											{t(
+												"debtDetail.paymentDetails.pending",
+											)}
 										</div>
 										<div className="text-2xl font-bold text-warning">
 											{pendingPayments}
 										</div>
 										<div className="text-base text-base-content/70 mt-1">
-											{t("debtDetail.paymentDetails.remaining")}
+											{t(
+												"debtDetail.paymentDetails.remaining",
+											)}
 										</div>
 									</div>
 									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
 										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-											{t("debtDetail.paymentDetails.paidAmount")}
+											{t(
+												"debtDetail.paymentDetails.paidAmount",
+											)}
 										</div>
 										<div className="text-lg font-bold text-success">
 											{formatCurrency(totalPaid)}
@@ -229,10 +243,14 @@ export default function DemoDebtDetail({ debt, onBack, onLoginClick }: DemoDebtD
 									</div>
 									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
 										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-											{t("debtDetail.paymentDetails.toPay")}
+											{t(
+												"debtDetail.paymentDetails.toPay",
+											)}
 										</div>
 										<div className="text-lg font-bold text-warning">
-											{formatCurrency(Math.max(0, pendingAmount))}
+											{formatCurrency(
+												Math.max(0, pendingAmount),
+											)}
 										</div>
 									</div>
 								</div>
@@ -251,48 +269,72 @@ export default function DemoDebtDetail({ debt, onBack, onLoginClick }: DemoDebtD
 										debt.down_payment !== null && (
 											<div className="flex justify-between items-center">
 												<span className="text-base text-base-content/70">
-													{t("debtDetail.structure.downPayment")}:
+													{t(
+														"debtDetail.structure.downPayment",
+													)}
+													:
 												</span>
 												<span className="font-medium text-lg">
 													{debt.down_payment > 0
-														? formatCurrency(debt.down_payment)
-														: t("debtDetail.structure.notApplicable")}
+														? formatCurrency(
+																debt.down_payment,
+															)
+														: t(
+																"debtDetail.structure.notApplicable",
+															)}
 												</span>
 											</div>
 										)}
 									<div className="flex justify-between items-center">
 										<span className="text-base text-base-content/70">
-											{t("debtDetail.structure.monthlyPayment")}:
+											{t(
+												"debtDetail.structure.monthlyPayment",
+											)}
+											:
 										</span>
 										<span className="font-medium text-lg">
-											{formatCurrency(debt.monthly_amount)}
+											{formatCurrency(
+												debt.monthly_amount,
+											)}
 										</span>
 									</div>
 									<div className="flex justify-between items-center">
 										<span className="text-base text-base-content/70">
-											{t("debtDetail.structure.duration")}:
+											{t("debtDetail.structure.duration")}
+											:
 										</span>
 										<span className="font-medium text-lg">
-											{debt.number_of_payments} {t("debtDetail.structure.months")}
+											{debt.number_of_payments}{" "}
+											{t("debtDetail.structure.months")}
 										</span>
 									</div>
 									{debt.final_payment !== undefined &&
 										debt.final_payment !== null && (
 											<div className="flex justify-between items-center">
 												<span className="text-base text-base-content/70">
-													{t("debtDetail.structure.finalPayment")}:
+													{t(
+														"debtDetail.structure.finalPayment",
+													)}
+													:
 												</span>
 												<span className="font-medium text-lg">
 													{debt.final_payment > 0
-														? formatCurrency(debt.final_payment)
-														: t("debtDetail.structure.notApplicable")}
+														? formatCurrency(
+																debt.final_payment,
+															)
+														: t(
+																"debtDetail.structure.notApplicable",
+															)}
 												</span>
 											</div>
 										)}
 									<div className="bg-base-300 rounded-lg p-4 mt-6">
 										<div className="flex justify-between items-center">
 											<span className="text-base font-medium">
-												{t("debtDetail.structure.total")}:
+												{t(
+													"debtDetail.structure.total",
+												)}
+												:
 											</span>
 											<span className="font-bold text-2xl">
 												{formatCurrency(totalAmount)}
@@ -336,8 +378,12 @@ export default function DemoDebtDetail({ debt, onBack, onLoginClick }: DemoDebtD
 									</div>
 									<div className="text-lg font-medium">
 										{debt.final_payment_date
-											? formatDate(debt.final_payment_date)
-											: t("debtDetail.dates.notSpecified")}
+											? formatDate(
+													debt.final_payment_date,
+												)
+											: t(
+													"debtDetail.dates.notSpecified",
+												)}
 									</div>
 								</div>
 							</div>
@@ -352,7 +398,8 @@ export default function DemoDebtDetail({ debt, onBack, onLoginClick }: DemoDebtD
 					{tLanding("demo.bottomCta.title")}
 				</h3>
 				<p className="text-base-content/70 mb-4">
-					Ve todos los detalles, registra pagos, y gestiona tus deudas reales
+					Ve todos los detalles, registra pagos, y gestiona tus deudas
+					reales
 				</p>
 				<button
 					onClick={onLoginClick}

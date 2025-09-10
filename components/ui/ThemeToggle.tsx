@@ -1,12 +1,12 @@
 "use client";
 
-import { type ThemeMode, useTheme } from "@/hooks/useTheme";
 import { useTranslations } from "next-intl";
+import { type ThemeMode, useTheme } from "@/hooks/useTheme";
 
 export default function ThemeToggle() {
 	const { theme, changeTheme } = useTheme();
 	const t = useTranslations("theme");
-	
+
 	const themes: { value: ThemeMode; label: string; icon: string }[] = [
 		{ value: "light", label: t("light"), icon: "☀️" },
 		{ value: "dark", label: t("dark"), icon: "🌙" },

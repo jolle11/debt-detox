@@ -1,9 +1,9 @@
 import { useTranslations } from "next-intl";
-import DemoDebtCard from "./DemoDebtCard";
 import DebtFilterTabs from "@/components/dashboard/debt-filter-tabs";
 import EmptyState from "@/components/dashboard/empty-state";
 import { useDebtFilter } from "@/hooks/use-debt-filter";
 import type { Debt, Payment } from "@/lib/types";
+import DemoDebtCard from "./DemoDebtCard";
 
 interface DemoDebtsListProps {
 	debts: Debt[];
@@ -53,10 +53,7 @@ export default function DemoDebtsList({
 				</div>
 
 				{filteredDebts.length === 0 && (
-					<EmptyState
-						filter={activeFilter}
-						onAddDebt={onAddDebt}
-					/>
+					<EmptyState filter={activeFilter} onAddDebt={onAddDebt} />
 				)}
 			</div>
 		</div>

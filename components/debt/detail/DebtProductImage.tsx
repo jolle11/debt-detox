@@ -1,7 +1,7 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { FileTextIcon } from "@phosphor-icons/react";
+import { useTranslations } from "next-intl";
 import type { DebtProductImageProps } from "@/data/debtDetail";
 
 export default function DebtProductImage({ debt }: DebtProductImageProps) {

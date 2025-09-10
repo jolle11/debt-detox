@@ -33,10 +33,7 @@ export default function DebtDetailPage() {
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [isClient, setIsClient] = useState(false);
-	const {
-		payments,
-		isLoading: paymentsLoading,
-	} = usePayments(debt?.id);
+	const { payments, isLoading: paymentsLoading } = usePayments(debt?.id);
 
 	useEffect(() => {
 		setIsClient(true);
@@ -57,7 +54,6 @@ export default function DebtDetailPage() {
 	if (!debt) {
 		return <DebtNotFound onBack={() => router.back()} />;
 	}
-
 
 	const totalAmount =
 		(debt.down_payment || 0) +
