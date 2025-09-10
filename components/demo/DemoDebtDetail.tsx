@@ -1,7 +1,15 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { ArrowLeftIcon, PencilIcon, TrashIcon } from "@phosphor-icons/react";
+import { 
+	ArrowLeftIcon, 
+	PencilIcon, 
+	TrashIcon,
+	CalendarIcon,
+	CreditCardIcon,
+	FileTextIcon,
+	TargetIcon
+} from "@phosphor-icons/react";
 import { useDemoContext } from "./DemoProvider";
 import { calculateDebtStatus } from "@/lib/format";
 import { useCurrency } from "@/hooks/useCurrency";
@@ -58,10 +66,10 @@ export default function DemoDebtDetail({ debt, onBack, onLoginClick }: DemoDebtD
 				<div className="flex items-center justify-between">
 					<div>
 						<h3 className="text-lg font-bold">
-							{tLanding("demo.title")} - Detalle de Deuda
+							{tLanding("demo.title")} - {t("debtDetail.title")}
 						</h3>
 						<p className="text-sm opacity-90">
-							Explora todos los detalles y gráficos de progreso
+							{tLanding("demo.subtitle")}
 						</p>
 					</div>
 					<button
@@ -162,6 +170,7 @@ export default function DemoDebtDetail({ debt, onBack, onLoginClick }: DemoDebtD
 					<div className="card bg-base-100 shadow-sm">
 						<div className="card-body p-4">
 							<h2 className="card-title text-lg mb-2">
+								<TargetIcon className="w-5 h-5" />
 								{t("debtDetail.sections.progress")}
 							</h2>
 							<DebtProgressWithPayments
@@ -174,6 +183,123 @@ export default function DemoDebtDetail({ debt, onBack, onLoginClick }: DemoDebtD
 									debt={debt}
 									payments={debtPayments}
 								/>
+							</div>
+						</div>
+					</div>
+
+					{/* Combined Details Section */}
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+						{/* Payment Details */}
+						<div className="card bg-base-100 shadow">
+							<div className="card-body p-5">
+								<h2 className="card-title text-xl mb-4">
+									<CreditCardIcon className="w-6 h-6" />
+									{t("debtDetail.sections.paymentDetails")}
+								</h2>
+								<div className="grid grid-cols-2 gap-4">
+									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
+										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+											{t("debtDetail.paymentDetails.paidPayments")}
+										</div>
+										<div className="text-2xl font-bold text-success">
+											{paidPayments}
+										</div>
+										<div className="text-base text-base-content/70 mt-1">
+											{t("debtDetail.paymentDetails.of")} {debt.number_of_payments}
+										</div>
+									</div>
+									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
+										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+											{t("debtDetail.paymentDetails.pending")}
+										</div>
+										<div className="text-2xl font-bold text-warning">
+											{pendingPayments}
+										</div>
+										<div className="text-base text-base-content/70 mt-1">
+											{t("debtDetail.paymentDetails.remaining")}
+										</div>
+									</div>
+									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
+										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+											{t("debtDetail.paymentDetails.paidAmount")}
+										</div>
+										<div className="text-lg font-bold text-success">
+											{formatCurrency(totalPaid)}
+										</div>
+									</div>
+									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
+										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
+											{t("debtDetail.paymentDetails.toPay")}
+										</div>
+										<div className="text-lg font-bold text-warning">
+											{formatCurrency(Math.max(0, pendingAmount))}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						{/* Structure Details */}
+						<div className="card bg-base-100 shadow">
+							<div className="card-body p-5">
+								<h2 className="card-title text-xl mb-4">
+									<FileTextIcon className="w-6 h-6" />
+									{t("debtDetail.sections.structure")}
+								</h2>
+								<div className="space-y-4">
+									{debt.down_payment !== undefined &&
+										debt.down_payment !== null && (
+											<div className="flex justify-between items-center">
+												<span className="text-base text-base-content/70">
+													{t("debtDetail.structure.downPayment")}:
+												</span>
+												<span className="font-medium text-lg">
+													{debt.down_payment > 0
+														? formatCurrency(debt.down_payment)
+														: t("debtDetail.structure.notApplicable")}
+												</span>
+											</div>
+										)}
+									<div className="flex justify-between items-center">
+										<span className="text-base text-base-content/70">
+											{t("debtDetail.structure.monthlyPayment")}:
+										</span>
+										<span className="font-medium text-lg">
+											{formatCurrency(debt.monthly_amount)}
+										</span>
+									</div>
+									<div className="flex justify-between items-center">
+										<span className="text-base text-base-content/70">
+											{t("debtDetail.structure.duration")}:
+										</span>
+										<span className="font-medium text-lg">
+											{debt.number_of_payments} {t("debtDetail.structure.months")}
+										</span>
+									</div>
+									{debt.final_payment !== undefined &&
+										debt.final_payment !== null && (
+											<div className="flex justify-between items-center">
+												<span className="text-base text-base-content/70">
+													{t("debtDetail.structure.finalPayment")}:
+												</span>
+												<span className="font-medium text-lg">
+													{debt.final_payment > 0
+														? formatCurrency(debt.final_payment)
+														: t("debtDetail.structure.notApplicable")}
+												</span>
+											</div>
+										)}
+									<div className="bg-base-300 rounded-lg p-4 mt-6">
+										<div className="flex justify-between items-center">
+											<span className="text-base font-medium">
+												{t("debtDetail.structure.total")}:
+											</span>
+											<span className="font-bold text-2xl">
+												{formatCurrency(totalAmount)}
+											</span>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -192,6 +318,7 @@ export default function DemoDebtDetail({ debt, onBack, onLoginClick }: DemoDebtD
 					<div className="card bg-base-100 shadow">
 						<div className="card-body p-5">
 							<h2 className="card-title text-xl mb-4">
+								<CalendarIcon className="w-6 h-6" />
 								{t("debtDetail.sections.dates")}
 							</h2>
 							<div className="space-y-5">

@@ -51,7 +51,7 @@ export default function DemoDebtPaymentStatus({ debt, payments }: DemoDebtPaymen
 			
 			<button
 				onClick={handleMarkAsPaid}
-				className="btn btn-primary btn-sm w-full"
+				className="btn btn-primary"
 				disabled={false}
 			>
 				{tPayment("markAsPaid")}
