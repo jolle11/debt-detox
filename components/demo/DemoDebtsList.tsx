@@ -53,7 +53,7 @@ export default function DemoDebtsList({
 				</div>
 
 				{filteredDebts.length === 0 && (
-					<EmptyState filter={activeFilter} onAddDebt={onAddDebt} />
+					<EmptyState filterType={activeFilter} onAddDebt={onAddDebt} />
 				)}
 			</div>
 		</div>

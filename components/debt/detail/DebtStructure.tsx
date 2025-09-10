@@ -58,7 +58,7 @@ export default function DebtStructure({
 								<span className="font-medium text-lg">
 									{isString
 										? value
-										: value && value > 0
+										: value && typeof value === 'number' && value > 0
 											? formatCurrency(value)
 											: t(
 													"debtDetail.structure.notApplicable",
