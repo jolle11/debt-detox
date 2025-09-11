@@ -5,7 +5,7 @@ import {
 	MoneyIcon,
 } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
-import StatCard from "@/components/dashboard/stat-card";
+import StatCard from "@/components/dashboard/StatCard";
 import { useCurrency } from "@/hooks/useCurrency";
 import {
 	calculateDebtStatus,

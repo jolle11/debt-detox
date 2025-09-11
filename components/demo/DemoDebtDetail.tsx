@@ -10,8 +10,8 @@ import {
 	TrashIcon,
 } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
-import DebtPaymentsList from "@/components/dashboard/debt-payments-list";
-import DebtProgressWithPayments from "@/components/dashboard/debt-progress-with-payments";
+import DebtPaymentsList from "@/components/dashboard/DebtPaymentsList";
+import DebtProgressWithPayments from "@/components/dashboard/DebtProgressWithPayments";
 import { useCurrency } from "@/hooks/useCurrency";
 import { calculateDebtStatus } from "@/lib/format";
 import type { Debt } from "@/lib/types";

@@ -1,10 +1,10 @@
 import { useRouter } from "next/navigation";
 import { calculateDebtStatus } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
-import DebtActions from "./debt-actions";
-import DebtInfo from "./debt-info";
-import DebtPaymentStatus from "./debt-payment-status";
-import DebtProgressWithPayments from "./debt-progress-with-payments";
+import DebtActions from "./DebtActions";
+import DebtInfo from "./DebtInfo";
+import DebtPaymentStatus from "./DebtPaymentStatus";
+import DebtProgressWithPayments from "./DebtProgressWithPayments";
 
 interface DebtCardProps {
 	debt: Debt;

@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
 import CreateDebtModal from "@/components/debt/CreateDebtModal";
-import LanguageSelector from "@/components/language-selector";
+import LanguageSelector from "@/components/LanguageSelector";
 import MobileMenu from "@/components/layout/MobileMenu";
 import MobileMenuButton from "@/components/layout/MobileMenuButton";
 import ThemeToggle from "@/components/ui/ThemeToggle";

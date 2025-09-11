@@ -2,8 +2,8 @@
 
 import { TargetIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
-import DebtPaymentStatus from "@/components/dashboard/debt-payment-status";
-import DebtProgressWithPayments from "@/components/dashboard/debt-progress-with-payments";
+import DebtPaymentStatus from "@/components/dashboard/DebtPaymentStatus";
+import DebtProgressWithPayments from "@/components/dashboard/DebtProgressWithPayments";
 import type { DebtDetailProps } from "@/data/debtDetail";
 
 export default function DebtProgressSection({

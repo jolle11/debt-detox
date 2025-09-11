@@ -1,6 +1,6 @@
-import DebtActions from "@/components/dashboard/debt-actions";
-import DebtInfo from "@/components/dashboard/debt-info";
-import DebtProgressWithPayments from "@/components/dashboard/debt-progress-with-payments";
+import DebtActions from "@/components/dashboard/DebtActions";
+import DebtInfo from "@/components/dashboard/DebtInfo";
+import DebtProgressWithPayments from "@/components/dashboard/DebtProgressWithPayments";
 import { calculateDebtStatus } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
 import DemoDebtPaymentStatus from "./DemoDebtPaymentStatus";

@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import SummaryStats from "@/components/dashboard/summary-stats";
+import SummaryStats from "@/components/dashboard/SummaryStats";
 import type { Debt } from "@/lib/types";
 import DemoDebtsList from "./DemoDebtsList";
 import { useDemoContext } from "./DemoProvider";

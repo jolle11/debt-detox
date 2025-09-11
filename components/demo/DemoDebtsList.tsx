@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl";
-import DebtFilterTabs from "@/components/dashboard/debt-filter-tabs";
-import EmptyState from "@/components/dashboard/empty-state";
-import { useDebtFilter } from "@/hooks/use-debt-filter";
+import DebtFilterTabs from "@/components/dashboard/DebtFilterTabs";
+import EmptyState from "@/components/dashboard/EmptyState";
+import { useDebtFilter } from "@/hooks/useDebtFilter";
 import type { Debt, Payment } from "@/lib/types";
 import DemoDebtCard from "./DemoDebtCard";
 

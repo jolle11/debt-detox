@@ -3,7 +3,7 @@
 import { SignOutIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import LanguageSelector from "@/components/language-selector";
+import LanguageSelector from "@/components/LanguageSelector";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import UserAvatar from "../ui/UserAvatar";

@@ -6,7 +6,7 @@ import { useDebtsContext } from "@/contexts/DebtsContext";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 import type { Debt } from "@/lib/types";
-import DebtPaymentsList from "@/components/dashboard/debt-payments-list";
+import DebtPaymentsList from "@/components/dashboard/DebtPaymentsList";
 import EditDebtModal from "@/components/debt/EditDebtModal";
 import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
 import { usePayments } from "@/hooks/usePayments";

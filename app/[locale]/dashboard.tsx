@@ -1,7 +1,7 @@
 "use client";
 import { useTranslations, useLocale } from "next-intl";
-import SummaryStats from "@/components/dashboard/summary-stats";
-import DebtsList from "@/components/dashboard/debts-list";
+import SummaryStats from "@/components/dashboard/SummaryStats";
+import DebtsList from "@/components/dashboard/DebtsList";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import LandingPage from "@/components/landing/LandingPage";
 import CreateDebtModal from "@/components/debt/CreateDebtModal";

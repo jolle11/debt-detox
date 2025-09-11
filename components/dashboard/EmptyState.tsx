@@ -1,6 +1,6 @@
 import { ChartBarIcon, PlusIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
-import type { DebtFilterType } from "@/hooks/use-debt-filter";
+import type { DebtFilterType } from "@/hooks/useDebtFilter";
 
 interface EmptyStateProps {
 	filterType?: DebtFilterType;

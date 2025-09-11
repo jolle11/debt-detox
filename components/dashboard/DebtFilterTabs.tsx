@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import type { DebtFilterType } from "@/hooks/use-debt-filter";
+import type { DebtFilterType } from "@/hooks/useDebtFilter";
 
 interface DebtFilterTabsProps {
 	activeFilter: DebtFilterType;

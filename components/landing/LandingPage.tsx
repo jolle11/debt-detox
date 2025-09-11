@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
-import LanguageSelector from "@/components/language-selector";
+import LanguageSelector from "@/components/LanguageSelector";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import CTASection from "./CTASection";
 import DemoSection from "./DemoSection";
