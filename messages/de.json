@@ -109,9 +109,9 @@
 				"title": "Fortschritt Verfolgen",
 				"description": "Überwachen Sie Ihre Schuldenzahlungen und sehen Sie, wie nah Sie der Freiheit sind"
 			},
-			"setGoals": {
-				"title": "Ziele Setzen",
-				"description": "Planen Sie Ihre Zahlungsstrategie mit eingebautem Sparrechner"
+			"managePayments": {
+				"title": "Zahlungen Verwalten",
+				"description": "Kontrollieren Sie Zahlungstermine und Beträge für jede monatliche Rate"
 			},
 			"stayMotivated": {
 				"title": "Bleiben Sie Motiviert",

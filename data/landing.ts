@@ -24,9 +24,9 @@ export const heroFeatures: LandingFeature[] = [
 		descriptionKey: "features.trackProgress.description",
 	},
 	{
-		icon: "🎯",
-		titleKey: "features.setGoals.title",
-		descriptionKey: "features.setGoals.description",
+		icon: "💰",
+		titleKey: "features.managePayments.title",
+		descriptionKey: "features.managePayments.description",
 	},
 	{
 		icon: "📈",

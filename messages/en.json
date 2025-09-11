@@ -107,9 +107,9 @@
 				"title": "Track Progress",
 				"description": "Monitor your debt payments and see how close you are to freedom"
 			},
-			"setGoals": {
-				"title": "Set Goals",
-				"description": "Plan your payment strategy with built-in savings calculator"
+			"managePayments": {
+				"title": "Manage Payments",
+				"description": "Control payment dates and amounts for each monthly installment"
 			},
 			"stayMotivated": {
 				"title": "Stay Motivated",

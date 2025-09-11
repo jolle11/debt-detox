@@ -109,9 +109,9 @@
 				"title": "Suivre le Progrès",
 				"description": "Surveillez vos paiements de dettes et voyez à quel point vous êtes proche de la liberté"
 			},
-			"setGoals": {
-				"title": "Définir des Objectifs",
-				"description": "Planifiez votre stratégie de paiement avec calculatrice d'épargne intégrée"
+			"managePayments": {
+				"title": "Gérer les Paiements",
+				"description": "Contrôlez les dates de paiement et les montants de chaque mensualité"
 			},
 			"stayMotivated": {
 				"title": "Restez Motivé",

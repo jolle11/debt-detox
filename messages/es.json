@@ -107,9 +107,9 @@
 				"title": "Seguir Progreso",
 				"description": "Monitorea tus pagos de deudas y ve qué tan cerca estás de la libertad"
 			},
-			"setGoals": {
-				"title": "Establecer Metas",
-				"description": "Planifica tu estrategia de pago con calculadora de ahorros integrada"
+			"managePayments": {
+				"title": "Gestionar Pagos",
+				"description": "Controla fechas de pago y montos de cada cuota mensual"
 			},
 			"stayMotivated": {
 				"title": "Mantente Motivado",
