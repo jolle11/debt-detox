@@ -83,13 +83,9 @@ export default function EditDebtForm({
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		// Calculate final payment date if not provided
+		// Calculate final payment date based on first payment date and number of payments
 		let finalPaymentDate = formData.final_payment_date;
-		if (
-			!finalPaymentDate &&
-			formData.first_payment_date &&
-			formData.number_of_payments
-		) {
+		if (formData.first_payment_date && formData.number_of_payments) {
 			finalPaymentDate = calculateFinalPaymentDate(
 				formData.first_payment_date,
 				Number(formData.number_of_payments),
