@@ -2,12 +2,13 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { usePayments } from "@/hooks/usePayments";
+import { useAuth } from "@/contexts/AuthContext";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt } from "@/lib/types";
 
 interface UseCreateDebtReturn {
 	createDebt: (
-		debtData: Omit<Debt, "id" | "created" | "updated" | "deleted">,
+		debtData: Omit<Debt, "id" | "user_id" | "created" | "updated" | "deleted">,
 	) => Promise<void>;
 	isLoading: boolean;
 	error: string | null;
@@ -17,18 +18,24 @@ interface UseCreateDebtReturn {
 export function useCreateDebt(): UseCreateDebtReturn {
 	const queryClient = useQueryClient();
 	const { generateHistoricalPayments } = usePayments();
+	const { user } = useAuth();
 
 	const mutation = useMutation({
 		mutationFn: async (
-			debtData: Omit<Debt, "id" | "created" | "updated" | "deleted">,
+			debtData: Omit<Debt, "id" | "user_id" | "created" | "updated" | "deleted">,
 		) => {
-			if (!pb.authStore.isValid) {
+			if (!pb.authStore.isValid || !user?.id) {
 				throw new Error("Usuario no autenticado");
 			}
 
+			const debtDataWithUser = {
+				...debtData,
+				user_id: user.id,
+			};
+
 			const createdDebt = await pb
 				.collection(COLLECTIONS.DEBTS)
-				.create(debtData);
+				.create(debtDataWithUser);
 
 			// Generar pagos históricos automáticamente si es una financiación a medias
 			await generateHistoricalPayments(
@@ -47,7 +54,7 @@ export function useCreateDebt(): UseCreateDebtReturn {
 	});
 
 	const createDebt = async (
-		debtData: Omit<Debt, "id" | "created" | "updated" | "deleted">,
+		debtData: Omit<Debt, "id" | "user_id" | "created" | "updated" | "deleted">,
 	): Promise<void> => {
 		await mutation.mutateAsync(debtData);
 	};

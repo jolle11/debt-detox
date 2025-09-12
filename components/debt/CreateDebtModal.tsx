@@ -21,7 +21,7 @@ export default function CreateDebtModal({
 	const { createDebt, isLoading, error } = useCreateDebt();
 
 	const handleSubmit = async (
-		debtData: Omit<Debt, "id" | "created" | "updated" | "deleted">,
+		debtData: Omit<Debt, "id" | "user_id" | "created" | "updated" | "deleted">,
 	) => {
 		try {
 			await createDebt(debtData);

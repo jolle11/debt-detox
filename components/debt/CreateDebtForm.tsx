@@ -7,7 +7,7 @@ import type { Debt } from "@/lib/types";
 
 interface CreateDebtFormProps {
 	onSubmit: (
-		debt: Omit<Debt, "id" | "created" | "updated" | "deleted">,
+		debt: Omit<Debt, "id" | "user_id" | "created" | "updated" | "deleted">,
 	) => void;
 	onCancel: () => void;
 	isSubmitting?: boolean;
@@ -65,7 +65,7 @@ export default function CreateDebtForm({
 			);
 		}
 
-		const debtData: Omit<Debt, "id" | "created" | "updated" | "deleted"> = {
+		const debtData: Omit<Debt, "id" | "user_id" | "created" | "updated" | "deleted"> = {
 			name: formData.name,
 			entity: formData.entity,
 			down_payment: formData.down_payment

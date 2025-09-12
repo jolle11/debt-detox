@@ -4,6 +4,7 @@ import type { Debt, Payment } from "@/lib/types";
 export const mockDebts: Debt[] = [
 	{
 		id: "demo-laptop",
+		user_id: "demo-user",
 		name: "Portátil Gaming",
 		entity: "MediaMarkt",
 		down_payment: 200,
@@ -19,6 +20,7 @@ export const mockDebts: Debt[] = [
 	},
 	{
 		id: "demo-mobile",
+		user_id: "demo-user",
 		name: "iPhone 15",
 		entity: "Orange",
 		down_payment: 0,
@@ -34,6 +36,7 @@ export const mockDebts: Debt[] = [
 	},
 	{
 		id: "demo-sofa",
+		user_id: "demo-user",
 		name: "Sofá 3 Plazas",
 		entity: "IKEA",
 		down_payment: 100,

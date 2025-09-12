@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt } from "@/lib/types";
 
@@ -16,6 +17,7 @@ interface UseEditDebtReturn {
 
 export function useEditDebt(): UseEditDebtReturn {
 	const queryClient = useQueryClient();
+	const { user } = useAuth();
 
 	const mutation = useMutation({
 		mutationFn: async ({
@@ -25,8 +27,17 @@ export function useEditDebt(): UseEditDebtReturn {
 			debtId: string;
 			debtData: Omit<Debt, "created" | "updated" | "deleted">;
 		}) => {
-			if (!pb.authStore.isValid) {
+			if (!pb.authStore.isValid || !user?.id) {
 				throw new Error("Usuario no autenticado");
+			}
+
+			// Verify the debt belongs to the current user before updating
+			const existingDebt = await pb
+				.collection(COLLECTIONS.DEBTS)
+				.getOne(debtId, { filter: `user_id = "${user.id}"` });
+
+			if (!existingDebt) {
+				throw new Error("No tienes permisos para editar esta deuda");
 			}
 
 			const updatedDebt = await pb

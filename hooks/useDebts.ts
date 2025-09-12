@@ -12,14 +12,14 @@ interface UseDebtsReturn {
 	refetch: () => void;
 }
 
-const fetchDebts = async (): Promise<Debt[]> => {
-	if (!pb.authStore.isValid) {
+const fetchDebts = async (userId: string): Promise<Debt[]> => {
+	if (!pb.authStore.isValid || !userId) {
 		return [];
 	}
 
 	try {
 		const records = await pb.collection(COLLECTIONS.DEBTS).getFullList({
-			filter: "deleted = null",
+			filter: `deleted = null && user_id = "${userId}"`,
 			sort: "-created",
 		});
 
@@ -42,8 +42,8 @@ export function useDebts(): UseDebtsReturn {
 		refetch,
 	} = useQuery({
 		queryKey: ["debts", user?.id], // Include user ID in query key
-		queryFn: fetchDebts,
-		enabled: !!user, // Solo ejecuta si hay usuario autenticado
+		queryFn: () => fetchDebts(user?.id || ""),
+		enabled: !!user?.id, // Solo ejecuta si hay usuario autenticado
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		gcTime: 10 * 60 * 1000, // 10 minutes
 	});

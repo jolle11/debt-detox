@@ -1,5 +1,6 @@
 export interface Debt {
 	id?: string;
+	user_id: string;
 	name: string;
 	entity: string;
 	down_payment?: number; // Entrada/pago inicial

@@ -98,6 +98,7 @@ export default function EditDebtForm({
 
 		const debtData: Omit<Debt, "created" | "updated" | "deleted"> = {
 			id: debt.id,
+			user_id: debt.user_id,
 			name: formData.name,
 			entity: formData.entity,
 			down_payment: formData.down_payment
