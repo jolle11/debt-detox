@@ -40,7 +40,8 @@
 				"viewDetails": "Voir détails",
 				"recordPayment": "Enregistrer paiement",
 				"edit": "Modifier",
-				"delete": "Supprimer"
+				"delete": "Supprimer",
+				"complete": "Terminer le financement"
 			}
 		},
 		"empty": {
@@ -189,6 +190,14 @@
 			"cancel": "Annuler",
 			"success": "Financement supprimé avec succès !",
 			"error": "Erreur lors de la suppression du financement"
+		},
+		"complete": {
+			"title": "Terminer le Financement",
+			"confirmMessage": "Êtes-vous sûr de vouloir terminer le financement de \"{name}\" avec {entity} ?",
+			"remainingAmount": "Montant restant qui sera enregistré comme paiement final :",
+			"finalPaymentNote": "Un paiement final avec ce montant sera automatiquement créé et la dette sera marquée comme terminée.",
+			"confirm": "Terminer",
+			"success": "Financement terminé avec succès"
 		}
 	},
 	"common": {

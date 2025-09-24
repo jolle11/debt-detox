@@ -7,6 +7,7 @@ import LandingPage from "@/components/landing/LandingPage";
 import CreateDebtModal from "@/components/debt/CreateDebtModal";
 import EditDebtModal from "@/components/debt/EditDebtModal";
 import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
+import CompleteDebtModal from "@/components/debt/CompleteDebtModal";
 import { useDebtsContext } from "@/contexts/DebtsContext";
 import { usePayments } from "@/hooks/usePayments";
 import { useState } from "react";
@@ -20,6 +21,7 @@ export default function Dashboard() {
 	const [showCreateModal, setShowCreateModal] = useState(false);
 	const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
 	const [deletingDebt, setDeletingDebt] = useState<Debt | null>(null);
+	const [completingDebt, setCompletingDebt] = useState<Debt | null>(null);
 	const { debts, isLoading, error, refetch } = useDebtsContext();
 
 	// Centralizar payments para todos los componentes del dashboard
@@ -50,6 +52,7 @@ export default function Dashboard() {
 							payments={payments}
 							onEdit={setEditingDebt}
 							onDelete={setDeletingDebt}
+							onComplete={setCompletingDebt}
 							onAddDebt={() => setShowCreateModal(true)}
 						/>
 					</>
@@ -74,6 +77,13 @@ export default function Dashboard() {
 				debt={deletingDebt}
 				isOpen={!!deletingDebt}
 				onClose={() => setDeletingDebt(null)}
+			/>
+
+			{/* Complete Debt Modal */}
+			<CompleteDebtModal
+				debt={completingDebt}
+				isOpen={!!completingDebt}
+				onClose={() => setCompletingDebt(null)}
 			/>
 		</ProtectedRoute>
 	);

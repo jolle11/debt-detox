@@ -279,8 +279,11 @@ export function calculatePaymentProgressWithPayments(
 	paidPayments: number;
 	totalPayments: number;
 } {
-	// Total de cuotas mensuales
-	const totalPayments = debt.number_of_payments;
+	// Total de cuotas mensuales + cuota final si existe
+	let totalPayments = debt.number_of_payments;
+	if (debt.final_payment && debt.final_payment > 0) {
+		totalPayments += 1;
+	}
 
 	// Contar solo los pagos registrados explícitamente
 	const paidPayments = payments.filter((payment) => payment.paid).length;

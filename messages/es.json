@@ -38,7 +38,8 @@
 				"viewDetails": "Ver detalles",
 				"recordPayment": "Registrar pago",
 				"edit": "Editar",
-				"delete": "Eliminar"
+				"delete": "Eliminar",
+				"complete": "Completar financiación"
 			}
 		},
 		"empty": {
@@ -195,6 +196,14 @@
 			"cancel": "Cancelar",
 			"success": "¡Financiación eliminada correctamente!",
 			"error": "Error al eliminar la financiación"
+		},
+		"complete": {
+			"title": "Completar Financiación",
+			"confirmMessage": "¿Estás seguro de que quieres completar la financiación de \"{name}\" con {entity}?",
+			"remainingAmount": "Importe pendiente que se registrará como último pago:",
+			"finalPaymentNote": "Se creará automáticamente un pago final con este importe y se marcará la deuda como completada.",
+			"confirm": "Completar",
+			"success": "Financiación completada correctamente"
 		}
 	},
 	"profile": {

@@ -11,6 +11,7 @@ interface DebtCardProps {
 	payments: Payment[];
 	onEdit?: (debt: Debt) => void;
 	onDelete?: (debt: Debt) => void;
+	onComplete?: (debt: Debt) => void;
 }
 
 export default function DebtCard({
@@ -18,6 +19,7 @@ export default function DebtCard({
 	payments,
 	onEdit,
 	onDelete,
+	onComplete,
 }: DebtCardProps) {
 	const status = calculateDebtStatus(debt.final_payment_date);
 	const router = useRouter();
@@ -62,6 +64,7 @@ export default function DebtCard({
 							debt={debt}
 							onEdit={onEdit}
 							onDelete={onDelete}
+							onComplete={onComplete}
 						/>
 					</div>
 				</div>

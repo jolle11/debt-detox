@@ -10,6 +10,7 @@ interface DebtsListProps {
 	payments: Payment[];
 	onEdit?: (debt: Debt) => void;
 	onDelete?: (debt: Debt) => void;
+	onComplete?: (debt: Debt) => void;
 	onAddDebt?: () => void;
 }
 
@@ -18,6 +19,7 @@ export default function DebtsList({
 	payments,
 	onEdit,
 	onDelete,
+	onComplete,
 	onAddDebt,
 }: DebtsListProps) {
 	const t = useTranslations();
@@ -45,6 +47,7 @@ export default function DebtsList({
 							payments={payments}
 							onEdit={onEdit}
 							onDelete={onDelete}
+							onComplete={onComplete}
 						/>
 					))}
 				</div>

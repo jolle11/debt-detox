@@ -40,7 +40,8 @@
 				"viewDetails": "Details anzeigen",
 				"recordPayment": "Zahlung erfassen",
 				"edit": "Bearbeiten",
-				"delete": "Löschen"
+				"delete": "Löschen",
+				"complete": "Finanzierung abschließen"
 			}
 		},
 		"empty": {
@@ -189,6 +190,14 @@
 			"cancel": "Abbrechen",
 			"success": "Finanzierung erfolgreich gelöscht!",
 			"error": "Fehler beim Löschen der Finanzierung"
+		},
+		"complete": {
+			"title": "Finanzierung Abschließen",
+			"confirmMessage": "Sind Sie sicher, dass Sie die Finanzierung von \"{name}\" bei {entity} abschließen möchten?",
+			"remainingAmount": "Verbleibendes Guthaben, das als Abschlusszahlung registriert wird:",
+			"finalPaymentNote": "Eine Abschlusszahlung mit diesem Betrag wird automatisch erstellt und die Schuld als abgeschlossen markiert.",
+			"confirm": "Abschließen",
+			"success": "Finanzierung erfolgreich abgeschlossen"
 		}
 	},
 	"common": {

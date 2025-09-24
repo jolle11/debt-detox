@@ -7,12 +7,14 @@ interface DebtActionsProps {
 	debt: Debt;
 	onEdit?: (debt: Debt) => void;
 	onDelete?: (debt: Debt) => void;
+	onComplete?: (debt: Debt) => void;
 }
 
 export default function DebtActions({
 	debt,
 	onEdit,
 	onDelete,
+	onComplete,
 }: DebtActionsProps) {
 	const t = useTranslations();
 	const status = calculateDebtStatus(debt.final_payment_date);
@@ -23,6 +25,11 @@ export default function DebtActions({
 			label: t("dashboard.debt.actions.viewDetails"),
 			className: "",
 		},
+		...(status === "active" ? [{
+			key: "complete",
+			label: t("dashboard.debt.actions.complete"),
+			className: "text-success",
+		}] : []),
 		{
 			key: "edit",
 			label: t("dashboard.debt.actions.edit"),
@@ -67,6 +74,11 @@ export default function DebtActions({
 										onDelete
 									) {
 										onDelete(debt);
+									} else if (
+										action.key === "complete" &&
+										onComplete
+									) {
+										onComplete(debt);
 									}
 								}}
 							>

@@ -38,7 +38,8 @@
 				"viewDetails": "View details",
 				"recordPayment": "Record payment",
 				"edit": "Edit",
-				"delete": "Delete"
+				"delete": "Delete",
+				"complete": "Complete financing"
 			}
 		},
 		"empty": {
@@ -185,6 +186,14 @@
 			"cancel": "Cancel",
 			"success": "Financing deleted successfully!",
 			"error": "Error deleting financing"
+		},
+		"complete": {
+			"title": "Complete Financing",
+			"confirmMessage": "Are you sure you want to complete the financing of \"{name}\" with {entity}?",
+			"remainingAmount": "Remaining amount that will be registered as final payment:",
+			"finalPaymentNote": "A final payment with this amount will be automatically created and the debt will be marked as completed.",
+			"confirm": "Complete",
+			"success": "Financing completed successfully"
 		}
 	},
 	"common": {
