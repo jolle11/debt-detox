@@ -9,6 +9,7 @@ import type { Debt } from "@/lib/types";
 import DebtPaymentsList from "@/components/dashboard/DebtPaymentsList";
 import EditDebtModal from "@/components/debt/EditDebtModal";
 import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
+import CompleteDebtModal from "@/components/debt/CompleteDebtModal";
 import { usePayments } from "@/hooks/usePayments";
 import SkeletonDebtDetail from "@/components/ui/skeletons/SkeletonDebtDetail";
 import DebtHeader from "@/components/debt/detail/DebtHeader";
@@ -32,6 +33,7 @@ export default function DebtDetailPage() {
 	const [debt, setDebt] = useState<Debt | null>(null);
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const [showCompleteModal, setShowCompleteModal] = useState(false);
 	const [isClient, setIsClient] = useState(false);
 	const { payments, isLoading: paymentsLoading } = usePayments(debt?.id);
 
@@ -70,6 +72,7 @@ export default function DebtDetailPage() {
 				formatCurrency={formatCurrency}
 				onEdit={() => setShowEditModal(true)}
 				onDelete={() => setShowDeleteModal(true)}
+				onComplete={() => setShowCompleteModal(true)}
 				onBack={() => router.back()}
 			/>
 
@@ -148,6 +151,16 @@ export default function DebtDetailPage() {
 				onClose={() => setShowDeleteModal(false)}
 				onSuccess={() => {
 					router.push("/"); // Redirect to dashboard after delete
+				}}
+			/>
+
+			{/* Complete Modal */}
+			<CompleteDebtModal
+				debt={debt}
+				isOpen={showCompleteModal}
+				onClose={() => setShowCompleteModal(false)}
+				onSuccess={() => {
+					setShowCompleteModal(false);
 				}}
 			/>
 		</div>
