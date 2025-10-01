@@ -217,6 +217,8 @@
 		"name": "Nom",
 		"email": "Email",
 		"password": "Mot de passe",
+		"currency": "Devise",
+		"editCurrency": "Modifier la Devise",
 		"noName": "Aucun nom défini",
 		"editProfile": "Modifier le Profil",
 		"namePlaceholder": "Entrez votre nom",
@@ -234,6 +236,8 @@
 		"passwordChanged": "Mot de passe changé avec succès !",
 		"passwordError": "Échec du changement de mot de passe",
 		"passwordMismatch": "Les mots de passe ne correspondent pas",
+		"currencyUpdated": "Devise mise à jour avec succès !",
+		"currencyError": "Échec de la mise à jour de la devise",
 		"editName": "Modifier le Nom",
 		"notLoggedIn": "Non connecté",
 		"loginRequired": "Veuillez vous connecter pour voir votre profil"

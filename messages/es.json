@@ -213,6 +213,8 @@
 		"name": "Nombre",
 		"email": "Email",
 		"password": "Contraseña",
+		"currency": "Moneda",
+		"editCurrency": "Editar Moneda",
 		"noName": "Sin nombre establecido",
 		"editProfile": "Editar Perfil",
 		"namePlaceholder": "Introduce tu nombre",
@@ -230,6 +232,8 @@
 		"passwordChanged": "¡Contraseña cambiada correctamente!",
 		"passwordError": "Error al cambiar la contraseña",
 		"passwordMismatch": "Las contraseñas no coinciden",
+		"currencyUpdated": "¡Moneda actualizada correctamente!",
+		"currencyError": "Error al actualizar la moneda",
 		"editName": "Editar Nombre",
 		"notLoggedIn": "No has iniciado sesión",
 		"loginRequired": "Por favor, inicia sesión para ver tu perfil"

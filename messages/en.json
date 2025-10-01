@@ -213,6 +213,8 @@
 		"name": "Name",
 		"email": "Email",
 		"password": "Password",
+		"currency": "Currency",
+		"editCurrency": "Edit Currency",
 		"noName": "No name set",
 		"editProfile": "Edit Profile",
 		"namePlaceholder": "Enter your name",
@@ -230,6 +232,8 @@
 		"passwordChanged": "Password changed successfully!",
 		"passwordError": "Failed to change password",
 		"passwordMismatch": "Passwords don't match",
+		"currencyUpdated": "Currency updated successfully!",
+		"currencyError": "Failed to update currency",
 		"editName": "Edit Name",
 		"notLoggedIn": "Not logged in",
 		"loginRequired": "Please log in to view your profile"

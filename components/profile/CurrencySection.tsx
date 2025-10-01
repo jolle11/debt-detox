@@ -38,8 +38,8 @@ export default function CurrencySection({
 			user,
 			refreshUser,
 			onMessage,
-			successMessage: "Currency updated successfully!",
-			errorMessage: "Failed to update currency",
+			successMessage: t("currencyUpdated"),
+			errorMessage: t("currencyError"),
 		});
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -53,7 +53,7 @@ export default function CurrencySection({
 
 	return (
 		<ProfileForm
-			title="Currency"
+			title={t("currency")}
 			isEditing={isEditing}
 			loading={loading}
 			onEdit={() => {
@@ -65,7 +65,7 @@ export default function CurrencySection({
 				cancelEditing();
 				setFormData({ currency: user?.currency || "EUR" });
 			}}
-			editButtonText="Edit Currency"
+			editButtonText={t("editCurrency")}
 			displayContent={
 				<div>
 					<p className="text-base-content text-lg">
@@ -78,7 +78,7 @@ export default function CurrencySection({
 		>
 			<div className="form-control">
 				<label className="label">
-					<span className="label-text">Currency</span>
+					<span className="label-text">{t("currency")}</span>
 				</label>
 				<select
 					className="select select-bordered w-full"

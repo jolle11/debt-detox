@@ -13,12 +13,8 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
 		<div className="flex items-center gap-4 mb-6">
 			<UserAvatar user={user} size="md" />
 			<div>
-				<h1 className="card-title text-2xl">
-					{t("title") || "User Profile"}
-				</h1>
-				<p className="text-base-content/70">
-					{t("subtitle") || "Manage your account settings"}
-				</p>
+				<h1 className="card-title text-2xl">{t("title")}</h1>
+				<p className="text-base-content/70">{t("subtitle")}</p>
 			</div>
 		</div>
 	);

@@ -217,6 +217,8 @@
 		"name": "Name",
 		"email": "E-Mail",
 		"password": "Passwort",
+		"currency": "Währung",
+		"editCurrency": "Währung bearbeiten",
 		"noName": "Kein Name festgelegt",
 		"editProfile": "Profil bearbeiten",
 		"namePlaceholder": "Geben Sie Ihren Namen ein",
@@ -234,6 +236,8 @@
 		"passwordChanged": "Passwort erfolgreich geändert!",
 		"passwordError": "Fehler beim Ändern des Passworts",
 		"passwordMismatch": "Passwörter stimmen nicht überein",
+		"currencyUpdated": "Währung erfolgreich aktualisiert!",
+		"currencyError": "Fehler beim Aktualisieren der Währung",
 		"editName": "Name bearbeiten",
 		"notLoggedIn": "Nicht angemeldet",
 		"loginRequired": "Bitte melden Sie sich an, um Ihr Profil anzuzeigen"
