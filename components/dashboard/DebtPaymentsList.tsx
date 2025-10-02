@@ -32,7 +32,9 @@ export default function DebtPaymentsList({
 			year: number;
 			planned_amount: number;
 			payment: Payment | null;
+			extraPayments: Payment[];
 			isOverdue: boolean;
+			totalActualAmount: number;
 		}> = [];
 
 		const startDate = new Date(debt.first_payment_date);
@@ -51,21 +53,40 @@ export default function DebtPaymentsList({
 			dueDate.setDate(startDate.getDate());
 			const isOverdue = dueDate < now;
 
-			// Find actual payment record
+			// Find actual payment record (cuota mensual)
 			const actualPayment =
 				payments.find(
 					(p) =>
 						p.month === month &&
 						p.year === year &&
-						p.debt_id === debt.id,
+						p.debt_id === debt.id &&
+						!p.is_extra_payment,
 				) || null;
+
+			// Find extra payments for this month/year
+			const extraPaymentsForMonth = payments.filter(
+				(p) =>
+					p.month === month &&
+					p.year === year &&
+					p.debt_id === debt.id &&
+					p.is_extra_payment &&
+					p.paid,
+			);
+
+			// Calculate actual amount ONLY from the monthly payment (cuota)
+			// Extra payments are shown separately and don't affect this
+			const actualAmount = actualPayment?.paid
+				? actualPayment.actual_amount || debt.monthly_amount
+				: 0;
 
 			expectedPayments.push({
 				month,
 				year,
 				planned_amount: debt.monthly_amount,
 				payment: actualPayment,
+				extraPayments: extraPaymentsForMonth,
 				isOverdue: isOverdue && (!actualPayment || !actualPayment.paid),
+				totalActualAmount: actualAmount,
 			});
 		}
 
@@ -89,6 +110,7 @@ export default function DebtPaymentsList({
 	};
 
 	const allExpectedPayments = generateAllExpectedPayments();
+	const extraPayments = payments.filter((p) => p.is_extra_payment && p.paid);
 	const totalPaidPayments = allExpectedPayments.filter(
 		(ep) => ep.payment?.paid,
 	).length;
@@ -143,6 +165,46 @@ export default function DebtPaymentsList({
 					</div>
 				</div>
 
+				{/* Extra payments section - show all, not grouped by month */}
+				{extraPayments.length > 0 && (
+					<div className="mb-4">
+						<h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
+							<span className="badge badge-primary badge-sm">
+								{extraPayments.length}
+							</span>
+							{t("extraPaymentsTitle")}
+						</h3>
+						<div className="grid grid-cols-1 gap-2">
+							<div className="text-sm font-medium text-base-content/70 px-2">
+								{t("extraPaymentsTotalLabel")}:{" "}
+								{formatCurrency(
+									extraPayments.reduce(
+										(sum, p) =>
+											sum + (p.actual_amount || 0),
+										0,
+									),
+								)}
+							</div>
+							{extraPayments.map((payment) => (
+								<div
+									key={payment.id}
+									className="flex items-center justify-between p-2 bg-primary/5 rounded-lg border border-primary/20"
+								>
+									<div className="flex items-center gap-2">
+										<CheckCircle className="w-4 h-4 text-primary" />
+										<span className="text-sm">
+											{formatPaymentDate(payment.paid_date!)}
+										</span>
+									</div>
+									<span className="font-mono text-sm font-semibold text-primary">
+										{formatCurrency(payment.actual_amount || 0)}
+									</span>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+
 				{/* Payments table */}
 				<div className="overflow-x-auto">
 					<table className="table table-sm">
@@ -167,12 +229,13 @@ export default function DebtPaymentsList({
 										year,
 										planned_amount,
 										payment,
+										extraPayments,
 										isOverdue,
+										totalActualAmount,
 									} = expectedPayment;
 									const isPaid = payment?.paid || false;
-									const actualAmount =
-										payment?.actual_amount ||
-										planned_amount;
+									const hasExtraPayments =
+										extraPayments.length > 0;
 
 									return (
 										<tr
@@ -231,16 +294,27 @@ export default function DebtPaymentsList({
 												{isPaid ? (
 													<span
 														className={
-															actualAmount !==
+															totalActualAmount !==
 															planned_amount
 																? "text-warning font-medium"
 																: ""
 														}
 													>
 														{formatCurrency(
-															actualAmount,
+															totalActualAmount,
 														)}
 													</span>
+												) : hasExtraPayments ? (
+													<div className="flex flex-col items-end gap-1">
+														<span className="text-base-content/40">
+															-
+														</span>
+														<span className="text-xs text-primary">
+															{t("hasExtraPayments", {
+																count: extraPayments.length,
+															})}
+														</span>
+													</div>
 												) : (
 													<span className="text-base-content/40">
 														-
@@ -274,16 +348,23 @@ export default function DebtPaymentsList({
 								</td>
 								<td className="text-right font-mono">
 									{formatCurrency(
-										allExpectedPayments
-											.filter((ep) => ep.payment?.paid)
-											.reduce(
+										Math.min(
+											allExpectedPayments.reduce(
 												(sum, ep) =>
-													sum +
-													(ep.payment
-														?.actual_amount ||
-														ep.planned_amount),
+													sum + ep.totalActualAmount,
 												0,
-											),
+											) +
+												extraPayments.reduce(
+													(sum, p) =>
+														sum +
+														(p.actual_amount || 0),
+													0,
+												),
+											(debt.down_payment || 0) +
+												debt.monthly_amount *
+													debt.number_of_payments +
+												(debt.final_payment || 0),
+										),
 									)}
 								</td>
 								<td></td>

@@ -10,6 +10,7 @@ import DebtPaymentsList from "@/components/dashboard/DebtPaymentsList";
 import EditDebtModal from "@/components/debt/EditDebtModal";
 import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
 import CompleteDebtModal from "@/components/debt/CompleteDebtModal";
+import AddExtraPaymentModal from "@/components/debt/AddExtraPaymentModal";
 import { usePayments } from "@/hooks/usePayments";
 import SkeletonDebtDetail from "@/components/ui/skeletons/SkeletonDebtDetail";
 import DebtHeader from "@/components/debt/detail/DebtHeader";
@@ -34,6 +35,7 @@ export default function DebtDetailPage() {
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showCompleteModal, setShowCompleteModal] = useState(false);
+	const [showExtraPaymentModal, setShowExtraPaymentModal] = useState(false);
 	const [isClient, setIsClient] = useState(false);
 	const { payments, isLoading: paymentsLoading } = usePayments(debt?.id);
 
@@ -63,6 +65,10 @@ export default function DebtDetailPage() {
 		(debt.final_payment || 0);
 
 	const paymentStats = calculatePaymentStats(debt, payments);
+	const isFullyPaid = paymentStats.pendingAmount === 0;
+	const isCompleted =
+		debt.final_payment_date &&
+		new Date(debt.final_payment_date) <= new Date();
 
 	return (
 		<div className="container mx-auto px-4 py-6">
@@ -73,8 +79,42 @@ export default function DebtDetailPage() {
 				onEdit={() => setShowEditModal(true)}
 				onDelete={() => setShowDeleteModal(true)}
 				onComplete={() => setShowCompleteModal(true)}
+				onAddExtraPayment={() => setShowExtraPaymentModal(true)}
 				onBack={() => router.back()}
 			/>
+
+			{/* Alert when debt is fully paid but not marked as completed */}
+			{isFullyPaid && !isCompleted && (
+				<div className="alert alert-success mb-4 shadow-lg">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						className="stroke-current shrink-0 h-6 w-6"
+						fill="none"
+						viewBox="0 0 24 24"
+					>
+						<path
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							strokeWidth="2"
+							d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+						/>
+					</svg>
+					<div>
+						<h3 className="font-bold">
+							{t("debtDetail.fullyPaidAlert.title")}
+						</h3>
+						<div className="text-sm">
+							{t("debtDetail.fullyPaidAlert.description")}
+						</div>
+					</div>
+					<button
+						className="btn btn-sm"
+						onClick={() => setShowCompleteModal(true)}
+					>
+						{t("debtDetail.fullyPaidAlert.completeButton")}
+					</button>
+				</div>
+			)}
 
 			<DebtQuickStats
 				debt={debt}
@@ -161,6 +201,16 @@ export default function DebtDetailPage() {
 				onClose={() => setShowCompleteModal(false)}
 				onSuccess={() => {
 					setShowCompleteModal(false);
+				}}
+			/>
+
+			{/* Extra Payment Modal */}
+			<AddExtraPaymentModal
+				debt={debt}
+				isOpen={showExtraPaymentModal}
+				onClose={() => setShowExtraPaymentModal(false)}
+				onSuccess={() => {
+					setShowExtraPaymentModal(false);
 				}}
 			/>
 		</div>

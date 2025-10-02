@@ -21,6 +21,7 @@ export interface DebtHeaderProps extends DebtDetailProps {
 	onEdit: () => void;
 	onDelete: () => void;
 	onComplete: () => void;
+	onAddExtraPayment: () => void;
 	onBack: () => void;
 }
 

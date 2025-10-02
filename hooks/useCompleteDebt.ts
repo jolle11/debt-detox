@@ -41,8 +41,8 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 			const today = new Date().toISOString().split('T')[0];
 			const now = new Date();
 
-			// Mark all existing unpaid payments as paid
-			const unpaidPayments = payments.filter(p => !p.paid);
+			// Mark all existing unpaid monthly payments as paid (exclude extra payments)
+			const unpaidPayments = payments.filter(p => !p.paid && !p.is_extra_payment);
 			for (const payment of unpaidPayments) {
 				await pb.collection(COLLECTIONS.PAYMENTS).update(payment.id!, {
 					paid: true,
@@ -80,10 +80,10 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 				});
 			}
 
-			// Create payments for periods that don't exist yet
+			// Create payments for periods that don't exist yet (only monthly payments, not extra payments)
 			for (const period of allPaymentPeriods) {
 				const existingPayment = payments.find(p =>
-					p.month === period.month && p.year === period.year
+					p.month === period.month && p.year === period.year && !p.is_extra_payment
 				);
 
 				if (!existingPayment) {
@@ -95,6 +95,7 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 						actual_amount: period.amount,
 						paid: true,
 						paid_date: today,
+						is_extra_payment: false,
 					});
 				}
 			}

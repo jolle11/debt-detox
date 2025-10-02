@@ -204,6 +204,19 @@
 			"finalPaymentNote": "Se creará automáticamente un pago final con este importe y se marcará la deuda como completada.",
 			"confirm": "Completar",
 			"success": "Financiación completada correctamente"
+		},
+		"extraPayment": {
+			"title": "Añadir Pago Personalizado",
+			"amountLabel": "Importe del pago extra",
+			"amountPlaceholder": "0.00",
+			"description": "Reduce el saldo pendiente sin marcar cuotas como pagadas",
+			"maxAmount": "Máximo: {amount}",
+			"exceedsMaxAmount": "El importe no puede superar el saldo pendiente ({maxAmount})",
+			"noRemainingAmount": "No hay saldo pendiente. La deuda ya está completamente pagada.",
+			"confirm": "Añadir Pago",
+			"invalidAmount": "Por favor, introduce un importe válido",
+			"error": "Error al añadir el pago extra",
+			"success": "Pago extra añadido correctamente"
 		}
 	},
 	"profile": {
@@ -255,6 +268,11 @@
 	},
 	"debtDetail": {
 		"title": "Detalle de Deuda",
+		"fullyPaidAlert": {
+			"title": "¡Financiación completamente pagada!",
+			"description": "Has pagado el importe total. Marca la financiación como completada para finalizar.",
+			"completeButton": "Completar Ahora"
+		},
 		"notFound": {
 			"title": "Financiación no encontrada",
 			"description": "No se pudo encontrar la financiación solicitada.",
@@ -314,6 +332,10 @@
 		"statsPaid": "Pagados",
 		"statsOverdue": "Vencidos",
 		"statsPending": "Pendientes",
+		"extraPaymentsTitle": "Pagos Personalizados",
+		"extraPaymentsTotalLabel": "Total pagos extras",
+		"extraPayment": "pago extra",
+		"hasExtraPayments": "{count, plural, =1 {(+ 1 pago extra)} other {(+ # pagos extras)}}",
 		"headers": {
 			"period": "Período",
 			"status": "Estado",

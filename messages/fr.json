@@ -198,6 +198,19 @@
 			"finalPaymentNote": "Un paiement final avec ce montant sera automatiquement créé et la dette sera marquée comme terminée.",
 			"confirm": "Terminer",
 			"success": "Financement terminé avec succès"
+		},
+		"extraPayment": {
+			"title": "Ajouter un Paiement Personnalisé",
+			"amountLabel": "Montant du paiement supplémentaire",
+			"amountPlaceholder": "0.00",
+			"description": "Réduit le solde sans marquer les mensualités comme payées",
+			"maxAmount": "Maximum : {amount}",
+			"exceedsMaxAmount": "Le montant ne peut pas dépasser le solde restant ({maxAmount})",
+			"noRemainingAmount": "Aucun solde restant. La dette est entièrement payée.",
+			"confirm": "Ajouter le Paiement",
+			"invalidAmount": "Veuillez entrer un montant valide",
+			"error": "Erreur lors de l'ajout du paiement supplémentaire",
+			"success": "Paiement supplémentaire ajouté avec succès"
 		}
 	},
 	"common": {
@@ -259,6 +272,11 @@
 	},
 	"debtDetail": {
 		"title": "Détail de la Dette",
+		"fullyPaidAlert": {
+			"title": "Financement entièrement payé !",
+			"description": "Vous avez payé le montant total. Marquez le financement comme terminé pour finaliser.",
+			"completeButton": "Terminer Maintenant"
+		},
 		"notFound": {
 			"title": "Financement introuvable",
 			"description": "Le financement demandé n'a pas pu être trouvé.",
@@ -318,6 +336,10 @@
 		"statsPaid": "Payés",
 		"statsOverdue": "En retard",
 		"statsPending": "En attente",
+		"extraPaymentsTitle": "Paiements Personnalisés",
+		"extraPaymentsTotalLabel": "Total paiements supplémentaires",
+		"extraPayment": "paiement supplémentaire",
+		"hasExtraPayments": "{count, plural, =1 {(+ 1 paiement supplémentaire)} other {(+ # paiements supplémentaires)}}",
 		"headers": {
 			"period": "Période",
 			"status": "Statut",
