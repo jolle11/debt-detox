@@ -198,6 +198,19 @@
 			"finalPaymentNote": "Eine Abschlusszahlung mit diesem Betrag wird automatisch erstellt und die Schuld als abgeschlossen markiert.",
 			"confirm": "Abschließen",
 			"success": "Finanzierung erfolgreich abgeschlossen"
+		},
+		"extraPayment": {
+			"title": "Benutzerdefinierte Zahlung Hinzufügen",
+			"amountLabel": "Betrag der Zusatzzahlung",
+			"amountPlaceholder": "0.00",
+			"description": "Reduziert Saldo ohne Raten als bezahlt zu markieren",
+			"maxAmount": "Maximum: {amount}",
+			"exceedsMaxAmount": "Der Betrag kann den verbleibenden Saldo nicht überschreiten ({maxAmount})",
+			"noRemainingAmount": "Kein verbleibender Saldo. Die Schuld ist bereits vollständig bezahlt.",
+			"confirm": "Zahlung Hinzufügen",
+			"invalidAmount": "Bitte geben Sie einen gültigen Betrag ein",
+			"error": "Fehler beim Hinzufügen der Zusatzzahlung",
+			"success": "Zusatzzahlung erfolgreich hinzugefügt"
 		}
 	},
 	"common": {
@@ -259,6 +272,11 @@
 	},
 	"debtDetail": {
 		"title": "Schulden-Detail",
+		"fullyPaidAlert": {
+			"title": "Finanzierung vollständig bezahlt!",
+			"description": "Sie haben den Gesamtbetrag bezahlt. Markieren Sie die Finanzierung als abgeschlossen, um sie zu finalisieren.",
+			"completeButton": "Jetzt Abschließen"
+		},
 		"notFound": {
 			"title": "Finanzierung nicht gefunden",
 			"description": "Die angeforderte Finanzierung konnte nicht gefunden werden.",
@@ -318,6 +336,10 @@
 		"statsPaid": "Bezahlt",
 		"statsOverdue": "Überfällig",
 		"statsPending": "Ausstehend",
+		"extraPaymentsTitle": "Benutzerdefinierte Zahlungen",
+		"extraPaymentsTotalLabel": "Gesamte Zusatzzahlungen",
+		"extraPayment": "Zusatzzahlung",
+		"hasExtraPayments": "{count, plural, =1 {(+ 1 Zusatzzahlung)} other {(+ # Zusatzzahlungen)}}",
 		"headers": {
 			"period": "Zeitraum",
 			"status": "Status",

@@ -41,8 +41,12 @@ export function calculatePaymentStats(
 	debt: Debt,
 	payments: Payment[],
 ): PaymentStats {
-	const registeredPaidPayments = payments.filter((p) => p.paid).length;
+	// Solo contar cuotas mensuales, no pagos extras
+	const registeredPaidPayments = payments.filter(
+		(p) => p.paid && !p.is_extra_payment,
+	).length;
 	const expectedPaidPayments = calculateExpectedPaidPayments(debt);
+	// El total incluye todos los pagos (cuotas + extras)
 	const totalRegisteredAmount = payments
 		.filter((p) => p.paid)
 		.reduce((sum, p) => sum + (p.actual_amount || p.planned_amount), 0);
@@ -57,15 +61,19 @@ export function calculatePaymentStats(
 		Math.max(registeredPaidPayments, expectedPaidPayments) *
 			debt.monthly_amount;
 
-	const effectivePaidAmount = Math.max(
-		(debt.down_payment || 0) + totalRegisteredAmount,
-		estimatedPaidAmount,
-	);
-
 	const totalAmount =
 		(debt.down_payment || 0) +
 		debt.monthly_amount * debt.number_of_payments +
 		(debt.final_payment || 0);
+
+	// El importe pagado nunca puede exceder el total de la deuda
+	const effectivePaidAmount = Math.min(
+		Math.max(
+			(debt.down_payment || 0) + totalRegisteredAmount,
+			estimatedPaidAmount,
+		),
+		totalAmount,
+	);
 
 	return {
 		registeredPaidPayments,
@@ -74,6 +82,6 @@ export function calculatePaymentStats(
 		effectivePaidAmount,
 		totalRegisteredAmount,
 		pendingPayments: debt.number_of_payments - effectivePaidPayments,
-		pendingAmount: totalAmount - effectivePaidAmount,
+		pendingAmount: Math.max(0, totalAmount - effectivePaidAmount),
 	};
 }

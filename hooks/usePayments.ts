@@ -26,6 +26,7 @@ interface UsePaymentsReturn {
 			actualAmount?: number;
 		}>,
 	) => Promise<void>;
+	addExtraPayment: (debtId: string, amount: number) => Promise<void>;
 	getPaymentStatus: (
 		debtId: string,
 		month: number,
@@ -259,6 +260,36 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		}
 	};
 
+	const addExtraPayment = async (
+		debtId: string,
+		amount: number,
+	): Promise<void> => {
+		try {
+			const now = new Date();
+			const month = now.getMonth() + 1;
+			const year = now.getFullYear();
+
+			// Crear un pago extra
+			await pb.collection(COLLECTIONS.PAYMENTS).create({
+				debt_id: debtId,
+				month,
+				year,
+				planned_amount: 0,
+				actual_amount: amount,
+				paid: true,
+				paid_date: now.toISOString(),
+				is_extra_payment: true,
+			});
+
+			// Invalidar cache para refetch automático
+			queryClient.invalidateQueries({ queryKey: ["payments"] });
+			queryClient.invalidateQueries({ queryKey: ["debts"] });
+		} catch (err) {
+			console.error("Error adding extra payment:", err);
+			throw err;
+		}
+	};
+
 	return {
 		payments,
 		isLoading,
@@ -266,6 +297,7 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		refetch,
 		markPaymentAsPaid,
 		markMultiplePaymentsAsPaid,
+		addExtraPayment,
 		getPaymentStatus,
 		generateHistoricalPayments,
 	};

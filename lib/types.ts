@@ -24,6 +24,7 @@ export interface Payment {
 	actual_amount?: number;
 	paid: boolean;
 	paid_date?: string;
+	is_extra_payment?: boolean;
 	created?: string;
 	deleted?: string;
 }

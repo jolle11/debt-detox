@@ -194,6 +194,19 @@
 			"finalPaymentNote": "A final payment with this amount will be automatically created and the debt will be marked as completed.",
 			"confirm": "Complete",
 			"success": "Financing completed successfully"
+		},
+		"extraPayment": {
+			"title": "Add Custom Payment",
+			"amountLabel": "Extra payment amount",
+			"amountPlaceholder": "0.00",
+			"description": "Reduces remaining balance without marking installments as paid",
+			"maxAmount": "Maximum: {amount}",
+			"exceedsMaxAmount": "Amount cannot exceed the remaining balance ({maxAmount})",
+			"noRemainingAmount": "No remaining balance. The debt is already fully paid.",
+			"confirm": "Add Payment",
+			"invalidAmount": "Please enter a valid amount",
+			"error": "Error adding extra payment",
+			"success": "Extra payment added successfully"
 		}
 	},
 	"common": {
@@ -255,6 +268,11 @@
 	},
 	"debtDetail": {
 		"title": "Debt Detail",
+		"fullyPaidAlert": {
+			"title": "Financing fully paid!",
+			"description": "You've paid the total amount. Mark the financing as completed to finalize.",
+			"completeButton": "Complete Now"
+		},
 		"notFound": {
 			"title": "Financing not found",
 			"description": "The requested financing could not be found.",
@@ -314,6 +332,10 @@
 		"statsPaid": "Paid",
 		"statsOverdue": "Overdue",
 		"statsPending": "Pending",
+		"extraPaymentsTitle": "Custom Payments",
+		"extraPaymentsTotalLabel": "Total extra payments",
+		"extraPayment": "extra payment",
+		"hasExtraPayments": "{count, plural, =1 {(+ 1 extra payment)} other {(+ # extra payments)}}",
 		"headers": {
 			"period": "Period",
 			"status": "Status",

@@ -156,7 +156,9 @@ export function calculatePaidAmountWithPayments(
 		}
 	}
 
-	return paidAmount;
+	// El importe pagado nunca puede exceder el total de la deuda
+	const totalAmount = calculateTotalAmount(debt);
+	return Math.min(paidAmount, totalAmount);
 }
 
 export function calculateRemainingAmount(debt: {
@@ -285,8 +287,10 @@ export function calculatePaymentProgressWithPayments(
 		totalPayments += 1;
 	}
 
-	// Contar solo los pagos registrados explícitamente
-	const paidPayments = payments.filter((payment) => payment.paid).length;
+	// Contar solo las cuotas mensuales pagadas (excluir pagos extras)
+	const paidPayments = payments.filter(
+		(payment) => payment.paid && !payment.is_extra_payment,
+	).length;
 
 	const totalAmount = calculateTotalAmount(debt);
 	const paidAmount = calculatePaidAmountWithPayments(debt, payments);
