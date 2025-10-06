@@ -5,7 +5,7 @@ import type { Debt } from "@/lib/types";
 export type DebtFilterType = "all" | "active" | "completed";
 
 export function useDebtFilter(debts: Debt[]) {
-	const [activeFilter, setActiveFilter] = useState<DebtFilterType>("all");
+	const [activeFilter, setActiveFilter] = useState<DebtFilterType>("active");
 
 	const filteredDebts = useMemo(() => {
 		switch (activeFilter) {
