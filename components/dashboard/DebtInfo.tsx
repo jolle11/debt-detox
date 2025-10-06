@@ -1,24 +1,25 @@
 import { useFormatter, useTranslations } from "next-intl";
 import { useCurrency } from "@/hooks/useCurrency";
 import {
-	calculatePaidAmount,
-	calculateRemainingAmount,
+	calculatePaidAmountWithPayments,
+	calculateRemainingAmountWithPayments,
 	calculateTotalAmount,
 } from "@/lib/format";
-import type { Debt } from "@/lib/types";
+import type { Debt, Payment } from "@/lib/types";
 
 interface DebtInfoProps {
 	debt: Debt;
+	payments?: Payment[];
 }
 
-export default function DebtInfo({ debt }: DebtInfoProps) {
+export default function DebtInfo({ debt, payments = [] }: DebtInfoProps) {
 	const t = useTranslations();
 	const format = useFormatter();
 	const { formatCurrency } = useCurrency();
 
 	const totalAmount = calculateTotalAmount(debt);
-	const paidAmount = calculatePaidAmount(debt);
-	const remainingAmount = calculateRemainingAmount(debt);
+	const paidAmount = calculatePaidAmountWithPayments(debt, payments);
+	const remainingAmount = calculateRemainingAmountWithPayments(debt, payments);
 
 	const infoItems = [
 		{

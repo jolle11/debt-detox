@@ -40,7 +40,12 @@ export default function DebtCard({
 						<p className="text-base text-base-content/70 mb-2">
 							{debt.entity}
 						</p>
-						<DebtInfo debt={debt} />
+						<DebtInfo
+							debt={debt}
+							payments={payments.filter(
+								(p) => p.debt_id === debt.id,
+							)}
+						/>
 						<div className="mt-4">
 							<DebtProgressWithPayments
 								debt={debt}
