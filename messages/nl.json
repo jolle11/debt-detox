@@ -1,0 +1,367 @@
+{
+	"nav": {
+		"title": "💰 Debt Detox",
+		"addDebt": "Schuld Toevoegen",
+		"profile": "Profiel"
+	},
+	"dashboard": {
+		"title": "Uw Financieringen",
+		"stats": {
+			"totalDebt": "Totale Schuld",
+			"monthlyPayment": "Maandelijkse Betaling",
+			"completed": "Voltooid",
+			"averageProgress": "Gemiddelde Voortgang",
+			"activeDebts": "{count, plural, =0 {Geen actieve schulden} =1 {# actieve schuld} other {# actieve schulden}}",
+			"monthlyTotal": "Maandelijks totaal",
+			"paidOff": "Afgeloste schulden",
+			"ofAllDebts": "Van alle schulden"
+		},
+		"tabs": {
+			"all": "Alle",
+			"active": "Actief",
+			"completed": "Voltooid"
+		},
+		"debt": {
+			"totalAmount": "Totaalbedrag",
+			"paidAmount": "Betaald bedrag",
+			"remainingAmount": "Resterend bedrag",
+			"monthlyAmount": "Maandelijkse termijn",
+			"finalPayment": "Eindtermijn",
+			"finalPaymentDate": "Datum laatste termijn",
+			"progress": "Voortgang",
+			"paymentsProgress": "Betaalde termijnen",
+			"status": {
+				"active": "Actief",
+				"completed": "Voltooid"
+			},
+			"actions": {
+				"viewDetails": "Details bekijken",
+				"recordPayment": "Betaling registreren",
+				"edit": "Bewerken",
+				"delete": "Verwijderen",
+				"complete": "Financiering voltooien"
+			}
+		},
+		"empty": {
+			"title": "U heeft geen geregistreerde financieringen",
+			"description": "Voeg uw eerste schuld of lening toe om te beginnen met bijhouden",
+			"addButton": "Eerste Schuld Toevoegen"
+		}
+	},
+	"notFound": {
+		"title": "404 - Pagina niet gevonden",
+		"description": "Sorry, de pagina die u zoekt bestaat niet.",
+		"backHome": "Terug naar home"
+	},
+	"auth": {
+		"login": {
+			"title": "Welkom!",
+			"subtitle": "Log in op uw account om uw schulden te beheren",
+			"email": "E-mail",
+			"password": "Wachtwoord",
+			"submit": "Inloggen",
+			"submitting": "Inloggen...",
+			"noAccount": "Heeft u geen account?",
+			"signUpLink": "Registreer hier",
+			"error": "Fout bij inloggen"
+		},
+		"register": {
+			"title": "Account Aanmaken",
+			"subtitle": "Word lid om controle over uw financiën te krijgen",
+			"name": "Naam",
+			"nameOptional": "optioneel",
+			"email": "E-mail",
+			"password": "Wachtwoord",
+			"confirmPassword": "Wachtwoord Bevestigen",
+			"submit": "Account Aanmaken",
+			"submitting": "Account aanmaken...",
+			"hasAccount": "Heeft u al een account?",
+			"signInLink": "Log in",
+			"error": "Fout bij registreren",
+			"passwordMismatch": "Wachtwoorden komen niet overeen"
+		},
+		"logout": "Uitloggen",
+		"loginButton": "Inloggen",
+		"loginRegisterButton": "Inloggen / Registreren",
+		"restricted": {
+			"title": "Beperkte Toegang",
+			"message": "U moet inloggen om deze pagina te bekijken."
+		},
+		"welcome": {
+			"title": "Welkom bij Debt Detox!",
+			"message": "Neem controle over uw financiële verplichtingen. Log in om uw schulden en leningen te beheren."
+		},
+		"session": {
+			"expired": "Uw sessie is verlopen. Log opnieuw in.",
+			"checking": "Sessie controleren...",
+			"invalid": "Ongeldige sessie",
+			"close": "Sluiten"
+		}
+	},
+	"landing": {
+		"hero": {
+			"subtitle": "Neem controle over uw financiële verplichtingen",
+			"features": "Gratis • Geen verborgen kosten • Uw gegevens blijven privé"
+		},
+		"features": {
+			"trackProgress": {
+				"title": "Voortgang Volgen",
+				"description": "Houd uw schuldbetalingen bij en zie hoe dicht u bij vrijheid bent"
+			},
+			"managePayments": {
+				"title": "Betalingen Beheren",
+				"description": "Controleer betalingsdata en bedragen van elke maandelijkse termijn"
+			},
+			"stayMotivated": {
+				"title": "Blijf Gemotiveerd",
+				"description": "Visuele voortgangsregistratie houdt u gemotiveerd op uw reis"
+			}
+		},
+		"details": {
+			"title": "Alles Wat U Nodig Heeft",
+			"subtitle": "Krachtige functies om u te helpen van schulden af te komen",
+			"amountTracking": {
+				"title": "Bedrag Bijhouden",
+				"description": "Volg begin- en eindbedragen met automatische berekeningen"
+			},
+			"dateManagement": {
+				"title": "Datumbeheer",
+				"description": "Stel begin- en einddata in om op koers te blijven"
+			},
+			"progressVisualization": {
+				"title": "Voortgangsvisualisatie",
+				"description": "Zie uw voortgang met mooie grafieken en percentages"
+			},
+			"entityDetails": {
+				"title": "Entiteitsdetails",
+				"description": "Bewaar informatie over contracterende entiteit en financiële details"
+			}
+		},
+		"cta": {
+			"title": "Klaar om te Beginnen?",
+			"subtitle": "Sluit u aan bij duizenden mensen die controle over hun financiële toekomst nemen"
+		},
+		"demo": {
+			"title": "Interactief Voorbeeld",
+			"subtitle": "Ontdek hoe Debt Detox werkt met voorbeeldgegevens",
+			"cta": "Mijn Account Aanmaken",
+			"bottomCta": {
+				"title": "Bevalt Wat U Ziet?",
+				"subtitle": "Maak uw gratis account aan en begin met het beheren van uw echte schulden",
+				"button": "Gratis Beginnen"
+			}
+		}
+	},
+	"common": {
+		"currency": "€",
+		"loading": "Laden...",
+		"error": "Fout",
+		"save": "Opslaan",
+		"cancel": "Annuleren",
+		"delete": "Verwijderen",
+		"edit": "Bewerken",
+		"back": "Terug"
+	},
+	"debt": {
+		"create": {
+			"title": "Nieuwe Financiering",
+			"name": "Productnaam",
+			"namePlaceholder": "bijv: Hypothecaire Lening",
+			"entity": "Financiële Instelling",
+			"entityPlaceholder": "bijv: ING Bank",
+			"downPayment": "Aanbetaling (optioneel)",
+			"firstPaymentDate": "Datum Eerste Termijn",
+			"finalPaymentDate": "Datum Laatste Termijn",
+			"monthlyAmount": "Maandelijks Bedrag",
+			"numberOfPayments": "Aantal Termijnen",
+			"finalPayment": "Bedrag Laatste Termijn (optioneel)",
+			"submit": "Financiering Aanmaken",
+			"submitting": "Aanmaken...",
+			"success": "Financiering succesvol aangemaakt!",
+			"error": "Fout bij aanmaken van financiering"
+		},
+		"edit": {
+			"title": "Financiering Bewerken",
+			"submit": "Wijzigingen Opslaan",
+			"submitting": "Opslaan...",
+			"success": "Financiering succesvol bijgewerkt!",
+			"error": "Fout bij bijwerken van financiering"
+		},
+		"delete": {
+			"title": "Financiering Verwijderen",
+			"confirmation": "Weet u zeker dat u deze financiering wilt verwijderen?",
+			"description": "De financiering \"{name}\" en alle bijbehorende gegevens worden permanent verwijderd.",
+			"warning": "Deze actie kan niet ongedaan worden gemaakt.",
+			"confirm": "Ja, verwijderen",
+			"cancel": "Annuleren",
+			"success": "Financiering succesvol verwijderd!",
+			"error": "Fout bij verwijderen van financiering"
+		},
+		"complete": {
+			"title": "Financiering Voltooien",
+			"confirmMessage": "Weet u zeker dat u de financiering van \"{name}\" met {entity} wilt voltooien?",
+			"remainingAmount": "Resterend bedrag dat als laatste betaling wordt geregistreerd:",
+			"finalPaymentNote": "Er wordt automatisch een laatste betaling met dit bedrag aangemaakt en de schuld wordt als voltooid gemarkeerd.",
+			"confirm": "Voltooien",
+			"success": "Financiering succesvol voltooid"
+		},
+		"extraPayment": {
+			"title": "Aangepaste Betaling Toevoegen",
+			"amountLabel": "Bedrag van extra betaling",
+			"amountPlaceholder": "0.00",
+			"description": "Vermindert het resterende saldo zonder termijnen als betaald te markeren",
+			"maxAmount": "Maximum: {amount}",
+			"exceedsMaxAmount": "Het bedrag mag het resterende saldo niet overschrijden ({maxAmount})",
+			"noRemainingAmount": "Er is geen resterend saldo. De schuld is volledig afbetaald.",
+			"confirm": "Betaling Toevoegen",
+			"invalidAmount": "Voer een geldig bedrag in",
+			"error": "Fout bij toevoegen van extra betaling",
+			"success": "Extra betaling succesvol toegevoegd"
+		}
+	},
+	"profile": {
+		"title": "Gebruikersprofiel",
+		"subtitle": "Beheer uw accountinstellingen",
+		"profileInfo": "Profielinformatie",
+		"name": "Naam",
+		"email": "E-mail",
+		"password": "Wachtwoord",
+		"currency": "Valuta",
+		"editCurrency": "Valuta Bewerken",
+		"noName": "Geen naam ingesteld",
+		"editProfile": "Profiel Bewerken",
+		"namePlaceholder": "Voer uw naam in",
+		"emailPlaceholder": "Voer uw e-mail in",
+		"save": "Opslaan",
+		"cancel": "Annuleren",
+		"changePassword": "Wachtwoord Wijzigen",
+		"resetPassword": "Wachtwoord Resetten",
+		"currentPassword": "Huidig Wachtwoord",
+		"newPassword": "Nieuw Wachtwoord",
+		"confirmPassword": "Nieuw Wachtwoord Bevestigen",
+		"passwordDescription": "Wijzig uw huidige wachtwoord",
+		"profileUpdated": "Profiel succesvol bijgewerkt!",
+		"updateError": "Fout bij bijwerken van profiel",
+		"passwordChanged": "Wachtwoord succesvol gewijzigd!",
+		"passwordError": "Fout bij wijzigen van wachtwoord",
+		"passwordMismatch": "Wachtwoorden komen niet overeen",
+		"currencyUpdated": "Valuta succesvol bijgewerkt!",
+		"currencyError": "Fout bij bijwerken van valuta",
+		"editName": "Naam Bewerken",
+		"notLoggedIn": "U bent niet ingelogd",
+		"loginRequired": "Log in om uw profiel te bekijken"
+	},
+	"theme": {
+		"light": "Licht",
+		"dark": "Donker",
+		"system": "Systeem",
+		"changeTheme": "Thema wijzigen"
+	},
+	"paymentStatus": {
+		"completed": "Voltooid",
+		"pendingStart": "In afwachting van start",
+		"monthlyPaid": "Maandelijkse betaling gedaan",
+		"markAsPaid": "Markeren als betaald",
+		"allPaymentsCompleted": "Alle betalingen voltooid",
+		"nextPayment": "Volgende termijn",
+		"paymentsCompleted": "termijnen voltooid"
+	},
+	"debtDetail": {
+		"title": "Schulddetail",
+		"fullyPaidAlert": {
+			"title": "Financiering volledig betaald!",
+			"description": "U heeft het totale bedrag betaald. Markeer de financiering als voltooid om af te ronden.",
+			"completeButton": "Nu Voltooien"
+		},
+		"notFound": {
+			"title": "Financiering niet gevonden",
+			"description": "De gevraagde financiering kon niet worden gevonden.",
+			"backButton": "Terug"
+		},
+		"navigation": {
+			"back": "Terug"
+		},
+		"actions": {
+			"edit": "Bewerken",
+			"delete": "Verwijderen"
+		},
+		"status": {
+			"completed": "Voltooid",
+			"active": "Actief",
+			"pending": "In afwachting"
+		},
+		"summary": {
+			"total": "Totaal",
+			"paid": "Betaald",
+			"payments": "Termijnen",
+			"monthly": "Maandelijks"
+		},
+		"sections": {
+			"progress": "Voortgang en Betalingen",
+			"paymentDetails": "Betalingsdetails",
+			"structure": "Structuur",
+			"product": "Product",
+			"dates": "Data"
+		},
+		"paymentDetails": {
+			"paidPayments": "Betaalde Termijnen",
+			"of": "van",
+			"pending": "In afwachting",
+			"remaining": "resterend",
+			"paidAmount": "Betaald Bedrag",
+			"toPay": "Te Betalen"
+		},
+		"structure": {
+			"downPayment": "Aanbetaling",
+			"monthlyPayment": "Maandelijkse termijn",
+			"duration": "Looptijd",
+			"finalPayment": "Eindtermijn",
+			"total": "Totaal",
+			"months": "maanden",
+			"notApplicable": "Niet van toepassing"
+		},
+		"dates": {
+			"firstPayment": "Eerste Termijn",
+			"lastPayment": "Laatste Termijn",
+			"notSpecified": "Niet gespecificeerd"
+		}
+	},
+	"paymentsList": {
+		"title": "Betalingsoverzicht",
+		"paymentsCompleted": "betalingen gedaan",
+		"statsPaid": "Betaald",
+		"statsOverdue": "Achterstallig",
+		"statsPending": "In afwachting",
+		"extraPaymentsTitle": "Aangepaste Betalingen",
+		"extraPaymentsTotalLabel": "Totaal extra betalingen",
+		"extraPayment": "extra betaling",
+		"hasExtraPayments": "{count, plural, =1 {(+ 1 extra betaling)} other {(+ # extra betalingen)}}",
+		"headers": {
+			"period": "Periode",
+			"status": "Status",
+			"plannedAmount": "Gepland Bedrag",
+			"actualAmount": "Werkelijk Bedrag",
+			"paymentDate": "Betalingsdatum"
+		},
+		"statusPaid": "Betaald",
+		"statusOverdue": "Achterstallig",
+		"statusPending": "In afwachting",
+		"totalLabel": "Totaal",
+		"noPayments": "Er zijn geen betalingen geregistreerd voor deze financiering."
+	},
+	"debtProgress": {
+		"paymentsLabel": "Termijnen",
+		"remaining": "resterend"
+	},
+	"emptyStates": {
+		"active": {
+			"title": "U heeft geen actieve financieringen",
+			"description": "Al uw financieringen zijn voltooid of u heeft er geen geregistreerd",
+			"buttonText": "Financiering Toevoegen"
+		},
+		"completed": {
+			"title": "U heeft geen voltooide financieringen",
+			"description": "U heeft nog geen enkele financiering voltooid"
+		}
+	}
+}
