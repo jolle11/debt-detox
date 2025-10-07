@@ -1,0 +1,367 @@
+{
+	"nav": {
+		"title": "💰 Debt Detox",
+		"addDebt": "Adicionar Dívida",
+		"profile": "Perfil"
+	},
+	"dashboard": {
+		"title": "Seus Financiamentos",
+		"stats": {
+			"totalDebt": "Dívida Total",
+			"monthlyPayment": "Pagamento Mensal",
+			"completed": "Concluídas",
+			"averageProgress": "Progresso Médio",
+			"activeDebts": "{count, plural, =0 {Sem dívidas ativas} =1 {# dívida ativa} other {# dívidas ativas}}",
+			"monthlyTotal": "Total mensal",
+			"paidOff": "Dívidas quitadas",
+			"ofAllDebts": "De todas as dívidas"
+		},
+		"tabs": {
+			"all": "Todas",
+			"active": "Ativas",
+			"completed": "Concluídas"
+		},
+		"debt": {
+			"totalAmount": "Valor total",
+			"paidAmount": "Valor pago",
+			"remainingAmount": "Valor pendente",
+			"monthlyAmount": "Prestação mensal",
+			"finalPayment": "Prestação final",
+			"finalPaymentDate": "Data última prestação",
+			"progress": "Progresso",
+			"paymentsProgress": "Prestações pagas",
+			"status": {
+				"active": "Ativa",
+				"completed": "Concluída"
+			},
+			"actions": {
+				"viewDetails": "Ver detalhes",
+				"recordPayment": "Registrar pagamento",
+				"edit": "Editar",
+				"delete": "Eliminar",
+				"complete": "Concluir financiamento"
+			}
+		},
+		"empty": {
+			"title": "Você não tem financiamentos registrados",
+			"description": "Adicione sua primeira dívida ou empréstimo para começar o acompanhamento",
+			"addButton": "Adicionar Primeira Dívida"
+		}
+	},
+	"notFound": {
+		"title": "404 - Página não encontrada",
+		"description": "Desculpe, a página que você procura não existe.",
+		"backHome": "Voltar ao início"
+	},
+	"auth": {
+		"login": {
+			"title": "Bem-vindo!",
+			"subtitle": "Acesse sua conta para gerenciar suas dívidas",
+			"email": "E-mail",
+			"password": "Senha",
+			"submit": "Entrar",
+			"submitting": "Entrando...",
+			"noAccount": "Não tem conta?",
+			"signUpLink": "Cadastre-se aqui",
+			"error": "Erro ao entrar"
+		},
+		"register": {
+			"title": "Criar Conta",
+			"subtitle": "Junte-se para ter controle sobre suas finanças",
+			"name": "Nome",
+			"nameOptional": "opcional",
+			"email": "E-mail",
+			"password": "Senha",
+			"confirmPassword": "Confirmar Senha",
+			"submit": "Criar Conta",
+			"submitting": "Criando conta...",
+			"hasAccount": "Já tem conta?",
+			"signInLink": "Entre",
+			"error": "Erro ao cadastrar-se",
+			"passwordMismatch": "As senhas não coincidem"
+		},
+		"logout": "Sair",
+		"loginButton": "Entrar",
+		"loginRegisterButton": "Entrar / Cadastro",
+		"restricted": {
+			"title": "Acesso Restrito",
+			"message": "Você deve entrar para acessar esta página."
+		},
+		"welcome": {
+			"title": "Bem-vindo ao Debt Detox!",
+			"message": "Tenha controle sobre seus compromissos financeiros. Entre para começar a gerenciar suas dívidas e empréstimos."
+		},
+		"session": {
+			"expired": "Sua sessão expirou. Por favor, entre novamente.",
+			"checking": "Verificando sessão...",
+			"invalid": "Sessão inválida",
+			"close": "Fechar"
+		}
+	},
+	"landing": {
+		"hero": {
+			"subtitle": "Tenha controle sobre seus compromissos financeiros",
+			"features": "Gratuito • Sem taxas ocultas • Seus dados permanecem privados"
+		},
+		"features": {
+			"trackProgress": {
+				"title": "Acompanhar Progresso",
+				"description": "Monitore seus pagamentos de dívidas e veja o quão perto você está da liberdade"
+			},
+			"managePayments": {
+				"title": "Gerenciar Pagamentos",
+				"description": "Controle datas de pagamento e valores de cada prestação mensal"
+			},
+			"stayMotivated": {
+				"title": "Mantenha-se Motivado",
+				"description": "O acompanhamento visual do progresso mantém você motivado em sua jornada"
+			}
+		},
+		"details": {
+			"title": "Tudo O Que Você Precisa",
+			"subtitle": "Funcionalidades poderosas para ajudá-lo a se livrar das dívidas",
+			"amountTracking": {
+				"title": "Acompanhamento de Valores",
+				"description": "Rastreie valores iniciais e finais com cálculos automáticos"
+			},
+			"dateManagement": {
+				"title": "Gestão de Datas",
+				"description": "Defina datas de início e fim para manter-se no caminho certo"
+			},
+			"progressVisualization": {
+				"title": "Visualização de Progresso",
+				"description": "Veja seu progresso com belos gráficos e percentagens"
+			},
+			"entityDetails": {
+				"title": "Detalhes da Entidade",
+				"description": "Armazene informações da entidade contratante e detalhes financeiros"
+			}
+		},
+		"cta": {
+			"title": "Pronto para Começar?",
+			"subtitle": "Junte-se a milhares de pessoas tomando controle de seu futuro financeiro"
+		},
+		"demo": {
+			"title": "Visualização Interativa",
+			"subtitle": "Explore como funciona o Debt Detox com dados de exemplo",
+			"cta": "Criar Minha Conta",
+			"bottomCta": {
+				"title": "Gostou do Que Vê?",
+				"subtitle": "Crie sua conta gratuita e comece a gerenciar suas dívidas reais",
+				"button": "Começar Grátis"
+			}
+		}
+	},
+	"common": {
+		"currency": "€",
+		"loading": "Carregando...",
+		"error": "Erro",
+		"save": "Guardar",
+		"cancel": "Cancelar",
+		"delete": "Eliminar",
+		"edit": "Editar",
+		"back": "Voltar"
+	},
+	"debt": {
+		"create": {
+			"title": "Novo Financiamento",
+			"name": "Nome do Produto",
+			"namePlaceholder": "Ex: Empréstimo Hipotecário",
+			"entity": "Entidade Financeira",
+			"entityPlaceholder": "Ex: Banco Santander",
+			"downPayment": "Entrada/Pagamento Inicial (opcional)",
+			"firstPaymentDate": "Data da Primeira Prestação",
+			"finalPaymentDate": "Data da Última Prestação",
+			"monthlyAmount": "Valor Mensal",
+			"numberOfPayments": "Número de Prestações",
+			"finalPayment": "Valor da Última Prestação (opcional)",
+			"submit": "Criar Financiamento",
+			"submitting": "Criando...",
+			"success": "Financiamento criado com sucesso!",
+			"error": "Erro ao criar o financiamento"
+		},
+		"edit": {
+			"title": "Editar Financiamento",
+			"submit": "Guardar Alterações",
+			"submitting": "Guardando...",
+			"success": "Financiamento atualizado com sucesso!",
+			"error": "Erro ao atualizar o financiamento"
+		},
+		"delete": {
+			"title": "Eliminar Financiamento",
+			"confirmation": "Tem certeza de que deseja eliminar este financiamento?",
+			"description": "O financiamento \"{name}\" e todos os seus dados associados serão eliminados permanentemente.",
+			"warning": "Esta ação não pode ser desfeita.",
+			"confirm": "Sim, eliminar",
+			"cancel": "Cancelar",
+			"success": "Financiamento eliminado com sucesso!",
+			"error": "Erro ao eliminar o financiamento"
+		},
+		"complete": {
+			"title": "Concluir Financiamento",
+			"confirmMessage": "Tem certeza de que deseja concluir o financiamento de \"{name}\" com {entity}?",
+			"remainingAmount": "Valor pendente que será registrado como último pagamento:",
+			"finalPaymentNote": "Será criado automaticamente um pagamento final com este valor e a dívida será marcada como concluída.",
+			"confirm": "Concluir",
+			"success": "Financiamento concluído com sucesso"
+		},
+		"extraPayment": {
+			"title": "Adicionar Pagamento Personalizado",
+			"amountLabel": "Valor do pagamento extra",
+			"amountPlaceholder": "0.00",
+			"description": "Reduz o saldo pendente sem marcar prestações como pagas",
+			"maxAmount": "Máximo: {amount}",
+			"exceedsMaxAmount": "O valor não pode exceder o saldo pendente ({maxAmount})",
+			"noRemainingAmount": "Não há saldo pendente. A dívida já está completamente paga.",
+			"confirm": "Adicionar Pagamento",
+			"invalidAmount": "Por favor, insira um valor válido",
+			"error": "Erro ao adicionar o pagamento extra",
+			"success": "Pagamento extra adicionado com sucesso"
+		}
+	},
+	"profile": {
+		"title": "Perfil de Utilizador",
+		"subtitle": "Gerencie as configurações da sua conta",
+		"profileInfo": "Informações do Perfil",
+		"name": "Nome",
+		"email": "E-mail",
+		"password": "Senha",
+		"currency": "Moeda",
+		"editCurrency": "Editar Moeda",
+		"noName": "Sem nome definido",
+		"editProfile": "Editar Perfil",
+		"namePlaceholder": "Insira seu nome",
+		"emailPlaceholder": "Insira seu e-mail",
+		"save": "Guardar",
+		"cancel": "Cancelar",
+		"changePassword": "Alterar Senha",
+		"resetPassword": "Redefinir Senha",
+		"currentPassword": "Senha Atual",
+		"newPassword": "Nova Senha",
+		"confirmPassword": "Confirmar Nova Senha",
+		"passwordDescription": "Altere sua senha atual",
+		"profileUpdated": "Perfil atualizado com sucesso!",
+		"updateError": "Erro ao atualizar o perfil",
+		"passwordChanged": "Senha alterada com sucesso!",
+		"passwordError": "Erro ao alterar a senha",
+		"passwordMismatch": "As senhas não coincidem",
+		"currencyUpdated": "Moeda atualizada com sucesso!",
+		"currencyError": "Erro ao atualizar a moeda",
+		"editName": "Editar Nome",
+		"notLoggedIn": "Você não entrou",
+		"loginRequired": "Por favor, entre para ver seu perfil"
+	},
+	"theme": {
+		"light": "Claro",
+		"dark": "Escuro",
+		"system": "Sistema",
+		"changeTheme": "Alterar tema"
+	},
+	"paymentStatus": {
+		"completed": "Concluída",
+		"pendingStart": "Pendente de início",
+		"monthlyPaid": "Mensalidade paga",
+		"markAsPaid": "Marcar como paga",
+		"allPaymentsCompleted": "Todos os pagamentos concluídos",
+		"nextPayment": "Próxima prestação",
+		"paymentsCompleted": "prestações concluídas"
+	},
+	"debtDetail": {
+		"title": "Detalhe da Dívida",
+		"fullyPaidAlert": {
+			"title": "Financiamento completamente pago!",
+			"description": "Você pagou o valor total. Marque o financiamento como concluído para finalizar.",
+			"completeButton": "Concluir Agora"
+		},
+		"notFound": {
+			"title": "Financiamento não encontrado",
+			"description": "Não foi possível encontrar o financiamento solicitado.",
+			"backButton": "Voltar"
+		},
+		"navigation": {
+			"back": "Voltar"
+		},
+		"actions": {
+			"edit": "Editar",
+			"delete": "Eliminar"
+		},
+		"status": {
+			"completed": "Concluído",
+			"active": "Ativo",
+			"pending": "Pendente"
+		},
+		"summary": {
+			"total": "Total",
+			"paid": "Pago",
+			"payments": "Prestações",
+			"monthly": "Mensal"
+		},
+		"sections": {
+			"progress": "Progresso e Pagamentos",
+			"paymentDetails": "Detalhes de Pagamento",
+			"structure": "Estrutura",
+			"product": "Produto",
+			"dates": "Datas"
+		},
+		"paymentDetails": {
+			"paidPayments": "Prestações Pagas",
+			"of": "de",
+			"pending": "Pendentes",
+			"remaining": "restantes",
+			"paidAmount": "Valor Pago",
+			"toPay": "A Pagar"
+		},
+		"structure": {
+			"downPayment": "Entrada",
+			"monthlyPayment": "Prestação mensal",
+			"duration": "Duração",
+			"finalPayment": "Prestação final",
+			"total": "Total",
+			"months": "meses",
+			"notApplicable": "Não se aplica"
+		},
+		"dates": {
+			"firstPayment": "Primeira Prestação",
+			"lastPayment": "Última Prestação",
+			"notSpecified": "Não especificada"
+		}
+	},
+	"paymentsList": {
+		"title": "Listagem de Pagamentos",
+		"paymentsCompleted": "pagamentos realizados",
+		"statsPaid": "Pagos",
+		"statsOverdue": "Vencidos",
+		"statsPending": "Pendentes",
+		"extraPaymentsTitle": "Pagamentos Personalizados",
+		"extraPaymentsTotalLabel": "Total pagamentos extras",
+		"extraPayment": "pagamento extra",
+		"hasExtraPayments": "{count, plural, =1 {(+ 1 pagamento extra)} other {(+ # pagamentos extras)}}",
+		"headers": {
+			"period": "Período",
+			"status": "Estado",
+			"plannedAmount": "Valor Planeado",
+			"actualAmount": "Valor Real",
+			"paymentDate": "Data de Pagamento"
+		},
+		"statusPaid": "Pago",
+		"statusOverdue": "Vencido",
+		"statusPending": "Pendente",
+		"totalLabel": "Total",
+		"noPayments": "Não há pagamentos registrados para este financiamento."
+	},
+	"debtProgress": {
+		"paymentsLabel": "Prestações",
+		"remaining": "restantes"
+	},
+	"emptyStates": {
+		"active": {
+			"title": "Você não tem financiamentos ativos",
+			"description": "Todos os seus financiamentos estão concluídos ou você não tem nenhum registrado",
+			"buttonText": "Adicionar Financiamento"
+		},
+		"completed": {
+			"title": "Você não tem financiamentos concluídos",
+			"description": "Ainda não concluiu nenhum financiamento"
+		}
+	}
+}

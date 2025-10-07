@@ -10,6 +10,7 @@ const languages = [
 	{ code: "en", name: "English", flag: "🇺🇸", nativeName: "English" },
 	{ code: "fr", name: "Français", flag: "🇫🇷", nativeName: "Français" },
 	{ code: "de", name: "Deutsch", flag: "🇩🇪", nativeName: "Deutsch" },
+	{ code: "pt", name: "Português", flag: "🇵🇹", nativeName: "Português" },
 ];
 
 export default function LanguageSelector() {
