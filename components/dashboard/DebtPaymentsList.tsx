@@ -5,11 +5,16 @@ import {
 	CheckCircle,
 	CreditCard,
 	XCircle,
+	PencilSimple,
+	Trash,
+	ArrowCounterClockwise,
 } from "@phosphor-icons/react";
 import { useTranslations, useLocale } from "next-intl";
 import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
 import { useCurrency } from "@/hooks/useCurrency";
+import { usePayments } from "@/hooks/usePayments";
 import type { Debt, Payment } from "@/lib/types";
+import { useState } from "react";
 
 interface DebtPaymentsListProps {
 	debt: Debt;
@@ -25,6 +30,16 @@ export default function DebtPaymentsList({
 	const t = useTranslations("paymentsList");
 	const locale = useLocale();
 	const { formatCurrency } = useCurrency();
+	const {
+		unmarkPaymentAsPaid,
+		updatePaymentAmount,
+		deleteExtraPayment,
+		markPaymentAsPaid,
+	} = usePayments(debt.id);
+	const [editingPaymentId, setEditingPaymentId] = useState<string | null>(
+		null,
+	);
+	const [editAmount, setEditAmount] = useState<string>("");
 	// Generate all expected payments based on debt structure
 	const generateAllExpectedPayments = () => {
 		const expectedPayments: Array<{
@@ -107,6 +122,57 @@ export default function DebtPaymentsList({
 			month: "short",
 			year: "numeric",
 		});
+	};
+
+	const handleUnmarkPayment = async (paymentId: string) => {
+		try {
+			await unmarkPaymentAsPaid(paymentId);
+		} catch (error) {
+			console.error("Error unmarking payment:", error);
+		}
+	};
+
+	const handleMarkAsPaid = async (
+		month: number,
+		year: number,
+		plannedAmount: number,
+	) => {
+		try {
+			await markPaymentAsPaid(debt.id!, month, year, plannedAmount);
+		} catch (error) {
+			console.error("Error marking payment as paid:", error);
+		}
+	};
+
+	const handleDeleteExtraPayment = async (paymentId: string) => {
+		try {
+			await deleteExtraPayment(paymentId);
+		} catch (error) {
+			console.error("Error deleting extra payment:", error);
+		}
+	};
+
+	const handleStartEdit = (paymentId: string, currentAmount: number) => {
+		setEditingPaymentId(paymentId);
+		setEditAmount(currentAmount.toString());
+	};
+
+	const handleCancelEdit = () => {
+		setEditingPaymentId(null);
+		setEditAmount("");
+	};
+
+	const handleSaveEdit = async (paymentId: string) => {
+		try {
+			const amount = parseFloat(editAmount);
+			if (!isNaN(amount) && amount > 0) {
+				await updatePaymentAmount(paymentId, amount);
+				setEditingPaymentId(null);
+				setEditAmount("");
+			}
+		} catch (error) {
+			console.error("Error updating payment amount:", error);
+		}
 	};
 
 	const allExpectedPayments = generateAllExpectedPayments();
@@ -196,9 +262,66 @@ export default function DebtPaymentsList({
 											{formatPaymentDate(payment.paid_date!)}
 										</span>
 									</div>
-									<span className="font-mono text-sm font-semibold text-primary">
-										{formatCurrency(payment.actual_amount || 0)}
-									</span>
+									<div className="flex items-center gap-2">
+										{editingPaymentId === payment.id ? (
+											<>
+												<input
+													type="number"
+													value={editAmount}
+													onChange={(e) =>
+														setEditAmount(e.target.value)
+													}
+													className="input input-xs input-bordered w-24 font-mono"
+													step="0.01"
+												/>
+												<button
+													onClick={() =>
+														handleSaveEdit(payment.id!)
+													}
+													className="btn btn-xs btn-success"
+												>
+													<CheckCircle className="w-3 h-3" />
+												</button>
+												<button
+													onClick={handleCancelEdit}
+													className="btn btn-xs btn-ghost"
+												>
+													<XCircle className="w-3 h-3" />
+												</button>
+											</>
+										) : (
+											<>
+												<span className="font-mono text-sm font-semibold text-primary">
+													{formatCurrency(
+														payment.actual_amount || 0,
+													)}
+												</span>
+												<button
+													onClick={() =>
+														handleStartEdit(
+															payment.id!,
+															payment.actual_amount || 0,
+														)
+													}
+													className="btn btn-xs btn-ghost"
+													title="Edit amount"
+												>
+													<PencilSimple className="w-3 h-3" />
+												</button>
+												<button
+													onClick={() =>
+														handleDeleteExtraPayment(
+															payment.id!,
+														)
+													}
+													className="btn btn-xs btn-ghost text-error"
+													title="Delete extra payment"
+												>
+													<Trash className="w-3 h-3" />
+												</button>
+											</>
+										)}
+									</div>
 								</div>
 							))}
 						</div>
@@ -219,6 +342,7 @@ export default function DebtPaymentsList({
 									{t("headers.actualAmount")}
 								</th>
 								<th>{t("headers.paymentDate")}</th>
+								<th className="text-center">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -332,6 +456,85 @@ export default function DebtPaymentsList({
 													</span>
 												)}
 											</td>
+											<td>
+												<div className="flex items-center justify-center gap-1">
+													{isPaid && payment?.id ? (
+														editingPaymentId === payment.id ? (
+															<>
+																<input
+																	type="number"
+																	value={editAmount}
+																	onChange={(e) =>
+																		setEditAmount(
+																			e.target.value,
+																		)
+																	}
+																	className="input input-xs input-bordered w-20 font-mono"
+																	step="0.01"
+																/>
+																<button
+																	onClick={() =>
+																		handleSaveEdit(
+																			payment.id!,
+																		)
+																	}
+																	className="btn btn-xs btn-success"
+																	title="Save"
+																>
+																	<CheckCircle className="w-3 h-3" />
+																</button>
+																<button
+																	onClick={handleCancelEdit}
+																	className="btn btn-xs btn-ghost"
+																	title="Cancel"
+																>
+																	<XCircle className="w-3 h-3" />
+																</button>
+															</>
+														) : (
+															<>
+																<button
+																	onClick={() =>
+																		handleStartEdit(
+																			payment.id!,
+																			totalActualAmount,
+																		)
+																	}
+																	className="btn btn-xs btn-ghost"
+																	title="Edit amount"
+																>
+																	<PencilSimple className="w-3 h-3" />
+																</button>
+																<button
+																	onClick={() =>
+																		handleUnmarkPayment(
+																			payment.id!,
+																		)
+																	}
+																	className="btn btn-xs btn-ghost text-warning"
+																	title="Unmark as paid"
+																>
+																	<ArrowCounterClockwise className="w-3 h-3" />
+																</button>
+															</>
+														)
+													) : (
+														<button
+															onClick={() =>
+																handleMarkAsPaid(
+																	month,
+																	year,
+																	planned_amount,
+																)
+															}
+															className="btn btn-xs btn-success"
+															title="Mark as paid"
+														>
+															<CheckCircle className="w-3 h-3" />
+														</button>
+													)}
+												</div>
+											</td>
 										</tr>
 									);
 								},
@@ -367,6 +570,7 @@ export default function DebtPaymentsList({
 										),
 									)}
 								</td>
+								<td></td>
 								<td></td>
 							</tr>
 						</tfoot>

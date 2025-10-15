@@ -26,6 +26,9 @@ interface UsePaymentsReturn {
 			actualAmount?: number;
 		}>,
 	) => Promise<void>;
+	unmarkPaymentAsPaid: (paymentId: string) => Promise<void>;
+	updatePaymentAmount: (paymentId: string, amount: number) => Promise<void>;
+	deleteExtraPayment: (paymentId: string) => Promise<void>;
 	addExtraPayment: (debtId: string, amount: number) => Promise<void>;
 	getPaymentStatus: (
 		debtId: string,
@@ -290,6 +293,56 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		}
 	};
 
+	const unmarkPaymentAsPaid = async (paymentId: string): Promise<void> => {
+		try {
+			await pb.collection(COLLECTIONS.PAYMENTS).update(paymentId, {
+				paid: false,
+				paid_date: null,
+				actual_amount: null,
+			});
+
+			// Invalidar cache para refetch automático
+			queryClient.invalidateQueries({ queryKey: ["payments"] });
+			queryClient.invalidateQueries({ queryKey: ["debts"] });
+		} catch (err) {
+			console.error("Error unmarking payment as paid:", err);
+			throw err;
+		}
+	};
+
+	const updatePaymentAmount = async (
+		paymentId: string,
+		amount: number,
+	): Promise<void> => {
+		try {
+			await pb.collection(COLLECTIONS.PAYMENTS).update(paymentId, {
+				actual_amount: amount,
+			});
+
+			// Invalidar cache para refetch automático
+			queryClient.invalidateQueries({ queryKey: ["payments"] });
+			queryClient.invalidateQueries({ queryKey: ["debts"] });
+		} catch (err) {
+			console.error("Error updating payment amount:", err);
+			throw err;
+		}
+	};
+
+	const deleteExtraPayment = async (paymentId: string): Promise<void> => {
+		try {
+			await pb.collection(COLLECTIONS.PAYMENTS).update(paymentId, {
+				deleted: new Date().toISOString(),
+			});
+
+			// Invalidar cache para refetch automático
+			queryClient.invalidateQueries({ queryKey: ["payments"] });
+			queryClient.invalidateQueries({ queryKey: ["debts"] });
+		} catch (err) {
+			console.error("Error deleting extra payment:", err);
+			throw err;
+		}
+	};
+
 	return {
 		payments,
 		isLoading,
@@ -297,6 +350,9 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		refetch,
 		markPaymentAsPaid,
 		markMultiplePaymentsAsPaid,
+		unmarkPaymentAsPaid,
+		updatePaymentAmount,
+		deleteExtraPayment,
 		addExtraPayment,
 		getPaymentStatus,
 		generateHistoricalPayments,
