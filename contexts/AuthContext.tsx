@@ -44,12 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 	const login = async (email: string, password: string) => {
 		try {
-			const authData = await pb
-				.collection("users")
-				.authWithPassword(email, password);
-			setUser(authData.record);
-			// Force a small delay to ensure all listeners are notified
-			await new Promise((resolve) => setTimeout(resolve, 100));
+			await pb.collection("users").authWithPassword(email, password);
 		} catch (error) {
 			console.error("Login failed:", error);
 			throw error;
@@ -70,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				...(name && { name }),
 			};
 
-			const record = await pb.collection("users").create(userData);
+			await pb.collection("users").create(userData);
 
 			// Auto-login after registration
 			await login(email, password);
