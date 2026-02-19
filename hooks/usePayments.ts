@@ -213,53 +213,57 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 				return; // Es una financiación nueva, no generar pagos históricos
 			}
 
-			const historicalPayments = [];
+			// Una sola query para traer todos los pagos existentes de esta deuda
+			const existingPayments = await pb
+				.collection(COLLECTIONS.PAYMENTS)
+				.getFullList({
+					filter: pb.filter(
+						"debt_id = {:debtId} && deleted = null",
+						{ debtId },
+					),
+				});
+
+			// Construir un set de claves "mes-año" para lookup O(1)
+			const existingKeys = new Set(
+				existingPayments.map((p) => `${p.month}-${p.year}`),
+			);
+
+			// Calcular en memoria qué meses faltan
+			const missingPayments = [];
 
 			for (let i = 0; i < numberOfPayments; i++) {
 				const paymentDate = new Date(startDate);
 				paymentDate.setMonth(paymentDate.getMonth() + i);
 
 				// Solo generar pagos para fechas anteriores a hoy
-				if (paymentDate < now) {
-					const year = paymentDate.getFullYear();
-					const month = paymentDate.getMonth() + 1;
+				if (paymentDate >= now) break;
 
-					// Verificar si ya existe un pago para este mes/año
-					const existingPayments = await pb
-						.collection(COLLECTIONS.PAYMENTS)
-						.getFullList({
-							filter: pb.filter(
-								"debt_id = {:debtId} && month = {:month} && year = {:year} && deleted = null",
-								{ debtId, month, year },
-							),
-						});
+				const year = paymentDate.getFullYear();
+				const month = paymentDate.getMonth() + 1;
 
-					if (existingPayments.length === 0) {
-						// Crear pago histórico automático (marcado como pagado)
-						historicalPayments.push({
-							debt_id: debtId,
-							month,
-							year,
-							planned_amount: monthlyAmount,
-							actual_amount: monthlyAmount,
-							paid: true,
-							paid_date: new Date(
-								paymentDate.getFullYear(),
-								paymentDate.getMonth(),
-								1,
-							).toISOString(),
-						});
-					}
-				} else {
-					// Llegamos a fechas futuras, parar
-					break;
+				if (!existingKeys.has(`${month}-${year}`)) {
+					missingPayments.push({
+						debt_id: debtId,
+						month,
+						year,
+						planned_amount: monthlyAmount,
+						actual_amount: monthlyAmount,
+						paid: true,
+						paid_date: new Date(
+							paymentDate.getFullYear(),
+							paymentDate.getMonth(),
+							1,
+						).toISOString(),
+					});
 				}
 			}
 
-			// Crear todos los pagos históricos en batch
-			for (const payment of historicalPayments) {
-				await pb.collection(COLLECTIONS.PAYMENTS).create(payment);
-			}
+			// Crear todos los pagos faltantes en paralelo
+			await Promise.all(
+				missingPayments.map((payment) =>
+					pb.collection(COLLECTIONS.PAYMENTS).create(payment),
+				),
+			);
 
 			// Invalidar cache para refetch automático
 			queryClient.invalidateQueries({ queryKey: ["payments"] });
