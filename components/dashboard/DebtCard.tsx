@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { calculateDebtStatus } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
@@ -23,6 +24,10 @@ export default function DebtCard({
 }: DebtCardProps) {
 	const status = calculateDebtStatus(debt.final_payment_date);
 	const router = useRouter();
+	const debtPayments = useMemo(
+		() => payments.filter((p) => p.debt_id === debt.id),
+		[payments, debt.id],
+	);
 
 	const handleCardClick = () => {
 		router.push(`/debt/${debt.id}`);
@@ -42,25 +47,19 @@ export default function DebtCard({
 						</p>
 						<DebtInfo
 							debt={debt}
-							payments={payments.filter(
-								(p) => p.debt_id === debt.id,
-							)}
+							payments={debtPayments}
 						/>
 						<div className="mt-4">
 							<DebtProgressWithPayments
 								debt={debt}
-								payments={payments.filter(
-									(p) => p.debt_id === debt.id,
-								)}
+								payments={debtPayments}
 								isLoading={false}
 							/>
 						</div>
 						<div className="mt-3">
 							<DebtPaymentStatus
 								debt={debt}
-								payments={payments.filter(
-									(p) => p.debt_id === debt.id,
-								)}
+								payments={debtPayments}
 							/>
 						</div>
 					</div>
