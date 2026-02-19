@@ -32,7 +32,7 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 			// Verify the debt belongs to the current user
 			const existingDebt = await pb
 				.collection(COLLECTIONS.DEBTS)
-				.getOne(debt.id!, { filter: `user_id = "${user.id}"` });
+				.getOne(debt.id!, { filter: pb.filter("user_id = {:userId}", { userId: user.id }) });
 
 			if (!existingDebt) {
 				throw new Error("No tienes permisos para completar esta deuda");

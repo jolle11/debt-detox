@@ -19,7 +19,7 @@ const fetchDebts = async (userId: string): Promise<Debt[]> => {
 
 	try {
 		const records = await pb.collection(COLLECTIONS.DEBTS).getFullList({
-			filter: `deleted = null && user_id = "${userId}"`,
+			filter: pb.filter("deleted = null && user_id = {:userId}", { userId }),
 			sort: "-created",
 		});
 

@@ -34,7 +34,7 @@ export function useEditDebt(): UseEditDebtReturn {
 			// Verify the debt belongs to the current user before updating
 			const existingDebt = await pb
 				.collection(COLLECTIONS.DEBTS)
-				.getOne(debtId, { filter: `user_id = "${user.id}"` });
+				.getOne(debtId, { filter: pb.filter("user_id = {:userId}", { userId: user.id }) });
 
 			if (!existingDebt) {
 				throw new Error("No tienes permisos para editar esta deuda");

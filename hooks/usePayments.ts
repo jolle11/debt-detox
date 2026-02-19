@@ -50,7 +50,7 @@ const fetchPayments = async (debtId?: string): Promise<Payment[]> => {
 
 	try {
 		const filter = debtId
-			? `debt_id = "${debtId}" && deleted = null`
+			? pb.filter("debt_id = {:debtId} && deleted = null", { debtId })
 			: "deleted = null";
 
 		const records = await pb.collection(COLLECTIONS.PAYMENTS).getFullList({
@@ -102,7 +102,10 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 			const existingPayments = await pb
 				.collection(COLLECTIONS.PAYMENTS)
 				.getFullList({
-					filter: `debt_id = "${debtId}" && month = ${month} && year = ${year} && deleted = null`,
+					filter: pb.filter(
+						"debt_id = {:debtId} && month = {:month} && year = {:year} && deleted = null",
+						{ debtId, month, year },
+					),
 				});
 
 			const amountToPay = actualAmount || plannedAmount;
@@ -225,7 +228,10 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 					const existingPayments = await pb
 						.collection(COLLECTIONS.PAYMENTS)
 						.getFullList({
-							filter: `debt_id = "${debtId}" && month = ${month} && year = ${year} && deleted = null`,
+							filter: pb.filter(
+								"debt_id = {:debtId} && month = {:month} && year = {:year} && deleted = null",
+								{ debtId, month, year },
+							),
 						});
 
 					if (existingPayments.length === 0) {
