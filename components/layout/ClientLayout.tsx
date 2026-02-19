@@ -1,15 +1,20 @@
 "use client";
 
+import { useState } from "react";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { DebtsProvider } from "@/contexts/DebtsContext";
 import SessionGuard from "@/components/auth/SessionGuard";
 import Header from "@/components/layout/Header";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAuthSync } from "@/hooks/useAuthSync";
+import { makeQueryClient } from "@/lib/query-client";
 
 interface ClientLayoutProps {
 	children: React.ReactNode;
 }
 
-export default function ClientLayout({ children }: ClientLayoutProps) {
+function AppLayout({ children }: ClientLayoutProps) {
 	const { user, loading } = useAuth();
 
 	// Sync queries with auth state changes
@@ -37,4 +42,18 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
 	// If no user, show children directly (landing page)
 	return <>{children}</>;
+}
+
+export default function ClientLayout({ children }: ClientLayoutProps) {
+	const [queryClient] = useState(() => makeQueryClient());
+
+	return (
+		<QueryClientProvider client={queryClient}>
+			<AuthProvider>
+				<DebtsProvider>
+					<AppLayout>{children}</AppLayout>
+				</DebtsProvider>
+			</AuthProvider>
+		</QueryClientProvider>
+	);
 }
