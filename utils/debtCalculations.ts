@@ -1,17 +1,19 @@
 import type { PaymentStats } from "@/data/debtDetail";
 import type { Debt, Payment } from "@/lib/types";
 
-export function calculateExpectedPaidPayments(debt: Debt): number {
-	if (typeof window === "undefined") return 0;
+/**
+ * Calcula cuántas cuotas mensuales han transcurrido desde la primera fecha de pago
+ * hasta hoy, respetando el día exacto del mes. Retorna un valor entre 0 y numberOfPayments.
+ */
+export function calculateElapsedPayments(
+	firstPaymentDate: string,
+	numberOfPayments: number,
+	now: Date = new Date(),
+): number {
+	const firstPayment = new Date(firstPaymentDate);
 
-	const now = new Date();
-	const firstPayment = new Date(debt.first_payment_date);
+	if (now < firstPayment) return 0;
 
-	if (now < firstPayment) {
-		return 0;
-	}
-
-	let monthsElapsed = 0;
 	const currentDate = new Date(
 		now.getFullYear(),
 		now.getMonth(),
@@ -25,8 +27,7 @@ export function calculateExpectedPaidPayments(debt: Debt): number {
 
 	const yearsDiff = currentDate.getFullYear() - startDate.getFullYear();
 	const monthsDiff = currentDate.getMonth() - startDate.getMonth();
-
-	monthsElapsed = yearsDiff * 12 + monthsDiff;
+	let monthsElapsed = yearsDiff * 12 + monthsDiff;
 
 	if (currentDate.getDate() < startDate.getDate()) {
 		monthsElapsed--;
@@ -34,7 +35,16 @@ export function calculateExpectedPaidPayments(debt: Debt): number {
 
 	monthsElapsed = Math.max(0, monthsElapsed + 1);
 
-	return Math.min(monthsElapsed, debt.number_of_payments);
+	return Math.min(monthsElapsed, numberOfPayments);
+}
+
+export function calculateExpectedPaidPayments(debt: Debt): number {
+	if (typeof window === "undefined") return 0;
+
+	return calculateElapsedPayments(
+		debt.first_payment_date,
+		debt.number_of_payments,
+	);
 }
 
 export function calculatePaymentStats(
