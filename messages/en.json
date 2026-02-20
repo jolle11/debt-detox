@@ -353,6 +353,14 @@
 		"paymentsLabel": "Payments",
 		"remaining": "remaining"
 	},
+	"error": {
+		"title": "Something went wrong",
+		"description": "An unexpected error has occurred.",
+		"retry": "Try again",
+		"backHome": "Back to home",
+		"debtNotLoaded": "Could not load the financing.",
+		"back": "Go back"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "You have no active financing",

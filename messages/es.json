@@ -353,6 +353,14 @@
 		"paymentsLabel": "Cuotas",
 		"remaining": "restantes"
 	},
+	"error": {
+		"title": "Algo ha ido mal",
+		"description": "Se ha producido un error inesperado.",
+		"retry": "Reintentar",
+		"backHome": "Volver al inicio",
+		"debtNotLoaded": "No se pudo cargar la financiación.",
+		"back": "Volver"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "No tienes financiaciones activas",

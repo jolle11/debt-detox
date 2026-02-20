@@ -357,6 +357,14 @@
 		"paymentsLabel": "Raten",
 		"remaining": "verbleibend"
 	},
+	"error": {
+		"title": "Etwas ist schiefgelaufen",
+		"description": "Ein unerwarteter Fehler ist aufgetreten.",
+		"retry": "Erneut versuchen",
+		"backHome": "Zurück zur Startseite",
+		"debtNotLoaded": "Die Finanzierung konnte nicht geladen werden.",
+		"back": "Zurück"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "Sie haben keine aktiven Finanzierungen",

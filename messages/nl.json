@@ -353,6 +353,14 @@
 		"paymentsLabel": "Termijnen",
 		"remaining": "resterend"
 	},
+	"error": {
+		"title": "Er is iets misgegaan",
+		"description": "Er is een onverwachte fout opgetreden.",
+		"retry": "Opnieuw proberen",
+		"backHome": "Terug naar home",
+		"debtNotLoaded": "De financiering kon niet worden geladen.",
+		"back": "Terug"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "U heeft geen actieve financieringen",

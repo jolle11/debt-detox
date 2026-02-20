@@ -353,6 +353,14 @@
 		"paymentsLabel": "Prestações",
 		"remaining": "restantes"
 	},
+	"error": {
+		"title": "Algo correu mal",
+		"description": "Ocorreu um erro inesperado.",
+		"retry": "Tentar novamente",
+		"backHome": "Voltar ao início",
+		"debtNotLoaded": "Não foi possível carregar o financiamento.",
+		"back": "Voltar"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "Você não tem financiamentos ativos",
