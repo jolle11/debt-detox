@@ -1,21 +1,29 @@
 import { getCurrencySymbol } from "./currencies";
 
-export function formatNumber(value: number, decimals: number = 2): string {
-	return new Intl.NumberFormat("es-ES", {
+export function formatNumber(
+	value: number,
+	decimals: number = 2,
+	locale: string = "es-ES",
+): string {
+	return new Intl.NumberFormat(locale, {
 		minimumFractionDigits: decimals,
 		maximumFractionDigits: decimals,
 	}).format(value);
 }
 
-export function formatCurrency(value: number, userCurrency?: string): string {
+export function formatCurrency(
+	value: number,
+	userCurrency?: string,
+	locale: string = "es-ES",
+): string {
 	const decimals = value % 1 === 0 ? 0 : 2;
-	const formatted = formatNumber(value, decimals);
+	const formatted = formatNumber(value, decimals, locale);
 	const currencySymbol = userCurrency ? getCurrencySymbol(userCurrency) : "€";
 	return `${formatted} ${currencySymbol}`;
 }
 
-export function formatInteger(value: number): string {
-	return formatNumber(value, 0);
+export function formatInteger(value: number, locale: string = "es-ES"): string {
+	return formatNumber(value, 0, locale);
 }
 
 import type { Payment } from "./types";

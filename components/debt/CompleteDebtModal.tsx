@@ -3,9 +3,10 @@
 import { CheckCircleIcon, XIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useCompleteDebt } from "@/hooks/useCompleteDebt";
+import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
 import type { Debt } from "@/lib/types";
-import { calculateRemainingAmountWithPayments, formatCurrency } from "@/lib/format";
+import { calculateRemainingAmountWithPayments } from "@/lib/format";
 
 interface CompleteDebtModalProps {
 	debt: Debt | null;
@@ -22,6 +23,7 @@ export default function CompleteDebtModal({
 }: CompleteDebtModalProps) {
 	const t = useTranslations();
 	const { completeDebt, isLoading, error } = useCompleteDebt();
+	const { formatCurrency } = useCurrency();
 	const { payments } = usePayments();
 
 	if (!isOpen || !debt) return null;
