@@ -65,7 +65,8 @@
 			"submitting": "Anmeldung...",
 			"noAccount": "Kein Konto?",
 			"signUpLink": "Hier registrieren",
-			"error": "Anmeldefehler"
+			"error": "Anmeldefehler",
+			"tooManyAttempts": "Zu viele fehlgeschlagene Versuche. Warte {seconds}s bevor du es erneut versuchst."
 		},
 		"register": {
 			"title": "Konto erstellen",

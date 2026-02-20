@@ -63,7 +63,8 @@
 			"submitting": "Inloggen...",
 			"noAccount": "Heeft u geen account?",
 			"signUpLink": "Registreer hier",
-			"error": "Fout bij inloggen"
+			"error": "Fout bij inloggen",
+			"tooManyAttempts": "Te veel mislukte pogingen. Wacht {seconds}s voordat u het opnieuw probeert."
 		},
 		"register": {
 			"title": "Account Aanmaken",

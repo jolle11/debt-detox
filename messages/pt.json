@@ -63,7 +63,8 @@
 			"submitting": "Entrando...",
 			"noAccount": "Não tem conta?",
 			"signUpLink": "Cadastre-se aqui",
-			"error": "Erro ao entrar"
+			"error": "Erro ao entrar",
+			"tooManyAttempts": "Demasiadas tentativas falhadas. Aguarda {seconds}s antes de tentar novamente."
 		},
 		"register": {
 			"title": "Criar Conta",

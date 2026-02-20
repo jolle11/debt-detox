@@ -65,7 +65,8 @@
 			"submitting": "Connexion...",
 			"noAccount": "Pas de compte ?",
 			"signUpLink": "Inscrivez-vous ici",
-			"error": "Erreur de connexion"
+			"error": "Erreur de connexion",
+			"tooManyAttempts": "Trop de tentatives échouées. Attendez {seconds}s avant de réessayer."
 		},
 		"register": {
 			"title": "Créer un compte",

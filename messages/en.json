@@ -63,7 +63,8 @@
 			"submitting": "Signing in...",
 			"noAccount": "Don't have an account?",
 			"signUpLink": "Sign up here",
-			"error": "Error signing in"
+			"error": "Error signing in",
+			"tooManyAttempts": "Too many failed attempts. Wait {seconds}s before trying again."
 		},
 		"register": {
 			"title": "Create Account",

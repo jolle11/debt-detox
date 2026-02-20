@@ -63,7 +63,8 @@
 			"submitting": "Iniciando sesión...",
 			"noAccount": "¿No tienes cuenta?",
 			"signUpLink": "Regístrate aquí",
-			"error": "Error al iniciar sesión"
+			"error": "Error al iniciar sesión",
+			"tooManyAttempts": "Demasiados intentos fallidos. Espera {seconds}s antes de volver a intentarlo."
 		},
 		"register": {
 			"title": "Crear Cuenta",
