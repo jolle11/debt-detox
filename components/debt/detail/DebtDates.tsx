@@ -1,15 +1,16 @@
 "use client";
 
 import { CalendarIcon } from "@phosphor-icons/react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import type { DebtDatesProps } from "@/data/debtDetail";
 
 export default function DebtDates({ debt }: DebtDatesProps) {
 	const t = useTranslations();
+	const locale = useLocale();
 
 	const formatDate = (dateString: string) => {
 		if (typeof window === "undefined") return dateString;
-		return new Date(dateString).toLocaleDateString("es-ES", {
+		return new Date(dateString).toLocaleDateString(locale, {
 			year: "numeric",
 			month: "long",
 			day: "numeric",
