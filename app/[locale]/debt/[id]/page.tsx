@@ -11,6 +11,7 @@ import EditDebtModal from "@/components/debt/EditDebtModal";
 import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
 import CompleteDebtModal from "@/components/debt/CompleteDebtModal";
 import AddExtraPaymentModal from "@/components/debt/AddExtraPaymentModal";
+import ShareDebtModal from "@/components/debt/ShareDebtModal";
 import { usePayments } from "@/hooks/usePayments";
 import SkeletonDebtDetail from "@/components/ui/skeletons/SkeletonDebtDetail";
 import DebtHeader from "@/components/debt/detail/DebtHeader";
@@ -36,6 +37,7 @@ export default function DebtDetailPage() {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [showCompleteModal, setShowCompleteModal] = useState(false);
 	const [showExtraPaymentModal, setShowExtraPaymentModal] = useState(false);
+	const [showShareModal, setShowShareModal] = useState(false);
 	const [isClient, setIsClient] = useState(false);
 	const { payments, isLoading: paymentsLoading } = usePayments(debt?.id);
 
@@ -80,6 +82,7 @@ export default function DebtDetailPage() {
 				onDelete={() => setShowDeleteModal(true)}
 				onComplete={() => setShowCompleteModal(true)}
 				onAddExtraPayment={() => setShowExtraPaymentModal(true)}
+				onShare={() => setShowShareModal(true)}
 				onBack={() => router.back()}
 			/>
 
@@ -212,6 +215,13 @@ export default function DebtDetailPage() {
 				onSuccess={() => {
 					setShowExtraPaymentModal(false);
 				}}
+			/>
+
+			{/* Share Modal */}
+			<ShareDebtModal
+				debt={debt}
+				isOpen={showShareModal}
+				onClose={() => setShowShareModal(false)}
 			/>
 		</div>
 	);

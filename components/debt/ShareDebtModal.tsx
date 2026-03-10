@@ -1,0 +1,281 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { Copy, Check, LinkSimple, Trash, ShareNetwork } from "@phosphor-icons/react";
+import { useShareDebt, type ExpiresIn } from "@/hooks/useShareDebt";
+import type { Debt } from "@/lib/types";
+
+interface ShareDebtModalProps {
+	debt: Debt;
+	isOpen: boolean;
+	onClose: () => void;
+}
+
+export default function ShareDebtModal({
+	debt,
+	isOpen,
+	onClose,
+}: ShareDebtModalProps) {
+	const t = useTranslations();
+	const {
+		createShareLink,
+		fetchActiveLinks,
+		revokeLink,
+		activeLinks,
+		isLoading,
+		isLoadingLinks,
+	} = useShareDebt(debt.id);
+
+	const [expiresIn, setExpiresIn] = useState<ExpiresIn>("7d");
+	const [showAmounts, setShowAmounts] = useState(false);
+	const [showEntity, setShowEntity] = useState(true);
+	const [showDates, setShowDates] = useState(true);
+	const [generatedLink, setGeneratedLink] = useState<string | null>(null);
+	const [copied, setCopied] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+		if (isOpen) {
+			fetchActiveLinks();
+			setGeneratedLink(null);
+			setCopied(false);
+			setError(null);
+		}
+	}, [isOpen]);
+
+	const handleGenerate = async () => {
+		setError(null);
+		try {
+			const link = await createShareLink({
+				expiresIn,
+				showAmounts,
+				showEntity,
+				showDates,
+			});
+			setGeneratedLink(link);
+			await fetchActiveLinks();
+		} catch {
+			setError(t("share.error"));
+		}
+	};
+
+	const handleCopy = async () => {
+		if (!generatedLink) return;
+		try {
+			await navigator.clipboard.writeText(generatedLink);
+			setCopied(true);
+			setTimeout(() => setCopied(false), 2000);
+		} catch {
+			// Fallback for older browsers
+		}
+	};
+
+	const handleRevoke = async (id: string) => {
+		try {
+			await revokeLink(id);
+		} catch {
+			// Silent fail
+		}
+	};
+
+	const formatExpiration = (dateStr: string) => {
+		return new Date(dateStr).toLocaleDateString(undefined, {
+			day: "numeric",
+			month: "short",
+			year: "numeric",
+			hour: "2-digit",
+			minute: "2-digit",
+		});
+	};
+
+	if (!isOpen) return null;
+
+	return (
+		<dialog className="modal modal-open">
+			<div className="modal-box max-w-lg">
+				<h3 className="font-bold text-lg flex items-center gap-2">
+					<ShareNetwork className="w-5 h-5" />
+					{t("share.title")}
+				</h3>
+				<p className="text-sm text-base-content/70 mt-1">
+					{t("share.description")}
+				</p>
+
+				<div className="divider my-3"></div>
+
+				{/* Privacy toggles */}
+				<div className="space-y-3">
+					<h4 className="font-medium text-sm uppercase tracking-wide text-base-content/60">
+						{t("share.visibleFields")}
+					</h4>
+
+					<label className="flex items-center justify-between cursor-pointer">
+						<span className="text-sm">{t("share.fields.name")}</span>
+						<input
+							type="checkbox"
+							className="toggle toggle-sm toggle-primary"
+							checked
+							disabled
+						/>
+					</label>
+
+					<label className="flex items-center justify-between cursor-pointer">
+						<span className="text-sm">{t("share.fields.progress")}</span>
+						<input
+							type="checkbox"
+							className="toggle toggle-sm toggle-primary"
+							checked
+							disabled
+						/>
+					</label>
+
+					<label className="flex items-center justify-between cursor-pointer">
+						<span className="text-sm">{t("share.fields.entity")}</span>
+						<input
+							type="checkbox"
+							className="toggle toggle-sm toggle-primary"
+							checked={showEntity}
+							onChange={(e) => setShowEntity(e.target.checked)}
+						/>
+					</label>
+
+					<label className="flex items-center justify-between cursor-pointer">
+						<span className="text-sm">{t("share.fields.amounts")}</span>
+						<input
+							type="checkbox"
+							className="toggle toggle-sm toggle-primary"
+							checked={showAmounts}
+							onChange={(e) => setShowAmounts(e.target.checked)}
+						/>
+					</label>
+
+					<label className="flex items-center justify-between cursor-pointer">
+						<span className="text-sm">{t("share.fields.dates")}</span>
+						<input
+							type="checkbox"
+							className="toggle toggle-sm toggle-primary"
+							checked={showDates}
+							onChange={(e) => setShowDates(e.target.checked)}
+						/>
+					</label>
+				</div>
+
+				<div className="divider my-3"></div>
+
+				{/* Expiration selector */}
+				<div>
+					<h4 className="font-medium text-sm uppercase tracking-wide text-base-content/60 mb-2">
+						{t("share.expiration")}
+					</h4>
+					<div className="flex gap-2">
+						{(["24h", "7d", "30d"] as ExpiresIn[]).map((option) => (
+							<button
+								key={option}
+								className={`btn btn-sm flex-1 ${expiresIn === option ? "btn-primary" : "btn-ghost border border-base-300"}`}
+								onClick={() => setExpiresIn(option)}
+							>
+								{t(`share.expiresIn.${option}`)}
+							</button>
+						))}
+					</div>
+				</div>
+
+				{/* Generate button */}
+				<button
+					className="btn btn-primary w-full mt-4"
+					onClick={handleGenerate}
+					disabled={isLoading}
+				>
+					{isLoading ? (
+						<span className="loading loading-spinner loading-sm"></span>
+					) : (
+						<>
+							<LinkSimple className="w-4 h-4" />
+							{t("share.generate")}
+						</>
+					)}
+				</button>
+
+				{error && (
+					<div className="alert alert-error mt-3 py-2 text-sm">
+						{error}
+					</div>
+				)}
+
+				{/* Generated link */}
+				{generatedLink && (
+					<div className="mt-4 bg-base-200 rounded-lg p-3">
+						<div className="flex items-center gap-2">
+							<input
+								type="text"
+								className="input input-sm input-bordered flex-1 font-mono text-xs"
+								value={generatedLink}
+								readOnly
+							/>
+							<button
+								className={`btn btn-sm ${copied ? "btn-success" : "btn-ghost"}`}
+								onClick={handleCopy}
+							>
+								{copied ? (
+									<Check className="w-4 h-4" />
+								) : (
+									<Copy className="w-4 h-4" />
+								)}
+							</button>
+						</div>
+					</div>
+				)}
+
+				{/* Active links list */}
+				{activeLinks.length > 0 && (
+					<div className="mt-4">
+						<h4 className="font-medium text-sm uppercase tracking-wide text-base-content/60 mb-2">
+							{t("share.activeLinks")}
+						</h4>
+						<div className="space-y-2">
+							{activeLinks.map((link) => (
+								<div
+									key={link.id}
+									className="flex items-center justify-between bg-base-200 rounded-lg px-3 py-2 text-xs"
+								>
+									<div>
+										<span className="font-mono">
+											...{link.token.slice(-8)}
+										</span>
+										<span className="text-base-content/50 ml-2">
+											{t("share.expiresAt")} {formatExpiration(link.expires_at)}
+										</span>
+									</div>
+									<button
+										className="btn btn-ghost btn-xs text-error"
+										onClick={() => handleRevoke(link.id!)}
+										title={t("share.revoke")}
+									>
+										<Trash className="w-3.5 h-3.5" />
+									</button>
+								</div>
+							))}
+						</div>
+					</div>
+				)}
+
+				{isLoadingLinks && (
+					<div className="flex justify-center mt-4">
+						<span className="loading loading-spinner loading-sm"></span>
+					</div>
+				)}
+
+				{/* Close */}
+				<div className="modal-action">
+					<button className="btn btn-ghost" onClick={onClose}>
+						{t("common.cancel")}
+					</button>
+				</div>
+			</div>
+			<form method="dialog" className="modal-backdrop">
+				<button onClick={onClose}>close</button>
+			</form>
+		</dialog>
+	);
+}

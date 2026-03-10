@@ -29,9 +29,23 @@ export interface Payment {
 	deleted?: string;
 }
 
+export interface SharedDebt {
+	id?: string;
+	token: string;
+	debt_id: string;
+	user_id: string;
+	expires_at: string;
+	show_amounts: boolean;
+	show_entity: boolean;
+	show_dates: boolean;
+	created?: string;
+	deleted?: string;
+}
+
 export const COLLECTIONS = {
 	DEBTS: "debts",
 	PAYMENTS: "payments",
+	SHARED_DEBTS: "shared_debts",
 } as const;
 
 export interface DebtCalculations {

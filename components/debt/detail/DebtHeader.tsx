@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeftIcon, PencilIcon, TrashIcon, CheckCircleIcon, PlusCircle, DotsThree } from "@phosphor-icons/react";
+import { ArrowLeftIcon, PencilIcon, TrashIcon, CheckCircleIcon, PlusCircle, DotsThree, ShareNetwork } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { type DebtHeaderProps, debtStatusConfig } from "@/data/debtDetail";
 import { calculateDebtStatus } from "@/lib/format";
@@ -11,6 +11,7 @@ export default function DebtHeader({
 	onDelete,
 	onComplete,
 	onAddExtraPayment,
+	onShare,
 	onBack,
 }: DebtHeaderProps) {
 	const t = useTranslations();
@@ -52,6 +53,13 @@ export default function DebtHeader({
 							</>
 						)}
 						<button
+							onClick={onShare}
+							className="btn btn-ghost btn-sm text-info hover:bg-info/10"
+							title={t("share.title")}
+						>
+							<ShareNetwork className="w-4 h-4" />
+						</button>
+						<button
 							onClick={onEdit}
 							className="btn btn-ghost btn-sm"
 							title={t("common.edit")}
@@ -88,6 +96,12 @@ export default function DebtHeader({
 									</li>
 								</>
 							)}
+							<li>
+								<button onClick={onShare} className="text-info">
+									<ShareNetwork className="w-4 h-4" />
+									{t("share.title")}
+								</button>
+							</li>
 							<li>
 								<button onClick={onEdit}>
 									<PencilIcon className="w-4 h-4" />
