@@ -362,6 +362,29 @@
 		"debtNotLoaded": "De financiering kon niet worden geladen.",
 		"back": "Terug"
 	},
+	"share": {
+		"title": "Delen",
+		"description": "Genereer een tijdelijke link om de voortgang van deze financiering te delen.",
+		"visibleFields": "Zichtbare velden",
+		"fields": {
+			"name": "Productnaam",
+			"progress": "Voortgang (altijd zichtbaar)",
+			"entity": "Financiële instelling",
+			"amounts": "Bedragen en hoeveelheden",
+			"dates": "Betalingsdata"
+		},
+		"expiration": "Link vervaldatum",
+		"expiresIn": {
+			"24h": "24 uur",
+			"7d": "7 dagen",
+			"30d": "30 dagen"
+		},
+		"generate": "Link genereren",
+		"error": "Fout bij het genereren van de link",
+		"activeLinks": "Actieve links",
+		"expiresAt": "Verloopt:",
+		"revoke": "Intrekken"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "U heeft geen actieve financieringen",

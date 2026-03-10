@@ -366,6 +366,29 @@
 		"debtNotLoaded": "Die Finanzierung konnte nicht geladen werden.",
 		"back": "Zurück"
 	},
+	"share": {
+		"title": "Teilen",
+		"description": "Erstellen Sie einen temporären Link, um den Fortschritt dieser Finanzierung zu teilen.",
+		"visibleFields": "Sichtbare Felder",
+		"fields": {
+			"name": "Produktname",
+			"progress": "Fortschritt (immer sichtbar)",
+			"entity": "Finanzinstitut",
+			"amounts": "Beträge und Mengen",
+			"dates": "Zahlungsdaten"
+		},
+		"expiration": "Link-Ablauf",
+		"expiresIn": {
+			"24h": "24 Stunden",
+			"7d": "7 Tage",
+			"30d": "30 Tage"
+		},
+		"generate": "Link erstellen",
+		"error": "Fehler beim Erstellen des Links",
+		"activeLinks": "Aktive Links",
+		"expiresAt": "Läuft ab:",
+		"revoke": "Widerrufen"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "Sie haben keine aktiven Finanzierungen",

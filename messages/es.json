@@ -362,6 +362,29 @@
 		"debtNotLoaded": "No se pudo cargar la financiación.",
 		"back": "Volver"
 	},
+	"share": {
+		"title": "Compartir",
+		"description": "Genera un enlace temporal para compartir el progreso de esta financiación.",
+		"visibleFields": "Campos visibles",
+		"fields": {
+			"name": "Nombre del producto",
+			"progress": "Progreso (siempre visible)",
+			"entity": "Entidad financiera",
+			"amounts": "Importes y cantidades",
+			"dates": "Fechas de pago"
+		},
+		"expiration": "Expiración del enlace",
+		"expiresIn": {
+			"24h": "24 horas",
+			"7d": "7 días",
+			"30d": "30 días"
+		},
+		"generate": "Generar enlace",
+		"error": "Error al generar el enlace",
+		"activeLinks": "Enlaces activos",
+		"expiresAt": "Expira:",
+		"revoke": "Revocar"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "No tienes financiaciones activas",

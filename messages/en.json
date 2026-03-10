@@ -362,6 +362,29 @@
 		"debtNotLoaded": "Could not load the financing.",
 		"back": "Go back"
 	},
+	"share": {
+		"title": "Share",
+		"description": "Generate a temporary link to share the progress of this financing.",
+		"visibleFields": "Visible fields",
+		"fields": {
+			"name": "Product name",
+			"progress": "Progress (always visible)",
+			"entity": "Financial institution",
+			"amounts": "Amounts and quantities",
+			"dates": "Payment dates"
+		},
+		"expiration": "Link expiration",
+		"expiresIn": {
+			"24h": "24 hours",
+			"7d": "7 days",
+			"30d": "30 days"
+		},
+		"generate": "Generate link",
+		"error": "Error generating link",
+		"activeLinks": "Active links",
+		"expiresAt": "Expires:",
+		"revoke": "Revoke"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "You have no active financing",
