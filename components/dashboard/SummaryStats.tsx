@@ -1,14 +1,11 @@
-import { useState } from "react";
 import {
 	ChartBarIcon,
 	CheckCircleIcon,
 	ClockIcon,
 	MoneyIcon,
-	ShareNetwork,
 } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import StatCard from "@/components/dashboard/StatCard";
-import ShareProfileModal from "@/components/dashboard/ShareProfileModal";
 import { useCurrency } from "@/hooks/useCurrency";
 import {
 	calculateDebtStatus,
@@ -24,7 +21,6 @@ interface SummaryStatsProps {
 export default function SummaryStats({ debts }: SummaryStatsProps) {
 	const t = useTranslations();
 	const { formatCurrency } = useCurrency();
-	const [showShareModal, setShowShareModal] = useState(false);
 
 	const activeDebts = debts.filter(
 		(d) => calculateDebtStatus(d.final_payment_date) === "active",
@@ -86,34 +82,17 @@ export default function SummaryStats({ debts }: SummaryStatsProps) {
 	];
 
 	return (
-		<>
-			<div className="flex items-center justify-between mb-2">
-				<div />
-				<button
-					className="btn btn-ghost btn-sm gap-1"
-					onClick={() => setShowShareModal(true)}
-					title={t("shareProfile.title")}
-				>
-					<ShareNetwork className="w-4 h-4" />
-					{t("shareProfile.button")}
-				</button>
-			</div>
-			<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-				{stats.map((stat, index) => (
-					<StatCard
-						key={index}
-						title={stat.title}
-						value={stat.value}
-						description={stat.description}
-						icon={stat.icon}
-						variant={stat.variant}
-					/>
-				))}
-			</div>
-			<ShareProfileModal
-				isOpen={showShareModal}
-				onClose={() => setShowShareModal(false)}
-			/>
-		</>
+		<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+			{stats.map((stat, index) => (
+				<StatCard
+					key={index}
+					title={stat.title}
+					value={stat.value}
+					description={stat.description}
+					icon={stat.icon}
+					variant={stat.variant}
+				/>
+			))}
+		</div>
 	);
 }

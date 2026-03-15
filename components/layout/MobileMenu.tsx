@@ -1,6 +1,6 @@
 "use client";
 
-import { SignOutIcon } from "@phosphor-icons/react";
+import { SignOutIcon, ShareNetwork } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import LanguageSelector from "@/components/LanguageSelector";
@@ -15,6 +15,7 @@ interface MobileMenuProps {
 	onOpen: () => void;
 	onAuthModalOpen: () => void;
 	onCreateDebtModalOpen: () => void;
+	onShareProfileModalOpen: () => void;
 }
 
 export default function MobileMenu({
@@ -23,6 +24,7 @@ export default function MobileMenu({
 	onOpen,
 	onAuthModalOpen,
 	onCreateDebtModalOpen,
+	onShareProfileModalOpen,
 }: MobileMenuProps) {
 	const t = useTranslations();
 	const { user, logout } = useAuth();
@@ -46,6 +48,11 @@ export default function MobileMenu({
 
 	const handleCreateDebtModalOpen = () => {
 		onCreateDebtModalOpen();
+		onClose();
+	};
+
+	const handleShareProfileModalOpen = () => {
+		onShareProfileModalOpen();
 		onClose();
 	};
 
@@ -115,6 +122,14 @@ export default function MobileMenu({
 							>
 								{t("nav.profile") || "Profile"}
 							</Link>
+
+							<button
+								className="btn btn-outline w-full gap-2"
+								onClick={handleShareProfileModalOpen}
+							>
+								<ShareNetwork className="w-4 h-4" />
+								{t("shareProfile.title")}
+							</button>
 
 							{/* Spacer to push logout to bottom */}
 							<div className="flex-1" />

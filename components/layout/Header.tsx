@@ -1,11 +1,12 @@
 "use client";
 
-import { SignOutIcon } from "@phosphor-icons/react";
+import { SignOutIcon, ShareNetwork } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
 import CreateDebtModal from "@/components/debt/CreateDebtModal";
+import ShareProfileModal from "@/components/dashboard/ShareProfileModal";
 import LanguageSelector from "@/components/LanguageSelector";
 import MobileMenu from "@/components/layout/MobileMenu";
 import MobileMenuButton from "@/components/layout/MobileMenuButton";
@@ -20,6 +21,7 @@ export default function Header() {
 	const { refetch } = useDebtsContext();
 	const [showAuthModal, setShowAuthModal] = useState(false);
 	const [showCreateDebtModal, setShowCreateDebtModal] = useState(false);
+	const [showShareProfileModal, setShowShareProfileModal] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	return (
@@ -40,6 +42,14 @@ export default function Header() {
 						<LanguageSelector />
 						{user ? (
 							<>
+								<button
+									className="btn btn-ghost btn-sm gap-1"
+									onClick={() => setShowShareProfileModal(true)}
+									title={t("shareProfile.title")}
+								>
+									<ShareNetwork className="w-4 h-4" />
+									{t("shareProfile.button")}
+								</button>
 								<button
 									className="btn btn-primary btn-sm"
 									onClick={() => setShowCreateDebtModal(true)}
@@ -111,6 +121,7 @@ export default function Header() {
 				onOpen={() => setIsMobileMenuOpen(true)}
 				onAuthModalOpen={() => setShowAuthModal(true)}
 				onCreateDebtModalOpen={() => setShowCreateDebtModal(true)}
+				onShareProfileModalOpen={() => setShowShareProfileModal(true)}
 			/>
 
 			<AuthModal
@@ -124,6 +135,11 @@ export default function Header() {
 				onSuccess={() => {
 					refetch();
 				}}
+			/>
+
+			<ShareProfileModal
+				isOpen={showShareProfileModal}
+				onClose={() => setShowShareProfileModal(false)}
 			/>
 		</>
 	);
