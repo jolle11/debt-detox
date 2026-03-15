@@ -377,12 +377,14 @@
 		"expiresIn": {
 			"24h": "24 uur",
 			"7d": "7 dagen",
-			"30d": "30 dagen"
+			"30d": "30 dagen",
+			"never": "Nooit"
 		},
 		"generate": "Link genereren",
 		"error": "Fout bij het genereren van de link",
 		"activeLinks": "Actieve links",
 		"expiresAt": "Verloopt:",
+		"neverExpires": "Verloopt nooit",
 		"revoke": "Intrekken"
 	},
 	"emptyStates": {

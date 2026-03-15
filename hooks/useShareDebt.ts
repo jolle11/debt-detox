@@ -6,7 +6,7 @@ import pb from "@/lib/pocketbase";
 import { COLLECTIONS } from "@/lib/types";
 import type { SharedDebt } from "@/lib/types";
 
-export type ExpiresIn = "24h" | "7d" | "30d";
+export type ExpiresIn = "24h" | "7d" | "30d" | "never";
 
 interface ShareOptions {
 	expiresIn: ExpiresIn;
@@ -16,6 +16,9 @@ interface ShareOptions {
 }
 
 function getExpirationDate(expiresIn: ExpiresIn): string {
+	if (expiresIn === "never") {
+		return new Date("9999-12-31T23:59:59.999Z").toISOString();
+	}
 	const now = new Date();
 	switch (expiresIn) {
 		case "24h":

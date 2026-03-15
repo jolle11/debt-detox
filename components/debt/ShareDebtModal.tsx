@@ -169,7 +169,7 @@ export default function ShareDebtModal({
 						{t("share.expiration")}
 					</h4>
 					<div className="flex gap-2">
-						{(["24h", "7d", "30d"] as ExpiresIn[]).map((option) => (
+						{(["24h", "7d", "30d", "never"] as ExpiresIn[]).map((option) => (
 							<button
 								key={option}
 								className={`btn btn-sm flex-1 ${expiresIn === option ? "btn-primary" : "btn-ghost border border-base-300"}`}
@@ -244,7 +244,9 @@ export default function ShareDebtModal({
 											...{link.token.slice(-8)}
 										</span>
 										<span className="text-base-content/50 ml-2">
-											{t("share.expiresAt")} {formatExpiration(link.expires_at)}
+											{new Date(link.expires_at).getFullYear() >= 9999
+												? t("share.neverExpires")
+												: `${t("share.expiresAt")} ${formatExpiration(link.expires_at)}`}
 										</span>
 									</div>
 									<button

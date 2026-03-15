@@ -381,12 +381,14 @@
 		"expiresIn": {
 			"24h": "24 Stunden",
 			"7d": "7 Tage",
-			"30d": "30 Tage"
+			"30d": "30 Tage",
+			"never": "Nie"
 		},
 		"generate": "Link erstellen",
 		"error": "Fehler beim Erstellen des Links",
 		"activeLinks": "Aktive Links",
 		"expiresAt": "Läuft ab:",
+		"neverExpires": "Läuft nie ab",
 		"revoke": "Widerrufen"
 	},
 	"emptyStates": {
