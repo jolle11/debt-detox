@@ -142,6 +142,33 @@ export default function SharedDebtView({
 				)}
 			</div>
 
+			{/* Remaining amount highlight */}
+			{share.show_amounts && (
+				<div className="card bg-warning/10 border-2 border-warning/30 shadow-sm">
+					<div className="card-body p-4">
+						<div className="flex items-center justify-between">
+							<div>
+								<div className="text-sm font-medium text-warning uppercase tracking-wide mb-1">
+									Pendiente de pago
+								</div>
+								<div className="text-3xl font-bold text-warning">
+									{formatCurrencySimple(Math.max(0, paymentStats.pendingAmount))}
+								</div>
+								<div className="text-sm text-base-content/60 mt-1">
+									{paymentStats.pendingPayments} cuota{paymentStats.pendingPayments !== 1 ? "s" : ""} restante{paymentStats.pendingPayments !== 1 ? "s" : ""}
+								</div>
+							</div>
+							<div className="text-right">
+								<div className="text-sm text-base-content/60 mb-1">de un total de</div>
+								<div className="text-lg font-semibold text-base-content/80">
+									{formatCurrencySimple(totalAmount)}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
+
 			{/* Progress */}
 			<div className="card bg-base-100 shadow-sm">
 				<div className="card-body p-4">
@@ -187,15 +214,11 @@ export default function SharedDebtView({
 				</div>
 			</div>
 
+
 			{/* Quick stats (conditional on amounts) */}
 			{share.show_amounts && (
-				<div className="grid grid-cols-2 gap-4">
+				<div className="grid grid-cols-3 gap-3">
 					{[
-						{
-							label: "Total",
-							value: formatCurrencySimple(totalAmount),
-							color: "text-primary",
-						},
 						{
 							label: "Pagado",
 							value: formatCurrencySimple(paymentStats.effectivePaidAmount),
