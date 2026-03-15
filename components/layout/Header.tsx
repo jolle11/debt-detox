@@ -103,13 +103,15 @@ export default function Header() {
 					/>
 				</div>
 
-				<MobileMenu
-					isOpen={isMobileMenuOpen}
-					onClose={() => setIsMobileMenuOpen(false)}
-					onAuthModalOpen={() => setShowAuthModal(true)}
-					onCreateDebtModalOpen={() => setShowCreateDebtModal(true)}
-				/>
 			</header>
+
+			<MobileMenu
+				isOpen={isMobileMenuOpen}
+				onClose={() => setIsMobileMenuOpen(false)}
+				onOpen={() => setIsMobileMenuOpen(true)}
+				onAuthModalOpen={() => setShowAuthModal(true)}
+				onCreateDebtModalOpen={() => setShowCreateDebtModal(true)}
+			/>
 
 			<AuthModal
 				isOpen={showAuthModal}
