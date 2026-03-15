@@ -387,6 +387,20 @@
 		"neverExpires": "Verloopt nooit",
 		"revoke": "Intrekken"
 	},
+	"shareProfile": {
+		"title": "Samenvatting delen",
+		"button": "Delen",
+		"description": "Genereer een tijdelijke link om uw financieel overzicht te delen.",
+		"visibleFields": "Zichtbare velden",
+		"fields": {
+			"stats": "Algemene statistieken (altijd zichtbaar)",
+			"progress": "Globale voortgang (altijd zichtbaar)",
+			"debtList": "Financieringslijst",
+			"amounts": "Bedragen en hoeveelheden",
+			"completed": "Voltooide financieringen"
+		},
+		"error": "Fout bij het genereren van de link"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "U heeft geen actieve financieringen",

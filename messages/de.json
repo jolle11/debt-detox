@@ -391,6 +391,20 @@
 		"neverExpires": "Läuft nie ab",
 		"revoke": "Widerrufen"
 	},
+	"shareProfile": {
+		"title": "Zusammenfassung teilen",
+		"button": "Teilen",
+		"description": "Erstellen Sie einen temporären Link, um Ihre Finanzübersicht zu teilen.",
+		"visibleFields": "Sichtbare Felder",
+		"fields": {
+			"stats": "Allgemeine Statistiken (immer sichtbar)",
+			"progress": "Gesamtfortschritt (immer sichtbar)",
+			"debtList": "Finanzierungsliste",
+			"amounts": "Beträge und Mengen",
+			"completed": "Abgeschlossene Finanzierungen"
+		},
+		"error": "Fehler beim Erstellen des Links"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "Sie haben keine aktiven Finanzierungen",

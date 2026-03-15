@@ -387,6 +387,20 @@
 		"neverExpires": "Never expires",
 		"revoke": "Revoke"
 	},
+	"shareProfile": {
+		"title": "Share Summary",
+		"button": "Share",
+		"description": "Generate a temporary link to share your global financial summary.",
+		"visibleFields": "Visible fields",
+		"fields": {
+			"stats": "General statistics (always visible)",
+			"progress": "Global progress (always visible)",
+			"debtList": "Financing list",
+			"amounts": "Amounts and quantities",
+			"completed": "Completed financing"
+		},
+		"error": "Error generating link"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "You have no active financing",

@@ -42,10 +42,23 @@ export interface SharedDebt {
 	deleted?: string;
 }
 
+export interface SharedProfile {
+	id?: string;
+	token: string;
+	user_id: string;
+	expires_at: string;
+	show_amounts: boolean;
+	show_debt_list: boolean;
+	show_completed: boolean;
+	created?: string;
+	deleted?: string;
+}
+
 export const COLLECTIONS = {
 	DEBTS: "debts",
 	PAYMENTS: "payments",
 	SHARED_DEBTS: "shared_debts",
+	SHARED_PROFILES: "shared_profiles",
 } as const;
 
 export interface DebtCalculations {

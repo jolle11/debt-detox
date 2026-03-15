@@ -387,6 +387,20 @@
 		"neverExpires": "No expira",
 		"revoke": "Revocar"
 	},
+	"shareProfile": {
+		"title": "Compartir Resumen",
+		"button": "Compartir",
+		"description": "Genera un enlace temporal para compartir tu resumen financiero global.",
+		"visibleFields": "Campos visibles",
+		"fields": {
+			"stats": "Estadísticas generales (siempre visible)",
+			"progress": "Progreso global (siempre visible)",
+			"debtList": "Lista de financiaciones",
+			"amounts": "Importes y cantidades",
+			"completed": "Financiaciones completadas"
+		},
+		"error": "Error al generar el enlace"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "No tienes financiaciones activas",
