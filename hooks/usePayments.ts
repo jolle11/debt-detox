@@ -21,6 +21,7 @@ interface UsePaymentsReturn {
 		year: number,
 		plannedAmount: number,
 		actualAmount?: number,
+		paidDate?: string,
 	) => Promise<void>;
 	markMultiplePaymentsAsPaid: (
 		debtId: string,
@@ -29,6 +30,7 @@ interface UsePaymentsReturn {
 			year: number;
 			plannedAmount: number;
 			actualAmount?: number;
+			paidDate?: string;
 		}>,
 	) => Promise<void>;
 	unmarkPaymentAsPaid: (paymentId: string) => Promise<void>;
@@ -102,12 +104,14 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 			year,
 			plannedAmount,
 			actualAmount,
+			paidDate,
 		}: {
 			debtId: string;
 			month: number;
 			year: number;
 			plannedAmount: number;
 			actualAmount?: number;
+			paidDate?: string;
 		}) => {
 			// Buscar si ya existe un payment para este mes/año
 			const existingPayments = await pb
@@ -120,13 +124,14 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 				});
 
 			const amountToPay = actualAmount || plannedAmount;
+			const dateToUse = paidDate || new Date().toISOString();
 
 			if (existingPayments.length > 0) {
 				// Actualizar el payment existente
 				const payment = existingPayments[0];
 				return await pb.collection(COLLECTIONS.PAYMENTS).update(payment.id, {
 					paid: true,
-					paid_date: new Date().toISOString(),
+					paid_date: dateToUse,
 					actual_amount: amountToPay,
 				});
 			} else {
@@ -138,7 +143,7 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 					planned_amount: plannedAmount,
 					actual_amount: amountToPay,
 					paid: true,
-					paid_date: new Date().toISOString(),
+					paid_date: dateToUse,
 				});
 			}
 		},
@@ -156,6 +161,7 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		year: number,
 		plannedAmount: number,
 		actualAmount?: number,
+		paidDate?: string,
 	): Promise<void> => {
 		await markPaymentMutation.mutateAsync({
 			debtId,
@@ -163,6 +169,7 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 			year,
 			plannedAmount,
 			actualAmount,
+			paidDate,
 		});
 	};
 
@@ -173,6 +180,7 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 			year: number;
 			plannedAmount: number;
 			actualAmount?: number;
+			paidDate?: string;
 		}>,
 	) => {
 		try {
@@ -184,6 +192,7 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 					payment.year,
 					payment.plannedAmount,
 					payment.actualAmount,
+					payment.paidDate,
 				);
 			}
 		} catch (err) {
