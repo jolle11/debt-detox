@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 interface UseSwipeOptions {
 	onSwipeLeft?: () => void;
@@ -35,7 +35,7 @@ export function useSwipe({
 				touch.clientX >= window.innerWidth - edgeSize;
 			isSwiping.current = startedFromRightEdge || !!onSwipeRight;
 		},
-		[edgeSize, onSwipeLeft]
+		[edgeSize, onSwipeLeft],
 	);
 
 	const handleTouchMove = useCallback((e: TouchEvent) => {
@@ -56,10 +56,7 @@ export function useSwipe({
 		if (Math.abs(deltaX) < Math.abs(deltaY)) return;
 		if (Math.abs(deltaX) < threshold) return;
 
-		if (
-			deltaX < 0 &&
-			touchStartX.current >= window.innerWidth - edgeSize
-		) {
+		if (deltaX < 0 && touchStartX.current >= window.innerWidth - edgeSize) {
 			// Swiped left from right edge → open
 			onSwipeLeft?.();
 		} else if (deltaX > 0) {

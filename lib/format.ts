@@ -26,8 +26,8 @@ export function formatInteger(value: number, locale: string = "es-ES"): string {
 	return formatNumber(value, 0, locale);
 }
 
-import type { Payment } from "./types";
 import { calculateElapsedPayments } from "@/utils/debtCalculations";
+import type { Payment } from "./types";
 
 // Nuevo modelo de cálculos basado en cuotas y fechas específicas
 
@@ -46,10 +46,16 @@ export function calculateTotalAmount(debt: {
 	down_payment?: number;
 	monthly_amount: number;
 	number_of_payments: number;
+	original_monthly_amount?: number;
+	original_number_of_payments?: number;
 	final_payment?: number;
 }): number {
 	const downPayment = debt.down_payment || 0;
-	const monthlyTotal = debt.monthly_amount * debt.number_of_payments;
+	// Usar valores originales para el total real de la deuda
+	const monthlyAmount = debt.original_monthly_amount || debt.monthly_amount;
+	const numberOfPayments =
+		debt.original_number_of_payments || debt.number_of_payments;
+	const monthlyTotal = monthlyAmount * numberOfPayments;
 	const finalPayment = debt.final_payment || 0;
 
 	return downPayment + monthlyTotal + finalPayment;
@@ -123,8 +129,7 @@ export function calculatePaidAmountWithPayments(
 	let monthlyPaidAmount = 0;
 	payments.forEach((payment) => {
 		if (payment.paid) {
-			monthlyPaidAmount +=
-				payment.actual_amount || payment.planned_amount;
+			monthlyPaidAmount += payment.actual_amount || payment.planned_amount;
 		}
 	});
 

@@ -50,15 +50,11 @@ export default function EditDebtForm({
 			name: debt.name || "",
 			entity: debt.entity || "",
 			down_payment: debt.down_payment?.toString() || "",
-			first_payment_date: formatDateForInput(
-				debt.first_payment_date || "",
-			),
+			first_payment_date: formatDateForInput(debt.first_payment_date || ""),
 			monthly_amount: debt.monthly_amount?.toString() || "",
 			number_of_payments: debt.number_of_payments?.toString() || "",
 			final_payment: debt.final_payment?.toString() || "",
-			final_payment_date: formatDateForInput(
-				debt.final_payment_date || "",
-			),
+			final_payment_date: formatDateForInput(debt.final_payment_date || ""),
 		});
 	}, [debt]);
 
@@ -120,9 +116,7 @@ export default function EditDebtForm({
 						<FormInput
 							label={t("debt.create.name")}
 							value={formData.name}
-							onChange={(value) =>
-								handleInputChange("name", value)
-							}
+							onChange={(value) => handleInputChange("name", value)}
 							placeholder={t("debt.create.namePlaceholder")}
 							required
 						/>
@@ -130,9 +124,7 @@ export default function EditDebtForm({
 						<FormInput
 							label={t("debt.create.entity")}
 							value={formData.entity}
-							onChange={(value) =>
-								handleInputChange("entity", value)
-							}
+							onChange={(value) => handleInputChange("entity", value)}
 							placeholder={t("debt.create.entityPlaceholder")}
 							required
 						/>
@@ -144,9 +136,7 @@ export default function EditDebtForm({
 							label={t("debt.create.downPayment")}
 							type="number"
 							value={formData.down_payment}
-							onChange={(value) =>
-								handleInputChange("down_payment", value)
-							}
+							onChange={(value) => handleInputChange("down_payment", value)}
 							placeholder="0.00"
 						/>
 					</div>
@@ -179,9 +169,7 @@ export default function EditDebtForm({
 							label={t("debt.create.monthlyAmount")}
 							type="number"
 							value={formData.monthly_amount}
-							onChange={(value) =>
-								handleInputChange("monthly_amount", value)
-							}
+							onChange={(value) => handleInputChange("monthly_amount", value)}
 							placeholder="0.00"
 							required
 						/>
@@ -203,9 +191,7 @@ export default function EditDebtForm({
 							label={t("debt.create.finalPayment")}
 							type="number"
 							value={formData.final_payment}
-							onChange={(value) =>
-								handleInputChange("final_payment", value)
-							}
+							onChange={(value) => handleInputChange("final_payment", value)}
 							placeholder="0.00"
 						/>
 					</div>
@@ -224,9 +210,7 @@ export default function EditDebtForm({
 							className="btn btn-primary"
 							disabled={isSubmitting}
 						>
-							{isSubmitting
-								? t("debt.edit.submitting")
-								: t("debt.edit.submit")}
+							{isSubmitting ? t("debt.edit.submitting") : t("debt.edit.submit")}
 						</button>
 					</div>
 				</form>

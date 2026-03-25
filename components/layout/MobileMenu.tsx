@@ -1,6 +1,6 @@
 "use client";
 
-import { SignOutIcon, ShareNetwork } from "@phosphor-icons/react";
+import { ShareNetwork, SignOutIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import LanguageSelector from "@/components/LanguageSelector";
@@ -77,9 +77,7 @@ export default function MobileMenu({
 				<div className="flex flex-col h-full p-4 overflow-y-auto">
 					{/* Header */}
 					<div className="flex items-center justify-between mb-6">
-						<span className="text-lg font-bold">
-							{t("nav.title")}
-						</span>
+						<span className="text-lg font-bold">{t("nav.title")}</span>
 						<button
 							className="btn btn-ghost btn-sm btn-square"
 							onClick={onClose}

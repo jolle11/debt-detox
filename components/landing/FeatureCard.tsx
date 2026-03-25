@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { LandingFeature } from "@/data/landing";
+import type { LandingFeature } from "@/data/landing";
 
 interface FeatureCardProps {
 	feature: LandingFeature;

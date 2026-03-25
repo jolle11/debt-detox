@@ -42,9 +42,7 @@ export default function EditDebtModal({
 		<div className="modal modal-open">
 			<div className="modal-box w-11/12 max-w-4xl">
 				<div className="flex justify-between items-center mb-4">
-					<h3 className="text-lg font-bold">
-						{t("debt.edit.title")}
-					</h3>
+					<h3 className="text-lg font-bold">{t("debt.edit.title")}</h3>
 					<button
 						className="btn btn-sm btn-circle btn-ghost"
 						onClick={onClose}

@@ -31,8 +31,7 @@ export default function PasswordSection({
 		useProfileUpdate({
 			user,
 			onMessage,
-			successMessage:
-				t("passwordChanged") || "Password changed successfully!",
+			successMessage: t("passwordChanged") || "Password changed successfully!",
 			errorMessage: t("passwordError") || "Failed to change password",
 		});
 

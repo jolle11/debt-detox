@@ -66,6 +66,11 @@ export function calculatePaymentStats(
 		expectedPaidPayments,
 	);
 
+	// Usar valores originales para cálculos de total real de la deuda
+	const originalMonthly = debt.original_monthly_amount || debt.monthly_amount;
+	const originalPayments =
+		debt.original_number_of_payments || debt.number_of_payments;
+
 	const estimatedPaidAmount =
 		(debt.down_payment || 0) +
 		Math.max(registeredPaidPayments, expectedPaidPayments) *
@@ -73,7 +78,7 @@ export function calculatePaymentStats(
 
 	const totalAmount =
 		(debt.down_payment || 0) +
-		debt.monthly_amount * debt.number_of_payments +
+		originalMonthly * originalPayments +
 		(debt.final_payment || 0);
 
 	// El importe pagado nunca puede exceder el total de la deuda

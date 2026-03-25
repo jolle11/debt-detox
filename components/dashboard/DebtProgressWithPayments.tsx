@@ -30,10 +30,7 @@ export default function DebtProgressWithPayments({
 
 	const totalAmount = calculateTotalAmount(debt);
 	const paidAmount = calculatePaidAmountWithPayments(debt, payments);
-	const remainingAmount = calculateRemainingAmountWithPayments(
-		debt,
-		payments,
-	);
+	const remainingAmount = calculateRemainingAmountWithPayments(debt, payments);
 	const progress = calculatePaymentProgressWithPayments(debt, payments);
 
 	// Check if we have unrealistic data (indicates initial calculation issue)
@@ -99,12 +96,10 @@ export default function DebtProgressWithPayments({
 			{/* Información de cuotas mejorada */}
 			<div className="flex justify-between items-center">
 				<span className="text-lg font-medium">
-					{t("paymentsLabel")}: {progress.paidPayments}/
-					{progress.totalPayments}
+					{t("paymentsLabel")}: {progress.paidPayments}/{progress.totalPayments}
 				</span>
 				<span className="text-base text-base-content/70">
-					{progress.totalPayments - progress.paidPayments}{" "}
-					{t("remaining")}
+					{progress.totalPayments - progress.paidPayments} {t("remaining")}
 				</span>
 			</div>
 		</div>

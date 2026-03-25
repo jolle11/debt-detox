@@ -1,5 +1,5 @@
-import { useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 import { calculateDebtStatus } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
 import DebtActions from "./DebtActions";
@@ -42,13 +42,8 @@ export default function DebtCard({
 				<div className="flex justify-between items-start">
 					<div className="flex-1">
 						<h3 className="card-title text-xl">{debt.name}</h3>
-						<p className="text-base text-base-content/70 mb-2">
-							{debt.entity}
-						</p>
-						<DebtInfo
-							debt={debt}
-							payments={debtPayments}
-						/>
+						<p className="text-base text-base-content/70 mb-2">{debt.entity}</p>
+						<DebtInfo debt={debt} payments={debtPayments} />
 						<div className="mt-4">
 							<DebtProgressWithPayments
 								debt={debt}
@@ -57,10 +52,7 @@ export default function DebtCard({
 							/>
 						</div>
 						<div className="mt-3">
-							<DebtPaymentStatus
-								debt={debt}
-								payments={debtPayments}
-							/>
+							<DebtPaymentStatus debt={debt} payments={debtPayments} />
 						</div>
 					</div>
 					<div onClick={(e) => e.stopPropagation()}>

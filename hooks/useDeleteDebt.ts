@@ -24,7 +24,9 @@ export function useDeleteDebt(): UseDeleteDebtReturn {
 			// Verify the debt belongs to the current user before deleting
 			const existingDebt = await pb
 				.collection(COLLECTIONS.DEBTS)
-				.getOne(debtId, { filter: pb.filter("user_id = {:userId}", { userId: user.id }) });
+				.getOne(debtId, {
+					filter: pb.filter("user_id = {:userId}", { userId: user.id }),
+				});
 
 			if (!existingDebt) {
 				throw new Error("No tienes permisos para eliminar esta deuda");

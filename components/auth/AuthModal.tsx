@@ -36,19 +36,14 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
 						{isLoginMode ? tLogin("title") : tRegister("title")}
 					</h3>
 					<p className="text-base-content/70 text-sm">
-						{isLoginMode
-							? tLogin("subtitle")
-							: tRegister("subtitle")}
+						{isLoginMode ? tLogin("subtitle") : tRegister("subtitle")}
 					</p>
 				</div>
 
 				{isLoginMode ? (
 					<LoginForm onToggleForm={toggleMode} onSuccess={onClose} />
 				) : (
-					<RegisterForm
-						onToggleForm={toggleMode}
-						onSuccess={onClose}
-					/>
+					<RegisterForm onToggleForm={toggleMode} onSuccess={onClose} />
 				)}
 			</div>
 			<div className="modal-backdrop" onClick={onClose}></div>

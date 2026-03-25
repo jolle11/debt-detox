@@ -37,8 +37,7 @@ export default function NameSection({
 			user,
 			refreshUser,
 			onMessage,
-			successMessage:
-				t("profileUpdated") || "Profile updated successfully!",
+			successMessage: t("profileUpdated") || "Profile updated successfully!",
 			errorMessage: t("updateError") || "Failed to update profile",
 		});
 

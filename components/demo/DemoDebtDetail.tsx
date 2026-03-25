@@ -35,9 +35,12 @@ export default function DemoDebtDetail({
 	const { payments } = useDemoContext();
 
 	const status = calculateDebtStatus(debt.final_payment_date);
+	const origMonthly = debt.original_monthly_amount || debt.monthly_amount;
+	const origPayments =
+		debt.original_number_of_payments || debt.number_of_payments;
 	const totalAmount =
 		(debt.down_payment || 0) +
-		debt.monthly_amount * debt.number_of_payments +
+		origMonthly * origPayments +
 		(debt.final_payment || 0);
 
 	const formatDate = (dateString: string) => {
@@ -76,9 +79,7 @@ export default function DemoDebtDetail({
 						<h3 className="text-lg font-bold">
 							{tLanding("demo.title")} - {t("debtDetail.title")}
 						</h3>
-						<p className="text-sm opacity-90">
-							{tLanding("demo.subtitle")}
-						</p>
+						<p className="text-sm opacity-90">{tLanding("demo.subtitle")}</p>
 					</div>
 					<button
 						onClick={onLoginClick}
@@ -99,9 +100,7 @@ export default function DemoDebtDetail({
 					<div className="flex items-center gap-2">
 						<div>
 							<h1 className="text-xl font-bold">{debt.name}</h1>
-							<p className="text-sm text-base-content/70">
-								{debt.entity}
-							</p>
+							<p className="text-sm text-base-content/70">{debt.entity}</p>
 						</div>
 						<div className="flex items-center gap-1">
 							<button
@@ -184,10 +183,7 @@ export default function DemoDebtDetail({
 								isLoading={false}
 							/>
 							<div className="mt-3">
-								<DemoDebtPaymentStatus
-									debt={debt}
-									payments={debtPayments}
-								/>
+								<DemoDebtPaymentStatus debt={debt} payments={debtPayments} />
 							</div>
 						</div>
 					</div>
@@ -204,9 +200,7 @@ export default function DemoDebtDetail({
 								<div className="grid grid-cols-2 gap-4">
 									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
 										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-											{t(
-												"debtDetail.paymentDetails.paidPayments",
-											)}
+											{t("debtDetail.paymentDetails.paidPayments")}
 										</div>
 										<div className="text-2xl font-bold text-success">
 											{paidPayments}
@@ -218,24 +212,18 @@ export default function DemoDebtDetail({
 									</div>
 									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
 										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-											{t(
-												"debtDetail.paymentDetails.pending",
-											)}
+											{t("debtDetail.paymentDetails.pending")}
 										</div>
 										<div className="text-2xl font-bold text-warning">
 											{pendingPayments}
 										</div>
 										<div className="text-base text-base-content/70 mt-1">
-											{t(
-												"debtDetail.paymentDetails.remaining",
-											)}
+											{t("debtDetail.paymentDetails.remaining")}
 										</div>
 									</div>
 									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
 										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-											{t(
-												"debtDetail.paymentDetails.paidAmount",
-											)}
+											{t("debtDetail.paymentDetails.paidAmount")}
 										</div>
 										<div className="text-lg font-bold text-success">
 											{formatCurrency(totalPaid)}
@@ -243,14 +231,10 @@ export default function DemoDebtDetail({
 									</div>
 									<div className="bg-base-200 rounded-xl border border-base-300 p-4">
 										<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-											{t(
-												"debtDetail.paymentDetails.toPay",
-											)}
+											{t("debtDetail.paymentDetails.toPay")}
 										</div>
 										<div className="text-lg font-bold text-warning">
-											{formatCurrency(
-												Math.max(0, pendingAmount),
-											)}
+											{formatCurrency(Math.max(0, pendingAmount))}
 										</div>
 									</div>
 								</div>
@@ -269,39 +253,26 @@ export default function DemoDebtDetail({
 										debt.down_payment !== null && (
 											<div className="flex justify-between items-center">
 												<span className="text-base text-base-content/70">
-													{t(
-														"debtDetail.structure.downPayment",
-													)}
-													:
+													{t("debtDetail.structure.downPayment")}:
 												</span>
 												<span className="font-medium text-lg">
 													{debt.down_payment > 0
-														? formatCurrency(
-																debt.down_payment,
-															)
-														: t(
-																"debtDetail.structure.notApplicable",
-															)}
+														? formatCurrency(debt.down_payment)
+														: t("debtDetail.structure.notApplicable")}
 												</span>
 											</div>
 										)}
 									<div className="flex justify-between items-center">
 										<span className="text-base text-base-content/70">
-											{t(
-												"debtDetail.structure.monthlyPayment",
-											)}
-											:
+											{t("debtDetail.structure.monthlyPayment")}:
 										</span>
 										<span className="font-medium text-lg">
-											{formatCurrency(
-												debt.monthly_amount,
-											)}
+											{formatCurrency(debt.monthly_amount)}
 										</span>
 									</div>
 									<div className="flex justify-between items-center">
 										<span className="text-base text-base-content/70">
-											{t("debtDetail.structure.duration")}
-											:
+											{t("debtDetail.structure.duration")}:
 										</span>
 										<span className="font-medium text-lg">
 											{debt.number_of_payments}{" "}
@@ -312,29 +283,19 @@ export default function DemoDebtDetail({
 										debt.final_payment !== null && (
 											<div className="flex justify-between items-center">
 												<span className="text-base text-base-content/70">
-													{t(
-														"debtDetail.structure.finalPayment",
-													)}
-													:
+													{t("debtDetail.structure.finalPayment")}:
 												</span>
 												<span className="font-medium text-lg">
 													{debt.final_payment > 0
-														? formatCurrency(
-																debt.final_payment,
-															)
-														: t(
-																"debtDetail.structure.notApplicable",
-															)}
+														? formatCurrency(debt.final_payment)
+														: t("debtDetail.structure.notApplicable")}
 												</span>
 											</div>
 										)}
 									<div className="bg-base-300 rounded-lg p-4 mt-6">
 										<div className="flex justify-between items-center">
 											<span className="text-base font-medium">
-												{t(
-													"debtDetail.structure.total",
-												)}
-												:
+												{t("debtDetail.structure.total")}:
 											</span>
 											<span className="font-bold text-2xl">
 												{formatCurrency(totalAmount)}
@@ -378,12 +339,8 @@ export default function DemoDebtDetail({
 									</div>
 									<div className="text-lg font-medium">
 										{debt.final_payment_date
-											? formatDate(
-													debt.final_payment_date,
-												)
-											: t(
-													"debtDetail.dates.notSpecified",
-												)}
+											? formatDate(debt.final_payment_date)
+											: t("debtDetail.dates.notSpecified")}
 									</div>
 								</div>
 							</div>
@@ -398,13 +355,9 @@ export default function DemoDebtDetail({
 					{tLanding("demo.bottomCta.title")}
 				</h3>
 				<p className="text-base-content/70 mb-4">
-					Ve todos los detalles, registra pagos, y gestiona tus deudas
-					reales
+					Ve todos los detalles, registra pagos, y gestiona tus deudas reales
 				</p>
-				<button
-					onClick={onLoginClick}
-					className="btn btn-primary btn-lg"
-				>
+				<button onClick={onLoginClick} className="btn btn-primary btn-lg">
 					{tLanding("demo.bottomCta.button")}
 				</button>
 			</div>

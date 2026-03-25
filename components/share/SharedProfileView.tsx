@@ -1,14 +1,20 @@
 "use client";
 
+import {
+	ChartBarIcon,
+	CheckCircleIcon,
+	ClockIcon,
+	CreditCardIcon,
+	TargetIcon,
+} from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
-import { TargetIcon, ChartBarIcon, CheckCircleIcon, CreditCardIcon, ClockIcon } from "@phosphor-icons/react";
-import type { Debt, Payment, SharedProfile } from "@/lib/types";
 import {
 	calculateDebtStatus,
-	calculateTotalAmount,
-	calculateRemainingAmount,
 	calculatePaymentProgress,
+	calculateRemainingAmount,
+	calculateTotalAmount,
 } from "@/lib/format";
+import type { Debt, Payment, SharedProfile } from "@/lib/types";
 
 interface SharedProfileViewProps {
 	debts: Debt[];
@@ -52,8 +58,7 @@ export default function SharedProfileView({
 		activeDebts.length > 0
 			? Math.round(
 					activeDebts.reduce(
-						(sum, debt) =>
-							sum + calculatePaymentProgress(debt).percentage,
+						(sum, debt) => sum + calculatePaymentProgress(debt).percentage,
 						0,
 					) / activeDebts.length,
 				)
@@ -81,9 +86,15 @@ export default function SharedProfileView({
 					{userName ? `${userName}` : "Resumen financiero"}
 				</h1>
 				<p className="text-base-content/70 mt-1">
-					{activeDebts.length} financiación{activeDebts.length !== 1 ? "es" : ""} activa{activeDebts.length !== 1 ? "s" : ""}
+					{activeDebts.length} financiación
+					{activeDebts.length !== 1 ? "es" : ""} activa
+					{activeDebts.length !== 1 ? "s" : ""}
 					{share.show_completed && completedDebts.length > 0 && (
-						<> · {completedDebts.length} completada{completedDebts.length !== 1 ? "s" : ""}</>
+						<>
+							{" "}
+							· {completedDebts.length} completada
+							{completedDebts.length !== 1 ? "s" : ""}
+						</>
 					)}
 				</p>
 			</div>
@@ -189,23 +200,31 @@ export default function SharedProfileView({
 			)}
 
 			{/* Completed stats */}
-			{share.show_completed && share.show_amounts && completedDebts.length > 0 && (
-				<div className="card bg-success/10 border-2 border-success/30 shadow-sm">
-					<div className="card-body p-4">
-						<div className="flex items-center gap-2 mb-2">
-							<CheckCircleIcon className="w-5 h-5 text-success" />
-							<h2 className="font-bold text-lg text-success">
-								{completedDebts.length} financiación{completedDebts.length !== 1 ? "es" : ""} completada{completedDebts.length !== 1 ? "s" : ""}
-							</h2>
-						</div>
-						<div className="text-sm text-base-content/70">
-							Total liquidado: {formatCurrencySimple(
-								completedDebts.reduce((sum, debt) => sum + calculateTotalAmount(debt), 0)
-							)}
+			{share.show_completed &&
+				share.show_amounts &&
+				completedDebts.length > 0 && (
+					<div className="card bg-success/10 border-2 border-success/30 shadow-sm">
+						<div className="card-body p-4">
+							<div className="flex items-center gap-2 mb-2">
+								<CheckCircleIcon className="w-5 h-5 text-success" />
+								<h2 className="font-bold text-lg text-success">
+									{completedDebts.length} financiación
+									{completedDebts.length !== 1 ? "es" : ""} completada
+									{completedDebts.length !== 1 ? "s" : ""}
+								</h2>
+							</div>
+							<div className="text-sm text-base-content/70">
+								Total liquidado:{" "}
+								{formatCurrencySimple(
+									completedDebts.reduce(
+										(sum, debt) => sum + calculateTotalAmount(debt),
+										0,
+									),
+								)}
+							</div>
 						</div>
 					</div>
-				</div>
-			)}
+				)}
 
 			{/* Debt list */}
 			{share.show_debt_list && activeDebts.length > 0 && (
@@ -233,7 +252,9 @@ export default function SharedProfileView({
 											{share.show_amounts && (
 												<div className="text-right">
 													<div className="text-sm font-bold text-warning">
-														{formatCurrencySimple(calculateRemainingAmount(debt))}
+														{formatCurrencySimple(
+															calculateRemainingAmount(debt),
+														)}
 													</div>
 													<div className="text-xs text-base-content/50">
 														pendiente
@@ -246,7 +267,9 @@ export default function SharedProfileView({
 												<div className="w-full bg-base-300 rounded-full h-2.5">
 													<div
 														className="bg-primary h-2.5 rounded-full transition-all duration-500"
-														style={{ width: `${Math.max(progress.percentage, 2)}%` }}
+														style={{
+															width: `${Math.max(progress.percentage, 2)}%`,
+														}}
 													/>
 												</div>
 											</div>
@@ -256,8 +279,13 @@ export default function SharedProfileView({
 										</div>
 										{share.show_amounts && (
 											<div className="flex justify-between text-xs text-base-content/50 mt-1">
-												<span>{formatCurrencySimple(debt.monthly_amount)}/mes</span>
-												<span>{progress.paidPayments}/{progress.totalPayments} cuotas</span>
+												<span>
+													{formatCurrencySimple(debt.monthly_amount)}/mes
+												</span>
+												<span>
+													{progress.paidPayments}/{progress.totalPayments}{" "}
+													cuotas
+												</span>
 											</div>
 										)}
 									</div>
@@ -269,41 +297,43 @@ export default function SharedProfileView({
 			)}
 
 			{/* Completed debt list */}
-			{share.show_debt_list && share.show_completed && completedDebts.length > 0 && (
-				<div className="card bg-base-100 shadow-sm">
-					<div className="card-body p-4">
-						<h2 className="card-title text-lg mb-3">
-							<CheckCircleIcon className="w-5 h-5 text-success" />
-							Completadas
-						</h2>
-						<div className="space-y-3">
-							{completedDebts.map((debt) => (
-								<div
-									key={debt.id}
-									className="bg-success/5 rounded-xl border border-success/20 p-3"
-								>
-									<div className="flex justify-between items-center">
-										<div>
-											<div className="font-medium">{debt.name}</div>
-											<div className="text-sm text-base-content/60">
-												{debt.entity}
+			{share.show_debt_list &&
+				share.show_completed &&
+				completedDebts.length > 0 && (
+					<div className="card bg-base-100 shadow-sm">
+						<div className="card-body p-4">
+							<h2 className="card-title text-lg mb-3">
+								<CheckCircleIcon className="w-5 h-5 text-success" />
+								Completadas
+							</h2>
+							<div className="space-y-3">
+								{completedDebts.map((debt) => (
+									<div
+										key={debt.id}
+										className="bg-success/5 rounded-xl border border-success/20 p-3"
+									>
+										<div className="flex justify-between items-center">
+											<div>
+												<div className="font-medium">{debt.name}</div>
+												<div className="text-sm text-base-content/60">
+													{debt.entity}
+												</div>
+											</div>
+											<div className="flex items-center gap-2">
+												{share.show_amounts && (
+													<span className="text-sm font-bold text-success">
+														{formatCurrencySimple(calculateTotalAmount(debt))}
+													</span>
+												)}
+												<CheckCircleIcon className="w-5 h-5 text-success" />
 											</div>
 										</div>
-										<div className="flex items-center gap-2">
-											{share.show_amounts && (
-												<span className="text-sm font-bold text-success">
-													{formatCurrencySimple(calculateTotalAmount(debt))}
-												</span>
-											)}
-											<CheckCircleIcon className="w-5 h-5 text-success" />
-										</div>
 									</div>
-								</div>
-							))}
+								))}
+							</div>
 						</div>
 					</div>
-				</div>
-			)}
+				)}
 
 			{/* Footer branding */}
 			<div className="text-center pt-4">

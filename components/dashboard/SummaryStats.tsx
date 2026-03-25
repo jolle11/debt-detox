@@ -41,8 +41,7 @@ export default function SummaryStats({ debts }: SummaryStatsProps) {
 		activeDebts.length > 0
 			? Math.round(
 					activeDebts.reduce(
-						(sum, debt) =>
-							sum + calculatePaymentProgress(debt).percentage,
+						(sum, debt) => sum + calculatePaymentProgress(debt).percentage,
 						0,
 					) / activeDebts.length,
 				)

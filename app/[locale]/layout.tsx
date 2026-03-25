@@ -37,10 +37,7 @@ export default async function LocaleLayout({
 	return (
 		<html lang={locale}>
 			<head>
-				<script
-					defer
-					src="https://assets.onedollarstats.com/stonks.js"
-				/>
+				<script defer src="https://assets.onedollarstats.com/stonks.js" />
 			</head>
 			<body
 				className={`${inconsolata.variable} antialiased`}

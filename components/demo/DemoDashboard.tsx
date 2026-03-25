@@ -48,12 +48,8 @@ export default function DemoDashboard({
 			<div className="bg-gradient-to-r from-primary to-secondary p-4 rounded-xl mb-6 text-white">
 				<div className="flex items-center justify-between">
 					<div>
-						<h3 className="text-lg font-bold">
-							{tLanding("demo.title")}
-						</h3>
-						<p className="text-sm opacity-90">
-							{tLanding("demo.subtitle")}
-						</p>
+						<h3 className="text-lg font-bold">{tLanding("demo.title")}</h3>
+						<p className="text-sm opacity-90">{tLanding("demo.subtitle")}</p>
 					</div>
 					<button
 						onClick={onLoginClick}
@@ -88,10 +84,7 @@ export default function DemoDashboard({
 				<p className="text-base-content/70 mb-4">
 					{tLanding("demo.bottomCta.subtitle")}
 				</p>
-				<button
-					onClick={onLoginClick}
-					className="btn btn-primary btn-lg"
-				>
+				<button onClick={onLoginClick} className="btn btn-primary btn-lg">
 					{tLanding("demo.bottomCta.button")}
 				</button>
 			</div>

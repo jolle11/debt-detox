@@ -15,9 +15,7 @@ export default function DemoSection({ onLoginClick }: DemoSectionProps) {
 		<div className="py-20 bg-base-100">
 			<div className="container mx-auto px-4">
 				<div className="text-center mb-16">
-					<h2 className="text-4xl font-bold mb-4">
-						{tLanding("demo.title")}
-					</h2>
+					<h2 className="text-4xl font-bold mb-4">{tLanding("demo.title")}</h2>
 					<p className="text-xl text-base-content/70">
 						{tLanding("demo.subtitle")}
 					</p>

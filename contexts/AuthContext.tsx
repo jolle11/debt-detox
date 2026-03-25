@@ -83,9 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const refreshUser = async () => {
 		if (user?.id) {
 			try {
-				const updatedUser = await pb
-					.collection("users")
-					.getOne(user.id);
+				const updatedUser = await pb.collection("users").getOne(user.id);
 				setUser(updatedUser);
 			} catch (error) {
 				console.error("Failed to refresh user:", error);
@@ -148,9 +146,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		checkAuthStatus,
 	};
 
-	return (
-		<AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-	);
+	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

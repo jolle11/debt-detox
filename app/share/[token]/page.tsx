@@ -2,11 +2,11 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import pb from "@/lib/pocketbase";
-import { COLLECTIONS } from "@/lib/types";
-import type { Debt, Payment, SharedDebt } from "@/lib/types";
-import SharedDebtView from "@/components/share/SharedDebtView";
 import SharedDebtExpired from "@/components/share/SharedDebtExpired";
+import SharedDebtView from "@/components/share/SharedDebtView";
+import pb from "@/lib/pocketbase";
+import type { Debt, Payment, SharedDebt } from "@/lib/types";
+import { COLLECTIONS } from "@/lib/types";
 
 interface SharedData {
 	share: SharedDebt;

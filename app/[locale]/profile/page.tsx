@@ -1,9 +1,9 @@
 "use client";
 
-import { useAuth } from "@/contexts/AuthContext";
-import ProfileSettings from "@/components/profile/ProfileSettings";
 import ProfileHeader from "@/components/profile/ProfileHeader";
+import ProfileSettings from "@/components/profile/ProfileSettings";
 import SkeletonProfile from "@/components/ui/skeletons/SkeletonProfile";
+import { useAuth } from "@/contexts/AuthContext";
 import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 
 export default function ProfilePage() {

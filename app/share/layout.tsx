@@ -21,9 +21,7 @@ export default function ShareLayout({
 				}}
 			>
 				<div className="min-h-screen bg-base-200">
-					<main className="container mx-auto p-4 max-w-2xl">
-						{children}
-					</main>
+					<main className="container mx-auto p-4 max-w-2xl">{children}</main>
 				</div>
 			</body>
 		</html>

@@ -65,7 +65,10 @@ export default function CreateDebtForm({
 			);
 		}
 
-		const debtData: Omit<Debt, "id" | "user_id" | "created" | "updated" | "deleted"> = {
+		const debtData: Omit<
+			Debt,
+			"id" | "user_id" | "created" | "updated" | "deleted"
+		> = {
 			name: formData.name,
 			entity: formData.entity,
 			down_payment: formData.down_payment
@@ -91,9 +94,7 @@ export default function CreateDebtForm({
 						<FormInput
 							label={t("debt.create.name")}
 							value={formData.name}
-							onChange={(value) =>
-								handleInputChange("name", value)
-							}
+							onChange={(value) => handleInputChange("name", value)}
 							placeholder={t("debt.create.namePlaceholder")}
 							required
 						/>
@@ -101,9 +102,7 @@ export default function CreateDebtForm({
 						<FormInput
 							label={t("debt.create.entity")}
 							value={formData.entity}
-							onChange={(value) =>
-								handleInputChange("entity", value)
-							}
+							onChange={(value) => handleInputChange("entity", value)}
 							placeholder={t("debt.create.entityPlaceholder")}
 							required
 						/>
@@ -115,9 +114,7 @@ export default function CreateDebtForm({
 							label={t("debt.create.downPayment")}
 							type="number"
 							value={formData.down_payment}
-							onChange={(value) =>
-								handleInputChange("down_payment", value)
-							}
+							onChange={(value) => handleInputChange("down_payment", value)}
 							placeholder="0.00"
 						/>
 					</div>
@@ -150,9 +147,7 @@ export default function CreateDebtForm({
 							label={t("debt.create.monthlyAmount")}
 							type="number"
 							value={formData.monthly_amount}
-							onChange={(value) =>
-								handleInputChange("monthly_amount", value)
-							}
+							onChange={(value) => handleInputChange("monthly_amount", value)}
 							placeholder="0.00"
 							required
 						/>
@@ -174,9 +169,7 @@ export default function CreateDebtForm({
 							label={t("debt.create.finalPayment")}
 							type="number"
 							value={formData.final_payment}
-							onChange={(value) =>
-								handleInputChange("final_payment", value)
-							}
+							onChange={(value) => handleInputChange("final_payment", value)}
 							placeholder="0.00"
 						/>
 					</div>

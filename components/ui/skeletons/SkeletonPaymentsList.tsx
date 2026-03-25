@@ -18,10 +18,7 @@ export default function SkeletonPaymentsList({
 				{/* Summary stats */}
 				<div className="grid grid-cols-3 gap-3 mb-4">
 					{Array.from({ length: 3 }).map((_, index) => (
-						<div
-							key={index}
-							className="text-center p-2 bg-base-200 rounded-lg"
-						>
+						<div key={index} className="text-center p-2 bg-base-200 rounded-lg">
 							<Skeleton className="h-6 w-8 mx-auto mb-1" />
 							<Skeleton className="h-3 w-12 mx-auto" />
 						</div>

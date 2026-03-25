@@ -26,9 +26,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
 	};
 
 	return (
-		<DemoContext.Provider value={demoValue}>
-			{children}
-		</DemoContext.Provider>
+		<DemoContext.Provider value={demoValue}>{children}</DemoContext.Provider>
 	);
 }
 

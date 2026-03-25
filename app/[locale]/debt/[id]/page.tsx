@@ -1,29 +1,29 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useDebtsContext } from "@/contexts/DebtsContext";
-import { useCurrency } from "@/hooks/useCurrency";
-import { useAuthRedirect } from "@/hooks/useAuthRedirect";
-import type { Debt } from "@/lib/types";
-import DebtPaymentsList from "@/components/dashboard/DebtPaymentsList";
-import EditDebtModal from "@/components/debt/EditDebtModal";
-import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
-import CompleteDebtModal from "@/components/debt/CompleteDebtModal";
-import AddExtraPaymentModal from "@/components/debt/AddExtraPaymentModal";
-import ShareDebtModal from "@/components/debt/ShareDebtModal";
-import { usePayments } from "@/hooks/usePayments";
-import SkeletonDebtDetail from "@/components/ui/skeletons/SkeletonDebtDetail";
-import DebtHeader from "@/components/debt/detail/DebtHeader";
-import DebtQuickStats from "@/components/debt/detail/DebtQuickStats";
-import DebtProgressSection from "@/components/debt/detail/DebtProgressSection";
-import DebtPaymentDetails from "@/components/debt/detail/DebtPaymentDetails";
-import DebtStructure from "@/components/debt/detail/DebtStructure";
-import DebtDates from "@/components/debt/detail/DebtDates";
-import DebtProductImage from "@/components/debt/detail/DebtProductImage";
-import DebtNotFound from "@/components/debt/detail/DebtNotFound";
-import { calculatePaymentStats } from "@/utils/debtCalculations";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import DebtPaymentsList from "@/components/dashboard/DebtPaymentsList";
+import AddExtraPaymentModal from "@/components/debt/AddExtraPaymentModal";
+import CompleteDebtModal from "@/components/debt/CompleteDebtModal";
+import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
+import DebtDates from "@/components/debt/detail/DebtDates";
+import DebtHeader from "@/components/debt/detail/DebtHeader";
+import DebtNotFound from "@/components/debt/detail/DebtNotFound";
+import DebtPaymentDetails from "@/components/debt/detail/DebtPaymentDetails";
+import DebtProductImage from "@/components/debt/detail/DebtProductImage";
+import DebtProgressSection from "@/components/debt/detail/DebtProgressSection";
+import DebtQuickStats from "@/components/debt/detail/DebtQuickStats";
+import DebtStructure from "@/components/debt/detail/DebtStructure";
+import EditDebtModal from "@/components/debt/EditDebtModal";
+import ShareDebtModal from "@/components/debt/ShareDebtModal";
+import SkeletonDebtDetail from "@/components/ui/skeletons/SkeletonDebtDetail";
+import { useDebtsContext } from "@/contexts/DebtsContext";
+import { useAuthRedirect } from "@/hooks/useAuthRedirect";
+import { useCurrency } from "@/hooks/useCurrency";
+import { usePayments } from "@/hooks/usePayments";
+import type { Debt } from "@/lib/types";
+import { calculatePaymentStats } from "@/utils/debtCalculations";
 
 export default function DebtDetailPage() {
 	const t = useTranslations();
@@ -61,16 +61,18 @@ export default function DebtDetailPage() {
 		return <DebtNotFound onBack={() => router.back()} />;
 	}
 
+	const origMonthly = debt.original_monthly_amount || debt.monthly_amount;
+	const origPayments =
+		debt.original_number_of_payments || debt.number_of_payments;
 	const totalAmount =
 		(debt.down_payment || 0) +
-		debt.monthly_amount * debt.number_of_payments +
+		origMonthly * origPayments +
 		(debt.final_payment || 0);
 
 	const paymentStats = calculatePaymentStats(debt, payments);
 	const isFullyPaid = paymentStats.pendingAmount === 0;
 	const isCompleted =
-		debt.final_payment_date &&
-		new Date(debt.final_payment_date) <= new Date();
+		debt.final_payment_date && new Date(debt.final_payment_date) <= new Date();
 
 	return (
 		<div className="container mx-auto px-4 py-6">

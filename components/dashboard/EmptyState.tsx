@@ -42,10 +42,7 @@ export default function EmptyState({
 	return (
 		<div className="text-center py-12">
 			<div className="mb-4">
-				<ChartBarIcon
-					size={64}
-					className="mx-auto text-base-content/30"
-				/>
+				<ChartBarIcon size={64} className="mx-auto text-base-content/30" />
 			</div>
 			<h3 className="text-xl font-semibold mb-2">{content.title}</h3>
 			<p className="text-base-content/70 mb-4 max-w-md mx-auto">

@@ -20,9 +20,7 @@ export default function DebtProgress({ debt }: DebtProgressProps) {
 			</div>
 			<progress
 				className={`progress ${
-					status === "completed"
-						? "progress-success"
-						: "progress-primary"
+					status === "completed" ? "progress-success" : "progress-primary"
 				} w-full`}
 				value={percentage}
 				max="100"

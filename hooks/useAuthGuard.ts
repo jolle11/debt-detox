@@ -72,10 +72,7 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 				clearInterval(intervalRef.current);
 				intervalRef.current = null;
 			}
-			document.removeEventListener(
-				"visibilitychange",
-				handleVisibilityChange,
-			);
+			document.removeEventListener("visibilitychange", handleVisibilityChange);
 			activities.forEach((event) => {
 				document.removeEventListener(event, updateActivity);
 			});

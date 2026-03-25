@@ -51,9 +51,7 @@ export default function RegisterForm({
 				<div className="space-y-4">
 					<div className="form-control">
 						<label className="label">
-							<span className="label-text font-medium">
-								{t("name")}
-							</span>
+							<span className="label-text font-medium">{t("name")}</span>
 							<span className="label-text-alt text-xs text-base-content/60">
 								{t("nameOptional")}
 							</span>
@@ -68,9 +66,7 @@ export default function RegisterForm({
 					</div>
 					<div className="form-control">
 						<label className="label">
-							<span className="label-text font-medium">
-								{t("email")}
-							</span>
+							<span className="label-text font-medium">{t("email")}</span>
 						</label>
 						<input
 							type="email"
@@ -83,9 +79,7 @@ export default function RegisterForm({
 					</div>
 					<div className="form-control">
 						<label className="label">
-							<span className="label-text font-medium">
-								{t("password")}
-							</span>
+							<span className="label-text font-medium">{t("password")}</span>
 						</label>
 						<input
 							type="password"
@@ -126,10 +120,7 @@ export default function RegisterForm({
 				>
 					{loading ? (
 						<>
-							<SpinnerIcon
-								size={20}
-								className="animate-spin mr-2"
-							/>
+							<SpinnerIcon size={20} className="animate-spin mr-2" />
 							{t("submitting")}
 						</>
 					) : (

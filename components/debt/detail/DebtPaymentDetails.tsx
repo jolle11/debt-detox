@@ -49,13 +49,7 @@ export default function DebtPaymentDetails({
 				</h2>
 				<div className="grid grid-cols-2 gap-4">
 					{paymentData.map(
-						({
-							key,
-							value,
-							subtitle,
-							color,
-							textSize = "text-2xl",
-						}) => (
+						({ key, value, subtitle, color, textSize = "text-2xl" }) => (
 							<div
 								key={key}
 								className="bg-base-200 rounded-xl border border-base-300 p-4"
@@ -63,11 +57,7 @@ export default function DebtPaymentDetails({
 								<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
 									{t(`debtDetail.paymentDetails.${key}`)}
 								</div>
-								<div
-									className={`${textSize} font-bold ${color}`}
-								>
-									{value}
-								</div>
+								<div className={`${textSize} font-bold ${color}`}>{value}</div>
 								{subtitle && (
 									<div className="text-base text-base-content/70 mt-1">
 										{subtitle}

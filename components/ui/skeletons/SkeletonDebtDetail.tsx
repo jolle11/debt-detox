@@ -49,24 +49,16 @@ export default function SkeletonDebtDetail({
 					{/* Details Grid */}
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 						{Array.from({ length: 2 }).map((_, index) => (
-							<div
-								key={index}
-								className="card bg-base-100 shadow"
-							>
+							<div key={index} className="card bg-base-100 shadow">
 								<div className="card-body p-5">
 									<Skeleton className="h-6 w-40 mb-4" />
 									<div className="space-y-3">
-										{Array.from({ length: 4 }).map(
-											(_, i) => (
-												<div
-													key={i}
-													className="flex justify-between"
-												>
-													<Skeleton className="h-4 w-24" />
-													<Skeleton className="h-4 w-16" />
-												</div>
-											),
-										)}
+										{Array.from({ length: 4 }).map((_, i) => (
+											<div key={i} className="flex justify-between">
+												<Skeleton className="h-4 w-24" />
+												<Skeleton className="h-4 w-16" />
+											</div>
+										))}
 									</div>
 								</div>
 							</div>
@@ -79,10 +71,7 @@ export default function SkeletonDebtDetail({
 							<Skeleton className="h-6 w-32 mb-4" />
 							<div className="space-y-3">
 								{Array.from({ length: 3 }).map((_, index) => (
-									<Skeleton
-										key={index}
-										className="h-12 w-full rounded"
-									/>
+									<Skeleton key={index} className="h-12 w-full rounded" />
 								))}
 							</div>
 						</div>

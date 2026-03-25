@@ -2,11 +2,11 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import pb from "@/lib/pocketbase";
-import { COLLECTIONS } from "@/lib/types";
-import type { Debt, Payment, SharedProfile } from "@/lib/types";
-import SharedProfileView from "@/components/share/SharedProfileView";
 import SharedDebtExpired from "@/components/share/SharedDebtExpired";
+import SharedProfileView from "@/components/share/SharedProfileView";
+import pb from "@/lib/pocketbase";
+import type { Debt, Payment, SharedProfile } from "@/lib/types";
+import { COLLECTIONS } from "@/lib/types";
 
 interface SharedProfileData {
 	share: SharedProfile;
@@ -50,12 +50,10 @@ export default function ShareProfilePage() {
 				}
 
 				// Fetch all debts for the user
-				const debtRecords = await pb
-					.collection(COLLECTIONS.DEBTS)
-					.getFullList({
-						filter: `user_id = "${share.user_id}" && deleted = null`,
-						sort: "-created",
-					});
+				const debtRecords = await pb.collection(COLLECTIONS.DEBTS).getFullList({
+					filter: `user_id = "${share.user_id}" && deleted = null`,
+					sort: "-created",
+				});
 
 				const debts = debtRecords as unknown as Debt[];
 

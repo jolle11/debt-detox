@@ -1,8 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 interface ErrorProps {
 	error: Error & { digest?: string };
@@ -29,10 +29,7 @@ export default function Error({ error, reset }: ErrorProps) {
 						<button className="btn btn-primary" onClick={reset}>
 							{t("retry")}
 						</button>
-						<button
-							className="btn btn-ghost"
-							onClick={() => router.back()}
-						>
+						<button className="btn btn-ghost" onClick={() => router.back()}>
 							{t("back")}
 						</button>
 					</div>

@@ -64,7 +64,7 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 			if (newAttempts >= MAX_ATTEMPTS_BEFORE_LOCKOUT) {
 				// Exponential backoff: 10s, 20s, 40s, 80s...
 				const exponent = newAttempts - MAX_ATTEMPTS_BEFORE_LOCKOUT;
-				const seconds = BASE_LOCKOUT_SECONDS * Math.pow(2, exponent);
+				const seconds = BASE_LOCKOUT_SECONDS * 2 ** exponent;
 				setLockoutSeconds(seconds);
 			}
 
@@ -80,9 +80,7 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 				<div className="space-y-4">
 					<div className="form-control">
 						<label className="label">
-							<span className="label-text font-medium">
-								{t("email")}
-							</span>
+							<span className="label-text font-medium">{t("email")}</span>
 						</label>
 						<input
 							type="email"
@@ -96,9 +94,7 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 					</div>
 					<div className="form-control">
 						<label className="label">
-							<span className="label-text font-medium">
-								{t("password")}
-							</span>
+							<span className="label-text font-medium">{t("password")}</span>
 						</label>
 						<input
 							type="password"
@@ -159,10 +155,7 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 				>
 					{loading ? (
 						<>
-							<SpinnerIcon
-								size={20}
-								className="animate-spin mr-2"
-							/>
+							<SpinnerIcon size={20} className="animate-spin mr-2" />
 							{t("submitting")}
 						</>
 					) : (

@@ -15,10 +15,7 @@ export default function SkeletonDebtsList({
 
 				<div className="flex space-x-2 mb-6">
 					{Array.from({ length: 3 }).map((_, index) => (
-						<Skeleton
-							key={index}
-							className="h-10 w-20 rounded-full"
-						/>
+						<Skeleton key={index} className="h-10 w-20 rounded-full" />
 					))}
 				</div>
 

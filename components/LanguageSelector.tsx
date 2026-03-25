@@ -29,15 +29,9 @@ export default function LanguageSelector() {
 
 	return (
 		<div className="dropdown dropdown-start">
-			<div
-				tabIndex={0}
-				role="button"
-				className="btn btn-ghost btn-sm gap-2"
-			>
+			<div tabIndex={0} role="button" className="btn btn-ghost btn-sm gap-2">
 				<TranslateIcon size={16} />
-				<span className="hidden sm:inline">
-					{currentLanguage?.nativeName}
-				</span>
+				<span className="hidden sm:inline">{currentLanguage?.nativeName}</span>
 				<span className="sm:hidden">{currentLanguage?.flag}</span>
 				<CaretDownIcon size={12} />
 			</div>
@@ -58,12 +52,8 @@ export default function LanguageSelector() {
 						>
 							<span className="text-lg">{language.flag}</span>
 							<div className="flex flex-col items-start">
-								<span className="font-medium">
-									{language.nativeName}
-								</span>
-								<span className="text-xs opacity-70">
-									{language.code}
-								</span>
+								<span className="font-medium">{language.nativeName}</span>
+								<span className="text-xs opacity-70">{language.code}</span>
 							</div>
 							{locale === language.code && (
 								<CheckIcon size={16} className="ml-auto" />

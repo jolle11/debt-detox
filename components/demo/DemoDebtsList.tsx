@@ -29,9 +29,7 @@ export default function DemoDebtsList({
 	return (
 		<div className="card bg-base-100 shadow">
 			<div className="card-body p-5">
-				<h2 className="card-title text-xl mb-4">
-					{t("dashboard.title")}
-				</h2>
+				<h2 className="card-title text-xl mb-4">{t("dashboard.title")}</h2>
 
 				<DebtFilterTabs
 					activeFilter={activeFilter}

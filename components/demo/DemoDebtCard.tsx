@@ -35,39 +35,27 @@ export default function DemoDebtCard({
 				<div className="flex justify-between items-start">
 					<div className="flex-1">
 						<h3 className="card-title text-xl">{debt.name}</h3>
-						<p className="text-base text-base-content/70 mb-2">
-							{debt.entity}
-						</p>
+						<p className="text-base text-base-content/70 mb-2">{debt.entity}</p>
 						<DebtInfo
 							debt={debt}
-							payments={payments.filter(
-								(p) => p.debt_id === debt.id,
-							)}
+							payments={payments.filter((p) => p.debt_id === debt.id)}
 						/>
 						<div className="mt-4">
 							<DebtProgressWithPayments
 								debt={debt}
-								payments={payments.filter(
-									(p) => p.debt_id === debt.id,
-								)}
+								payments={payments.filter((p) => p.debt_id === debt.id)}
 								isLoading={false}
 							/>
 						</div>
 						<div className="mt-3">
 							<DemoDebtPaymentStatus
 								debt={debt}
-								payments={payments.filter(
-									(p) => p.debt_id === debt.id,
-								)}
+								payments={payments.filter((p) => p.debt_id === debt.id)}
 							/>
 						</div>
 					</div>
 					<div className="ml-4">
-						<DebtActions
-							debt={debt}
-							onEdit={onEdit}
-							onDelete={onDelete}
-						/>
+						<DebtActions debt={debt} onEdit={onEdit} onDelete={onDelete} />
 					</div>
 				</div>
 			</div>

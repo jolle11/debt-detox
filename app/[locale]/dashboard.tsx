@@ -1,19 +1,19 @@
 "use client";
-import { useTranslations, useLocale } from "next-intl";
-import SummaryStats from "@/components/dashboard/SummaryStats";
-import DebtsList from "@/components/dashboard/DebtsList";
+import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
-import LandingPage from "@/components/landing/LandingPage";
-import CreateDebtModal from "@/components/debt/CreateDebtModal";
-import EditDebtModal from "@/components/debt/EditDebtModal";
-import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
+import DebtsList from "@/components/dashboard/DebtsList";
+import SummaryStats from "@/components/dashboard/SummaryStats";
 import CompleteDebtModal from "@/components/debt/CompleteDebtModal";
+import CreateDebtModal from "@/components/debt/CreateDebtModal";
+import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
+import EditDebtModal from "@/components/debt/EditDebtModal";
+import LandingPage from "@/components/landing/LandingPage";
+import SkeletonDebtsList from "@/components/ui/skeletons/SkeletonDebtsList";
+import SkeletonSummaryStats from "@/components/ui/skeletons/SkeletonSummaryStats";
 import { useDebtsContext } from "@/contexts/DebtsContext";
 import { usePayments } from "@/hooks/usePayments";
-import { useState } from "react";
 import type { Debt } from "@/lib/types";
-import SkeletonSummaryStats from "@/components/ui/skeletons/SkeletonSummaryStats";
-import SkeletonDebtsList from "@/components/ui/skeletons/SkeletonDebtsList";
 
 export default function Dashboard() {
 	const t = useTranslations();

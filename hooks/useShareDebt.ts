@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import pb from "@/lib/pocketbase";
-import { COLLECTIONS } from "@/lib/types";
 import type { SharedDebt } from "@/lib/types";
+import { COLLECTIONS } from "@/lib/types";
 
 export type ExpiresIn = "24h" | "7d" | "30d" | "never";
 

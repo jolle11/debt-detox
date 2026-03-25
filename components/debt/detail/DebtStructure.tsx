@@ -31,8 +31,7 @@ export default function DebtStructure({
 		{
 			key: "finalPayment",
 			value: debt.final_payment,
-			show:
-				debt.final_payment !== undefined && debt.final_payment !== null,
+			show: debt.final_payment !== undefined && debt.final_payment !== null,
 		},
 	];
 
@@ -48,21 +47,16 @@ export default function DebtStructure({
 						if (!show) return null;
 
 						return (
-							<div
-								key={key}
-								className="flex justify-between items-center"
-							>
+							<div key={key} className="flex justify-between items-center">
 								<span className="text-base text-base-content/70">
 									{t(`debtDetail.structure.${key}`)}:
 								</span>
 								<span className="font-medium text-lg">
 									{isString
 										? value
-										: value && typeof value === 'number' && value > 0
+										: value && typeof value === "number" && value > 0
 											? formatCurrency(value)
-											: t(
-													"debtDetail.structure.notApplicable",
-												)}
+											: t("debtDetail.structure.notApplicable")}
 								</span>
 							</div>
 						);

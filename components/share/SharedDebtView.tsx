@@ -1,13 +1,21 @@
 "use client";
 
+import {
+	Calendar,
+	CalendarIcon,
+	CheckCircle,
+	CreditCardIcon,
+	FileTextIcon,
+	TargetIcon,
+	XCircle,
+} from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
-import { TargetIcon, CalendarIcon, CreditCardIcon, FileTextIcon, CheckCircle, XCircle, Calendar } from "@phosphor-icons/react";
-import type { Debt, Payment, SharedDebt } from "@/lib/types";
-import { calculatePaymentStats } from "@/utils/debtCalculations";
 import {
 	calculatePaymentProgressWithPayments,
 	calculateTotalAmount,
 } from "@/lib/format";
+import type { Debt, Payment, SharedDebt } from "@/lib/types";
+import { calculatePaymentStats } from "@/utils/debtCalculations";
 
 interface SharedDebtViewProps {
 	debt: Debt;
@@ -97,7 +105,9 @@ function generateExpectedPayments(debt: Debt, payments: Payment[]) {
 		expectedPayments.push({
 			month,
 			year,
-			planned_amount: debt.monthly_amount,
+			planned_amount: actualPayment
+				? actualPayment.planned_amount || debt.monthly_amount
+				: debt.monthly_amount,
 			payment: actualPayment,
 			extraPayments: extraPaymentsForMonth,
 			isOverdue: isOverdue && (!actualPayment || !actualPayment.paid),
@@ -152,14 +162,20 @@ export default function SharedDebtView({
 									Pendiente de pago
 								</div>
 								<div className="text-3xl font-bold text-warning">
-									{formatCurrencySimple(Math.max(0, paymentStats.pendingAmount))}
+									{formatCurrencySimple(
+										Math.max(0, paymentStats.pendingAmount),
+									)}
 								</div>
 								<div className="text-sm text-base-content/60 mt-1">
-									{paymentStats.pendingPayments} cuota{paymentStats.pendingPayments !== 1 ? "s" : ""} restante{paymentStats.pendingPayments !== 1 ? "s" : ""}
+									{paymentStats.pendingPayments} cuota
+									{paymentStats.pendingPayments !== 1 ? "s" : ""} restante
+									{paymentStats.pendingPayments !== 1 ? "s" : ""}
 								</div>
 							</div>
 							<div className="text-right">
-								<div className="text-sm text-base-content/60 mb-1">de un total de</div>
+								<div className="text-sm text-base-content/60 mb-1">
+									de un total de
+								</div>
 								<div className="text-lg font-semibold text-base-content/80">
 									{formatCurrencySimple(totalAmount)}
 								</div>
@@ -214,7 +230,6 @@ export default function SharedDebtView({
 				</div>
 			</div>
 
-
 			{/* Quick stats (conditional on amounts) */}
 			{share.show_amounts && (
 				<div className="grid grid-cols-3 gap-3">
@@ -242,9 +257,7 @@ export default function SharedDebtView({
 							<div className="text-sm font-medium text-base-content/60 uppercase tracking-wide mb-1">
 								{label}
 							</div>
-							<div className={`text-xl font-bold ${color}`}>
-								{value}
-							</div>
+							<div className={`text-xl font-bold ${color}`}>{value}</div>
 						</div>
 					))}
 				</div>
@@ -277,9 +290,7 @@ export default function SharedDebtView({
 								<div className="text-2xl font-bold text-warning">
 									{paymentStats.pendingPayments}
 								</div>
-								<div className="text-sm text-base-content/70">
-									restantes
-								</div>
+								<div className="text-sm text-base-content/70">restantes</div>
 							</div>
 							<div className="bg-base-200 rounded-xl border border-base-300 p-3">
 								<div className="text-sm text-base-content/60 uppercase tracking-wide mb-1">
@@ -294,7 +305,9 @@ export default function SharedDebtView({
 									Por Pagar
 								</div>
 								<div className="text-lg font-bold text-warning">
-									{formatCurrencySimple(Math.max(0, paymentStats.pendingAmount))}
+									{formatCurrencySimple(
+										Math.max(0, paymentStats.pendingAmount),
+									)}
 								</div>
 							</div>
 						</div>
@@ -526,11 +539,7 @@ function SharedPaymentsList({
 									<tr
 										key={`${ep.year}-${ep.month}`}
 										className={
-											isPaid
-												? "bg-success/5"
-												: ep.isOverdue
-													? "bg-error/5"
-													: ""
+											isPaid ? "bg-success/5" : ep.isOverdue ? "bg-error/5" : ""
 										}
 									>
 										<td>
@@ -612,7 +621,9 @@ function SharedPaymentsList({
 									<td colSpan={2}>Total</td>
 									<td className="text-right font-mono">
 										{formatCurrencySimple(
-											debt.monthly_amount * debt.number_of_payments,
+											(debt.original_monthly_amount || debt.monthly_amount) *
+												(debt.original_number_of_payments ||
+													debt.number_of_payments),
 										)}
 									</td>
 									<td className="text-right font-mono">
@@ -627,7 +638,10 @@ function SharedPaymentsList({
 														0,
 													),
 												(debt.down_payment || 0) +
-													debt.monthly_amount * debt.number_of_payments +
+													(debt.original_monthly_amount ||
+														debt.monthly_amount) *
+														(debt.original_number_of_payments ||
+															debt.number_of_payments) +
 													(debt.final_payment || 0),
 											),
 										)}

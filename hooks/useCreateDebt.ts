@@ -1,8 +1,8 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { usePayments } from "@/hooks/usePayments";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePayments } from "@/hooks/usePayments";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt } from "@/lib/types";
 
@@ -22,7 +22,10 @@ export function useCreateDebt(): UseCreateDebtReturn {
 
 	const mutation = useMutation({
 		mutationFn: async (
-			debtData: Omit<Debt, "id" | "user_id" | "created" | "updated" | "deleted">,
+			debtData: Omit<
+				Debt,
+				"id" | "user_id" | "created" | "updated" | "deleted"
+			>,
 		) => {
 			if (!pb.authStore.isValid || !user?.id) {
 				throw new Error("Usuario no autenticado");
@@ -31,6 +34,8 @@ export function useCreateDebt(): UseCreateDebtReturn {
 			const debtDataWithUser = {
 				...debtData,
 				user_id: user.id,
+				original_monthly_amount: debtData.monthly_amount,
+				original_number_of_payments: debtData.number_of_payments,
 			};
 
 			const createdDebt = await pb

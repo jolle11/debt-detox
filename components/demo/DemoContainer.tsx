@@ -36,9 +36,6 @@ export default function DemoContainer({ onLoginClick }: DemoContainerProps) {
 	}
 
 	return (
-		<DemoDashboard
-			onLoginClick={onLoginClick}
-			onDebtClick={handleDebtClick}
-		/>
+		<DemoDashboard onLoginClick={onLoginClick} onDebtClick={handleDebtClick} />
 	);
 }

@@ -30,9 +30,7 @@ export default function StatCard({
 			<div className={`text-xl font-bold ${variantClasses[variant]}`}>
 				{value}
 			</div>
-			<div className="text-sm text-base-content/70 mt-1">
-				{description}
-			</div>
+			<div className="text-sm text-base-content/70 mt-1">{description}</div>
 		</div>
 	);
 }

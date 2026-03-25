@@ -2,9 +2,9 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
+import { calculateRemainingAmountWithPayments } from "@/lib/format";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt, type Payment } from "@/lib/types";
-import { calculateRemainingAmountWithPayments } from "@/lib/format";
 
 interface UseCompleteDebtReturn {
 	completeDebt: (debt: Debt, payments?: Payment[]) => Promise<void>;
@@ -32,17 +32,21 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 			// Verify the debt belongs to the current user
 			const existingDebt = await pb
 				.collection(COLLECTIONS.DEBTS)
-				.getOne(debt.id!, { filter: pb.filter("user_id = {:userId}", { userId: user.id }) });
+				.getOne(debt.id!, {
+					filter: pb.filter("user_id = {:userId}", { userId: user.id }),
+				});
 
 			if (!existingDebt) {
 				throw new Error("No tienes permisos para completar esta deuda");
 			}
 
-			const today = new Date().toISOString().split('T')[0];
+			const today = new Date().toISOString().split("T")[0];
 			const now = new Date();
 
 			// Mark all existing unpaid monthly payments as paid (exclude extra payments)
-			const unpaidPayments = payments.filter(p => !p.paid && !p.is_extra_payment);
+			const unpaidPayments = payments.filter(
+				(p) => !p.paid && !p.is_extra_payment,
+			);
 			for (const payment of unpaidPayments) {
 				await pb.collection(COLLECTIONS.PAYMENTS).update(payment.id!, {
 					paid: true,
@@ -71,7 +75,11 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 			if (debt.final_payment && debt.final_payment > 0) {
 				const finalPaymentDate = debt.final_payment_date
 					? new Date(debt.final_payment_date)
-					: new Date(startDate.getFullYear(), startDate.getMonth() + debt.number_of_payments, startDate.getDate());
+					: new Date(
+							startDate.getFullYear(),
+							startDate.getMonth() + debt.number_of_payments,
+							startDate.getDate(),
+						);
 
 				allPaymentPeriods.push({
 					month: finalPaymentDate.getMonth() + 1,
@@ -82,8 +90,11 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 
 			// Create payments for periods that don't exist yet (only monthly payments, not extra payments)
 			for (const period of allPaymentPeriods) {
-				const existingPayment = payments.find(p =>
-					p.month === period.month && p.year === period.year && !p.is_extra_payment
+				const existingPayment = payments.find(
+					(p) =>
+						p.month === period.month &&
+						p.year === period.year &&
+						!p.is_extra_payment,
 				);
 
 				if (!existingPayment) {
@@ -117,7 +128,10 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 		},
 	});
 
-	const completeDebt = async (debt: Debt, payments: Payment[] = []): Promise<void> => {
+	const completeDebt = async (
+		debt: Debt,
+		payments: Payment[] = [],
+	): Promise<void> => {
 		await mutation.mutateAsync({ debt, payments });
 	};
 

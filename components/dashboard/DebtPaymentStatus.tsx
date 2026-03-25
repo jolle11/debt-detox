@@ -30,10 +30,7 @@ export default function DebtPaymentStatus({
 	): Payment | null => {
 		return (
 			payments.find(
-				(p) =>
-					p.debt_id === debtId &&
-					p.month === month &&
-					p.year === year,
+				(p) => p.debt_id === debtId && p.month === month && p.year === year,
 			) || null
 		);
 	};
@@ -71,13 +68,11 @@ export default function DebtPaymentStatus({
 			if (existingPayments.length > 0) {
 				// Actualizar el payment existente
 				const payment = existingPayments[0];
-				return await pb
-					.collection(COLLECTIONS.PAYMENTS)
-					.update(payment.id, {
-						paid: true,
-						paid_date: new Date().toISOString(),
-						actual_amount: amountToPay,
-					});
+				return await pb.collection(COLLECTIONS.PAYMENTS).update(payment.id, {
+					paid: true,
+					paid_date: new Date().toISOString(),
+					actual_amount: amountToPay,
+				});
 			} else {
 				// Crear un nuevo payment
 				return await pb.collection(COLLECTIONS.PAYMENTS).create({
@@ -129,9 +124,7 @@ export default function DebtPaymentStatus({
 	if (isDebtCompleted) {
 		return (
 			<div className="flex items-center gap-3">
-				<div className="badge badge-success badge-lg">
-					{t("completed")}
-				</div>
+				<div className="badge badge-success badge-lg">{t("completed")}</div>
 			</div>
 		);
 	}
@@ -141,9 +134,7 @@ export default function DebtPaymentStatus({
 	if (currentDate < firstPaymentDate) {
 		return (
 			<div className="flex items-center gap-3">
-				<div className="badge badge-neutral badge-lg">
-					{t("pendingStart")}
-				</div>
+				<div className="badge badge-neutral badge-lg">{t("pendingStart")}</div>
 			</div>
 		);
 	}
@@ -151,9 +142,7 @@ export default function DebtPaymentStatus({
 	return (
 		<div className="flex items-center gap-3">
 			{isCurrentMonthPaid ? (
-				<div className="badge badge-success badge-lg">
-					{t("monthlyPaid")}
-				</div>
+				<div className="badge badge-success badge-lg">{t("monthlyPaid")}</div>
 			) : (
 				<button
 					onClick={handleMarkAsPaid}

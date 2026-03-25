@@ -20,9 +20,8 @@ export function useTheme() {
 			let newActualTheme: "light" | "dark";
 
 			if (theme === "system") {
-				newActualTheme = window.matchMedia(
-					"(prefers-color-scheme: dark)",
-				).matches
+				newActualTheme = window.matchMedia("(prefers-color-scheme: dark)")
+					.matches
 					? "dark"
 					: "light";
 			} else {
@@ -39,12 +38,9 @@ export function useTheme() {
 		updateActualTheme();
 
 		if (theme === "system") {
-			const mediaQuery = window.matchMedia(
-				"(prefers-color-scheme: dark)",
-			);
+			const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 			mediaQuery.addEventListener("change", updateActualTheme);
-			return () =>
-				mediaQuery.removeEventListener("change", updateActualTheme);
+			return () => mediaQuery.removeEventListener("change", updateActualTheme);
 		}
 	}, [theme]);
 

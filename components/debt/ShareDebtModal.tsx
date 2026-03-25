@@ -1,9 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import {
+	Check,
+	Copy,
+	LinkSimple,
+	ShareNetwork,
+	Trash,
+} from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
-import { Copy, Check, LinkSimple, Trash, ShareNetwork } from "@phosphor-icons/react";
-import { useShareDebt, type ExpiresIn } from "@/hooks/useShareDebt";
+import { useEffect, useState } from "react";
+import { type ExpiresIn, useShareDebt } from "@/hooks/useShareDebt";
 import type { Debt } from "@/lib/types";
 
 interface ShareDebtModalProps {
@@ -198,9 +204,7 @@ export default function ShareDebtModal({
 				</button>
 
 				{error && (
-					<div className="alert alert-error mt-3 py-2 text-sm">
-						{error}
-					</div>
+					<div className="alert alert-error mt-3 py-2 text-sm">{error}</div>
 				)}
 
 				{/* Generated link */}
@@ -240,9 +244,7 @@ export default function ShareDebtModal({
 									className="flex items-center justify-between bg-base-200 rounded-lg px-3 py-2 text-xs"
 								>
 									<div>
-										<span className="font-mono">
-											...{link.token.slice(-8)}
-										</span>
+										<span className="font-mono">...{link.token.slice(-8)}</span>
 										<span className="text-base-content/50 ml-2">
 											{new Date(link.expires_at).getFullYear() >= 9999
 												? t("share.neverExpires")

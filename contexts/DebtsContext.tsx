@@ -17,9 +17,7 @@ export function DebtsProvider({ children }: { children: ReactNode }) {
 	const debtsState = useDebts();
 
 	return (
-		<DebtsContext.Provider value={debtsState}>
-			{children}
-		</DebtsContext.Provider>
+		<DebtsContext.Provider value={debtsState}>{children}</DebtsContext.Provider>
 	);
 }
 

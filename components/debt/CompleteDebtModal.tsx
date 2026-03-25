@@ -5,8 +5,8 @@ import { useTranslations } from "next-intl";
 import { useCompleteDebt } from "@/hooks/useCompleteDebt";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
-import type { Debt } from "@/lib/types";
 import { calculateRemainingAmountWithPayments } from "@/lib/format";
+import type { Debt } from "@/lib/types";
 
 interface CompleteDebtModalProps {
 	debt: Debt | null;
@@ -29,7 +29,10 @@ export default function CompleteDebtModal({
 	if (!isOpen || !debt) return null;
 
 	const debtPayments = payments.filter((p) => p.debt_id === debt.id);
-	const remainingAmount = calculateRemainingAmountWithPayments(debt, debtPayments);
+	const remainingAmount = calculateRemainingAmountWithPayments(
+		debt,
+		debtPayments,
+	);
 
 	const handleConfirm = async () => {
 		try {
@@ -68,7 +71,7 @@ export default function CompleteDebtModal({
 					<p>
 						{t("debt.complete.confirmMessage", {
 							name: debt.name,
-							entity: debt.entity
+							entity: debt.entity,
 						})}
 					</p>
 
@@ -78,9 +81,7 @@ export default function CompleteDebtModal({
 								<p className="font-semibold">
 									{t("debt.complete.remainingAmount")}
 								</p>
-								<p className="text-lg">
-									{formatCurrency(remainingAmount)}
-								</p>
+								<p className="text-lg">{formatCurrency(remainingAmount)}</p>
 								<p className="text-sm mt-2">
 									{t("debt.complete.finalPaymentNote")}
 								</p>

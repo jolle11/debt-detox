@@ -1,6 +1,14 @@
 "use client";
 
-import { ArrowLeftIcon, PencilIcon, TrashIcon, CheckCircleIcon, PlusCircle, DotsThree, ShareNetwork } from "@phosphor-icons/react";
+import {
+	ArrowLeftIcon,
+	CheckCircleIcon,
+	DotsThree,
+	PencilIcon,
+	PlusCircle,
+	ShareNetwork,
+	TrashIcon,
+} from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { type DebtHeaderProps, debtStatusConfig } from "@/data/debtDetail";
 import { calculateDebtStatus } from "@/lib/format";
@@ -79,11 +87,17 @@ export default function DebtHeader({
 						<button tabIndex={0} className="btn btn-ghost btn-sm">
 							<DotsThree className="w-5 h-5" weight="bold" />
 						</button>
-						<ul tabIndex={0} className="dropdown-content z-50 menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300">
+						<ul
+							tabIndex={0}
+							className="dropdown-content z-50 menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300"
+						>
 							{status !== "completed" && (
 								<>
 									<li>
-										<button onClick={onAddExtraPayment} className="text-primary">
+										<button
+											onClick={onAddExtraPayment}
+											className="text-primary"
+										>
 											<PlusCircle className="w-4 h-4" />
 											{t("debt.extraPayment.title")}
 										</button>

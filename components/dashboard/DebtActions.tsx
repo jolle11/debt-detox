@@ -25,11 +25,15 @@ export default function DebtActions({
 			label: t("dashboard.debt.actions.viewDetails"),
 			className: "",
 		},
-		...(status === "active" ? [{
-			key: "complete",
-			label: t("dashboard.debt.actions.complete"),
-			className: "text-success",
-		}] : []),
+		...(status === "active"
+			? [
+					{
+						key: "complete",
+						label: t("dashboard.debt.actions.complete"),
+						className: "text-success",
+					},
+				]
+			: []),
 		{
 			key: "edit",
 			label: t("dashboard.debt.actions.edit"),
@@ -69,15 +73,9 @@ export default function DebtActions({
 								onClick={() => {
 									if (action.key === "edit" && onEdit) {
 										onEdit(debt);
-									} else if (
-										action.key === "delete" &&
-										onDelete
-									) {
+									} else if (action.key === "delete" && onDelete) {
 										onDelete(debt);
-									} else if (
-										action.key === "complete" &&
-										onComplete
-									) {
+									} else if (action.key === "complete" && onComplete) {
 										onComplete(debt);
 									}
 								}}

@@ -20,8 +20,10 @@ export default function DemoDebtPaymentStatus({
 	const tDashboard = useTranslations("dashboard");
 	const [showDemoAlert, setShowDemoAlert] = useState(false);
 
-	const { paidPayments, totalPayments } =
-		calculatePaymentProgressWithPayments(debt, payments);
+	const { paidPayments, totalPayments } = calculatePaymentProgressWithPayments(
+		debt,
+		payments,
+	);
 	const nextPaymentNumber = paidPayments + 1;
 
 	const handleMarkAsPaid = () => {
@@ -42,8 +44,7 @@ export default function DemoDebtPaymentStatus({
 			{showDemoAlert && (
 				<div className="alert alert-info alert-sm">
 					<span className="text-xs">
-						¡Esta es solo una demo! Regístrate para gestionar pagos
-						reales.
+						¡Esta es solo una demo! Regístrate para gestionar pagos reales.
 					</span>
 				</div>
 			)}

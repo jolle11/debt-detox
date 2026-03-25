@@ -1,7 +1,7 @@
 "use client";
 
 import { CalendarIcon } from "@phosphor-icons/react";
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import type { DebtDatesProps } from "@/data/debtDetail";
 
 export default function DebtDates({ debt }: DebtDatesProps) {

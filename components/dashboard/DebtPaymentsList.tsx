@@ -1,20 +1,20 @@
 "use client";
 
 import {
+	ArrowCounterClockwise,
 	Calendar,
 	CheckCircle,
 	CreditCard,
-	XCircle,
 	PencilSimple,
 	Trash,
-	ArrowCounterClockwise,
+	XCircle,
 } from "@phosphor-icons/react";
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
 import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
 import type { Debt, Payment } from "@/lib/types";
-import { useState } from "react";
 
 interface DebtPaymentsListProps {
 	debt: Debt;
@@ -36,9 +36,7 @@ export default function DebtPaymentsList({
 		deleteExtraPayment,
 		markPaymentAsPaid,
 	} = usePayments(debt.id);
-	const [editingPaymentId, setEditingPaymentId] = useState<string | null>(
-		null,
-	);
+	const [editingPaymentId, setEditingPaymentId] = useState<string | null>(null);
 	const [editAmount, setEditAmount] = useState<string>("");
 	// Generate all expected payments based on debt structure
 	const generateAllExpectedPayments = () => {
@@ -97,7 +95,9 @@ export default function DebtPaymentsList({
 			expectedPayments.push({
 				month,
 				year,
-				planned_amount: debt.monthly_amount,
+				planned_amount: actualPayment
+					? actualPayment.planned_amount || debt.monthly_amount
+					: debt.monthly_amount,
 				payment: actualPayment,
 				extraPayments: extraPaymentsForMonth,
 				isOverdue: isOverdue && (!actualPayment || !actualPayment.paid),
@@ -209,25 +209,19 @@ export default function DebtPaymentsList({
 						<div className="text-lg font-bold text-success">
 							{totalPaidPayments}
 						</div>
-						<div className="text-xs text-success/80">
-							{t("statsPaid")}
-						</div>
+						<div className="text-xs text-success/80">{t("statsPaid")}</div>
 					</div>
 					<div className="text-center p-2 bg-error/10 rounded-lg">
 						<div className="text-lg font-bold text-error">
 							{totalOverduePayments}
 						</div>
-						<div className="text-xs text-error/80">
-							{t("statsOverdue")}
-						</div>
+						<div className="text-xs text-error/80">{t("statsOverdue")}</div>
 					</div>
 					<div className="text-center p-2 bg-warning/10 rounded-lg">
 						<div className="text-lg font-bold text-warning">
 							{totalPendingPayments}
 						</div>
-						<div className="text-xs text-warning/80">
-							{t("statsPending")}
-						</div>
+						<div className="text-xs text-warning/80">{t("statsPending")}</div>
 					</div>
 				</div>
 
@@ -245,8 +239,7 @@ export default function DebtPaymentsList({
 								{t("extraPaymentsTotalLabel")}:{" "}
 								{formatCurrency(
 									extraPayments.reduce(
-										(sum, p) =>
-											sum + (p.actual_amount || 0),
+										(sum, p) => sum + (p.actual_amount || 0),
 										0,
 									),
 								)}
@@ -268,16 +261,12 @@ export default function DebtPaymentsList({
 												<input
 													type="number"
 													value={editAmount}
-													onChange={(e) =>
-														setEditAmount(e.target.value)
-													}
+													onChange={(e) => setEditAmount(e.target.value)}
 													className="input input-xs input-bordered w-24 font-mono"
 													step="0.01"
 												/>
 												<button
-													onClick={() =>
-														handleSaveEdit(payment.id!)
-													}
+													onClick={() => handleSaveEdit(payment.id!)}
 													className="btn btn-xs btn-success"
 												>
 													<CheckCircle className="w-3 h-3" />
@@ -292,9 +281,7 @@ export default function DebtPaymentsList({
 										) : (
 											<>
 												<span className="font-mono text-sm font-semibold text-primary">
-													{formatCurrency(
-														payment.actual_amount || 0,
-													)}
+													{formatCurrency(payment.actual_amount || 0)}
 												</span>
 												<button
 													onClick={() =>
@@ -309,11 +296,7 @@ export default function DebtPaymentsList({
 													<PencilSimple className="w-3 h-3" />
 												</button>
 												<button
-													onClick={() =>
-														handleDeleteExtraPayment(
-															payment.id!,
-														)
-													}
+													onClick={() => handleDeleteExtraPayment(payment.id!)}
 													className="btn btn-xs btn-ghost text-error"
 													title="Delete extra payment"
 												>
@@ -335,237 +318,193 @@ export default function DebtPaymentsList({
 							<tr>
 								<th>{t("headers.period")}</th>
 								<th>{t("headers.status")}</th>
-								<th className="text-right">
-									{t("headers.plannedAmount")}
-								</th>
-								<th className="text-right">
-									{t("headers.actualAmount")}
-								</th>
+								<th className="text-right">{t("headers.plannedAmount")}</th>
+								<th className="text-right">{t("headers.actualAmount")}</th>
 								<th>{t("headers.paymentDate")}</th>
 								<th className="text-center">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
-							{allExpectedPayments.map(
-								(expectedPayment, index) => {
-									const {
-										month,
-										year,
-										planned_amount,
-										payment,
-										extraPayments,
-										isOverdue,
-										totalActualAmount,
-									} = expectedPayment;
-									const isPaid = payment?.paid || false;
-									const hasExtraPayments =
-										extraPayments.length > 0;
+							{allExpectedPayments.map((expectedPayment, index) => {
+								const {
+									month,
+									year,
+									planned_amount,
+									payment,
+									extraPayments,
+									isOverdue,
+									totalActualAmount,
+								} = expectedPayment;
+								const isPaid = payment?.paid || false;
+								const hasExtraPayments = extraPayments.length > 0;
 
-									return (
-										<tr
-											key={`${year}-${month}`}
-											className={`
+								return (
+									<tr
+										key={`${year}-${month}`}
+										className={`
 											${isPaid ? "bg-success/5" : isOverdue ? "bg-error/5" : ""}
 										`}
-										>
-											<td>
-												<div className="flex items-center gap-2">
-													<Calendar className="w-4 h-4 text-base-content/50" />
-													<span className="font-medium">
-														{formatMonthYear(
-															month,
-															year,
-														)}
+									>
+										<td>
+											<div className="flex items-center gap-2">
+												<Calendar className="w-4 h-4 text-base-content/50" />
+												<span className="font-medium">
+													{formatMonthYear(month, year)}
+												</span>
+											</div>
+										</td>
+										<td>
+											<div className="flex items-center gap-2">
+												{isPaid ? (
+													<>
+														<CheckCircle className="w-4 h-4 text-success" />
+														<span className="badge badge-success badge-sm">
+															{t("statusPaid")}
+														</span>
+													</>
+												) : isOverdue ? (
+													<>
+														<XCircle className="w-4 h-4 text-error" />
+														<span className="badge badge-error badge-sm">
+															{t("statusOverdue")}
+														</span>
+													</>
+												) : (
+													<>
+														<Calendar className="w-4 h-4 text-warning" />
+														<span className="badge badge-warning badge-sm">
+															{t("statusPending")}
+														</span>
+													</>
+												)}
+											</div>
+										</td>
+										<td className="text-right font-mono text-sm">
+											{formatCurrency(planned_amount)}
+										</td>
+										<td className="text-right font-mono text-sm">
+											{isPaid ? (
+												<span
+													className={
+														totalActualAmount !== planned_amount
+															? "text-warning font-medium"
+															: ""
+													}
+												>
+													{formatCurrency(totalActualAmount)}
+												</span>
+											) : hasExtraPayments ? (
+												<div className="flex flex-col items-end gap-1">
+													<span className="text-base-content/40">-</span>
+													<span className="text-xs text-primary">
+														{t("hasExtraPayments", {
+															count: extraPayments.length,
+														})}
 													</span>
 												</div>
-											</td>
-											<td>
-												<div className="flex items-center gap-2">
-													{isPaid ? (
+											) : (
+												<span className="text-base-content/40">-</span>
+											)}
+										</td>
+										<td className="text-sm text-base-content/70">
+											{payment?.paid_date ? (
+												formatPaymentDate(payment.paid_date)
+											) : (
+												<span className="text-base-content/40">-</span>
+											)}
+										</td>
+										<td>
+											<div className="flex items-center justify-center gap-1">
+												{isPaid && payment?.id ? (
+													editingPaymentId === payment.id ? (
 														<>
-															<CheckCircle className="w-4 h-4 text-success" />
-															<span className="badge badge-success badge-sm">
-																{t(
-																	"statusPaid",
-																)}
-															</span>
-														</>
-													) : isOverdue ? (
-														<>
-															<XCircle className="w-4 h-4 text-error" />
-															<span className="badge badge-error badge-sm">
-																{t(
-																	"statusOverdue",
-																)}
-															</span>
+															<input
+																type="number"
+																value={editAmount}
+																onChange={(e) => setEditAmount(e.target.value)}
+																className="input input-xs input-bordered w-20 font-mono"
+																step="0.01"
+															/>
+															<button
+																onClick={() => handleSaveEdit(payment.id!)}
+																className="btn btn-xs btn-success"
+																title="Save"
+															>
+																<CheckCircle className="w-3 h-3" />
+															</button>
+															<button
+																onClick={handleCancelEdit}
+																className="btn btn-xs btn-ghost"
+																title="Cancel"
+															>
+																<XCircle className="w-3 h-3" />
+															</button>
 														</>
 													) : (
 														<>
-															<Calendar className="w-4 h-4 text-warning" />
-															<span className="badge badge-warning badge-sm">
-																{t(
-																	"statusPending",
-																)}
-															</span>
+															<button
+																onClick={() =>
+																	handleStartEdit(
+																		payment.id!,
+																		totalActualAmount,
+																	)
+																}
+																className="btn btn-xs btn-ghost"
+																title="Edit amount"
+															>
+																<PencilSimple className="w-3 h-3" />
+															</button>
+															<button
+																onClick={() => handleUnmarkPayment(payment.id!)}
+																className="btn btn-xs btn-ghost text-warning"
+																title="Unmark as paid"
+															>
+																<ArrowCounterClockwise className="w-3 h-3" />
+															</button>
 														</>
-													)}
-												</div>
-											</td>
-											<td className="text-right font-mono text-sm">
-												{formatCurrency(planned_amount)}
-											</td>
-											<td className="text-right font-mono text-sm">
-												{isPaid ? (
-													<span
-														className={
-															totalActualAmount !==
-															planned_amount
-																? "text-warning font-medium"
-																: ""
-														}
-													>
-														{formatCurrency(
-															totalActualAmount,
-														)}
-													</span>
-												) : hasExtraPayments ? (
-													<div className="flex flex-col items-end gap-1">
-														<span className="text-base-content/40">
-															-
-														</span>
-														<span className="text-xs text-primary">
-															{t("hasExtraPayments", {
-																count: extraPayments.length,
-															})}
-														</span>
-													</div>
-												) : (
-													<span className="text-base-content/40">
-														-
-													</span>
-												)}
-											</td>
-											<td className="text-sm text-base-content/70">
-												{payment?.paid_date ? (
-													formatPaymentDate(
-														payment.paid_date,
 													)
 												) : (
-													<span className="text-base-content/40">
-														-
-													</span>
+													<button
+														onClick={() =>
+															handleMarkAsPaid(month, year, planned_amount)
+														}
+														className="btn btn-xs btn-success"
+														title="Mark as paid"
+													>
+														<CheckCircle className="w-3 h-3" />
+													</button>
 												)}
-											</td>
-											<td>
-												<div className="flex items-center justify-center gap-1">
-													{isPaid && payment?.id ? (
-														editingPaymentId === payment.id ? (
-															<>
-																<input
-																	type="number"
-																	value={editAmount}
-																	onChange={(e) =>
-																		setEditAmount(
-																			e.target.value,
-																		)
-																	}
-																	className="input input-xs input-bordered w-20 font-mono"
-																	step="0.01"
-																/>
-																<button
-																	onClick={() =>
-																		handleSaveEdit(
-																			payment.id!,
-																		)
-																	}
-																	className="btn btn-xs btn-success"
-																	title="Save"
-																>
-																	<CheckCircle className="w-3 h-3" />
-																</button>
-																<button
-																	onClick={handleCancelEdit}
-																	className="btn btn-xs btn-ghost"
-																	title="Cancel"
-																>
-																	<XCircle className="w-3 h-3" />
-																</button>
-															</>
-														) : (
-															<>
-																<button
-																	onClick={() =>
-																		handleStartEdit(
-																			payment.id!,
-																			totalActualAmount,
-																		)
-																	}
-																	className="btn btn-xs btn-ghost"
-																	title="Edit amount"
-																>
-																	<PencilSimple className="w-3 h-3" />
-																</button>
-																<button
-																	onClick={() =>
-																		handleUnmarkPayment(
-																			payment.id!,
-																		)
-																	}
-																	className="btn btn-xs btn-ghost text-warning"
-																	title="Unmark as paid"
-																>
-																	<ArrowCounterClockwise className="w-3 h-3" />
-																</button>
-															</>
-														)
-													) : (
-														<button
-															onClick={() =>
-																handleMarkAsPaid(
-																	month,
-																	year,
-																	planned_amount,
-																)
-															}
-															className="btn btn-xs btn-success"
-															title="Mark as paid"
-														>
-															<CheckCircle className="w-3 h-3" />
-														</button>
-													)}
-												</div>
-											</td>
-										</tr>
-									);
-								},
-							)}
+											</div>
+										</td>
+									</tr>
+								);
+							})}
 						</tbody>
 						<tfoot>
 							<tr className="font-medium border-t-2">
 								<td colSpan={2}>{t("totalLabel")}</td>
 								<td className="text-right font-mono">
 									{formatCurrency(
-										debt.monthly_amount *
-											debt.number_of_payments,
+										(debt.original_monthly_amount || debt.monthly_amount) *
+											(debt.original_number_of_payments ||
+												debt.number_of_payments),
 									)}
 								</td>
 								<td className="text-right font-mono">
 									{formatCurrency(
 										Math.min(
 											allExpectedPayments.reduce(
-												(sum, ep) =>
-													sum + ep.totalActualAmount,
+												(sum, ep) => sum + ep.totalActualAmount,
 												0,
 											) +
 												extraPayments.reduce(
-													(sum, p) =>
-														sum +
-														(p.actual_amount || 0),
+													(sum, p) => sum + (p.actual_amount || 0),
 													0,
 												),
 											(debt.down_payment || 0) +
-												debt.monthly_amount *
-													debt.number_of_payments +
+												(debt.original_monthly_amount || debt.monthly_amount) *
+													(debt.original_number_of_payments ||
+														debt.number_of_payments) +
 												(debt.final_payment || 0),
 										),
 									)}

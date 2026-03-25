@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { LandingDetail } from "@/data/landing";
+import type { LandingDetail } from "@/data/landing";
 
 interface DetailCardProps {
 	detail: LandingDetail;

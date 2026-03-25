@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { DebtsProvider } from "@/contexts/DebtsContext";
+import { useState } from "react";
 import SessionGuard from "@/components/auth/SessionGuard";
 import Header from "@/components/layout/Header";
-import { useAuth } from "@/contexts/AuthContext";
+import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { DebtsProvider } from "@/contexts/DebtsContext";
 import { useAuthSync } from "@/hooks/useAuthSync";
 import { makeQueryClient } from "@/lib/query-client";
 

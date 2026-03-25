@@ -1,9 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import {
+	Check,
+	Copy,
+	LinkSimple,
+	ShareNetwork,
+	Trash,
+} from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
-import { Copy, Check, LinkSimple, Trash, ShareNetwork } from "@phosphor-icons/react";
-import { useShareProfile, type ExpiresIn } from "@/hooks/useShareProfile";
+import { useEffect, useState } from "react";
+import { type ExpiresIn, useShareProfile } from "@/hooks/useShareProfile";
 
 interface ShareProfileModalProps {
 	isOpen: boolean;
@@ -148,7 +154,9 @@ export default function ShareProfileModal({
 					</label>
 
 					<label className="flex items-center justify-between cursor-pointer">
-						<span className="text-sm">{t("shareProfile.fields.completed")}</span>
+						<span className="text-sm">
+							{t("shareProfile.fields.completed")}
+						</span>
 						<input
 							type="checkbox"
 							className="toggle toggle-sm toggle-primary"
@@ -195,9 +203,7 @@ export default function ShareProfileModal({
 				</button>
 
 				{error && (
-					<div className="alert alert-error mt-3 py-2 text-sm">
-						{error}
-					</div>
+					<div className="alert alert-error mt-3 py-2 text-sm">{error}</div>
 				)}
 
 				{/* Generated link */}
@@ -237,9 +243,7 @@ export default function ShareProfileModal({
 									className="flex items-center justify-between bg-base-200 rounded-lg px-3 py-2 text-xs"
 								>
 									<div>
-										<span className="font-mono">
-											...{link.token.slice(-8)}
-										</span>
+										<span className="font-mono">...{link.token.slice(-8)}</span>
 										<span className="text-base-content/50 ml-2">
 											{new Date(link.expires_at).getFullYear() >= 9999
 												? t("share.neverExpires")
