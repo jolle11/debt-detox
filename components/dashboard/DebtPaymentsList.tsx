@@ -7,14 +7,18 @@ import {
 	CreditCard,
 	PencilSimple,
 	Trash,
+	WarningCircle,
 	XCircle,
 } from "@phosphor-icons/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
-import type { Debt, Payment } from "@/lib/types";
+import { calculateDebtStatus } from "@/lib/format";
+import pb from "@/lib/pocketbase";
+import { COLLECTIONS, type Debt, type Payment } from "@/lib/types";
 
 interface DebtPaymentsListProps {
 	debt: Debt;
@@ -29,6 +33,7 @@ export default function DebtPaymentsList({
 }: DebtPaymentsListProps) {
 	const t = useTranslations("paymentsList");
 	const locale = useLocale();
+	const queryClient = useQueryClient();
 	const { formatCurrency } = useCurrency();
 	const {
 		unmarkPaymentAsPaid,
@@ -38,6 +43,9 @@ export default function DebtPaymentsList({
 	} = usePayments(debt.id);
 	const [editingPaymentId, setEditingPaymentId] = useState<string | null>(null);
 	const [editAmount, setEditAmount] = useState<string>("");
+	const [pendingUnmarkId, setPendingUnmarkId] = useState<string | null>(null);
+	const [isReactivating, setIsReactivating] = useState(false);
+	const tDebt = useTranslations("debt");
 	// Generate all expected payments based on debt structure
 	const generateAllExpectedPayments = () => {
 		const expectedPayments: Array<{
@@ -127,10 +135,46 @@ export default function DebtPaymentsList({
 	};
 
 	const handleUnmarkPayment = async (paymentId: string) => {
+		// Si la deuda está completada, pedir confirmación primero
+		const isCompleted =
+			calculateDebtStatus(debt.final_payment_date) === "completed";
+		if (isCompleted) {
+			setPendingUnmarkId(paymentId);
+			return;
+		}
 		try {
 			await unmarkPaymentAsPaid(paymentId);
 		} catch (error) {
 			console.error("Error unmarking payment:", error);
+		}
+	};
+
+	const handleConfirmReactivate = async () => {
+		if (!pendingUnmarkId) return;
+		setIsReactivating(true);
+		try {
+			// Desmarcar el pago
+			await unmarkPaymentAsPaid(pendingUnmarkId);
+
+			// Recalcular final_payment_date basándose en la estructura original
+			const origPayments =
+				debt.original_number_of_payments || debt.number_of_payments;
+			const firstPayment = new Date(debt.first_payment_date);
+			const newFinalDate = new Date(firstPayment);
+			newFinalDate.setMonth(newFinalDate.getMonth() + origPayments - 1);
+
+			await pb.collection(COLLECTIONS.DEBTS).update(debt.id!, {
+				final_payment_date: newFinalDate.toISOString().split("T")[0],
+			});
+
+			// Invalidar caches para refetch
+			queryClient.invalidateQueries({ queryKey: ["debts"] });
+			queryClient.invalidateQueries({ queryKey: ["payments"] });
+		} catch (error) {
+			console.error("Error reactivating debt:", error);
+		} finally {
+			setIsReactivating(false);
+			setPendingUnmarkId(null);
 		}
 	};
 
@@ -525,6 +569,55 @@ export default function DebtPaymentsList({
 					</div>
 				)}
 			</div>
+
+			{/* Modal de confirmación para reactivar financiación completada */}
+			{pendingUnmarkId && (
+				<div className="modal modal-open">
+					<div className="modal-box max-w-md">
+						<div className="flex items-center gap-3 mb-4">
+							<WarningCircle
+								size={28}
+								className="text-warning flex-shrink-0"
+							/>
+							<h3 className="text-lg font-bold">
+								{tDebt("reactivate.title")}
+							</h3>
+						</div>
+						<p className="text-base-content/80 mb-4">
+							{tDebt("reactivate.description")}
+						</p>
+						<div className="modal-action flex-wrap gap-2">
+							<button
+								type="button"
+								className="btn btn-ghost"
+								onClick={() => setPendingUnmarkId(null)}
+								disabled={isReactivating}
+							>
+								{tDebt("reactivate.cancel")}
+							</button>
+							<button
+								type="button"
+								className="btn btn-warning"
+								onClick={handleConfirmReactivate}
+								disabled={isReactivating}
+							>
+								{isReactivating ? (
+									<span className="loading loading-spinner loading-sm"></span>
+								) : (
+									<ArrowCounterClockwise size={20} />
+								)}
+								{tDebt("reactivate.confirm")}
+							</button>
+						</div>
+					</div>
+					<div
+						className="modal-backdrop"
+						onClick={() =>
+							!isReactivating && setPendingUnmarkId(null)
+						}
+					></div>
+				</div>
+			)}
 		</div>
 	);
 }

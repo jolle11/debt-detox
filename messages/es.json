@@ -233,6 +233,12 @@
 			"description": "Esta financiación tiene {count} {count, plural, =1 {cuota} other {cuotas}} de meses anteriores por un total de {amount}. ¿Quieres marcarlas como pagadas?",
 			"confirm": "Marcar {count} {count, plural, =1 {cuota} other {cuotas}} como pagadas",
 			"skip": "No, las marcaré yo"
+		},
+		"reactivate": {
+			"title": "Reactivar financiación",
+			"description": "Esta financiación está marcada como completada. Si desmarcas un pago, volverá a estar en progreso. ¿Quieres continuar?",
+			"confirm": "Sí, reactivar",
+			"cancel": "Cancelar"
 		}
 	},
 	"profile": {

@@ -233,6 +233,12 @@
 			"description": "Este financiamento tem {count} {count, plural, =1 {prestação} other {prestações}} de meses anteriores num total de {amount}. Deseja marcá-las como pagas?",
 			"confirm": "Marcar {count} {count, plural, =1 {prestação} other {prestações}} como pagas",
 			"skip": "Não, vou marcá-las eu"
+		},
+		"reactivate": {
+			"title": "Reativar financiamento",
+			"description": "Este financiamento está marcado como concluído. Se desmarcar um pagamento, voltará a estar em progresso. Deseja continuar?",
+			"confirm": "Sim, reativar",
+			"cancel": "Cancelar"
 		}
 	},
 	"profile": {

@@ -223,6 +223,12 @@
 			"description": "This financing has {count} {count, plural, =1 {installment} other {installments}} from previous months totaling {amount}. Do you want to mark them as paid?",
 			"confirm": "Mark {count} {count, plural, =1 {installment} other {installments}} as paid",
 			"skip": "No, I'll mark them myself"
+		},
+		"reactivate": {
+			"title": "Reactivate financing",
+			"description": "This financing is marked as completed. If you unmark a payment, it will return to in progress. Do you want to continue?",
+			"confirm": "Yes, reactivate",
+			"cancel": "Cancel"
 		}
 	},
 	"common": {

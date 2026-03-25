@@ -227,6 +227,12 @@
 			"description": "Diese Finanzierung hat {count} {count, plural, =1 {Rate} other {Raten}} aus vorherigen Monaten mit einem Gesamtbetrag von {amount}. Möchten Sie diese als bezahlt markieren?",
 			"confirm": "{count} {count, plural, =1 {Rate} other {Raten}} als bezahlt markieren",
 			"skip": "Nein, ich markiere sie selbst"
+		},
+		"reactivate": {
+			"title": "Finanzierung reaktivieren",
+			"description": "Diese Finanzierung ist als abgeschlossen markiert. Wenn Sie eine Zahlung abwählen, wird sie wieder als laufend angezeigt. Möchten Sie fortfahren?",
+			"confirm": "Ja, reaktivieren",
+			"cancel": "Abbrechen"
 		}
 	},
 	"common": {
