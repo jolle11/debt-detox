@@ -5,8 +5,10 @@ export interface Debt {
 	entity: string;
 	down_payment?: number; // Entrada/pago inicial
 	first_payment_date: string; // Fecha de la primera cuota
-	monthly_amount: number; // Importe mensual
-	number_of_payments: number; // Número de cuotas
+	monthly_amount: number; // Importe mensual actual (puede cambiar con aportaciones extra)
+	number_of_payments: number; // Número de cuotas actual (puede cambiar con aportaciones extra)
+	original_monthly_amount?: number; // Importe mensual original (inmutable)
+	original_number_of_payments?: number; // Número de cuotas original (inmutable)
 	final_payment?: number; // Importe de la última cuota
 	final_payment_date?: string; // Fecha de la última cuota (opcional)
 	product_image?: string;
@@ -14,6 +16,11 @@ export interface Debt {
 	updated?: string;
 	deleted?: string;
 }
+
+export type ExtraPaymentStrategy =
+	| "none"
+	| "reduce_installments"
+	| "reduce_amount";
 
 export interface Payment {
 	id?: string;

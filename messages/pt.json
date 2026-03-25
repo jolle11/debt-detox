@@ -217,7 +217,16 @@
 			"confirm": "Adicionar Pagamento",
 			"invalidAmount": "Por favor, insira um valor válido",
 			"error": "Erro ao adicionar o pagamento extra",
-			"success": "Pagamento extra adicionado com sucesso"
+			"success": "Pagamento extra adicionado com sucesso",
+			"strategyLabel": "O que pretende fazer com as prestações?",
+			"strategyNone": "Apenas registar o pagamento",
+			"strategyNoneDesc": "As prestações não mudam, vai terminar antes do previsto",
+			"strategyReduceInstallments": "Manter valor, menos prestações",
+			"strategyReduceInstallmentsDesc": "Paga o mesmo por mês mas durante menos tempo",
+			"strategyReduceAmount": "Manter prestações, valor reduzido",
+			"strategyReduceAmountDesc": "Paga menos por mês mas durante o mesmo período",
+			"previewInstallments": "{amount} × {count} prestações restantes",
+			"originalValues": "Valores originais: {amount} × {count} prestações"
 		}
 	},
 	"profile": {

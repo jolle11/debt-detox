@@ -207,7 +207,16 @@
 			"confirm": "Add Payment",
 			"invalidAmount": "Please enter a valid amount",
 			"error": "Error adding extra payment",
-			"success": "Extra payment added successfully"
+			"success": "Extra payment added successfully",
+			"strategyLabel": "What do you want to do with installments?",
+			"strategyNone": "Just record the payment",
+			"strategyNoneDesc": "Installments stay the same, you'll finish earlier than planned",
+			"strategyReduceInstallments": "Keep amount, fewer installments",
+			"strategyReduceInstallmentsDesc": "Pay the same each month but for less time",
+			"strategyReduceAmount": "Keep installments, lower amount",
+			"strategyReduceAmountDesc": "Pay less each month but for the same duration",
+			"previewInstallments": "{amount} × {count} installments remaining",
+			"originalValues": "Original values: {amount} × {count} installments"
 		}
 	},
 	"common": {

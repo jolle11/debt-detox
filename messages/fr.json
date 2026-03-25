@@ -211,7 +211,16 @@
 			"confirm": "Ajouter le Paiement",
 			"invalidAmount": "Veuillez entrer un montant valide",
 			"error": "Erreur lors de l'ajout du paiement supplémentaire",
-			"success": "Paiement supplémentaire ajouté avec succès"
+			"success": "Paiement supplémentaire ajouté avec succès",
+			"strategyLabel": "Que voulez-vous faire avec les mensualités ?",
+			"strategyNone": "Enregistrer le paiement uniquement",
+			"strategyNoneDesc": "Les mensualités ne changent pas, vous finirez plus tôt que prévu",
+			"strategyReduceInstallments": "Garder le montant, moins de mensualités",
+			"strategyReduceInstallmentsDesc": "Payez le même montant chaque mois mais pendant moins longtemps",
+			"strategyReduceAmount": "Garder les mensualités, montant réduit",
+			"strategyReduceAmountDesc": "Payez moins chaque mois mais pendant la même durée",
+			"previewInstallments": "{amount} × {count} mensualités restantes",
+			"originalValues": "Valeurs originales : {amount} × {count} mensualités"
 		}
 	},
 	"common": {

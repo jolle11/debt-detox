@@ -1,9 +1,14 @@
 "use client";
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import pb from "@/lib/pocketbase";
-import { COLLECTIONS, type Payment } from "@/lib/types";
+import {
+	COLLECTIONS,
+	type Debt,
+	type ExtraPaymentStrategy,
+	type Payment,
+} from "@/lib/types";
 
 interface UsePaymentsReturn {
 	payments: Payment[];
@@ -29,7 +34,13 @@ interface UsePaymentsReturn {
 	unmarkPaymentAsPaid: (paymentId: string) => Promise<void>;
 	updatePaymentAmount: (paymentId: string, amount: number) => Promise<void>;
 	deleteExtraPayment: (paymentId: string) => Promise<void>;
-	addExtraPayment: (debtId: string, amount: number) => Promise<void>;
+	addExtraPayment: (
+		debtId: string,
+		amount: number,
+		strategy?: ExtraPaymentStrategy,
+		debt?: Debt,
+		currentPayments?: Payment[],
+	) => Promise<void>;
 	getPaymentStatus: (
 		debtId: string,
 		month: number,
@@ -113,13 +124,11 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 			if (existingPayments.length > 0) {
 				// Actualizar el payment existente
 				const payment = existingPayments[0];
-				return await pb
-					.collection(COLLECTIONS.PAYMENTS)
-					.update(payment.id, {
-						paid: true,
-						paid_date: new Date().toISOString(),
-						actual_amount: amountToPay,
-					});
+				return await pb.collection(COLLECTIONS.PAYMENTS).update(payment.id, {
+					paid: true,
+					paid_date: new Date().toISOString(),
+					actual_amount: amountToPay,
+				});
 			} else {
 				// Crear un nuevo payment
 				return await pb.collection(COLLECTIONS.PAYMENTS).create({
@@ -190,10 +199,7 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 	): Payment | null => {
 		return (
 			payments.find(
-				(p) =>
-					p.debt_id === debtId &&
-					p.month === month &&
-					p.year === year,
+				(p) => p.debt_id === debtId && p.month === month && p.year === year,
 			) || null
 		);
 	};
@@ -217,10 +223,9 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 			const existingPayments = await pb
 				.collection(COLLECTIONS.PAYMENTS)
 				.getFullList({
-					filter: pb.filter(
-						"debt_id = {:debtId} && deleted = null",
-						{ debtId },
-					),
+					filter: pb.filter("debt_id = {:debtId} && deleted = null", {
+						debtId,
+					}),
 				});
 
 			// Construir un set de claves "mes-año" para lookup O(1)
@@ -276,6 +281,9 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 	const addExtraPayment = async (
 		debtId: string,
 		amount: number,
+		strategy: ExtraPaymentStrategy = "none",
+		debt?: Debt,
+		currentPayments?: Payment[],
 	): Promise<void> => {
 		try {
 			const now = new Date();
@@ -293,6 +301,83 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 				paid_date: now.toISOString(),
 				is_extra_payment: true,
 			});
+
+			// Recalcular cuotas según la estrategia elegida
+			if (strategy !== "none" && debt) {
+				const debtPayments = currentPayments || [];
+
+				// Calcular total pagado (cuotas regulares + extras, incluyendo el nuevo pago)
+				const totalPaidFromPayments = debtPayments
+					.filter((p) => p.paid)
+					.reduce((sum, p) => sum + (p.actual_amount || p.planned_amount), 0);
+				const totalPaid =
+					(debt.down_payment || 0) + totalPaidFromPayments + amount;
+
+				// Calcular total original de la deuda (usando valores originales)
+				const origMonthly = debt.original_monthly_amount || debt.monthly_amount;
+				const origPayments =
+					debt.original_number_of_payments || debt.number_of_payments;
+				const totalDebt =
+					(debt.down_payment || 0) +
+					origMonthly * origPayments +
+					(debt.final_payment || 0);
+
+				// Saldo restante después de la aportación
+				const remainingBalance = Math.max(0, totalDebt - totalPaid);
+
+				// Cuotas ya pagadas (solo regulares, no extras)
+				const paidInstallments = debtPayments.filter(
+					(p) => p.paid && !p.is_extra_payment,
+				).length;
+
+				// Guardar valores originales si es la primera vez que se recalcula
+				const updateData: Record<string, unknown> = {};
+				if (
+					!debt.original_monthly_amount &&
+					!debt.original_number_of_payments
+				) {
+					updateData.original_monthly_amount = debt.monthly_amount;
+					updateData.original_number_of_payments = debt.number_of_payments;
+				}
+
+				if (strategy === "reduce_amount") {
+					// Mantener cuotas, reducir importe
+					const remainingInstallments =
+						debt.number_of_payments - paidInstallments;
+					if (remainingInstallments > 0) {
+						const newMonthlyAmount =
+							Math.round((remainingBalance / remainingInstallments) * 100) /
+							100;
+						updateData.monthly_amount = newMonthlyAmount;
+					}
+				} else if (strategy === "reduce_installments") {
+					// Mantener importe, reducir cuotas
+					if (debt.monthly_amount > 0) {
+						const newRemainingInstallments = Math.ceil(
+							remainingBalance / debt.monthly_amount,
+						);
+						updateData.number_of_payments =
+							paidInstallments + newRemainingInstallments;
+
+						// Recalcular fecha final
+						const firstPayment = new Date(debt.first_payment_date);
+						const newFinalDate = new Date(firstPayment);
+						newFinalDate.setMonth(
+							newFinalDate.getMonth() +
+								paidInstallments +
+								newRemainingInstallments -
+								1,
+						);
+						updateData.final_payment_date = newFinalDate
+							.toISOString()
+							.split("T")[0];
+					}
+				}
+
+				if (Object.keys(updateData).length > 0) {
+					await pb.collection(COLLECTIONS.DEBTS).update(debtId, updateData);
+				}
+			}
 
 			// Invalidar cache para refetch automático
 			queryClient.invalidateQueries({ queryKey: ["payments"] });

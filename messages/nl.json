@@ -217,7 +217,16 @@
 			"confirm": "Betaling Toevoegen",
 			"invalidAmount": "Voer een geldig bedrag in",
 			"error": "Fout bij toevoegen van extra betaling",
-			"success": "Extra betaling succesvol toegevoegd"
+			"success": "Extra betaling succesvol toegevoegd",
+			"strategyLabel": "Wat wilt u doen met de termijnen?",
+			"strategyNone": "Alleen de betaling registreren",
+			"strategyNoneDesc": "Termijnen blijven gelijk, u bent eerder klaar dan gepland",
+			"strategyReduceInstallments": "Bedrag behouden, minder termijnen",
+			"strategyReduceInstallmentsDesc": "Betaal elke maand hetzelfde maar korter",
+			"strategyReduceAmount": "Termijnen behouden, lager bedrag",
+			"strategyReduceAmountDesc": "Betaal elke maand minder maar even lang",
+			"previewInstallments": "{amount} × {count} resterende termijnen",
+			"originalValues": "Originele waarden: {amount} × {count} termijnen"
 		}
 	},
 	"profile": {

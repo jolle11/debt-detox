@@ -211,7 +211,16 @@
 			"confirm": "Zahlung Hinzufügen",
 			"invalidAmount": "Bitte geben Sie einen gültigen Betrag ein",
 			"error": "Fehler beim Hinzufügen der Zusatzzahlung",
-			"success": "Zusatzzahlung erfolgreich hinzugefügt"
+			"success": "Zusatzzahlung erfolgreich hinzugefügt",
+			"strategyLabel": "Was möchten Sie mit den Raten machen?",
+			"strategyNone": "Nur die Zahlung erfassen",
+			"strategyNoneDesc": "Raten bleiben gleich, Sie werden früher fertig als geplant",
+			"strategyReduceInstallments": "Betrag beibehalten, weniger Raten",
+			"strategyReduceInstallmentsDesc": "Zahlen Sie jeden Monat gleich viel, aber kürzer",
+			"strategyReduceAmount": "Raten beibehalten, niedrigerer Betrag",
+			"strategyReduceAmountDesc": "Zahlen Sie jeden Monat weniger, aber gleich lange",
+			"previewInstallments": "{amount} × {count} verbleibende Raten",
+			"originalValues": "Originalwerte: {amount} × {count} Raten"
 		}
 	},
 	"common": {

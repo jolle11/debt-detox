@@ -217,7 +217,16 @@
 			"confirm": "Añadir Pago",
 			"invalidAmount": "Por favor, introduce un importe válido",
 			"error": "Error al añadir el pago extra",
-			"success": "Pago extra añadido correctamente"
+			"success": "Pago extra añadido correctamente",
+			"strategyLabel": "¿Qué quieres hacer con las cuotas?",
+			"strategyNone": "Solo registrar la aportación",
+			"strategyNoneDesc": "Las cuotas no cambian, terminarás antes de lo previsto",
+			"strategyReduceInstallments": "Mantener importe, menos cuotas",
+			"strategyReduceInstallmentsDesc": "Pagas lo mismo cada mes pero durante menos tiempo",
+			"strategyReduceAmount": "Mantener cuotas, menos importe",
+			"strategyReduceAmountDesc": "Pagas menos cada mes pero durante el mismo tiempo",
+			"previewInstallments": "{amount} × {count} cuotas restantes",
+			"originalValues": "Valores originales: {amount} × {count} cuotas"
 		}
 	},
 	"profile": {
