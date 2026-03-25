@@ -61,10 +61,12 @@ export default function DebtPaymentsList({
 			const year = paymentDate.getFullYear();
 
 			// Determine if this payment is overdue (past due date and not paid)
-			// Set the due date to the same day of month as the first payment
+			// A payment is overdue only after its due date has passed (not on the same day)
 			const dueDate = new Date(paymentDate);
 			dueDate.setDate(startDate.getDate());
-			const isOverdue = dueDate < now;
+			const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+			const dueDateOnly = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
+			const isOverdue = dueDateOnly < today;
 
 			// Find actual payment record (cuota mensual)
 			const actualPayment =

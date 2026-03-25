@@ -29,11 +29,12 @@ export function calculateElapsedPayments(
 	const monthsDiff = currentDate.getMonth() - startDate.getMonth();
 	let monthsElapsed = yearsDiff * 12 + monthsDiff;
 
-	if (currentDate.getDate() < startDate.getDate()) {
+	// Solo contar un mes como pagado si ya pasó su día de pago (no el mismo día)
+	if (currentDate.getDate() <= startDate.getDate()) {
 		monthsElapsed--;
 	}
 
-	monthsElapsed = Math.max(0, monthsElapsed + 1);
+	monthsElapsed = Math.max(0, monthsElapsed);
 
 	return Math.min(monthsElapsed, numberOfPayments);
 }
