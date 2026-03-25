@@ -227,6 +227,12 @@
 			"strategyReduceAmountDesc": "Paga menos por mês mas durante o mesmo período",
 			"previewInstallments": "{amount} × {count} prestações restantes",
 			"originalValues": "Valores originais: {amount} × {count} prestações"
+		},
+		"historicalPayments": {
+			"title": "Prestações anteriores",
+			"description": "Este financiamento tem {count} {count, plural, =1 {prestação} other {prestações}} de meses anteriores num total de {amount}. Deseja marcá-las como pagas?",
+			"confirm": "Marcar {count} {count, plural, =1 {prestação} other {prestações}} como pagas",
+			"skip": "Não, vou marcá-las eu"
 		}
 	},
 	"profile": {

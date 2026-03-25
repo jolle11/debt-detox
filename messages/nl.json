@@ -227,6 +227,12 @@
 			"strategyReduceAmountDesc": "Betaal elke maand minder maar even lang",
 			"previewInstallments": "{amount} × {count} resterende termijnen",
 			"originalValues": "Originele waarden: {amount} × {count} termijnen"
+		},
+		"historicalPayments": {
+			"title": "Vorige termijnen",
+			"description": "Deze financiering heeft {count} {count, plural, =1 {termijn} other {termijnen}} uit vorige maanden met een totaal van {amount}. Wilt u deze als betaald markeren?",
+			"confirm": "{count} {count, plural, =1 {termijn} other {termijnen}} als betaald markeren",
+			"skip": "Nee, ik markeer ze zelf"
 		}
 	},
 	"profile": {

@@ -221,6 +221,12 @@
 			"strategyReduceAmountDesc": "Zahlen Sie jeden Monat weniger, aber gleich lange",
 			"previewInstallments": "{amount} × {count} verbleibende Raten",
 			"originalValues": "Originalwerte: {amount} × {count} Raten"
+		},
+		"historicalPayments": {
+			"title": "Vorherige Raten",
+			"description": "Diese Finanzierung hat {count} {count, plural, =1 {Rate} other {Raten}} aus vorherigen Monaten mit einem Gesamtbetrag von {amount}. Möchten Sie diese als bezahlt markieren?",
+			"confirm": "{count} {count, plural, =1 {Rate} other {Raten}} als bezahlt markieren",
+			"skip": "Nein, ich markiere sie selbst"
 		}
 	},
 	"common": {

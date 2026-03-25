@@ -227,6 +227,12 @@
 			"strategyReduceAmountDesc": "Pagas menos cada mes pero durante el mismo tiempo",
 			"previewInstallments": "{amount} × {count} cuotas restantes",
 			"originalValues": "Valores originales: {amount} × {count} cuotas"
+		},
+		"historicalPayments": {
+			"title": "Cuotas anteriores",
+			"description": "Esta financiación tiene {count} {count, plural, =1 {cuota} other {cuotas}} de meses anteriores por un total de {amount}. ¿Quieres marcarlas como pagadas?",
+			"confirm": "Marcar {count} {count, plural, =1 {cuota} other {cuotas}} como pagadas",
+			"skip": "No, las marcaré yo"
 		}
 	},
 	"profile": {
