@@ -3,6 +3,7 @@
 import { TrashIcon, XIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useDeleteDebt } from "@/hooks/useDeleteDebt";
+import { useToast } from "@/hooks/useToast";
 import type { Debt } from "@/lib/types";
 
 interface DeleteDebtModalProps {
@@ -19,17 +20,19 @@ export default function DeleteDebtModal({
 	onSuccess,
 }: DeleteDebtModalProps) {
 	const t = useTranslations();
-	const { deleteDebt, isLoading, error } = useDeleteDebt();
+	const toast = useToast();
+	const { deleteDebt, isLoading } = useDeleteDebt();
 
 	const handleDelete = async () => {
 		if (!debt?.id) return;
 
 		try {
 			await deleteDebt(debt.id);
+			toast.success("debtDeleted");
 			onSuccess?.();
 			onClose();
 		} catch (err) {
-			// El error ya se maneja en el hook
+			toast.error("genericError");
 		}
 	};
 
@@ -49,12 +52,6 @@ export default function DeleteDebtModal({
 					</button>
 				</div>
 
-				{error && (
-					<div className="alert alert-error mb-4">
-						<span>{error}</span>
-					</div>
-				)}
-
 				<div className="flex flex-col items-center gap-4 py-4">
 					<div className="p-4 bg-error/10 rounded-full">
 						<TrashIcon size={48} className="text-error" />
@@ -65,7 +62,9 @@ export default function DeleteDebtModal({
 							{t("debt.delete.confirmation")}
 						</p>
 						<p className="text-base-content/70">
-							{t("debt.delete.description", { name: debt.name })}
+							{t("debt.delete.description", {
+								name: debt.name,
+							})}
 						</p>
 						<p className="text-sm text-base-content/50 mt-2">
 							{t("debt.delete.warning")}

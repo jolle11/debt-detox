@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { calculateDebtLifecycleStatus } from "@/lib/format";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt, type Payment } from "@/lib/types";
 
@@ -18,6 +19,7 @@ export default function DebtPaymentStatus({
 	const queryClient = useQueryClient();
 	const [isProcessing, setIsProcessing] = useState(false);
 	const t = useTranslations("paymentStatus");
+	const tStatus = useTranslations("debtDetail.status");
 
 	const currentDate = new Date();
 	const currentMonth = currentDate.getMonth() + 1; // getMonth() returns 0-11
@@ -41,6 +43,11 @@ export default function DebtPaymentStatus({
 		currentYear,
 	);
 	const isCurrentMonthPaid = currentPaymentStatus?.paid || false;
+	const lifecycleStatus = calculateDebtLifecycleStatus(
+		debt.final_payment_date,
+		debt.first_payment_date,
+		payments,
+	);
 
 	const markPaymentMutation = useMutation({
 		mutationFn: async ({
@@ -116,10 +123,7 @@ export default function DebtPaymentStatus({
 	};
 
 	// Verificar si la deuda ya está completada
-	const debtEndDate = debt.final_payment_date
-		? new Date(debt.final_payment_date)
-		: null;
-	const isDebtCompleted = debtEndDate && currentDate > debtEndDate;
+	const isDebtCompleted = lifecycleStatus === "completed";
 
 	if (isDebtCompleted) {
 		return (
@@ -130,11 +134,21 @@ export default function DebtPaymentStatus({
 	}
 
 	// Verificar si aún no ha llegado la fecha del primer pago
+	if (lifecycleStatus === "pending") {
+		return (
+			<div className="flex items-center gap-3">
+				<div className="badge badge-neutral badge-lg">{t("pendingStart")}</div>
+			</div>
+		);
+	}
+
 	const firstPaymentDate = new Date(debt.first_payment_date);
 	if (currentDate < firstPaymentDate) {
 		return (
 			<div className="flex items-center gap-3">
-				<div className="badge badge-neutral badge-lg">{t("pendingStart")}</div>
+				<div className="badge badge-primary badge-lg">
+					{tStatus("active")}
+				</div>
 			</div>
 		);
 	}

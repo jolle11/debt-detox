@@ -7,6 +7,7 @@ import {
 	type HistoricalPaymentInfo,
 	useCreateDebt,
 } from "@/hooks/useCreateDebt";
+import { useToast } from "@/hooks/useToast";
 import type { Debt } from "@/lib/types";
 import ConfirmHistoricalPaymentsModal from "./ConfirmHistoricalPaymentsModal";
 import CreateDebtForm from "./CreateDebtForm";
@@ -23,7 +24,8 @@ export default function CreateDebtModal({
 	onSuccess,
 }: CreateDebtModalProps) {
 	const t = useTranslations();
-	const { createDebt, isLoading, error } = useCreateDebt();
+	const toast = useToast();
+	const { createDebt, isLoading } = useCreateDebt();
 	const [historicalInfo, setHistoricalInfo] =
 		useState<HistoricalPaymentInfo | null>(null);
 	const [showHistoricalModal, setShowHistoricalModal] = useState(false);
@@ -39,17 +41,19 @@ export default function CreateDebtModal({
 				setShowHistoricalModal(true);
 			} else {
 				// No hay cuotas históricas, cerrar directamente
+				toast.success("debtCreated");
 				onSuccess?.();
 				onClose();
 			}
 		} catch (err) {
-			// El error ya se maneja en el hook
+			toast.error("genericError");
 		}
 	};
 
 	const handleHistoricalClose = () => {
 		setShowHistoricalModal(false);
 		setHistoricalInfo(null);
+		toast.success("debtCreated");
 		onSuccess?.();
 		onClose();
 	};
@@ -71,12 +75,6 @@ export default function CreateDebtModal({
 								<XIcon size={20} />
 							</button>
 						</div>
-
-						{error && (
-							<div className="alert alert-error mb-4">
-								<span>{error}</span>
-							</div>
-						)}
 
 						<CreateDebtForm
 							onSubmit={handleSubmit}

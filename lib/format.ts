@@ -31,15 +31,45 @@ import type { Payment } from "./types";
 
 // Nuevo modelo de cálculos basado en cuotas y fechas específicas
 
+export type DebtLifecycleStatus = "pending" | "active" | "completed";
+
+export function calculateDebtLifecycleStatus(
+	finalPaymentDate: string | undefined,
+	firstPaymentDate?: string,
+	payments: Payment[] = [],
+): DebtLifecycleStatus {
+	if (finalPaymentDate) {
+		const now = new Date();
+		const finalDate = new Date(finalPaymentDate);
+		if (finalDate <= now) {
+			return "completed";
+		}
+	}
+
+	const hasPaidPayments = payments.some((payment) => payment.paid);
+	if (firstPaymentDate) {
+		const now = new Date();
+		const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+		const firstDate = new Date(firstPaymentDate);
+		const firstPaymentDay = new Date(
+			firstDate.getFullYear(),
+			firstDate.getMonth(),
+			firstDate.getDate(),
+		);
+
+		if (today < firstPaymentDay && !hasPaidPayments) {
+			return "pending";
+		}
+	}
+
+	return "active";
+}
+
 export function calculateDebtStatus(
 	finalPaymentDate: string | undefined,
 ): "active" | "completed" {
-	if (!finalPaymentDate) {
-		return "active";
-	}
-	const now = new Date();
-	const finalDate = new Date(finalPaymentDate);
-	return finalDate <= now ? "completed" : "active";
+	const lifecycleStatus = calculateDebtLifecycleStatus(finalPaymentDate);
+	return lifecycleStatus === "completed" ? "completed" : "active";
 }
 
 export function calculateTotalAmount(debt: {

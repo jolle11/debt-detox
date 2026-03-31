@@ -10,6 +10,7 @@ import {
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { type ExpiresIn, useShareDebt } from "@/hooks/useShareDebt";
+import { useToast } from "@/hooks/useToast";
 import type { Debt } from "@/lib/types";
 
 interface ShareDebtModalProps {
@@ -24,6 +25,7 @@ export default function ShareDebtModal({
 	onClose,
 }: ShareDebtModalProps) {
 	const t = useTranslations();
+	const toast = useToast();
 	const {
 		createShareLink,
 		fetchActiveLinks,
@@ -39,19 +41,16 @@ export default function ShareDebtModal({
 	const [showDates, setShowDates] = useState(true);
 	const [generatedLink, setGeneratedLink] = useState<string | null>(null);
 	const [copied, setCopied] = useState(false);
-	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		if (isOpen) {
 			fetchActiveLinks();
 			setGeneratedLink(null);
 			setCopied(false);
-			setError(null);
 		}
 	}, [isOpen]);
 
 	const handleGenerate = async () => {
-		setError(null);
 		try {
 			const link = await createShareLink({
 				expiresIn,
@@ -60,9 +59,10 @@ export default function ShareDebtModal({
 				showDates,
 			});
 			setGeneratedLink(link);
+			toast.success("linkGenerated");
 			await fetchActiveLinks();
 		} catch {
-			setError(t("share.error"));
+			toast.error("genericError");
 		}
 	};
 
@@ -71,17 +71,19 @@ export default function ShareDebtModal({
 		try {
 			await navigator.clipboard.writeText(generatedLink);
 			setCopied(true);
+			toast.success("linkCopied");
 			setTimeout(() => setCopied(false), 2000);
 		} catch {
-			// Fallback for older browsers
+			toast.error("clipboardError");
 		}
 	};
 
 	const handleRevoke = async (id: string) => {
 		try {
 			await revokeLink(id);
+			toast.success("linkRevoked");
 		} catch {
-			// Silent fail
+			toast.error("genericError");
 		}
 	};
 
@@ -202,10 +204,6 @@ export default function ShareDebtModal({
 						</>
 					)}
 				</button>
-
-				{error && (
-					<div className="alert alert-error mt-3 py-2 text-sm">{error}</div>
-				)}
 
 				{/* Generated link */}
 				{generatedLink && (

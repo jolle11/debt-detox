@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
+import { useToast } from "@/hooks/useToast";
 import type { Debt, ExtraPaymentStrategy } from "@/lib/types";
 import { calculatePaymentStats } from "@/utils/debtCalculations";
 
@@ -22,6 +23,7 @@ export default function AddExtraPaymentModal({
 	onSuccess,
 }: AddExtraPaymentModalProps) {
 	const t = useTranslations();
+	const toast = useToast();
 	const { addExtraPayment, payments } = usePayments(debt?.id);
 	const { formatCurrency } = useCurrency();
 	const [amount, setAmount] = useState<string>("");
@@ -125,10 +127,12 @@ export default function AddExtraPaymentModal({
 			await addExtraPayment(debt.id!, numAmount, strategy, debt, debtPayments);
 			setAmount("");
 			setStrategy("none");
+			toast.success("extraPaymentAdded");
 			onSuccess?.();
 			onClose();
 		} catch (err) {
-			setError(
+			toast.error(
+				"genericError",
 				err instanceof Error ? err.message : t("debt.extraPayment.error"),
 			);
 		} finally {

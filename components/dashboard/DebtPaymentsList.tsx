@@ -73,7 +73,11 @@ export default function DebtPaymentsList({
 			const dueDate = new Date(paymentDate);
 			dueDate.setDate(startDate.getDate());
 			const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-			const dueDateOnly = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
+			const dueDateOnly = new Date(
+				dueDate.getFullYear(),
+				dueDate.getMonth(),
+				dueDate.getDate(),
+			);
 			const isOverdue = dueDateOnly < today;
 
 			// Find actual payment record (cuota mensual)
@@ -575,13 +579,8 @@ export default function DebtPaymentsList({
 				<div className="modal modal-open">
 					<div className="modal-box max-w-md">
 						<div className="flex items-center gap-3 mb-4">
-							<WarningCircle
-								size={28}
-								className="text-warning flex-shrink-0"
-							/>
-							<h3 className="text-lg font-bold">
-								{tDebt("reactivate.title")}
-							</h3>
+							<WarningCircle size={28} className="text-warning flex-shrink-0" />
+							<h3 className="text-lg font-bold">{tDebt("reactivate.title")}</h3>
 						</div>
 						<p className="text-base-content/80 mb-4">
 							{tDebt("reactivate.description")}
@@ -612,9 +611,7 @@ export default function DebtPaymentsList({
 					</div>
 					<div
 						className="modal-backdrop"
-						onClick={() =>
-							!isReactivating && setPendingUnmarkId(null)
-						}
+						onClick={() => !isReactivating && setPendingUnmarkId(null)}
 					></div>
 				</div>
 			)}

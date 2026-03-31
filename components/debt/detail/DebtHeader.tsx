@@ -11,10 +11,11 @@ import {
 } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { type DebtHeaderProps, debtStatusConfig } from "@/data/debtDetail";
-import { calculateDebtStatus } from "@/lib/format";
+import { calculateDebtLifecycleStatus } from "@/lib/format";
 
 export default function DebtHeader({
 	debt,
+	payments,
 	onEdit,
 	onDelete,
 	onComplete,
@@ -23,7 +24,11 @@ export default function DebtHeader({
 	onBack,
 }: DebtHeaderProps) {
 	const t = useTranslations();
-	const status = calculateDebtStatus(debt.final_payment_date);
+	const status = calculateDebtLifecycleStatus(
+		debt.final_payment_date,
+		debt.first_payment_date,
+		payments,
+	);
 	const statusConfig = debtStatusConfig[status];
 
 	return (

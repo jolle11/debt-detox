@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useCompleteDebt } from "@/hooks/useCompleteDebt";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
+import { useToast } from "@/hooks/useToast";
 import { calculateRemainingAmountWithPayments } from "@/lib/format";
 import type { Debt } from "@/lib/types";
 
@@ -22,7 +23,8 @@ export default function CompleteDebtModal({
 	onSuccess,
 }: CompleteDebtModalProps) {
 	const t = useTranslations();
-	const { completeDebt, isLoading, error } = useCompleteDebt();
+	const toast = useToast();
+	const { completeDebt, isLoading } = useCompleteDebt();
 	const { formatCurrency } = useCurrency();
 	const { payments } = usePayments();
 
@@ -37,10 +39,11 @@ export default function CompleteDebtModal({
 	const handleConfirm = async () => {
 		try {
 			await completeDebt(debt, debtPayments);
+			toast.success("debtCompleted");
 			onSuccess?.();
 			onClose();
 		} catch (err) {
-			// El error ya se maneja en el hook
+			toast.error("genericError");
 		}
 	};
 
@@ -60,12 +63,6 @@ export default function CompleteDebtModal({
 						<XIcon size={20} />
 					</button>
 				</div>
-
-				{error && (
-					<div className="alert alert-error mb-4">
-						<span>{error}</span>
-					</div>
-				)}
 
 				<div className="space-y-4">
 					<p>

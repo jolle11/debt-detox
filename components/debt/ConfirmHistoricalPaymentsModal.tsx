@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { HistoricalPaymentInfo } from "@/hooks/useCreateDebt";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
+import { useToast } from "@/hooks/useToast";
 
 interface ConfirmHistoricalPaymentsModalProps {
 	info: HistoricalPaymentInfo | null;
@@ -19,6 +20,7 @@ export default function ConfirmHistoricalPaymentsModal({
 	onClose,
 }: ConfirmHistoricalPaymentsModalProps) {
 	const t = useTranslations();
+	const toast = useToast();
 	const { markMultiplePaymentsAsPaid } = usePayments(info?.debtId);
 	const { formatCurrency } = useCurrency();
 	const [isLoading, setIsLoading] = useState(false);
@@ -59,19 +61,18 @@ export default function ConfirmHistoricalPaymentsModal({
 	const handleConfirm = async () => {
 		setIsLoading(true);
 		try {
-			const paymentData = historicalMonths.map(
-				({ month, year, paidDate }) => ({
-					month,
-					year,
-					plannedAmount: info.monthlyAmount,
-					actualAmount: info.monthlyAmount,
-					paidDate,
-				}),
-			);
+			const paymentData = historicalMonths.map(({ month, year, paidDate }) => ({
+				month,
+				year,
+				plannedAmount: info.monthlyAmount,
+				actualAmount: info.monthlyAmount,
+				paidDate,
+			}));
 			await markMultiplePaymentsAsPaid(info.debtId, paymentData);
+			toast.success("historicalPaymentsMarked");
 			onClose();
 		} catch (error) {
-			console.error("Error marking historical payments:", error);
+			toast.error("genericError");
 		} finally {
 			setIsLoading(false);
 		}

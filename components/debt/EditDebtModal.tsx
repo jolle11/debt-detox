@@ -3,6 +3,7 @@
 import { XIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useEditDebt } from "@/hooks/useEditDebt";
+import { useToast } from "@/hooks/useToast";
 import type { Debt } from "@/lib/types";
 import EditDebtForm from "./EditDebtForm";
 
@@ -20,7 +21,8 @@ export default function EditDebtModal({
 	onSuccess,
 }: EditDebtModalProps) {
 	const t = useTranslations();
-	const { editDebt, isLoading, error } = useEditDebt();
+	const toast = useToast();
+	const { editDebt, isLoading } = useEditDebt();
 
 	const handleSubmit = async (
 		debtData: Omit<Debt, "created" | "updated" | "deleted">,
@@ -29,10 +31,11 @@ export default function EditDebtModal({
 
 		try {
 			await editDebt(debt.id, debtData);
+			toast.success("debtUpdated");
 			onSuccess?.();
 			onClose();
 		} catch (err) {
-			// El error ya se maneja en el hook
+			toast.error("genericError");
 		}
 	};
 
@@ -51,12 +54,6 @@ export default function EditDebtModal({
 						<XIcon size={20} />
 					</button>
 				</div>
-
-				{error && (
-					<div className="alert alert-error mb-4">
-						<span>{error}</span>
-					</div>
-				)}
 
 				<EditDebtForm
 					debt={debt}
