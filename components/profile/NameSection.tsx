@@ -1,49 +1,52 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import type { RecordModel } from "pocketbase";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import FormInput from "@/components/ui/FormInput";
 import { useProfileUpdate } from "@/hooks/useProfileUpdate";
+import { type NameFormData, nameSchema } from "@/lib/schemas";
 import ProfileForm from "./ProfileForm";
 
 interface NameSectionProps {
 	user: RecordModel;
 	refreshUser: () => Promise<void>;
-	onMessage: (message: { type: string; text: string }) => void;
 }
 
-export default function NameSection({
-	user,
-	refreshUser,
-	onMessage,
-}: NameSectionProps) {
+export default function NameSection({ user, refreshUser }: NameSectionProps) {
 	const t = useTranslations("profile");
+	const tv = useTranslations("validation");
 
-	const [formData, setFormData] = useState({
-		name: user?.name || "",
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm<NameFormData>({
+		resolver: zodResolver(nameSchema),
+		defaultValues: {
+			name: user?.name || "",
+		},
 	});
 
 	useEffect(() => {
 		if (user) {
-			setFormData({
-				name: user.name || "",
-			});
+			reset({ name: user.name || "" });
 		}
-	}, [user]);
+	}, [user, reset]);
 
 	const { isEditing, loading, handleUpdate, startEditing, cancelEditing } =
 		useProfileUpdate({
 			user,
 			refreshUser,
-			onMessage,
-			successMessage: t("profileUpdated") || "Profile updated successfully!",
-			errorMessage: t("updateError") || "Failed to update profile",
+			successMessage: t("profileUpdated"),
+			errorMessage: t("updateError"),
 		});
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
-		await handleUpdate({ name: formData.name });
+	const onSubmit = async (data: NameFormData) => {
+		await handleUpdate({ name: data.name });
 	};
 
 	return (
@@ -52,13 +55,13 @@ export default function NameSection({
 			isEditing={isEditing}
 			loading={loading}
 			onEdit={() => {
-				setFormData({ name: user?.name || "" });
+				reset({ name: user?.name || "" });
 				startEditing();
 			}}
-			onSubmit={handleSubmit}
+			onSubmit={handleSubmit(onSubmit)}
 			onCancel={() => {
 				cancelEditing();
-				setFormData({ name: user?.name || "" });
+				reset({ name: user?.name || "" });
 			}}
 			editButtonText={t("editName") || "Edit Name"}
 			displayContent={
@@ -72,14 +75,9 @@ export default function NameSection({
 			<FormInput
 				label={t("name") || "Name"}
 				type="text"
-				value={formData.name}
-				onChange={(value) =>
-					setFormData({
-						...formData,
-						name: value,
-					})
-				}
+				registration={register("name")}
 				placeholder={t("namePlaceholder") || "Enter your name"}
+				error={errors.name?.message ? tv("maxLength", { max: 100 }) : undefined}
 			/>
 		</ProfileForm>
 	);

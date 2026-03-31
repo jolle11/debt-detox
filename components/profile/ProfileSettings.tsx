@@ -1,7 +1,6 @@
 "use client";
 
 import type { RecordModel } from "pocketbase";
-import { useState } from "react";
 import CurrencySection from "./CurrencySection";
 import EmailSection from "./EmailSection";
 import NameSection from "./NameSection";
@@ -16,33 +15,15 @@ export default function ProfileSettings({
 	user,
 	refreshUser,
 }: ProfileSettingsProps) {
-	const [message, setMessage] = useState({ type: "", text: "" });
-
 	return (
 		<div className="space-y-6">
-			{message.text && (
-				<div
-					className={`alert ${message.type === "success" ? "alert-success" : "alert-error"} mb-4`}
-				>
-					<span>{message.text}</span>
-				</div>
-			)}
-
-			<NameSection
-				user={user}
-				refreshUser={refreshUser}
-				onMessage={setMessage}
-			/>
+			<NameSection user={user} refreshUser={refreshUser} />
 
 			<EmailSection user={user} />
 
-			<CurrencySection
-				user={user}
-				refreshUser={refreshUser}
-				onMessage={setMessage}
-			/>
+			<CurrencySection user={user} refreshUser={refreshUser} />
 
-			<PasswordSection user={user} onMessage={setMessage} />
+			<PasswordSection user={user} />
 		</div>
 	);
 }

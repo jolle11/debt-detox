@@ -426,6 +426,40 @@
 		},
 		"error": "Erreur lors de la génération du lien"
 	},
+	"toast": {
+		"debtCreated": "Financement créé avec succès",
+		"debtUpdated": "Financement mis à jour avec succès",
+		"debtDeleted": "Financement supprimé avec succès",
+		"debtCompleted": "Financement terminé avec succès",
+		"debtReactivated": "Financement réactivé avec succès",
+		"extraPaymentAdded": "Paiement supplémentaire ajouté avec succès",
+		"historicalPaymentsMarked": "Mensualités historiques marquées comme payées",
+		"linkGenerated": "Lien de partage généré",
+		"linkCopied": "Lien copié dans le presse-papiers",
+		"linkRevoked": "Lien révoqué",
+		"profileUpdated": "Profil mis à jour avec succès",
+		"passwordChanged": "Mot de passe changé avec succès",
+		"currencyUpdated": "Devise mise à jour avec succès",
+		"loginSuccess": "Bienvenue !",
+		"registerSuccess": "Compte créé avec succès !",
+		"logoutSuccess": "Déconnexion réussie",
+		"sessionExpired": "Votre session a expiré. Veuillez vous reconnecter.",
+		"paymentMarkedPaid": "Paiement marqué comme payé",
+		"paymentMarkedUnpaid": "Paiement décoché",
+		"genericError": "Quelque chose s'est mal passé. Veuillez réessayer.",
+		"networkError": "Erreur de connexion. Vérifiez votre internet.",
+		"clipboardError": "Impossible de copier dans le presse-papiers"
+	},
+	"validation": {
+		"required": "Ce champ est obligatoire",
+		"email": "Veuillez entrer une adresse e-mail valide",
+		"minLength": "Doit contenir au moins {min} caractères",
+		"maxLength": "Doit contenir au maximum {max} caractères",
+		"positive": "Doit être un nombre positif",
+		"integer": "Doit être un nombre entier",
+		"passwordMismatch": "Les mots de passe ne correspondent pas",
+		"invalidAmount": "Veuillez entrer un montant valide"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "Vous n'avez aucun financement actif",

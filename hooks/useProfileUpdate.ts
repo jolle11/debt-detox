@@ -2,11 +2,11 @@
 
 import type { RecordModel } from "pocketbase";
 import { useState } from "react";
+import { toast } from "sonner";
 import pb from "@/lib/pocketbase";
 
 interface UseProfileUpdateOptions {
 	user: RecordModel;
-	onMessage: (message: { type: string; text: string }) => void;
 	refreshUser?: () => Promise<void>;
 	successMessage?: string;
 	errorMessage?: string;
@@ -14,7 +14,6 @@ interface UseProfileUpdateOptions {
 
 export function useProfileUpdate({
 	user,
-	onMessage,
 	refreshUser,
 	successMessage = "Updated successfully!",
 	errorMessage = "Failed to update",
@@ -22,22 +21,8 @@ export function useProfileUpdate({
 	const [isEditing, setIsEditing] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const handleUpdate = async (
-		updateData: Record<string, any>,
-		customValidation?: () => string | null,
-	) => {
+	const handleUpdate = async (updateData: Record<string, any>) => {
 		setLoading(true);
-		onMessage({ type: "", text: "" });
-
-		// Run custom validation if provided
-		if (customValidation) {
-			const validationError = customValidation();
-			if (validationError) {
-				onMessage({ type: "error", text: validationError });
-				setLoading(false);
-				return false;
-			}
-		}
 
 		try {
 			await pb
@@ -48,17 +33,11 @@ export function useProfileUpdate({
 				await refreshUser();
 			}
 
-			onMessage({
-				type: "success",
-				text: successMessage,
-			});
+			toast.success(successMessage);
 			setIsEditing(false);
 			return true;
 		} catch (error: any) {
-			onMessage({
-				type: "error",
-				text: error?.message || errorMessage,
-			});
+			toast.error(error?.message || errorMessage);
 			return false;
 		} finally {
 			setLoading(false);

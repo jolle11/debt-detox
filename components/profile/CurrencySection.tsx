@@ -4,32 +4,25 @@ import { useTranslations } from "next-intl";
 import type { RecordModel } from "pocketbase";
 import { useEffect, useState } from "react";
 import { useProfileUpdate } from "@/hooks/useProfileUpdate";
+import { CURRENCIES } from "@/lib/currencies";
 import ProfileForm from "./ProfileForm";
 
 interface CurrencySectionProps {
 	user: RecordModel;
 	refreshUser: () => Promise<void>;
-	onMessage: (message: { type: string; text: string }) => void;
 }
-
-import { CURRENCIES } from "@/lib/currencies";
 
 export default function CurrencySection({
 	user,
 	refreshUser,
-	onMessage,
 }: CurrencySectionProps) {
 	const t = useTranslations("profile");
 
-	const [formData, setFormData] = useState({
-		currency: user?.currency || "EUR",
-	});
+	const [currency, setCurrency] = useState(user?.currency || "EUR");
 
 	useEffect(() => {
 		if (user) {
-			setFormData({
-				currency: user.currency || "EUR",
-			});
+			setCurrency(user.currency || "EUR");
 		}
 	}, [user]);
 
@@ -37,14 +30,13 @@ export default function CurrencySection({
 		useProfileUpdate({
 			user,
 			refreshUser,
-			onMessage,
 			successMessage: t("currencyUpdated"),
 			errorMessage: t("currencyError"),
 		});
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		await handleUpdate({ currency: formData.currency });
+		await handleUpdate({ currency });
 	};
 
 	const currentCurrency = CURRENCIES.find(
@@ -57,13 +49,13 @@ export default function CurrencySection({
 			isEditing={isEditing}
 			loading={loading}
 			onEdit={() => {
-				setFormData({ currency: user?.currency || "EUR" });
+				setCurrency(user?.currency || "EUR");
 				startEditing();
 			}}
 			onSubmit={handleSubmit}
 			onCancel={() => {
 				cancelEditing();
-				setFormData({ currency: user?.currency || "EUR" });
+				setCurrency(user?.currency || "EUR");
 			}}
 			editButtonText={t("editCurrency")}
 			displayContent={
@@ -82,17 +74,12 @@ export default function CurrencySection({
 				</label>
 				<select
 					className="select select-bordered w-full"
-					value={formData.currency}
-					onChange={(e) =>
-						setFormData({
-							...formData,
-							currency: e.target.value,
-						})
-					}
+					value={currency}
+					onChange={(e) => setCurrency(e.target.value)}
 				>
-					{CURRENCIES.map((currency) => (
-						<option key={currency.code} value={currency.code}>
-							{currency.name} ({currency.symbol})
+					{CURRENCIES.map((curr) => (
+						<option key={curr.code} value={curr.code}>
+							{curr.name} ({curr.symbol})
 						</option>
 					))}
 				</select>

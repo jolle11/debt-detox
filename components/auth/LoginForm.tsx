@@ -1,9 +1,13 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInIcon, SpinnerIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/useToast";
+import { type LoginFormData, loginSchema } from "@/lib/schemas";
 
 const MAX_ATTEMPTS_BEFORE_LOCKOUT = 3;
 const BASE_LOCKOUT_SECONDS = 10;
@@ -14,9 +18,6 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [failedAttempts, setFailedAttempts] = useState(0);
 	const [lockoutSeconds, setLockoutSeconds] = useState(0);
@@ -24,6 +25,16 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 
 	const { login } = useAuth();
 	const t = useTranslations("auth.login");
+	const tv = useTranslations("validation");
+	const toast = useToast();
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<LoginFormData>({
+		resolver: zodResolver(loginSchema),
+	});
 
 	// Countdown timer during lockout
 	useEffect(() => {
@@ -46,29 +57,27 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 
 	const isLocked = lockoutSeconds > 0;
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
+	const onSubmit = async (data: LoginFormData) => {
 		if (isLocked) return;
 
-		setError("");
 		setLoading(true);
 
 		try {
-			await login(email, password);
+			await login(data.email, data.password);
 			setFailedAttempts(0);
+			toast.success("loginSuccess");
 			onSuccess?.();
 		} catch (err: any) {
 			const newAttempts = failedAttempts + 1;
 			setFailedAttempts(newAttempts);
 
 			if (newAttempts >= MAX_ATTEMPTS_BEFORE_LOCKOUT) {
-				// Exponential backoff: 10s, 20s, 40s, 80s...
 				const exponent = newAttempts - MAX_ATTEMPTS_BEFORE_LOCKOUT;
 				const seconds = BASE_LOCKOUT_SECONDS * 2 ** exponent;
 				setLockoutSeconds(seconds);
 			}
 
-			setError(err?.data?.message || t("error"));
+			toast.error("genericError", err?.data?.message || t("error"));
 		} finally {
 			setLoading(false);
 		}
@@ -76,7 +85,7 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 
 	return (
 		<div className="w-full max-w-md mx-auto">
-			<form className="space-y-6" onSubmit={handleSubmit}>
+			<form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
 				<div className="space-y-4">
 					<div className="form-control">
 						<label className="label">
@@ -85,12 +94,15 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 						<input
 							type="email"
 							placeholder="tu@email.com"
-							className="input input-bordered w-full focus:input-primary"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							required
+							className={`input input-bordered w-full focus:input-primary ${errors.email ? "input-error" : ""}`}
 							disabled={isLocked}
+							{...register("email")}
 						/>
+						{errors.email && (
+							<label className="label py-1">
+								<span className="label-text-alt text-error">{tv("email")}</span>
+							</label>
+						)}
 					</div>
 					<div className="form-control">
 						<label className="label">
@@ -99,12 +111,17 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 						<input
 							type="password"
 							placeholder="••••••••"
-							className="input input-bordered w-full focus:input-primary"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
+							className={`input input-bordered w-full focus:input-primary ${errors.password ? "input-error" : ""}`}
 							disabled={isLocked}
+							{...register("password")}
 						/>
+						{errors.password && (
+							<label className="label py-1">
+								<span className="label-text-alt text-error">
+									{tv("required")}
+								</span>
+							</label>
+						)}
 					</div>
 				</div>
 
@@ -124,27 +141,10 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 							/>
 						</svg>
 						<span className="text-sm">
-							{t("tooManyAttempts", { seconds: lockoutSeconds })}
+							{t("tooManyAttempts", {
+								seconds: lockoutSeconds,
+							})}
 						</span>
-					</div>
-				)}
-
-				{!isLocked && error && (
-					<div className="alert alert-error">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="stroke-current shrink-0 h-6 w-6"
-							fill="none"
-							viewBox="0 0 24 24"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								strokeWidth="2"
-								d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-							/>
-						</svg>
-						<span className="text-sm">{error}</span>
 					</div>
 				)}
 

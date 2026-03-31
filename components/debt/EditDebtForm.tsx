@@ -1,8 +1,11 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import FormInput from "@/components/ui/FormInput";
+import { type EditDebtFormData, editDebtSchema } from "@/lib/schemas";
 import type { Debt } from "@/lib/types";
 
 interface EditDebtFormProps {
@@ -19,90 +22,77 @@ export default function EditDebtForm({
 	isSubmitting = false,
 }: EditDebtFormProps) {
 	const t = useTranslations();
+	const tv = useTranslations("validation");
 
 	const formatDateForInput = (dateString: string) => {
-		if (!dateString) {
-			return "";
-		}
-
-		// Crear un objeto Date y extraer la fecha en formato YYYY-MM-DD
+		if (!dateString) return "";
 		const date = new Date(dateString);
-		if (isNaN(date.getTime())) {
-			return "";
-		}
-
+		if (Number.isNaN(date.getTime())) return "";
 		return date.toISOString().split("T")[0];
 	};
 
-	const [formData, setFormData] = useState({
-		name: debt.name || "",
-		entity: debt.entity || "",
-		down_payment: debt.down_payment?.toString() || "",
-		first_payment_date: formatDateForInput(debt.first_payment_date || ""),
-		monthly_amount: debt.monthly_amount?.toString() || "",
-		number_of_payments: debt.number_of_payments?.toString() || "",
-		final_payment: debt.final_payment?.toString() || "",
-		final_payment_date: formatDateForInput(debt.final_payment_date || ""),
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm<EditDebtFormData>({
+		resolver: zodResolver(editDebtSchema),
+		defaultValues: {
+			name: debt.name || "",
+			entity: debt.entity || "",
+			down_payment: debt.down_payment ?? undefined,
+			first_payment_date: formatDateForInput(debt.first_payment_date || ""),
+			monthly_amount: debt.monthly_amount,
+			number_of_payments: debt.number_of_payments,
+			final_payment: debt.final_payment ?? undefined,
+			final_payment_date: formatDateForInput(debt.final_payment_date || ""),
+		},
 	});
 
 	useEffect(() => {
-		setFormData({
+		reset({
 			name: debt.name || "",
 			entity: debt.entity || "",
-			down_payment: debt.down_payment?.toString() || "",
+			down_payment: debt.down_payment ?? undefined,
 			first_payment_date: formatDateForInput(debt.first_payment_date || ""),
-			monthly_amount: debt.monthly_amount?.toString() || "",
-			number_of_payments: debt.number_of_payments?.toString() || "",
-			final_payment: debt.final_payment?.toString() || "",
+			monthly_amount: debt.monthly_amount,
+			number_of_payments: debt.number_of_payments,
+			final_payment: debt.final_payment ?? undefined,
 			final_payment_date: formatDateForInput(debt.final_payment_date || ""),
 		});
-	}, [debt]);
-
-	const handleInputChange = (field: string, value: string) => {
-		setFormData((prev) => ({
-			...prev,
-			[field]: value,
-		}));
-	};
+	}, [debt, reset]);
 
 	const calculateFinalPaymentDate = (
 		firstPaymentDate: string,
 		numberOfPayments: number,
 	): string => {
 		const firstDate = new Date(firstPaymentDate);
-		// Add (numberOfPayments - 1) months to get the final payment date
 		const finalDate = new Date(firstDate);
 		finalDate.setMonth(finalDate.getMonth() + numberOfPayments - 1);
 		return finalDate.toISOString().split("T")[0];
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-
-		// Calculate final payment date based on first payment date and number of payments
-		let finalPaymentDate = formData.final_payment_date;
-		if (formData.first_payment_date && formData.number_of_payments) {
+	const onFormSubmit = (data: EditDebtFormData) => {
+		let finalPaymentDate = data.final_payment_date || "";
+		if (data.first_payment_date && data.number_of_payments) {
 			finalPaymentDate = calculateFinalPaymentDate(
-				formData.first_payment_date,
-				Number(formData.number_of_payments),
+				data.first_payment_date,
+				data.number_of_payments,
 			);
 		}
 
 		const debtData: Omit<Debt, "created" | "updated" | "deleted"> = {
 			id: debt.id,
 			user_id: debt.user_id,
-			name: formData.name,
-			entity: formData.entity,
-			down_payment: formData.down_payment
-				? Number(formData.down_payment)
-				: undefined,
-			first_payment_date: formData.first_payment_date,
-			monthly_amount: Number(formData.monthly_amount),
-			number_of_payments: Number(formData.number_of_payments),
-			final_payment: formData.final_payment
-				? Number(formData.final_payment)
-				: undefined,
-			final_payment_date: finalPaymentDate,
+			name: data.name,
+			entity: data.entity,
+			down_payment: data.down_payment || undefined,
+			first_payment_date: data.first_payment_date,
+			monthly_amount: data.monthly_amount,
+			number_of_payments: data.number_of_payments,
+			final_payment: data.final_payment || undefined,
+			final_payment_date: finalPaymentDate || undefined,
 		};
 
 		onSubmit(debtData);
@@ -111,22 +101,20 @@ export default function EditDebtForm({
 	return (
 		<div className="card bg-base-100 shadow-xl">
 			<div className="card-body">
-				<form onSubmit={handleSubmit} className="space-y-4">
+				<form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 						<FormInput
 							label={t("debt.create.name")}
-							value={formData.name}
-							onChange={(value) => handleInputChange("name", value)}
+							registration={register("name")}
 							placeholder={t("debt.create.namePlaceholder")}
-							required
+							error={errors.name?.message ? tv("required") : undefined}
 						/>
 
 						<FormInput
 							label={t("debt.create.entity")}
-							value={formData.entity}
-							onChange={(value) => handleInputChange("entity", value)}
+							registration={register("entity")}
 							placeholder={t("debt.create.entityPlaceholder")}
-							required
+							error={errors.entity?.message ? tv("required") : undefined}
 						/>
 					</div>
 
@@ -135,8 +123,7 @@ export default function EditDebtForm({
 						<FormInput
 							label={t("debt.create.downPayment")}
 							type="number"
-							value={formData.down_payment}
-							onChange={(value) => handleInputChange("down_payment", value)}
+							registration={register("down_payment")}
 							placeholder="0.00"
 						/>
 					</div>
@@ -146,20 +133,16 @@ export default function EditDebtForm({
 						<FormInput
 							label={t("debt.create.firstPaymentDate")}
 							type="date"
-							value={formData.first_payment_date}
-							onChange={(value) =>
-								handleInputChange("first_payment_date", value)
+							registration={register("first_payment_date")}
+							error={
+								errors.first_payment_date?.message ? tv("required") : undefined
 							}
-							required
 						/>
 
 						<FormInput
 							label={t("debt.create.finalPaymentDate")}
 							type="date"
-							value={formData.final_payment_date}
-							onChange={(value) =>
-								handleInputChange("final_payment_date", value)
-							}
+							registration={register("final_payment_date")}
 						/>
 					</div>
 
@@ -168,21 +151,21 @@ export default function EditDebtForm({
 						<FormInput
 							label={t("debt.create.monthlyAmount")}
 							type="number"
-							value={formData.monthly_amount}
-							onChange={(value) => handleInputChange("monthly_amount", value)}
+							registration={register("monthly_amount")}
 							placeholder="0.00"
-							required
+							error={
+								errors.monthly_amount?.message ? tv("positive") : undefined
+							}
 						/>
 
 						<FormInput
 							label={t("debt.create.numberOfPayments")}
 							type="number"
-							value={formData.number_of_payments}
-							onChange={(value) =>
-								handleInputChange("number_of_payments", value)
-							}
+							registration={register("number_of_payments")}
 							placeholder="12"
-							required
+							error={
+								errors.number_of_payments?.message ? tv("positive") : undefined
+							}
 						/>
 					</div>
 
@@ -190,8 +173,7 @@ export default function EditDebtForm({
 						<FormInput
 							label={t("debt.create.finalPayment")}
 							type="number"
-							value={formData.final_payment}
-							onChange={(value) => handleInputChange("final_payment", value)}
+							registration={register("final_payment")}
 							placeholder="0.00"
 						/>
 					</div>

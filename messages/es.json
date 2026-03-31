@@ -422,6 +422,40 @@
 		},
 		"error": "Error al generar el enlace"
 	},
+	"toast": {
+		"debtCreated": "Financiación creada correctamente",
+		"debtUpdated": "Financiación actualizada correctamente",
+		"debtDeleted": "Financiación eliminada correctamente",
+		"debtCompleted": "Financiación completada correctamente",
+		"debtReactivated": "Financiación reactivada correctamente",
+		"extraPaymentAdded": "Pago extra añadido correctamente",
+		"historicalPaymentsMarked": "Cuotas históricas marcadas como pagadas",
+		"linkGenerated": "Enlace de compartir generado",
+		"linkCopied": "Enlace copiado al portapapeles",
+		"linkRevoked": "Enlace revocado",
+		"profileUpdated": "Perfil actualizado correctamente",
+		"passwordChanged": "Contraseña cambiada correctamente",
+		"currencyUpdated": "Moneda actualizada correctamente",
+		"loginSuccess": "¡Bienvenido de nuevo!",
+		"registerSuccess": "¡Cuenta creada correctamente!",
+		"logoutSuccess": "Sesión cerrada correctamente",
+		"sessionExpired": "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+		"paymentMarkedPaid": "Pago marcado como pagado",
+		"paymentMarkedUnpaid": "Pago desmarcado",
+		"genericError": "Algo salió mal. Por favor, inténtalo de nuevo.",
+		"networkError": "Error de conexión. Comprueba tu internet.",
+		"clipboardError": "No se pudo copiar al portapapeles"
+	},
+	"validation": {
+		"required": "Este campo es obligatorio",
+		"email": "Introduce una dirección de email válida",
+		"minLength": "Debe tener al menos {min} caracteres",
+		"maxLength": "Debe tener como máximo {max} caracteres",
+		"positive": "Debe ser un número positivo",
+		"integer": "Debe ser un número entero",
+		"passwordMismatch": "Las contraseñas no coinciden",
+		"invalidAmount": "Introduce un importe válido"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "No tienes financiaciones activas",

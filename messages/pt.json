@@ -422,6 +422,40 @@
 		},
 		"error": "Erro ao gerar o link"
 	},
+	"toast": {
+		"debtCreated": "Financiamento criado com sucesso",
+		"debtUpdated": "Financiamento atualizado com sucesso",
+		"debtDeleted": "Financiamento eliminado com sucesso",
+		"debtCompleted": "Financiamento concluído com sucesso",
+		"debtReactivated": "Financiamento reativado com sucesso",
+		"extraPaymentAdded": "Pagamento extra adicionado com sucesso",
+		"historicalPaymentsMarked": "Prestações históricas marcadas como pagas",
+		"linkGenerated": "Link de partilha gerado",
+		"linkCopied": "Link copiado para a área de transferência",
+		"linkRevoked": "Link revogado",
+		"profileUpdated": "Perfil atualizado com sucesso",
+		"passwordChanged": "Senha alterada com sucesso",
+		"currencyUpdated": "Moeda atualizada com sucesso",
+		"loginSuccess": "Bem-vindo de volta!",
+		"registerSuccess": "Conta criada com sucesso!",
+		"logoutSuccess": "Sessão terminada com sucesso",
+		"sessionExpired": "Sua sessão expirou. Por favor, entre novamente.",
+		"paymentMarkedPaid": "Pagamento marcado como pago",
+		"paymentMarkedUnpaid": "Pagamento desmarcado",
+		"genericError": "Algo correu mal. Por favor, tente novamente.",
+		"networkError": "Erro de conexão. Verifique sua internet.",
+		"clipboardError": "Não foi possível copiar para a área de transferência"
+	},
+	"validation": {
+		"required": "Este campo é obrigatório",
+		"email": "Insira um endereço de e-mail válido",
+		"minLength": "Deve ter pelo menos {min} caracteres",
+		"maxLength": "Deve ter no máximo {max} caracteres",
+		"positive": "Deve ser um número positivo",
+		"integer": "Deve ser um número inteiro",
+		"passwordMismatch": "As senhas não coincidem",
+		"invalidAmount": "Insira um valor válido"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "Você não tem financiamentos ativos",

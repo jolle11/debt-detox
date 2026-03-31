@@ -1,9 +1,13 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SpinnerIcon, UserPlusIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/useToast";
+import { type RegisterFormData, registerSchema } from "@/lib/schemas";
 
 interface RegisterFormProps {
 	onToggleForm?: () => void;
@@ -14,32 +18,35 @@ export default function RegisterForm({
 	onToggleForm,
 	onSuccess,
 }: RegisterFormProps) {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [passwordConfirm, setPasswordConfirm] = useState("");
-	const [name, setName] = useState("");
-	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 
-	const { register } = useAuth();
+	const { register: registerUser } = useAuth();
 	const t = useTranslations("auth.register");
+	const tv = useTranslations("validation");
+	const toast = useToast();
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
-		setError("");
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<RegisterFormData>({
+		resolver: zodResolver(registerSchema),
+	});
 
-		if (password !== passwordConfirm) {
-			setError(t("passwordMismatch"));
-			return;
-		}
-
+	const onSubmit = async (data: RegisterFormData) => {
 		setLoading(true);
 
 		try {
-			await register(email, password, passwordConfirm, name);
+			await registerUser(
+				data.email,
+				data.password,
+				data.passwordConfirm,
+				data.name,
+			);
+			toast.success("registerSuccess");
 			onSuccess?.();
 		} catch (err: any) {
-			setError(err?.data?.message || t("error"));
+			toast.error("genericError", err?.data?.message || t("error"));
 		} finally {
 			setLoading(false);
 		}
@@ -47,7 +54,7 @@ export default function RegisterForm({
 
 	return (
 		<div className="w-full max-w-md mx-auto">
-			<form className="space-y-6" onSubmit={handleSubmit}>
+			<form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
 				<div className="space-y-4">
 					<div className="form-control">
 						<label className="label">
@@ -60,8 +67,7 @@ export default function RegisterForm({
 							type="text"
 							placeholder={t("name")}
 							className="input input-bordered w-full focus:input-primary"
-							value={name}
-							onChange={(e) => setName(e.target.value)}
+							{...register("name")}
 						/>
 					</div>
 					<div className="form-control">
@@ -71,11 +77,14 @@ export default function RegisterForm({
 						<input
 							type="email"
 							placeholder="tu@email.com"
-							className="input input-bordered w-full focus:input-primary"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							required
+							className={`input input-bordered w-full focus:input-primary ${errors.email ? "input-error" : ""}`}
+							{...register("email")}
 						/>
+						{errors.email && (
+							<label className="label py-1">
+								<span className="label-text-alt text-error">{tv("email")}</span>
+							</label>
+						)}
 					</div>
 					<div className="form-control">
 						<label className="label">
@@ -84,11 +93,16 @@ export default function RegisterForm({
 						<input
 							type="password"
 							placeholder="••••••••"
-							className="input input-bordered w-full focus:input-primary"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
+							className={`input input-bordered w-full focus:input-primary ${errors.password ? "input-error" : ""}`}
+							{...register("password")}
 						/>
+						{errors.password && (
+							<label className="label py-1">
+								<span className="label-text-alt text-error">
+									{tv("minLength", { min: 8 })}
+								</span>
+							</label>
+						)}
 					</div>
 					<div className="form-control">
 						<label className="label">
@@ -99,19 +113,18 @@ export default function RegisterForm({
 						<input
 							type="password"
 							placeholder="••••••••"
-							className="input input-bordered w-full focus:input-primary"
-							value={passwordConfirm}
-							onChange={(e) => setPasswordConfirm(e.target.value)}
-							required
+							className={`input input-bordered w-full focus:input-primary ${errors.passwordConfirm ? "input-error" : ""}`}
+							{...register("passwordConfirm")}
 						/>
+						{errors.passwordConfirm && (
+							<label className="label py-1">
+								<span className="label-text-alt text-error">
+									{tv("passwordMismatch")}
+								</span>
+							</label>
+						)}
 					</div>
 				</div>
-
-				{error && (
-					<div className="alert alert-error">
-						<span className="text-sm">{error}</span>
-					</div>
-				)}
 
 				<button
 					type="submit"

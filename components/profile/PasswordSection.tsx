@@ -1,66 +1,55 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import type { RecordModel } from "pocketbase";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import FormInput from "@/components/ui/FormInput";
-import { usePasswordValidation } from "@/hooks/usePasswordValidation";
 import { useProfileUpdate } from "@/hooks/useProfileUpdate";
+import {
+	type PasswordChangeFormData,
+	passwordChangeSchema,
+} from "@/lib/schemas";
 import ProfileForm from "./ProfileForm";
 
 interface PasswordSectionProps {
 	user: RecordModel;
-	onMessage: (message: { type: string; text: string }) => void;
 }
 
-export default function PasswordSection({
-	user,
-	onMessage,
-}: PasswordSectionProps) {
+export default function PasswordSection({ user }: PasswordSectionProps) {
 	const t = useTranslations("profile");
+	const tv = useTranslations("validation");
 
-	const [passwordData, setPasswordData] = useState({
-		currentPassword: "",
-		newPassword: "",
-		confirmPassword: "",
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm<PasswordChangeFormData>({
+		resolver: zodResolver(passwordChangeSchema),
+		defaultValues: {
+			currentPassword: "",
+			newPassword: "",
+			confirmPassword: "",
+		},
 	});
-
-	const { validatePasswordChange } = usePasswordValidation(t);
 
 	const { isEditing, loading, handleUpdate, startEditing, cancelEditing } =
 		useProfileUpdate({
 			user,
-			onMessage,
-			successMessage: t("passwordChanged") || "Password changed successfully!",
-			errorMessage: t("passwordError") || "Failed to change password",
+			successMessage: t("passwordChanged"),
+			errorMessage: t("passwordError"),
 		});
 
-	const resetPasswordData = () => {
-		setPasswordData({
-			currentPassword: "",
-			newPassword: "",
-			confirmPassword: "",
+	const onSubmit = async (data: PasswordChangeFormData) => {
+		const success = await handleUpdate({
+			oldPassword: data.currentPassword,
+			password: data.newPassword,
+			passwordConfirm: data.confirmPassword,
 		});
-	};
-
-	const handlePasswordChange = async (e: React.FormEvent) => {
-		e.preventDefault();
-
-		const success = await handleUpdate(
-			{
-				oldPassword: passwordData.currentPassword,
-				password: passwordData.newPassword,
-				passwordConfirm: passwordData.confirmPassword,
-			},
-			() =>
-				validatePasswordChange(
-					passwordData.newPassword,
-					passwordData.confirmPassword,
-				),
-		);
 
 		if (success) {
-			resetPasswordData();
+			reset();
 		}
 	};
 
@@ -70,10 +59,10 @@ export default function PasswordSection({
 			isEditing={isEditing}
 			loading={loading}
 			onEdit={() => startEditing()}
-			onSubmit={handlePasswordChange}
+			onSubmit={handleSubmit(onSubmit)}
 			onCancel={() => {
 				cancelEditing();
-				resetPasswordData();
+				reset();
 			}}
 			editButtonText={t("changePassword") || "Change Password"}
 			submitButtonText={t("changePassword") || "Change Password"}
@@ -86,40 +75,26 @@ export default function PasswordSection({
 			<FormInput
 				label={t("currentPassword") || "Current Password"}
 				type="password"
-				value={passwordData.currentPassword}
-				onChange={(value) =>
-					setPasswordData({
-						...passwordData,
-						currentPassword: value,
-					})
-				}
-				required
+				registration={register("currentPassword")}
+				error={errors.currentPassword?.message ? tv("required") : undefined}
 			/>
 
 			<FormInput
 				label={t("newPassword") || "New Password"}
 				type="password"
-				value={passwordData.newPassword}
-				onChange={(value) =>
-					setPasswordData({
-						...passwordData,
-						newPassword: value,
-					})
+				registration={register("newPassword")}
+				error={
+					errors.newPassword?.message ? tv("minLength", { min: 8 }) : undefined
 				}
-				required
 			/>
 
 			<FormInput
 				label={t("confirmPassword") || "Confirm New Password"}
 				type="password"
-				value={passwordData.confirmPassword}
-				onChange={(value) =>
-					setPasswordData({
-						...passwordData,
-						confirmPassword: value,
-					})
+				registration={register("confirmPassword")}
+				error={
+					errors.confirmPassword?.message ? tv("passwordMismatch") : undefined
 				}
-				required
 			/>
 		</ProfileForm>
 	);

@@ -422,6 +422,40 @@
 		},
 		"error": "Fout bij het genereren van de link"
 	},
+	"toast": {
+		"debtCreated": "Financiering succesvol aangemaakt",
+		"debtUpdated": "Financiering succesvol bijgewerkt",
+		"debtDeleted": "Financiering succesvol verwijderd",
+		"debtCompleted": "Financiering succesvol voltooid",
+		"debtReactivated": "Financiering succesvol geheractiveerd",
+		"extraPaymentAdded": "Extra betaling succesvol toegevoegd",
+		"historicalPaymentsMarked": "Historische termijnen als betaald gemarkeerd",
+		"linkGenerated": "Deellink gegenereerd",
+		"linkCopied": "Link naar klembord gekopieerd",
+		"linkRevoked": "Link ingetrokken",
+		"profileUpdated": "Profiel succesvol bijgewerkt",
+		"passwordChanged": "Wachtwoord succesvol gewijzigd",
+		"currencyUpdated": "Valuta succesvol bijgewerkt",
+		"loginSuccess": "Welkom terug!",
+		"registerSuccess": "Account succesvol aangemaakt!",
+		"logoutSuccess": "Succesvol uitgelogd",
+		"sessionExpired": "Uw sessie is verlopen. Log opnieuw in.",
+		"paymentMarkedPaid": "Betaling als betaald gemarkeerd",
+		"paymentMarkedUnpaid": "Betaling gedeselecteerd",
+		"genericError": "Er is iets misgegaan. Probeer het opnieuw.",
+		"networkError": "Verbindingsfout. Controleer uw internet.",
+		"clipboardError": "Kon niet naar klembord kopiëren"
+	},
+	"validation": {
+		"required": "Dit veld is verplicht",
+		"email": "Voer een geldig e-mailadres in",
+		"minLength": "Moet minstens {min} tekens bevatten",
+		"maxLength": "Mag maximaal {max} tekens bevatten",
+		"positive": "Moet een positief getal zijn",
+		"integer": "Moet een geheel getal zijn",
+		"passwordMismatch": "Wachtwoorden komen niet overeen",
+		"invalidAmount": "Voer een geldig bedrag in"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "U heeft geen actieve financieringen",

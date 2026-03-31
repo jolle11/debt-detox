@@ -426,6 +426,40 @@
 		},
 		"error": "Fehler beim Erstellen des Links"
 	},
+	"toast": {
+		"debtCreated": "Finanzierung erfolgreich erstellt",
+		"debtUpdated": "Finanzierung erfolgreich aktualisiert",
+		"debtDeleted": "Finanzierung erfolgreich gelöscht",
+		"debtCompleted": "Finanzierung erfolgreich abgeschlossen",
+		"debtReactivated": "Finanzierung erfolgreich reaktiviert",
+		"extraPaymentAdded": "Zusatzzahlung erfolgreich hinzugefügt",
+		"historicalPaymentsMarked": "Historische Raten als bezahlt markiert",
+		"linkGenerated": "Freigabelink erstellt",
+		"linkCopied": "Link in die Zwischenablage kopiert",
+		"linkRevoked": "Link widerrufen",
+		"profileUpdated": "Profil erfolgreich aktualisiert",
+		"passwordChanged": "Passwort erfolgreich geändert",
+		"currencyUpdated": "Währung erfolgreich aktualisiert",
+		"loginSuccess": "Willkommen zurück!",
+		"registerSuccess": "Konto erfolgreich erstellt!",
+		"logoutSuccess": "Erfolgreich abgemeldet",
+		"sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+		"paymentMarkedPaid": "Zahlung als bezahlt markiert",
+		"paymentMarkedUnpaid": "Zahlung abgewählt",
+		"genericError": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+		"networkError": "Verbindungsfehler. Überprüfen Sie Ihre Internetverbindung.",
+		"clipboardError": "Konnte nicht in die Zwischenablage kopiert werden"
+	},
+	"validation": {
+		"required": "Dieses Feld ist erforderlich",
+		"email": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+		"minLength": "Muss mindestens {min} Zeichen lang sein",
+		"maxLength": "Darf höchstens {max} Zeichen lang sein",
+		"positive": "Muss eine positive Zahl sein",
+		"integer": "Muss eine ganze Zahl sein",
+		"passwordMismatch": "Passwörter stimmen nicht überein",
+		"invalidAmount": "Bitte geben Sie einen gültigen Betrag ein"
+	},
 	"emptyStates": {
 		"active": {
 			"title": "Sie haben keine aktiven Finanzierungen",
