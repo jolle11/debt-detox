@@ -79,7 +79,11 @@ function generateExpectedPayments(debt: Debt, payments: Payment[]) {
 		const dueDate = new Date(paymentDate);
 		dueDate.setDate(startDate.getDate());
 		const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-		const dueDateOnly = new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate());
+		const dueDateOnly = new Date(
+			dueDate.getFullYear(),
+			dueDate.getMonth(),
+			dueDate.getDate(),
+		);
 		const isOverdue = dueDateOnly < today;
 
 		const actualPayment =

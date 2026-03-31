@@ -1,13 +1,13 @@
 "use client";
 
 import { ShareNetwork, SignOutIcon } from "@phosphor-icons/react";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
 import ShareProfileModal from "@/components/dashboard/ShareProfileModal";
 import CreateDebtModal from "@/components/debt/CreateDebtModal";
 import LanguageSelector from "@/components/LanguageSelector";
+import { Link } from "@/i18n/routing";
 import MobileMenu from "@/components/layout/MobileMenu";
 import MobileMenuButton from "@/components/layout/MobileMenuButton";
 import ThemeToggle from "@/components/ui/ThemeToggle";
@@ -29,7 +29,10 @@ export default function Header() {
 			<header className="bg-base-200 shadow-lg">
 				<div className="navbar container mx-auto">
 					<div className="flex-1">
-						<Link href="/" className="btn btn-ghost text-xl font-bold">
+						<Link
+							href={user ? "/dashboard" : "/"}
+							className="btn btn-ghost text-xl font-bold"
+						>
 							{t("nav.title")}
 						</Link>
 					</div>

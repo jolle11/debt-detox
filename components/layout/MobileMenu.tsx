@@ -1,9 +1,9 @@
 "use client";
 
 import { ShareNetwork, SignOutIcon } from "@phosphor-icons/react";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import LanguageSelector from "@/components/LanguageSelector";
+import { Link } from "@/i18n/routing";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSwipe } from "@/hooks/useSwipe";

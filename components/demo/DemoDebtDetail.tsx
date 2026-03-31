@@ -13,7 +13,7 @@ import { useTranslations } from "next-intl";
 import DebtPaymentsList from "@/components/dashboard/DebtPaymentsList";
 import DebtProgressWithPayments from "@/components/dashboard/DebtProgressWithPayments";
 import { useCurrency } from "@/hooks/useCurrency";
-import { calculateDebtStatus } from "@/lib/format";
+import { calculateDebtLifecycleStatus } from "@/lib/format";
 import type { Debt } from "@/lib/types";
 import DemoDebtPaymentStatus from "./DemoDebtPaymentStatus";
 import { useDemoContext } from "./DemoProvider";
@@ -33,8 +33,12 @@ export default function DemoDebtDetail({
 	const tLanding = useTranslations("landing");
 	const { formatCurrency } = useCurrency();
 	const { payments } = useDemoContext();
-
-	const status = calculateDebtStatus(debt.final_payment_date);
+	const debtPayments = payments.filter((p) => p.debt_id === debt.id);
+	const status = calculateDebtLifecycleStatus(
+		debt.final_payment_date,
+		debt.first_payment_date,
+		debtPayments,
+	);
 	const origMonthly = debt.original_monthly_amount || debt.monthly_amount;
 	const origPayments =
 		debt.original_number_of_payments || debt.number_of_payments;
@@ -52,7 +56,6 @@ export default function DemoDebtDetail({
 	};
 
 	// Calcular estadísticas de pagos para la demo
-	const debtPayments = payments.filter((p) => p.debt_id === debt.id);
 	const paidPayments = debtPayments.filter((p) => p.paid).length;
 	const totalPaid =
 		(debt.down_payment || 0) +

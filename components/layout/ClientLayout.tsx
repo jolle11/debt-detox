@@ -1,7 +1,9 @@
 "use client";
 
 import { QueryClientProvider } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { Toaster } from "sonner";
 import SessionGuard from "@/components/auth/SessionGuard";
 import Header from "@/components/layout/Header";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
@@ -15,11 +17,20 @@ interface ClientLayoutProps {
 
 function AppLayout({ children }: ClientLayoutProps) {
 	const { user, loading } = useAuth();
+	const pathname = usePathname();
+	const isPublicLandingRoute =
+		pathname !== null &&
+		/^\/(?:(es|en|fr|de|pt|nl))?\/?$/.test(pathname);
 
 	// Sync queries with auth state changes
 	useAuthSync();
 
-	// Show loading state while checking auth
+	// Keep the landing indexable and visible while auth initializes.
+	if (isPublicLandingRoute) {
+		return <>{children}</>;
+	}
+
+	// Show loading state while checking auth for protected app routes.
 	if (loading) {
 		return (
 			<div className="min-h-screen bg-base-200 flex items-center justify-center">
@@ -51,6 +62,17 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 			<AuthProvider>
 				<DebtsProvider>
 					<AppLayout>{children}</AppLayout>
+					<Toaster
+						position="bottom-right"
+						richColors
+						closeButton
+						toastOptions={{
+							style: {
+								fontFamily:
+									"var(--font-inconsolata), Inconsolata, ui-sans-serif, system-ui, sans-serif",
+							},
+						}}
+					/>
 				</DebtsProvider>
 			</AuthProvider>
 		</QueryClientProvider>
