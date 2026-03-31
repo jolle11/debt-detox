@@ -19,7 +19,6 @@ export default function DebtPaymentStatus({
 	const queryClient = useQueryClient();
 	const [isProcessing, setIsProcessing] = useState(false);
 	const t = useTranslations("paymentStatus");
-	const tStatus = useTranslations("debtDetail.status");
 
 	const currentDate = new Date();
 	const currentMonth = currentDate.getMonth() + 1; // getMonth() returns 0-11
@@ -138,17 +137,6 @@ export default function DebtPaymentStatus({
 		return (
 			<div className="flex items-center gap-3">
 				<div className="badge badge-neutral badge-lg">{t("pendingStart")}</div>
-			</div>
-		);
-	}
-
-	const firstPaymentDate = new Date(debt.first_payment_date);
-	if (currentDate < firstPaymentDate) {
-		return (
-			<div className="flex items-center gap-3">
-				<div className="badge badge-primary badge-lg">
-					{tStatus("active")}
-				</div>
 			</div>
 		);
 	}
