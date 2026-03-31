@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthModal from "@/components/auth/AuthModal";
 import LanguageSelector from "@/components/LanguageSelector";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import { useRouter } from "@/i18n/routing";
+import { useAuth } from "@/contexts/AuthContext";
 import CTASection from "./CTASection";
 import DemoSection from "./DemoSection";
 import DetailsSection from "./DetailsSection";
@@ -11,9 +13,21 @@ import HeroSection from "./HeroSection";
 
 export default function LandingPage() {
 	const [showAuthModal, setShowAuthModal] = useState(false);
+	const { user, loading } = useAuth();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (!loading && user) {
+			router.replace("/dashboard");
+		}
+	}, [loading, router, user]);
+
+	if (user) {
+		return null;
+	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10">
+		<main className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10">
 			{/* Header with Language and Theme Selectors */}
 			<div className="absolute top-4 left-4 z-10">
 				<LanguageSelector />
@@ -31,6 +45,6 @@ export default function LandingPage() {
 				isOpen={showAuthModal}
 				onClose={() => setShowAuthModal(false)}
 			/>
-		</div>
+		</main>
 	);
 }

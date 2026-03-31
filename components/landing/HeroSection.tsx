@@ -13,18 +13,21 @@ export default function HeroSection({ onLoginClick }: HeroSectionProps) {
 	const tLanding = useTranslations("landing");
 
 	return (
-		<div className="hero min-h-screen">
+		<section className="hero min-h-screen" aria-labelledby="landing-title">
 			<div className="hero-content text-center">
 				<div className="max-w-4xl">
-					<div className="mb-8">
+					<header className="mb-8">
 						<div className="text-6xl mb-4">{hero.icon}</div>
-						<h1 className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+						<h1
+							id="landing-title"
+							className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+						>
 							{hero.title}
 						</h1>
 						<p className="text-xl text-base-content/80 mt-4">
 							{tLanding(hero.subtitleKey)}
 						</p>
-					</div>
+					</header>
 
 					<div className="grid md:grid-cols-3 gap-8 my-16">
 						{heroFeatures.map((feature, index) => (
@@ -45,6 +48,6 @@ export default function HeroSection({ onLoginClick }: HeroSectionProps) {
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 }

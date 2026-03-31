@@ -12,14 +12,16 @@ export default function DemoSection({ onLoginClick }: DemoSectionProps) {
 	const tLanding = useTranslations("landing");
 
 	return (
-		<div className="py-20 bg-base-100">
+		<section className="py-20 bg-base-100" aria-labelledby="demo-title">
 			<div className="container mx-auto px-4">
-				<div className="text-center mb-16">
-					<h2 className="text-4xl font-bold mb-4">{tLanding("demo.title")}</h2>
+				<header className="text-center mb-16">
+					<h2 id="demo-title" className="text-4xl font-bold mb-4">
+						{tLanding("demo.title")}
+					</h2>
 					<p className="text-xl text-base-content/70">
 						{tLanding("demo.subtitle")}
 					</p>
-				</div>
+				</header>
 
 				<div className="max-w-6xl mx-auto">
 					<DemoProvider>
@@ -27,6 +29,6 @@ export default function DemoSection({ onLoginClick }: DemoSectionProps) {
 					</DemoProvider>
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 }
