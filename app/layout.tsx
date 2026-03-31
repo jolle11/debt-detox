@@ -1,29 +1,28 @@
 import type { Metadata } from "next";
+import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = {
-	title: "Debt Detox",
-	description: "Take control of your financial commitments",
-	openGraph: {
-		title: "Debt Detox",
-		description: "Take control of your financial commitments",
-		url: "https://debtdetox.vercel.app",
-		siteName: "Debt Detox",
-		images: [
-			{
-				url: "/og-image.png",
-				width: 1200,
-				height: 630,
-				alt: "Debt Detox - Financial Control App",
-			},
+	metadataBase: new URL(SITE_URL),
+	applicationName: SITE_NAME,
+	title: {
+		default: SITE_NAME,
+		template: `%s | ${SITE_NAME}`,
+	},
+	icons: {
+		icon: [
+			{ url: "/favicon.ico" },
+			{ url: "/money-bag.ico" },
 		],
-		locale: "en_US",
+		shortcut: ["/favicon.ico"],
+	},
+	openGraph: {
+		siteName: SITE_NAME,
 		type: "website",
+		images: [DEFAULT_OG_IMAGE],
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "Debt Detox",
-		description: "Take control of your financial commitments",
-		images: ["/og-image.png"],
+		images: [DEFAULT_OG_IMAGE.url],
 	},
 };
 

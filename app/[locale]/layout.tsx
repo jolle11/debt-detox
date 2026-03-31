@@ -6,16 +6,40 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import ClientLayout from "@/components/layout/ClientLayout";
 import { routing } from "@/i18n/routing";
+import { DEFAULT_OG_IMAGE, SITE_NAME, getLocaleSeo } from "@/lib/seo";
 
 const inconsolata = Inconsolata({
 	variable: "--font-inconsolata",
 	subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-	title: "Debt Detox",
-	description: "Take control of your financial commitments",
-};
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+	const { locale } = await params;
+	const seo = getLocaleSeo(locale);
+
+	return {
+		title: {
+			default: SITE_NAME,
+			template: `%s | ${SITE_NAME}`,
+		},
+		description: seo.description,
+		openGraph: {
+			title: SITE_NAME,
+			description: seo.description,
+			locale: seo.openGraphLocale,
+			images: [DEFAULT_OG_IMAGE],
+		},
+		twitter: {
+			title: SITE_NAME,
+			description: seo.description,
+			images: [DEFAULT_OG_IMAGE.url],
+		},
+	};
+}
 
 export default async function LocaleLayout({
 	children,

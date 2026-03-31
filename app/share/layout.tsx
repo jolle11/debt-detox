@@ -1,10 +1,17 @@
+import type { Metadata } from "next";
 import { Inconsolata } from "next/font/google";
 import "../globals.css";
+import { NO_INDEX_ROBOTS, SITE_NAME } from "@/lib/seo";
 
 const inconsolata = Inconsolata({
 	variable: "--font-inconsolata",
 	subsets: ["latin"],
 });
+
+export const metadata: Metadata = {
+	title: `Shared View | ${SITE_NAME}`,
+	robots: NO_INDEX_ROBOTS,
+};
 
 export default function ShareLayout({
 	children,

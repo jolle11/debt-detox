@@ -195,7 +195,7 @@ export default function DebtDetailPage() {
 				isOpen={showDeleteModal}
 				onClose={() => setShowDeleteModal(false)}
 				onSuccess={() => {
-					router.push("/"); // Redirect to dashboard after delete
+					router.push("/dashboard");
 				}}
 			/>
 
