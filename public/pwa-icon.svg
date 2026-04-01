@@ -1,0 +1,50 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bagFill" x1="256" y1="118" x2="256" y2="428" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE9A3"/>
+      <stop offset="1" stop-color="#FFD872"/>
+    </linearGradient>
+    <linearGradient id="bagShade" x1="176" y1="210" x2="306" y2="394" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF3C7" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#FFF3C7" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="tieFill" x1="196" y1="164" x2="316" y2="164" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A14A3B"/>
+      <stop offset="1" stop-color="#C96C53"/>
+    </linearGradient>
+    <filter id="shadow" x="122" y="118" width="268" height="324" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#25137E" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="512" rx="120" fill="#422AD5"/>
+
+  <g filter="url(#shadow)">
+    <path
+      d="M228 120C228 109.507 236.507 101 247 101H265C275.493 101 284 109.507 284 120C284 123.315 283.151 126.432 281.658 129.145C285.961 132.62 289 138.227 289 144.545C289 155.013 280.513 163.5 270.045 163.5H241.955C231.487 163.5 223 155.013 223 144.545C223 138.227 226.039 132.62 230.342 129.145C228.849 126.432 228 123.315 228 120Z"
+      fill="url(#bagFill)"
+    />
+    <rect x="193" y="157" width="126" height="18" rx="9" fill="url(#tieFill)"/>
+    <path
+      d="M206 186C216.704 197.341 233.534 204 256 204C278.466 204 295.296 197.341 306 186C306 202.004 314.249 219.181 324.862 241.285C339.253 271.255 347 304.872 347 341.401V346.617C360.881 354.22 370 368.953 370 386C370 410.301 350.301 430 326 430H186C161.699 430 142 410.301 142 386C142 368.953 151.119 354.22 165 346.617V341.401C165 304.872 172.747 271.255 187.138 241.285C197.751 219.181 206 202.004 206 186Z"
+      fill="url(#bagFill)"
+    />
+    <path
+      d="M221 214C197.908 251.077 186 293.912 186 342.5V348.378C171.298 358.82 162 371.146 162 385.363C162 398.15 169.527 409.18 181.4 416H186C168.327 416 154 401.673 154 384V342.214C154 306.598 161.612 273.837 175.752 244.413C185.775 223.556 193.484 205.724 196.742 189.198C201.425 199.741 209.669 208.14 221 214Z"
+      fill="url(#bagShade)"
+    />
+  </g>
+
+  <text
+    x="256"
+    y="310"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-size="144"
+    font-weight="700"
+    font-family="Arial, Helvetica, sans-serif"
+    fill="#64748B"
+  >
+    $
+  </text>
+</svg>

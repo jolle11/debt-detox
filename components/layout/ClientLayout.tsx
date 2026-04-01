@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Toaster } from "sonner";
 import SessionGuard from "@/components/auth/SessionGuard";
 import Header from "@/components/layout/Header";
+import ServiceWorkerRegistration from "@/components/pwa/ServiceWorkerRegistration";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { DebtsProvider } from "@/contexts/DebtsContext";
 import { useAuthSync } from "@/hooks/useAuthSync";
@@ -59,6 +60,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
 	return (
 		<QueryClientProvider client={queryClient}>
+			<ServiceWorkerRegistration />
 			<AuthProvider>
 				<DebtsProvider>
 					<AppLayout>{children}</AppLayout>
