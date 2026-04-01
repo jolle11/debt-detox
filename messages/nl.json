@@ -151,6 +151,10 @@
 				"subtitle": "Maak uw gratis account aan en begin met het beheren van uw echte schulden",
 				"button": "Gratis Beginnen"
 			}
+		},
+		"footer": {
+			"rights": "Alle rechten voorbehouden.",
+			"website": "Persoonlijke website"
 		}
 	},
 	"common": {

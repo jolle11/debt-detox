@@ -151,6 +151,10 @@
 				"subtitle": "Crea tu cuenta gratuita y empieza a gestionar tus deudas reales",
 				"button": "Empezar Gratis"
 			}
+		},
+		"footer": {
+			"rights": "Todos los derechos reservados.",
+			"website": "Sitio web personal"
 		}
 	},
 	"common": {

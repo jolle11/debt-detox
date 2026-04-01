@@ -151,6 +151,10 @@
 				"subtitle": "Crie sua conta gratuita e comece a gerenciar suas dívidas reais",
 				"button": "Começar Grátis"
 			}
+		},
+		"footer": {
+			"rights": "Todos os direitos reservados.",
+			"website": "Site pessoal"
 		}
 	},
 	"common": {

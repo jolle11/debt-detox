@@ -153,6 +153,10 @@
 				"subtitle": "Créez votre compte gratuit et commencez à gérer vos vraies dettes",
 				"button": "Commencer Gratuitement"
 			}
+		},
+		"footer": {
+			"rights": "Tous droits réservés.",
+			"website": "Site web personnel"
 		}
 	},
 	"debt": {

@@ -153,6 +153,10 @@
 				"subtitle": "Erstellen Sie Ihr kostenloses Konto und verwalten Sie Ihre echten Schulden",
 				"button": "Kostenlos Starten"
 			}
+		},
+		"footer": {
+			"rights": "Alle Rechte vorbehalten.",
+			"website": "Persönliche Webseite"
 		}
 	},
 	"debt": {

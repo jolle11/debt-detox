@@ -151,6 +151,10 @@
 				"subtitle": "Create your free account and start managing your real debts",
 				"button": "Start Free"
 			}
+		},
+		"footer": {
+			"rights": "All rights reserved.",
+			"website": "Personal website"
 		}
 	},
 	"debt": {

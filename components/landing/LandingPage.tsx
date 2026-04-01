@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import CTASection from "./CTASection";
 import DemoSection from "./DemoSection";
 import DetailsSection from "./DetailsSection";
+import Footer from "./Footer";
 import HeroSection from "./HeroSection";
 
 export default function LandingPage() {
@@ -40,6 +41,7 @@ export default function LandingPage() {
 			<DetailsSection />
 			<DemoSection onLoginClick={() => setShowAuthModal(true)} />
 			<CTASection onLoginClick={() => setShowAuthModal(true)} />
+			<Footer />
 
 			<AuthModal
 				isOpen={showAuthModal}
