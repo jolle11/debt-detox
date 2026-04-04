@@ -47,9 +47,9 @@ export default function DebtActions({
 	];
 
 	return (
-		<div className="flex flex-col gap-2 ml-4">
+		<div className="flex flex-row items-center gap-1">
 			<div
-				className={`badge ${
+				className={`badge badge-sm sm:badge-md ${
 					status === "completed" ? "badge-success" : "badge-primary"
 				}`}
 			>
@@ -59,7 +59,7 @@ export default function DebtActions({
 			</div>
 
 			<div className="dropdown dropdown-end">
-				<label tabIndex={0} className="btn btn-ghost btn-sm">
+				<label tabIndex={0} className="btn btn-ghost btn-xs sm:btn-sm">
 					<DotsThreeIcon size={16} />
 				</label>
 				<ul

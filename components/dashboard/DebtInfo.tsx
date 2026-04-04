@@ -21,33 +21,36 @@ export default function DebtInfo({ debt, payments = [] }: DebtInfoProps) {
 	const paidAmount = calculatePaidAmountWithPayments(debt, payments);
 	const remainingAmount = calculateRemainingAmountWithPayments(debt, payments);
 
-	const infoItems = [
+	const primaryItems = [
 		{
 			label: t("dashboard.debt.totalAmount"),
 			value: formatCurrency(totalAmount),
-			className: "text-lg font-bold text-base-content",
+			className: "text-sm sm:text-lg font-bold text-base-content",
 		},
 		{
 			label: t("dashboard.debt.paidAmount"),
 			value: formatCurrency(paidAmount),
-			className: "text-lg font-bold text-success",
+			className: "text-sm sm:text-lg font-bold text-success",
 		},
 		{
 			label: t("dashboard.debt.remainingAmount"),
 			value: formatCurrency(remainingAmount),
-			className: "text-lg font-bold text-primary",
+			className: "text-sm sm:text-lg font-bold text-primary",
 		},
 		{
 			label: t("dashboard.debt.monthlyAmount"),
 			value: formatCurrency(debt.monthly_amount),
-			className: "text-lg font-bold text-secondary",
+			className: "text-sm sm:text-lg font-bold text-secondary",
 		},
+	];
+
+	const secondaryItems = [
 		...(debt.down_payment && debt.down_payment > 0
 			? [
 					{
 						label: t("debt.create.downPayment"),
 						value: formatCurrency(debt.down_payment),
-						className: "text-lg font-bold text-info",
+						className: "text-sm sm:text-lg font-bold text-info",
 					},
 				]
 			: []),
@@ -56,7 +59,7 @@ export default function DebtInfo({ debt, payments = [] }: DebtInfoProps) {
 					{
 						label: t("dashboard.debt.finalPayment"),
 						value: formatCurrency(debt.final_payment),
-						className: "text-lg font-bold text-accent",
+						className: "text-sm sm:text-lg font-bold text-accent",
 					},
 				]
 			: []),
@@ -69,20 +72,43 @@ export default function DebtInfo({ debt, payments = [] }: DebtInfoProps) {
 						day: "2-digit",
 					})
 				: "No especificada",
-			className: "text-base font-medium text-base-content/70",
+			className: "text-xs sm:text-base font-medium text-base-content/70",
 		},
 	];
 
 	return (
-		<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-			{infoItems.map((item, index) => (
-				<div key={index}>
-					<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
-						{item.label}
+		<div className="space-y-2 sm:space-y-3">
+			{/* Primary financial stats — always 4 columns on desktop */}
+			<div className="grid grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-2 sm:gap-4">
+				{primaryItems.map((item, index) => (
+					<div key={index} className="min-w-0">
+						<div className="text-xs sm:text-sm font-medium text-base-content/60 uppercase tracking-wide mb-0.5 sm:mb-1">
+							{item.label}
+						</div>
+						<div className={item.className}>{item.value}</div>
 					</div>
-					<div className={item.className}>{item.value}</div>
+				))}
+			</div>
+
+			{/* Secondary details — flexible grid that fills the row */}
+			{secondaryItems.length > 0 && (
+				<div className={`grid gap-x-3 gap-y-2 sm:gap-4 ${
+					secondaryItems.length === 1
+						? "grid-cols-1"
+						: secondaryItems.length === 2
+							? "grid-cols-2"
+							: "grid-cols-2 lg:grid-cols-3"
+				}`}>
+					{secondaryItems.map((item, index) => (
+						<div key={index} className="min-w-0">
+							<div className="text-xs sm:text-sm font-medium text-base-content/60 uppercase tracking-wide mb-0.5 sm:mb-1">
+								{item.label}
+							</div>
+							<div className={item.className}>{item.value}</div>
+						</div>
+					))}
 				</div>
-			))}
+			)}
 		</div>
 	);
 }

@@ -67,39 +67,37 @@ export default function DebtProgressWithPayments({
 	}
 
 	return (
-		<div className="space-y-4">
-			{/* Barra de progreso mejorada */}
-			<div className="flex items-center gap-4">
+		<div className="space-y-2 sm:space-y-3">
+			{/* Payment count + remaining — above the bar */}
+			<div className="flex justify-between items-center">
+				<span className="text-sm sm:text-base font-medium">
+					{t("paymentsLabel")}: {progress.paidPayments}/{progress.totalPayments}
+				</span>
+				<span className="text-xs sm:text-sm text-base-content/70">
+					{progress.totalPayments - progress.paidPayments} {t("remaining")}
+				</span>
+			</div>
+
+			{/* Progress bar */}
+			<div className="flex items-center gap-2 sm:gap-3">
 				<div className="flex-1">
-					<div className="w-full bg-base-300 rounded-full h-4">
+					<div className="w-full bg-base-300 rounded-full h-3 sm:h-4">
 						<div
-							className="bg-primary h-4 rounded-full flex items-center justify-end pr-2 transition-all duration-700 ease-out"
+							className="bg-primary h-3 sm:h-4 rounded-full flex items-center justify-end pr-1 sm:pr-2 transition-all duration-700 ease-out"
 							style={{
 								width: `${animatedPercentage > 0 ? Math.max(animatedPercentage, 5) : 0}%`,
 							}}
 						>
 							{animatedPercentage > 15 && (
-								<span className="text-sm font-medium text-primary-content">
+								<span className="text-xs sm:text-sm font-medium text-primary-content">
 									{Math.round(animatedPercentage)}%
 								</span>
 							)}
 						</div>
 					</div>
 				</div>
-				{animatedPercentage <= 15 && (
-					<span className="text-lg font-semibold text-primary">
-						{Math.round(animatedPercentage)}%
-					</span>
-				)}
-			</div>
-
-			{/* Información de cuotas mejorada */}
-			<div className="flex justify-between items-center">
-				<span className="text-lg font-medium">
-					{t("paymentsLabel")}: {progress.paidPayments}/{progress.totalPayments}
-				</span>
-				<span className="text-base text-base-content/70">
-					{progress.totalPayments - progress.paidPayments} {t("remaining")}
+				<span className={`text-sm sm:text-base font-semibold text-primary min-w-[3ch] text-right ${animatedPercentage > 15 ? "lg:hidden" : ""}`}>
+					{Math.round(animatedPercentage)}%
 				</span>
 			</div>
 		</div>

@@ -149,7 +149,7 @@ export default function DebtPaymentStatus({
 				<button
 					onClick={handleMarkAsPaid}
 					disabled={isProcessing}
-					className="btn btn-primary"
+					className="btn btn-primary btn-sm sm:btn-md"
 				>
 					{isProcessing ? (
 						<span className="loading loading-spinner loading-sm"></span>

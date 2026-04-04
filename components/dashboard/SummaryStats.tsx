@@ -54,34 +54,34 @@ export default function SummaryStats({ debts }: SummaryStatsProps) {
 			description: t("dashboard.stats.activeDebts", {
 				count: activeDebts.length,
 			}),
-			icon: <MoneyIcon size={32} />,
+			icon: <MoneyIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />,
 			variant: "primary" as const,
 		},
 		{
 			title: t("dashboard.stats.monthlyPayment"),
 			value: formatCurrency(totalMonthlyPayment),
 			description: t("dashboard.stats.monthlyTotal"),
-			icon: <ClockIcon size={32} />,
+			icon: <ClockIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />,
 			variant: "secondary" as const,
 		},
 		{
 			title: t("dashboard.stats.completed"),
 			value: completedDebts.length,
 			description: t("dashboard.stats.paidOff"),
-			icon: <CheckCircleIcon size={32} />,
+			icon: <CheckCircleIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />,
 			variant: "accent" as const,
 		},
 		{
 			title: t("dashboard.stats.averageProgress"),
 			value: `${averageProgress}%`,
 			description: t("dashboard.stats.ofAllDebts"),
-			icon: <ChartBarIcon size={32} />,
+			icon: <ChartBarIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />,
 			variant: "info" as const,
 		},
 	];
 
 	return (
-		<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+		<div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
 			{stats.map((stat, index) => (
 				<StatCard
 					key={index}
