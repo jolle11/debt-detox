@@ -32,11 +32,34 @@ export function useDeleteDebt(): UseDeleteDebtReturn {
 				throw new Error("No tienes permisos para eliminar esta deuda");
 			}
 
+			const deletedAt = new Date().toISOString();
+
+			// Revoke any shared links for this debt before hiding it.
+			const sharedLinks = await pb
+				.collection(COLLECTIONS.SHARED_DEBTS)
+				.getFullList({
+					filter: pb.filter(
+						"debt_id = {:debtId} && user_id = {:userId} && deleted = null",
+						{
+							debtId,
+							userId: user.id,
+						},
+					),
+				});
+
+			await Promise.all(
+				sharedLinks.map((link) =>
+					pb.collection(COLLECTIONS.SHARED_DEBTS).update(link.id, {
+						deleted: deletedAt,
+					}),
+				),
+			);
+
 			// Soft delete: set the deleted field to current date
 			const deletedDebt = await pb
 				.collection(COLLECTIONS.DEBTS)
 				.update(debtId, {
-					deleted: new Date().toISOString(),
+					deleted: deletedAt,
 				});
 
 			return deletedDebt;

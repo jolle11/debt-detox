@@ -39,10 +39,21 @@ export default function SharePage() {
 
 				const share = shareRecords.items[0] as unknown as SharedDebt;
 
-				// Fetch the debt
-				const debt = (await pb
+				// Treat links to soft-deleted debts as expired.
+				const debtRecords = await pb
 					.collection(COLLECTIONS.DEBTS)
-					.getOne(share.debt_id)) as unknown as Debt;
+					.getList(1, 1, {
+						filter: pb.filter("id = {:debtId} && deleted = null", {
+							debtId: share.debt_id,
+						}),
+					});
+
+				if (debtRecords.items.length === 0) {
+					setIsExpired(true);
+					return;
+				}
+
+				const debt = debtRecords.items[0] as unknown as Debt;
 
 				// Fetch payments
 				const paymentRecords = await pb
