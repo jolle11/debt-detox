@@ -16,6 +16,7 @@ import { useState } from "react";
 import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
+import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import { calculateDebtStatus } from "@/lib/format";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt, type Payment } from "@/lib/types";
@@ -163,12 +164,13 @@ export default function DebtPaymentsList({
 			// Recalcular final_payment_date basándose en la estructura original
 			const origPayments =
 				debt.original_number_of_payments || debt.number_of_payments;
-			const firstPayment = new Date(debt.first_payment_date);
-			const newFinalDate = new Date(firstPayment);
-			newFinalDate.setMonth(newFinalDate.getMonth() + origPayments - 1);
 
 			await pb.collection(COLLECTIONS.DEBTS).update(debt.id!, {
-				final_payment_date: newFinalDate.toISOString().split("T")[0],
+				final_payment_date: resolveFinalPaymentDate({
+					first_payment_date: debt.first_payment_date,
+					number_of_payments: origPayments,
+					final_payment: debt.final_payment,
+				}),
 			});
 
 			// Invalidar caches para refetch

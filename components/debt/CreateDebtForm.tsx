@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import FormInput from "@/components/ui/FormInput";
+import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import { type CreateDebtFormData, createDebtSchema } from "@/lib/schemas";
 import type { Debt } from "@/lib/types";
 
@@ -41,27 +42,15 @@ export default function CreateDebtForm({
 		},
 	});
 
-	const calculateFinalPaymentDate = (
-		firstPaymentDate: string,
-		numberOfPayments: number,
-	): string => {
-		const firstDate = new Date(firstPaymentDate);
-		const finalDate = new Date(firstDate);
-		finalDate.setMonth(finalDate.getMonth() + numberOfPayments - 1);
-		return finalDate.toISOString().split("T")[0];
-	};
-
 	const onFormSubmit = (data: CreateDebtFormData) => {
 		let finalPaymentDate = data.final_payment_date || "";
-		if (
-			!finalPaymentDate &&
-			data.first_payment_date &&
-			data.number_of_payments
-		) {
-			finalPaymentDate = calculateFinalPaymentDate(
-				data.first_payment_date,
-				data.number_of_payments,
-			);
+		if (data.first_payment_date && data.number_of_payments) {
+			finalPaymentDate = resolveFinalPaymentDate({
+				first_payment_date: data.first_payment_date,
+				number_of_payments: data.number_of_payments,
+				final_payment: data.final_payment,
+				final_payment_date: data.final_payment_date || undefined,
+			});
 		}
 
 		const debtData: Omit<

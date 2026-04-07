@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
+import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import pb from "@/lib/pocketbase";
 import {
 	COLLECTIONS,
@@ -368,18 +369,12 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 						updateData.number_of_payments =
 							paidInstallments + newRemainingInstallments;
 
-						// Recalcular fecha final
-						const firstPayment = new Date(debt.first_payment_date);
-						const newFinalDate = new Date(firstPayment);
-						newFinalDate.setMonth(
-							newFinalDate.getMonth() +
-								paidInstallments +
-								newRemainingInstallments -
-								1,
-						);
-						updateData.final_payment_date = newFinalDate
-							.toISOString()
-							.split("T")[0];
+						updateData.final_payment_date = resolveFinalPaymentDate({
+							first_payment_date: debt.first_payment_date,
+							number_of_payments: paidInstallments + newRemainingInstallments,
+							final_payment: debt.final_payment,
+							final_payment_date: debt.final_payment_date,
+						});
 					}
 				}
 

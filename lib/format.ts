@@ -1,4 +1,5 @@
 import { getCurrencySymbol } from "./currencies";
+import { resolveFinalPaymentDate } from "./debtDates";
 
 export function formatNumber(
 	value: number,
@@ -103,15 +104,7 @@ export function calculatePaidAmount(debt: {
 	const firstPayment = new Date(debt.first_payment_date);
 
 	// If no final payment date, calculate it
-	const finalPaymentDate =
-		debt.final_payment_date ||
-		(() => {
-			const calculatedDate = new Date(firstPayment);
-			calculatedDate.setMonth(
-				calculatedDate.getMonth() + debt.number_of_payments - 1,
-			);
-			return calculatedDate.toISOString().split("T")[0];
-		})();
+	const finalPaymentDate = resolveFinalPaymentDate(debt);
 	const finalPayment = new Date(finalPaymentDate);
 
 	let paidAmount = debt.down_payment || 0; // Entrada siempre está pagada
@@ -209,15 +202,7 @@ export function calculatePaymentProgress(debt: {
 	const firstPayment = new Date(debt.first_payment_date);
 
 	// If no final payment date, calculate it
-	const finalPaymentDate =
-		debt.final_payment_date ||
-		(() => {
-			const calculatedDate = new Date(firstPayment);
-			calculatedDate.setMonth(
-				calculatedDate.getMonth() + debt.number_of_payments - 1,
-			);
-			return calculatedDate.toISOString().split("T")[0];
-		})();
+	const finalPaymentDate = resolveFinalPaymentDate(debt);
 	const finalPayment = new Date(finalPaymentDate);
 
 	// Contar pagos totales (cuotas mensuales + cuota final si existe)

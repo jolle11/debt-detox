@@ -5,8 +5,16 @@ import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import FormInput from "@/components/ui/FormInput";
+import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import { type EditDebtFormData, editDebtSchema } from "@/lib/schemas";
 import type { Debt } from "@/lib/types";
+
+function formatDateForInput(dateString: string) {
+	if (!dateString) return "";
+	const date = new Date(dateString);
+	if (Number.isNaN(date.getTime())) return "";
+	return date.toISOString().split("T")[0];
+}
 
 interface EditDebtFormProps {
 	debt: Debt;
@@ -23,13 +31,6 @@ export default function EditDebtForm({
 }: EditDebtFormProps) {
 	const t = useTranslations();
 	const tv = useTranslations("validation");
-
-	const formatDateForInput = (dateString: string) => {
-		if (!dateString) return "";
-		const date = new Date(dateString);
-		if (Number.isNaN(date.getTime())) return "";
-		return date.toISOString().split("T")[0];
-	};
 
 	const {
 		register,
@@ -63,23 +64,15 @@ export default function EditDebtForm({
 		});
 	}, [debt, reset]);
 
-	const calculateFinalPaymentDate = (
-		firstPaymentDate: string,
-		numberOfPayments: number,
-	): string => {
-		const firstDate = new Date(firstPaymentDate);
-		const finalDate = new Date(firstDate);
-		finalDate.setMonth(finalDate.getMonth() + numberOfPayments - 1);
-		return finalDate.toISOString().split("T")[0];
-	};
-
 	const onFormSubmit = (data: EditDebtFormData) => {
 		let finalPaymentDate = data.final_payment_date || "";
 		if (data.first_payment_date && data.number_of_payments) {
-			finalPaymentDate = calculateFinalPaymentDate(
-				data.first_payment_date,
-				data.number_of_payments,
-			);
+			finalPaymentDate = resolveFinalPaymentDate({
+				first_payment_date: data.first_payment_date,
+				number_of_payments: data.number_of_payments,
+				final_payment: data.final_payment,
+				final_payment_date: data.final_payment_date || undefined,
+			});
 		}
 
 		const debtData: Omit<Debt, "created" | "updated" | "deleted"> = {
