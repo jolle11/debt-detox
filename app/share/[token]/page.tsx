@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import SharedDebtExpired from "@/components/share/SharedDebtExpired";
 import SharedDebtView from "@/components/share/SharedDebtView";
 import pb from "@/lib/pocketbase";
+import { resolveSharedCurrency } from "@/lib/sharedPresentation";
 import type { Debt, Payment, SharedDebt } from "@/lib/types";
 import { COLLECTIONS } from "@/lib/types";
 
@@ -12,6 +13,7 @@ interface SharedData {
 	share: SharedDebt;
 	debt: Debt;
 	payments: Payment[];
+	currency: string;
 }
 
 export default function SharePage() {
@@ -38,6 +40,18 @@ export default function SharePage() {
 				}
 
 				const share = shareRecords.items[0] as unknown as SharedDebt;
+				let currency = "EUR";
+
+				try {
+					const user = (await pb
+						.collection("users")
+						.getOne(share.user_id)) as Record<string, unknown>;
+					currency = resolveSharedCurrency(
+						typeof user.currency === "string" ? user.currency : undefined,
+					);
+				} catch {
+					// Currency falls back to the shared default.
+				}
 
 				// Treat links to soft-deleted debts as expired.
 				const debtRecords = await pb
@@ -67,6 +81,7 @@ export default function SharePage() {
 					share,
 					debt,
 					payments: paymentRecords as unknown as Payment[],
+					currency,
 				});
 			} catch {
 				setIsExpired(true);
@@ -95,6 +110,7 @@ export default function SharePage() {
 			debt={data.debt}
 			payments={data.payments}
 			share={data.share}
+			currency={data.currency}
 		/>
 	);
 }
