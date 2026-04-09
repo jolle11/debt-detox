@@ -16,6 +16,7 @@ import { useState } from "react";
 import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
+import { parseDateOnly } from "@/lib/dateOnly";
 import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import { calculateDebtStatus } from "@/lib/format";
 import pb from "@/lib/pocketbase";
@@ -59,8 +60,9 @@ export default function DebtPaymentsList({
 			totalActualAmount: number;
 		}> = [];
 
-		const startDate = new Date(debt.first_payment_date);
+		const startDate = parseDateOnly(debt.first_payment_date);
 		const now = new Date();
+		if (!startDate) return expectedPayments;
 
 		for (let i = 0; i < debt.number_of_payments; i++) {
 			const paymentDate = new Date(startDate);
