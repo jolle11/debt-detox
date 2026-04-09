@@ -5,12 +5,18 @@ import { useTranslations } from "next-intl";
 import DebtPaymentStatus from "@/components/dashboard/DebtPaymentStatus";
 import DebtProgressWithPayments from "@/components/dashboard/DebtProgressWithPayments";
 import type { DebtDetailProps } from "@/data/debtDetail";
+import type { MarkPaymentAsPaidFn } from "@/hooks/usePayments";
+
+interface DebtProgressSectionProps extends DebtDetailProps {
+	onMarkPaymentAsPaid: MarkPaymentAsPaidFn;
+}
 
 export default function DebtProgressSection({
 	debt,
 	payments,
 	isLoading,
-}: DebtDetailProps) {
+	onMarkPaymentAsPaid,
+}: DebtProgressSectionProps) {
 	const t = useTranslations();
 
 	return (
@@ -26,7 +32,11 @@ export default function DebtProgressSection({
 					isLoading={isLoading || false}
 				/>
 				<div className="mt-3">
-					<DebtPaymentStatus debt={debt} payments={payments} />
+					<DebtPaymentStatus
+						debt={debt}
+						payments={payments}
+						onMarkPaymentAsPaid={onMarkPaymentAsPaid}
+					/>
 				</div>
 			</div>
 		</div>

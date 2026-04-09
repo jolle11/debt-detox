@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
+import { parseDateOnly } from "@/lib/dateOnly";
 import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import pb from "@/lib/pocketbase";
 import {
@@ -57,22 +58,95 @@ interface UsePaymentsReturn {
 	) => Promise<void>;
 }
 
-const fetchPayments = async (debtId?: string): Promise<Payment[]> => {
-	if (!pb.authStore.isValid) {
+export type MarkPaymentAsPaidFn = UsePaymentsReturn["markPaymentAsPaid"];
+
+const PAYMENT_DEBT_FILTER_BATCH_SIZE = 20;
+
+const getAuthorizedDebtIds = async (
+	userId: string,
+	debtId?: string,
+): Promise<string[]> => {
+	const filter = debtId
+		? pb.filter("deleted = null && user_id = {:userId} && id = {:debtId}", {
+				userId,
+				debtId,
+			})
+		: pb.filter("deleted = null && user_id = {:userId}", { userId });
+
+	const debts = await pb.collection(COLLECTIONS.DEBTS).getFullList({
+		filter,
+		sort: "-created",
+	});
+
+	return debts.map((debt) => debt.id);
+};
+
+const buildPaymentsFilter = (debtIds: string[]): string => {
+	const debtConditions = debtIds
+		.map((_, index) => `debt_id = {:debtId${index}}`)
+		.join(" || ");
+	const params = Object.fromEntries(
+		debtIds.map((id, index) => [`debtId${index}`, id]),
+	);
+
+	return pb.filter(`deleted = null && (${debtConditions})`, params);
+};
+
+const sortPaymentsByDateDesc = (payments: Payment[]): Payment[] =>
+	payments.sort((left, right) => {
+		if (left.year !== right.year) {
+			return right.year - left.year;
+		}
+
+		return right.month - left.month;
+	});
+
+const assertAuthorizedDebtAccess = async (
+	userId: string,
+	debtId: string,
+): Promise<void> => {
+	const authorizedDebtIds = await getAuthorizedDebtIds(userId, debtId);
+
+	if (authorizedDebtIds.length === 0) {
+		throw new Error("No autorizado para operar sobre esta deuda");
+	}
+};
+
+const fetchPayments = async (
+	userId: string,
+	debtId?: string,
+): Promise<Payment[]> => {
+	if (!pb.authStore.isValid || !userId) {
 		return [];
 	}
 
 	try {
-		const filter = debtId
-			? pb.filter("debt_id = {:debtId} && deleted = null", { debtId })
-			: "deleted = null";
+		const authorizedDebtIds = await getAuthorizedDebtIds(userId, debtId);
 
-		const records = await pb.collection(COLLECTIONS.PAYMENTS).getFullList({
-			filter,
-			sort: "-year,-month",
-		});
+		if (authorizedDebtIds.length === 0) {
+			return [];
+		}
 
-		return records as unknown as Payment[];
+		const paymentBatches: Payment[] = [];
+
+		for (
+			let index = 0;
+			index < authorizedDebtIds.length;
+			index += PAYMENT_DEBT_FILTER_BATCH_SIZE
+		) {
+			const debtIdsBatch = authorizedDebtIds.slice(
+				index,
+				index + PAYMENT_DEBT_FILTER_BATCH_SIZE,
+			);
+			const records = (await pb.collection(COLLECTIONS.PAYMENTS).getFullList({
+				filter: buildPaymentsFilter(debtIdsBatch),
+				sort: "-year,-month",
+			})) as unknown as Payment[];
+
+			paymentBatches.push(...records);
+		}
+
+		return sortPaymentsByDateDesc(paymentBatches);
 	} catch (err) {
 		const errorMessage =
 			err instanceof Error ? err.message : "Error al cargar los pagos";
@@ -92,8 +166,8 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		refetch,
 	} = useQuery({
 		queryKey: ["payments", debtId, user?.id], // Include user ID in query key
-		queryFn: () => fetchPayments(debtId),
-		enabled: !!user, // Solo ejecuta si hay usuario autenticado
+		queryFn: () => fetchPayments(user?.id || "", debtId),
+		enabled: !!user?.id, // Solo ejecuta si hay usuario autenticado
 		staleTime: 5 * 60 * 1000, // 5 minutes
 		gcTime: 10 * 60 * 1000, // 10 minutes
 	});
@@ -114,6 +188,12 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 			actualAmount?: number;
 			paidDate?: string;
 		}) => {
+			if (!user?.id) {
+				throw new Error("Usuario no autenticado");
+			}
+
+			await assertAuthorizedDebtAccess(user.id, debtId);
+
 			// Buscar si ya existe un payment para este mes/año
 			const existingPayments = await pb
 				.collection(COLLECTIONS.PAYMENTS)
@@ -222,10 +302,10 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 	) => {
 		try {
 			const now = new Date();
-			const startDate = new Date(firstPaymentDate);
+			const startDate = parseDateOnly(firstPaymentDate);
 
 			// Solo generar pagos históricos si la primera cuota es anterior a hoy
-			if (startDate >= now) {
+			if (!startDate || startDate >= now) {
 				return; // Es una financiación nueva, no generar pagos históricos
 			}
 

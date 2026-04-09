@@ -1,22 +1,22 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import type { MarkPaymentAsPaidFn } from "@/hooks/usePayments";
 import { calculateDebtLifecycleStatus } from "@/lib/format";
-import pb from "@/lib/pocketbase";
-import { COLLECTIONS, type Debt, type Payment } from "@/lib/types";
+import type { Debt, Payment } from "@/lib/types";
 
 interface DebtPaymentStatusProps {
 	debt: Debt;
 	payments: Payment[];
+	onMarkPaymentAsPaid: MarkPaymentAsPaidFn;
 }
 
 export default function DebtPaymentStatus({
 	debt,
 	payments,
+	onMarkPaymentAsPaid,
 }: DebtPaymentStatusProps) {
-	const queryClient = useQueryClient();
 	const [isProcessing, setIsProcessing] = useState(false);
 	const t = useTranslations("paymentStatus");
 
@@ -36,11 +36,9 @@ export default function DebtPaymentStatus({
 		);
 	};
 
-	const currentPaymentStatus = getPaymentStatus(
-		debt.id!,
-		currentMonth,
-		currentYear,
-	);
+	const currentPaymentStatus = debt.id
+		? getPaymentStatus(debt.id, currentMonth, currentYear)
+		: null;
 	const isCurrentMonthPaid = currentPaymentStatus?.paid || false;
 	const lifecycleStatus = calculateDebtLifecycleStatus(
 		debt.final_payment_date,
@@ -48,71 +46,19 @@ export default function DebtPaymentStatus({
 		payments,
 	);
 
-	const markPaymentMutation = useMutation({
-		mutationFn: async ({
-			debtId,
-			month,
-			year,
-			plannedAmount,
-			actualAmount,
-		}: {
-			debtId: string;
-			month: number;
-			year: number;
-			plannedAmount: number;
-			actualAmount?: number;
-		}) => {
-			// Buscar si ya existe un payment para este mes/año
-			const existingPayments = await pb
-				.collection(COLLECTIONS.PAYMENTS)
-				.getFullList({
-					filter: `debt_id = "${debtId}" && month = ${month} && year = ${year} && deleted = null`,
-				});
-
-			const amountToPay = actualAmount || plannedAmount;
-
-			if (existingPayments.length > 0) {
-				// Actualizar el payment existente
-				const payment = existingPayments[0];
-				return await pb.collection(COLLECTIONS.PAYMENTS).update(payment.id, {
-					paid: true,
-					paid_date: new Date().toISOString(),
-					actual_amount: amountToPay,
-				});
-			} else {
-				// Crear un nuevo payment
-				return await pb.collection(COLLECTIONS.PAYMENTS).create({
-					debt_id: debtId,
-					month,
-					year,
-					planned_amount: plannedAmount,
-					actual_amount: amountToPay,
-					paid: true,
-					paid_date: new Date().toISOString(),
-				});
-			}
-		},
-		onSuccess: () => {
-			// Invalidar cache de payments para refetch automático
-			queryClient.invalidateQueries({ queryKey: ["payments"] });
-			// También invalidar debts ya que los pagos afectan el progreso
-			queryClient.invalidateQueries({ queryKey: ["debts"] });
-		},
-	});
-
 	const handleMarkAsPaid = async (e: React.MouseEvent) => {
 		e.stopPropagation();
 		if (isProcessing || !debt.id) return;
 
 		setIsProcessing(true);
 		try {
-			await markPaymentMutation.mutateAsync({
-				debtId: debt.id,
-				month: currentMonth,
-				year: currentYear,
-				plannedAmount: debt.monthly_amount,
-				actualAmount: debt.monthly_amount,
-			});
+			await onMarkPaymentAsPaid(
+				debt.id,
+				currentMonth,
+				currentYear,
+				debt.monthly_amount,
+				debt.monthly_amount,
+			);
 		} catch (error) {
 			console.error("Error al marcar pago:", error);
 			// Aquí podrías mostrar un toast de error

@@ -1,5 +1,4 @@
 "use client";
-import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import DebtsList from "@/components/dashboard/DebtsList";
@@ -16,16 +15,18 @@ import { usePayments } from "@/hooks/usePayments";
 import type { Debt } from "@/lib/types";
 
 export default function Dashboard() {
-	const t = useTranslations();
-	const locale = useLocale();
 	const [showCreateModal, setShowCreateModal] = useState(false);
 	const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
 	const [deletingDebt, setDeletingDebt] = useState<Debt | null>(null);
 	const [completingDebt, setCompletingDebt] = useState<Debt | null>(null);
-	const { debts, isLoading, error, refetch } = useDebtsContext();
+	const { debts, isLoading, error } = useDebtsContext();
 
 	// Centralizar payments para todos los componentes del dashboard
-	const { payments, isLoading: paymentsLoading } = usePayments();
+	const {
+		payments,
+		isLoading: paymentsLoading,
+		markPaymentAsPaid,
+	} = usePayments();
 
 	const authFallback = <LandingPage />;
 
@@ -50,6 +51,7 @@ export default function Dashboard() {
 						<DebtsList
 							debts={debts}
 							payments={payments}
+							onMarkPaymentAsPaid={markPaymentAsPaid}
 							onEdit={setEditingDebt}
 							onDelete={setDeletingDebt}
 							onComplete={setCompletingDebt}
