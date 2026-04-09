@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import SharedDebtExpired from "@/components/share/SharedDebtExpired";
 import SharedProfileView from "@/components/share/SharedProfileView";
 import pb from "@/lib/pocketbase";
+import { resolveSharedCurrency } from "@/lib/sharedPresentation";
 import type { Debt, Payment, SharedProfile } from "@/lib/types";
 import { COLLECTIONS } from "@/lib/types";
 
@@ -12,6 +13,7 @@ interface SharedProfileData {
 	share: SharedProfile;
 	debts: Debt[];
 	payments: Payment[];
+	currency: string;
 	userName?: string;
 }
 
@@ -39,14 +41,23 @@ export default function ShareProfilePage() {
 				}
 
 				const share = shareRecords.items[0] as unknown as SharedProfile;
+				let currency = "EUR";
 
 				// Fetch user name
 				let userName: string | undefined;
 				try {
-					const user = await pb.collection("users").getOne(share.user_id);
-					userName = user.name || undefined;
+					const user = (await pb
+						.collection("users")
+						.getOne(share.user_id)) as Record<string, unknown>;
+					userName =
+						typeof user.name === "string" && user.name.trim()
+							? user.name
+							: undefined;
+					currency = resolveSharedCurrency(
+						typeof user.currency === "string" ? user.currency : undefined,
+					);
 				} catch {
-					// User name is optional
+					// User metadata is optional for shared views.
 				}
 
 				// Fetch all debts for the user
@@ -78,6 +89,7 @@ export default function ShareProfilePage() {
 					share,
 					debts,
 					payments: allPayments,
+					currency,
 					userName,
 				});
 			} catch {
@@ -105,8 +117,8 @@ export default function ShareProfilePage() {
 	return (
 		<SharedProfileView
 			debts={data.debts}
-			payments={data.payments}
 			share={data.share}
+			currency={data.currency}
 			userName={data.userName}
 		/>
 	);

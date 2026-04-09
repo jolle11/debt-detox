@@ -1,12 +1,11 @@
 "use client";
 
 import {
-	ChartBarIcon,
 	CheckCircleIcon,
-	ClockIcon,
 	CreditCardIcon,
 	TargetIcon,
 } from "@phosphor-icons/react";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import {
 	calculateDebtStatus,
@@ -14,30 +13,43 @@ import {
 	calculateRemainingAmount,
 	calculateTotalAmount,
 } from "@/lib/format";
-import type { Debt, Payment, SharedProfile } from "@/lib/types";
+import {
+	getFormattingLocale,
+	resolveSharedCurrency,
+} from "@/lib/sharedPresentation";
+import type { Debt, SharedProfile } from "@/lib/types";
 
 interface SharedProfileViewProps {
 	debts: Debt[];
-	payments: Payment[];
 	share: SharedProfile;
+	currency?: string;
 	userName?: string;
 }
 
-function formatCurrencySimple(amount: number): string {
-	return new Intl.NumberFormat("es-ES", {
+function formatCurrencySimple(
+	amount: number,
+	locale: string,
+	currency: string,
+): string {
+	return new Intl.NumberFormat(locale, {
 		style: "currency",
-		currency: "EUR",
+		currency,
 		minimumFractionDigits: 2,
 	}).format(amount);
 }
 
 export default function SharedProfileView({
 	debts,
-	payments,
 	share,
+	currency,
 	userName,
 }: SharedProfileViewProps) {
+	const locale = useLocale();
+	const t = useTranslations("share.profile");
+	const tShare = useTranslations("share");
 	const [animatedProgress, setAnimatedProgress] = useState(0);
+	const formattingLocale = getFormattingLocale(locale);
+	const resolvedCurrency = resolveSharedCurrency(currency);
 
 	const activeDebts = debts.filter(
 		(d) => calculateDebtStatus(d.final_payment_date) === "active",
@@ -77,26 +89,26 @@ export default function SharedProfileView({
 		return () => clearTimeout(timer);
 	}, [averageProgress]);
 
+	useEffect(() => {
+		document.documentElement.lang = locale;
+	}, [locale]);
+
+	const summaryParts = [
+		t("activeSummary", { count: activeDebts.length }),
+		...(share.show_completed && completedDebts.length > 0
+			? [t("completedSummary", { count: completedDebts.length })]
+			: []),
+	];
+
 	return (
 		<div className="py-6 space-y-4">
 			{/* Header */}
 			<div className="text-center mb-6">
-				<p className="text-sm text-base-content/50 mb-2">Debt Detox</p>
+				<p className="text-sm text-base-content/50 mb-2">{tShare("brand")}</p>
 				<h1 className="text-2xl font-bold">
-					{userName ? `${userName}` : "Resumen financiero"}
+					{userName ? `${userName}` : t("titleFallback")}
 				</h1>
-				<p className="text-base-content/70 mt-1">
-					{activeDebts.length} financiación
-					{activeDebts.length !== 1 ? "es" : ""} activa
-					{activeDebts.length !== 1 ? "s" : ""}
-					{share.show_completed && completedDebts.length > 0 && (
-						<>
-							{" "}
-							· {completedDebts.length} completada
-							{completedDebts.length !== 1 ? "s" : ""}
-						</>
-					)}
-				</p>
+				<p className="text-base-content/70 mt-1">{summaryParts.join(" · ")}</p>
 			</div>
 
 			{/* Average progress */}
@@ -104,7 +116,7 @@ export default function SharedProfileView({
 				<div className="card-body p-4">
 					<h2 className="card-title text-lg mb-2">
 						<TargetIcon className="w-5 h-5" />
-						Progreso Global
+						{t("globalProgress")}
 					</h2>
 					<div className="space-y-4">
 						<div className="flex items-center gap-4">
@@ -131,7 +143,7 @@ export default function SharedProfileView({
 							)}
 						</div>
 						<div className="text-sm text-base-content/70 text-center">
-							Progreso medio de todas las financiaciones activas
+							{t("averageProgressDescription")}
 						</div>
 					</div>
 				</div>
@@ -142,34 +154,50 @@ export default function SharedProfileView({
 				<div className="grid grid-cols-2 gap-3">
 					<div className="bg-base-100 rounded-xl border border-base-300 p-4">
 						<div className="text-sm font-medium text-base-content/60 uppercase tracking-wide mb-1">
-							Deuda Pendiente
+							{t("pendingDebt")}
 						</div>
 						<div className="text-xl font-bold text-warning">
-							{formatCurrencySimple(totalDebt)}
+							{formatCurrencySimple(
+								totalDebt,
+								formattingLocale,
+								resolvedCurrency,
+							)}
 						</div>
 					</div>
 					<div className="bg-base-100 rounded-xl border border-base-300 p-4">
 						<div className="text-sm font-medium text-base-content/60 uppercase tracking-wide mb-1">
-							Pago Mensual
+							{t("monthlyPayment")}
 						</div>
 						<div className="text-xl font-bold text-secondary">
-							{formatCurrencySimple(totalMonthlyPayment)}
+							{formatCurrencySimple(
+								totalMonthlyPayment,
+								formattingLocale,
+								resolvedCurrency,
+							)}
 						</div>
 					</div>
 					<div className="bg-base-100 rounded-xl border border-base-300 p-4">
 						<div className="text-sm font-medium text-base-content/60 uppercase tracking-wide mb-1">
-							Total Pagado
+							{t("totalPaid")}
 						</div>
 						<div className="text-xl font-bold text-success">
-							{formatCurrencySimple(Math.max(0, totalPaid))}
+							{formatCurrencySimple(
+								Math.max(0, totalPaid),
+								formattingLocale,
+								resolvedCurrency,
+							)}
 						</div>
 					</div>
 					<div className="bg-base-100 rounded-xl border border-base-300 p-4">
 						<div className="text-sm font-medium text-base-content/60 uppercase tracking-wide mb-1">
-							Deuda Original
+							{t("originalDebt")}
 						</div>
 						<div className="text-xl font-bold text-primary">
-							{formatCurrencySimple(totalOriginalDebt)}
+							{formatCurrencySimple(
+								totalOriginalDebt,
+								formattingLocale,
+								resolvedCurrency,
+							)}
 						</div>
 					</div>
 				</div>
@@ -180,7 +208,7 @@ export default function SharedProfileView({
 				<div className="grid grid-cols-2 gap-3">
 					<div className="bg-base-100 rounded-xl border border-base-300 p-4">
 						<div className="text-sm font-medium text-base-content/60 uppercase tracking-wide mb-1">
-							Activas
+							{t("active")}
 						</div>
 						<div className="text-2xl font-bold text-primary">
 							{activeDebts.length}
@@ -189,7 +217,7 @@ export default function SharedProfileView({
 					{share.show_completed && (
 						<div className="bg-base-100 rounded-xl border border-base-300 p-4">
 							<div className="text-sm font-medium text-base-content/60 uppercase tracking-wide mb-1">
-								Completadas
+								{t("completed")}
 							</div>
 							<div className="text-2xl font-bold text-success">
 								{completedDebts.length}
@@ -208,19 +236,22 @@ export default function SharedProfileView({
 							<div className="flex items-center gap-2 mb-2">
 								<CheckCircleIcon className="w-5 h-5 text-success" />
 								<h2 className="font-bold text-lg text-success">
-									{completedDebts.length} financiación
-									{completedDebts.length !== 1 ? "es" : ""} completada
-									{completedDebts.length !== 1 ? "s" : ""}
+									{t("completedBannerTitle", {
+										count: completedDebts.length,
+									})}
 								</h2>
 							</div>
 							<div className="text-sm text-base-content/70">
-								Total liquidado:{" "}
-								{formatCurrencySimple(
-									completedDebts.reduce(
-										(sum, debt) => sum + calculateTotalAmount(debt),
-										0,
+								{t("totalLiquidated", {
+									amount: formatCurrencySimple(
+										completedDebts.reduce(
+											(sum, debt) => sum + calculateTotalAmount(debt),
+											0,
+										),
+										formattingLocale,
+										resolvedCurrency,
 									),
-								)}
+								})}
 							</div>
 						</div>
 					</div>
@@ -232,7 +263,7 @@ export default function SharedProfileView({
 					<div className="card-body p-4">
 						<h2 className="card-title text-lg mb-3">
 							<CreditCardIcon className="w-5 h-5" />
-							Financiaciones Activas
+							{t("activeFinancing")}
 						</h2>
 						<div className="space-y-3">
 							{activeDebts.map((debt) => {
@@ -254,10 +285,12 @@ export default function SharedProfileView({
 													<div className="text-sm font-bold text-warning">
 														{formatCurrencySimple(
 															calculateRemainingAmount(debt),
+															formattingLocale,
+															resolvedCurrency,
 														)}
 													</div>
 													<div className="text-xs text-base-content/50">
-														pendiente
+														{t("pendingShort")}
 													</div>
 												</div>
 											)}
@@ -280,11 +313,19 @@ export default function SharedProfileView({
 										{share.show_amounts && (
 											<div className="flex justify-between text-xs text-base-content/50 mt-1">
 												<span>
-													{formatCurrencySimple(debt.monthly_amount)}/mes
+													{t("perMonth", {
+														amount: formatCurrencySimple(
+															debt.monthly_amount,
+															formattingLocale,
+															resolvedCurrency,
+														),
+													})}
 												</span>
 												<span>
-													{progress.paidPayments}/{progress.totalPayments}{" "}
-													cuotas
+													{t("installmentsProgress", {
+														paid: progress.paidPayments,
+														total: progress.totalPayments,
+													})}
 												</span>
 											</div>
 										)}
@@ -304,7 +345,7 @@ export default function SharedProfileView({
 						<div className="card-body p-4">
 							<h2 className="card-title text-lg mb-3">
 								<CheckCircleIcon className="w-5 h-5 text-success" />
-								Completadas
+								{t("completedFinancing")}
 							</h2>
 							<div className="space-y-3">
 								{completedDebts.map((debt) => (
@@ -322,7 +363,11 @@ export default function SharedProfileView({
 											<div className="flex items-center gap-2">
 												{share.show_amounts && (
 													<span className="text-sm font-bold text-success">
-														{formatCurrencySimple(calculateTotalAmount(debt))}
+														{formatCurrencySimple(
+															calculateTotalAmount(debt),
+															formattingLocale,
+															resolvedCurrency,
+														)}
 													</span>
 												)}
 												<CheckCircleIcon className="w-5 h-5 text-success" />
@@ -338,7 +383,7 @@ export default function SharedProfileView({
 			{/* Footer branding */}
 			<div className="text-center pt-4">
 				<p className="text-xs text-base-content/40">
-					Compartido con Debt Detox
+					{tShare("sharedWithBrand")}
 				</p>
 			</div>
 		</div>

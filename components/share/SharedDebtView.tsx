@@ -9,11 +9,16 @@ import {
 	TargetIcon,
 	XCircle,
 } from "@phosphor-icons/react";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import {
 	calculatePaymentProgressWithPayments,
 	calculateTotalAmount,
 } from "@/lib/format";
+import {
+	getFormattingLocale,
+	resolveSharedCurrency,
+} from "@/lib/sharedPresentation";
 import type { Debt, Payment, SharedDebt } from "@/lib/types";
 import { calculatePaymentStats } from "@/utils/debtCalculations";
 
@@ -21,34 +26,39 @@ interface SharedDebtViewProps {
 	debt: Debt;
 	payments: Payment[];
 	share: SharedDebt;
+	currency?: string;
 }
 
-function formatCurrencySimple(amount: number): string {
-	return new Intl.NumberFormat("es-ES", {
+function formatCurrencySimple(
+	amount: number,
+	locale: string,
+	currency: string,
+): string {
+	return new Intl.NumberFormat(locale, {
 		style: "currency",
-		currency: "EUR",
+		currency,
 		minimumFractionDigits: 2,
 	}).format(amount);
 }
 
-function formatDate(dateString: string): string {
-	return new Date(dateString).toLocaleDateString("es-ES", {
+function formatDate(dateString: string, locale: string): string {
+	return new Date(dateString).toLocaleDateString(locale, {
 		year: "numeric",
 		month: "long",
 		day: "numeric",
 	});
 }
 
-function formatMonthYear(month: number, year: number): string {
+function formatMonthYear(month: number, year: number, locale: string): string {
 	const date = new Date(year, month - 1, 1);
-	return date.toLocaleDateString("es-ES", {
+	return date.toLocaleDateString(locale, {
 		month: "long",
 		year: "numeric",
 	});
 }
 
-function formatShortDate(dateString: string): string {
-	return new Date(dateString).toLocaleDateString("es-ES", {
+function formatShortDate(dateString: string, locale: string): string {
+	return new Date(dateString).toLocaleDateString(locale, {
 		day: "numeric",
 		month: "short",
 		year: "numeric",
@@ -128,15 +138,22 @@ export default function SharedDebtView({
 	debt,
 	payments,
 	share,
+	currency,
 }: SharedDebtViewProps) {
+	const locale = useLocale();
+	const t = useTranslations("share.debt");
+	const tShare = useTranslations("share");
+	const tCommon = useTranslations("share.common");
 	const [animatedPercentage, setAnimatedPercentage] = useState(0);
+	const formattingLocale = getFormattingLocale(locale);
+	const resolvedCurrency = resolveSharedCurrency(currency);
 
 	const totalAmount = calculateTotalAmount(debt);
 	const paymentStats = calculatePaymentStats(debt, payments);
 	const progress = calculatePaymentProgressWithPayments(debt, payments);
 
 	const validPercentage = Math.min(
-		isNaN(progress.percentage) ? 0 : progress.percentage,
+		Number.isNaN(progress.percentage) ? 0 : progress.percentage,
 		100,
 	);
 
@@ -147,11 +164,15 @@ export default function SharedDebtView({
 		return () => clearTimeout(timer);
 	}, [validPercentage]);
 
+	useEffect(() => {
+		document.documentElement.lang = locale;
+	}, [locale]);
+
 	return (
 		<div className="py-6 space-y-4">
 			{/* Header */}
 			<div className="text-center mb-6">
-				<p className="text-sm text-base-content/50 mb-2">Debt Detox</p>
+				<p className="text-sm text-base-content/50 mb-2">{tShare("brand")}</p>
 				<h1 className="text-2xl font-bold">{debt.name}</h1>
 				{share.show_entity && (
 					<p className="text-base-content/70 mt-1">{debt.entity}</p>
@@ -165,25 +186,31 @@ export default function SharedDebtView({
 						<div className="flex items-center justify-between">
 							<div>
 								<div className="text-sm font-medium text-warning uppercase tracking-wide mb-1">
-									Pendiente de pago
+									{t("remainingToPay")}
 								</div>
 								<div className="text-3xl font-bold text-warning">
 									{formatCurrencySimple(
 										Math.max(0, paymentStats.pendingAmount),
+										formattingLocale,
+										resolvedCurrency,
 									)}
 								</div>
 								<div className="text-sm text-base-content/60 mt-1">
-									{paymentStats.pendingPayments} cuota
-									{paymentStats.pendingPayments !== 1 ? "s" : ""} restante
-									{paymentStats.pendingPayments !== 1 ? "s" : ""}
+									{t("remainingInstallments", {
+										count: paymentStats.pendingPayments,
+									})}
 								</div>
 							</div>
 							<div className="text-right">
 								<div className="text-sm text-base-content/60 mb-1">
-									de un total de
+									{t("outOfTotal")}
 								</div>
 								<div className="text-lg font-semibold text-base-content/80">
-									{formatCurrencySimple(totalAmount)}
+									{formatCurrencySimple(
+										totalAmount,
+										formattingLocale,
+										resolvedCurrency,
+									)}
 								</div>
 							</div>
 						</div>
@@ -196,7 +223,7 @@ export default function SharedDebtView({
 				<div className="card-body p-4">
 					<h2 className="card-title text-lg mb-2">
 						<TargetIcon className="w-5 h-5" />
-						Progreso
+						{t("progress")}
 					</h2>
 
 					<div className="space-y-4">
@@ -226,10 +253,15 @@ export default function SharedDebtView({
 
 						<div className="flex justify-between items-center">
 							<span className="text-lg font-medium">
-								Cuotas: {progress.paidPayments}/{progress.totalPayments}
+								{t("installmentsProgress", {
+									paid: progress.paidPayments,
+									total: progress.totalPayments,
+								})}
 							</span>
 							<span className="text-base text-base-content/70">
-								{progress.totalPayments - progress.paidPayments} restantes
+								{t("remainingCount", {
+									count: progress.totalPayments - progress.paidPayments,
+								})}
 							</span>
 						</div>
 					</div>
@@ -241,18 +273,26 @@ export default function SharedDebtView({
 				<div className="grid grid-cols-3 gap-3">
 					{[
 						{
-							label: "Pagado",
-							value: formatCurrencySimple(paymentStats.effectivePaidAmount),
+							label: t("paid"),
+							value: formatCurrencySimple(
+								paymentStats.effectivePaidAmount,
+								formattingLocale,
+								resolvedCurrency,
+							),
 							color: "text-success",
 						},
 						{
-							label: "Cuotas",
+							label: t("installments"),
 							value: `${paymentStats.effectivePaidPayments}/${debt.number_of_payments}`,
 							color: "text-info",
 						},
 						{
-							label: "Mensual",
-							value: formatCurrencySimple(debt.monthly_amount),
+							label: t("monthly"),
+							value: formatCurrencySimple(
+								debt.monthly_amount,
+								formattingLocale,
+								resolvedCurrency,
+							),
 							color: "text-secondary",
 						},
 					].map(({ label, value, color }) => (
@@ -275,44 +315,52 @@ export default function SharedDebtView({
 					<div className="card-body p-4">
 						<h2 className="card-title text-lg mb-3">
 							<CreditCardIcon className="w-5 h-5" />
-							Detalles de Pago
+							{t("paymentDetails")}
 						</h2>
 						<div className="grid grid-cols-2 gap-3">
 							<div className="bg-base-200 rounded-xl border border-base-300 p-3">
 								<div className="text-sm text-base-content/60 uppercase tracking-wide mb-1">
-									Cuotas Pagadas
+									{t("installmentsPaid")}
 								</div>
 								<div className="text-2xl font-bold text-success">
 									{paymentStats.effectivePaidPayments}
 								</div>
 								<div className="text-sm text-base-content/70">
-									de {debt.number_of_payments}
+									{t("ofInstallments", { count: debt.number_of_payments })}
 								</div>
 							</div>
 							<div className="bg-base-200 rounded-xl border border-base-300 p-3">
 								<div className="text-sm text-base-content/60 uppercase tracking-wide mb-1">
-									Pendientes
+									{t("pending")}
 								</div>
 								<div className="text-2xl font-bold text-warning">
 									{paymentStats.pendingPayments}
 								</div>
-								<div className="text-sm text-base-content/70">restantes</div>
+								<div className="text-sm text-base-content/70">
+									{t("remainingWord")}
+								</div>
 							</div>
 							<div className="bg-base-200 rounded-xl border border-base-300 p-3">
 								<div className="text-sm text-base-content/60 uppercase tracking-wide mb-1">
-									Importe Pagado
+									{t("amountPaid")}
 								</div>
 								<div className="text-lg font-bold text-success">
-									{formatCurrencySimple(paymentStats.effectivePaidAmount)}
+									{formatCurrencySimple(
+										paymentStats.effectivePaidAmount,
+										formattingLocale,
+										resolvedCurrency,
+									)}
 								</div>
 							</div>
 							<div className="bg-base-200 rounded-xl border border-base-300 p-3">
 								<div className="text-sm text-base-content/60 uppercase tracking-wide mb-1">
-									Por Pagar
+									{t("amountToPay")}
 								</div>
 								<div className="text-lg font-bold text-warning">
 									{formatCurrencySimple(
 										Math.max(0, paymentStats.pendingAmount),
+										formattingLocale,
+										resolvedCurrency,
 									)}
 								</div>
 							</div>
@@ -327,42 +375,64 @@ export default function SharedDebtView({
 					<div className="card-body p-4">
 						<h2 className="card-title text-lg mb-3">
 							<FileTextIcon className="w-5 h-5" />
-							Estructura
+							{t("structure")}
 						</h2>
 						<div className="space-y-3">
 							{debt.down_payment != null && debt.down_payment > 0 && (
 								<div className="flex justify-between items-center">
-									<span className="text-base-content/70">Entrada:</span>
+									<span className="text-base-content/70">
+										{t("downPayment")}:
+									</span>
 									<span className="font-medium">
-										{formatCurrencySimple(debt.down_payment)}
+										{formatCurrencySimple(
+											debt.down_payment,
+											formattingLocale,
+											resolvedCurrency,
+										)}
 									</span>
 								</div>
 							)}
 							<div className="flex justify-between items-center">
-								<span className="text-base-content/70">Cuota mensual:</span>
+								<span className="text-base-content/70">
+									{t("monthlyInstallment")}:
+								</span>
 								<span className="font-medium">
-									{formatCurrencySimple(debt.monthly_amount)}
+									{formatCurrencySimple(
+										debt.monthly_amount,
+										formattingLocale,
+										resolvedCurrency,
+									)}
 								</span>
 							</div>
 							<div className="flex justify-between items-center">
-								<span className="text-base-content/70">Duración:</span>
+								<span className="text-base-content/70">{t("duration")}:</span>
 								<span className="font-medium">
-									{debt.number_of_payments} meses
+									{t("durationMonths", { count: debt.number_of_payments })}
 								</span>
 							</div>
 							{debt.final_payment != null && debt.final_payment > 0 && (
 								<div className="flex justify-between items-center">
-									<span className="text-base-content/70">Cuota final:</span>
+									<span className="text-base-content/70">
+										{t("finalInstallment")}:
+									</span>
 									<span className="font-medium">
-										{formatCurrencySimple(debt.final_payment)}
+										{formatCurrencySimple(
+											debt.final_payment,
+											formattingLocale,
+											resolvedCurrency,
+										)}
 									</span>
 								</div>
 							)}
 							<div className="bg-base-300 rounded-lg p-3 mt-4">
 								<div className="flex justify-between items-center">
-									<span className="font-medium">Total:</span>
+									<span className="font-medium">{t("total")}:</span>
 									<span className="font-bold text-xl">
-										{formatCurrencySimple(totalAmount)}
+										{formatCurrencySimple(
+											totalAmount,
+											formattingLocale,
+											resolvedCurrency,
+										)}
 									</span>
 								</div>
 							</div>
@@ -377,25 +447,25 @@ export default function SharedDebtView({
 					<div className="card-body p-4">
 						<h2 className="card-title text-lg mb-3">
 							<CalendarIcon className="w-5 h-5" />
-							Fechas
+							{t("dates")}
 						</h2>
 						<div className="space-y-4">
 							<div>
 								<div className="text-sm text-base-content/70 mb-1">
-									Primera Cuota
+									{t("firstInstallment")}
 								</div>
 								<div className="font-medium">
-									{formatDate(debt.first_payment_date)}
+									{formatDate(debt.first_payment_date, formattingLocale)}
 								</div>
 							</div>
 							<div>
 								<div className="text-sm text-base-content/70 mb-1">
-									Última Cuota
+									{t("lastInstallment")}
 								</div>
 								<div className="font-medium">
 									{debt.final_payment_date
-										? formatDate(debt.final_payment_date)
-										: "No especificada"}
+										? formatDate(debt.final_payment_date, formattingLocale)
+										: tCommon("notSpecified")}
 								</div>
 							</div>
 						</div>
@@ -408,12 +478,14 @@ export default function SharedDebtView({
 				debt={debt}
 				payments={payments}
 				showAmounts={share.show_amounts}
+				currency={resolvedCurrency}
+				locale={formattingLocale}
 			/>
 
 			{/* Footer branding */}
 			<div className="text-center pt-4">
 				<p className="text-xs text-base-content/40">
-					Compartido con Debt Detox
+					{tShare("sharedWithBrand")}
 				</p>
 			</div>
 		</div>
@@ -424,11 +496,16 @@ function SharedPaymentsList({
 	debt,
 	payments,
 	showAmounts,
+	currency,
+	locale,
 }: {
 	debt: Debt;
 	payments: Payment[];
 	showAmounts: boolean;
+	currency: string;
+	locale: string;
 }) {
+	const t = useTranslations("share.debt");
 	const allExpectedPayments = generateExpectedPayments(debt, payments);
 	const extraPayments = payments.filter((p) => p.is_extra_payment && p.paid);
 
@@ -446,10 +523,13 @@ function SharedPaymentsList({
 				<div className="flex items-center justify-between mb-4">
 					<h2 className="card-title text-lg">
 						<CreditCardIcon className="w-5 h-5" />
-						Listado de Pagos
+						{t("paymentsList")}
 					</h2>
 					<div className="text-sm text-base-content/70">
-						{totalPaidPayments}/{debt.number_of_payments} pagos realizados
+						{t("paymentsMade", {
+							paid: totalPaidPayments,
+							total: debt.number_of_payments,
+						})}
 					</div>
 				</div>
 
@@ -459,19 +539,19 @@ function SharedPaymentsList({
 						<div className="text-lg font-bold text-success">
 							{totalPaidPayments}
 						</div>
-						<div className="text-xs text-success/80">Pagados</div>
+						<div className="text-xs text-success/80">{t("paidShort")}</div>
 					</div>
 					<div className="text-center p-2 bg-error/10 rounded-lg">
 						<div className="text-lg font-bold text-error">
 							{totalOverduePayments}
 						</div>
-						<div className="text-xs text-error/80">Vencidos</div>
+						<div className="text-xs text-error/80">{t("overdueShort")}</div>
 					</div>
 					<div className="text-center p-2 bg-warning/10 rounded-lg">
 						<div className="text-lg font-bold text-warning">
 							{totalPendingPayments}
 						</div>
-						<div className="text-xs text-warning/80">Pendientes</div>
+						<div className="text-xs text-warning/80">{t("pendingShort")}</div>
 					</div>
 				</div>
 
@@ -482,17 +562,20 @@ function SharedPaymentsList({
 							<span className="badge badge-primary badge-sm">
 								{extraPayments.length}
 							</span>
-							Pagos Personalizados
+							{t("customPayments")}
 						</h3>
 						{showAmounts && (
 							<div className="text-sm font-medium text-base-content/70 px-2 mb-2">
-								Total pagos extras:{" "}
-								{formatCurrencySimple(
-									extraPayments.reduce(
-										(sum, p) => sum + (p.actual_amount || 0),
-										0,
+								{t("totalExtraPayments", {
+									amount: formatCurrencySimple(
+										extraPayments.reduce(
+											(sum, p) => sum + (p.actual_amount || 0),
+											0,
+										),
+										locale,
+										currency,
 									),
-								)}
+								})}
 							</div>
 						)}
 						<div className="grid grid-cols-1 gap-2">
@@ -505,13 +588,17 @@ function SharedPaymentsList({
 										<CheckCircle className="w-4 h-4 text-primary" />
 										<span className="text-sm">
 											{payment.paid_date
-												? formatShortDate(payment.paid_date)
-												: formatMonthYear(payment.month, payment.year)}
+												? formatShortDate(payment.paid_date, locale)
+												: formatMonthYear(payment.month, payment.year, locale)}
 										</span>
 									</div>
 									{showAmounts && (
 										<span className="font-mono text-sm font-semibold text-primary">
-											{formatCurrencySimple(payment.actual_amount || 0)}
+											{formatCurrencySimple(
+												payment.actual_amount || 0,
+												locale,
+												currency,
+											)}
 										</span>
 									)}
 								</div>
@@ -525,15 +612,15 @@ function SharedPaymentsList({
 					<table className="table table-sm">
 						<thead>
 							<tr>
-								<th>Período</th>
-								<th>Estado</th>
+								<th>{t("period")}</th>
+								<th>{t("status")}</th>
 								{showAmounts && (
 									<>
-										<th className="text-right">Importe Planeado</th>
-										<th className="text-right">Importe Real</th>
+										<th className="text-right">{t("plannedAmount")}</th>
+										<th className="text-right">{t("actualAmount")}</th>
 									</>
 								)}
-								<th>Fecha de Pago</th>
+								<th>{t("paymentDate")}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -552,7 +639,7 @@ function SharedPaymentsList({
 											<div className="flex items-center gap-2">
 												<Calendar className="w-4 h-4 text-base-content/50" />
 												<span className="font-medium">
-													{formatMonthYear(ep.month, ep.year)}
+													{formatMonthYear(ep.month, ep.year, locale)}
 												</span>
 											</div>
 										</td>
@@ -562,21 +649,21 @@ function SharedPaymentsList({
 													<>
 														<CheckCircle className="w-4 h-4 text-success" />
 														<span className="badge badge-success badge-sm">
-															Pagado
+															{t("paidShort")}
 														</span>
 													</>
 												) : ep.isOverdue ? (
 													<>
 														<XCircle className="w-4 h-4 text-error" />
 														<span className="badge badge-error badge-sm">
-															Vencido
+															{t("overdueShort")}
 														</span>
 													</>
 												) : (
 													<>
 														<Calendar className="w-4 h-4 text-warning" />
 														<span className="badge badge-warning badge-sm">
-															Pendiente
+															{t("pendingShort")}
 														</span>
 													</>
 												)}
@@ -585,7 +672,11 @@ function SharedPaymentsList({
 										{showAmounts && (
 											<>
 												<td className="text-right font-mono text-sm">
-													{formatCurrencySimple(ep.planned_amount)}
+													{formatCurrencySimple(
+														ep.planned_amount,
+														locale,
+														currency,
+													)}
 												</td>
 												<td className="text-right font-mono text-sm">
 													{isPaid ? (
@@ -596,13 +687,17 @@ function SharedPaymentsList({
 																	: ""
 															}
 														>
-															{formatCurrencySimple(ep.totalActualAmount)}
+															{formatCurrencySimple(
+																ep.totalActualAmount,
+																locale,
+																currency,
+															)}
 														</span>
 													) : hasExtraPayments ? (
 														<span className="text-xs text-primary">
-															(+ {ep.extraPayments.length} pago
-															{ep.extraPayments.length > 1 ? "s" : ""} extra
-															{ep.extraPayments.length > 1 ? "s" : ""})
+															{t("extraPaymentsCount", {
+																count: ep.extraPayments.length,
+															})}
 														</span>
 													) : (
 														<span className="text-base-content/40">-</span>
@@ -612,7 +707,7 @@ function SharedPaymentsList({
 										)}
 										<td className="text-sm text-base-content/70">
 											{ep.payment?.paid_date ? (
-												formatShortDate(ep.payment.paid_date)
+												formatShortDate(ep.payment.paid_date, locale)
 											) : (
 												<span className="text-base-content/40">-</span>
 											)}
@@ -624,12 +719,14 @@ function SharedPaymentsList({
 						{showAmounts && (
 							<tfoot>
 								<tr className="font-medium border-t-2">
-									<td colSpan={2}>Total</td>
+									<td colSpan={2}>{t("total")}</td>
 									<td className="text-right font-mono">
 										{formatCurrencySimple(
 											(debt.original_monthly_amount || debt.monthly_amount) *
 												(debt.original_number_of_payments ||
 													debt.number_of_payments),
+											locale,
+											currency,
 										)}
 									</td>
 									<td className="text-right font-mono">
@@ -650,6 +747,8 @@ function SharedPaymentsList({
 															debt.number_of_payments) +
 													(debt.final_payment || 0),
 											),
+											locale,
+											currency,
 										)}
 									</td>
 									<td></td>
