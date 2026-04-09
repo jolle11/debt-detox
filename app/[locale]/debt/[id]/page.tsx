@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import DebtPaymentsList from "@/components/dashboard/DebtPaymentsList";
@@ -22,6 +22,7 @@ import { useDebtsContext } from "@/contexts/DebtsContext";
 import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
+import { useRouter } from "@/i18n/routing";
 import type { Debt } from "@/lib/types";
 import { calculatePaymentStats } from "@/utils/debtCalculations";
 
@@ -39,7 +40,11 @@ export default function DebtDetailPage() {
 	const [showExtraPaymentModal, setShowExtraPaymentModal] = useState(false);
 	const [showShareModal, setShowShareModal] = useState(false);
 	const [isClient, setIsClient] = useState(false);
-	const { payments, isLoading: paymentsLoading } = usePayments(debt?.id);
+	const {
+		payments,
+		isLoading: paymentsLoading,
+		markPaymentAsPaid,
+	} = usePayments(debt?.id);
 
 	useEffect(() => {
 		setIsClient(true);
@@ -96,6 +101,7 @@ export default function DebtDetailPage() {
 						className="stroke-current shrink-0 h-6 w-6"
 						fill="none"
 						viewBox="0 0 24 24"
+						aria-hidden="true"
 					>
 						<path
 							strokeLinecap="round"
@@ -138,6 +144,7 @@ export default function DebtDetailPage() {
 						payments={payments}
 						formatCurrency={formatCurrency}
 						isLoading={paymentsLoading}
+						onMarkPaymentAsPaid={markPaymentAsPaid}
 					/>
 
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

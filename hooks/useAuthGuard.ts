@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 interface UseAuthGuardOptions {
 	checkInterval?: number; // in milliseconds, default 5 minutes
-	onSessionExpired?: () => void;
+	onSessionExpired?: () => void | Promise<void>;
 }
 
 export function useAuthGuard(options: UseAuthGuardOptions = {}) {
@@ -32,14 +32,15 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 		try {
 			const isValid = await isSessionValid();
 			if (!isValid) {
-				onSessionExpired?.();
+				await checkAuthStatus();
+				await onSessionExpired?.();
 			}
 		} catch (error) {
 			console.error("Session check failed:", error);
 		} finally {
 			isCheckingRef.current = false;
 		}
-	}, [user, isSessionValid, onSessionExpired]);
+	}, [user, isSessionValid, checkAuthStatus, onSessionExpired]);
 
 	// Check session when tab becomes visible (user returns to app)
 	const handleVisibilityChange = useCallback(async () => {

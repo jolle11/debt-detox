@@ -1,8 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+import { useRouter } from "@/i18n/routing";
 
 interface ErrorProps {
 	error: Error & { digest?: string };

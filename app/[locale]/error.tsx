@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+import { Link } from "@/i18n/routing";
 
 interface ErrorProps {
 	error: Error & { digest?: string };
@@ -27,9 +28,9 @@ export default function Error({ error, reset }: ErrorProps) {
 						<button className="btn btn-primary" onClick={reset}>
 							{t("retry")}
 						</button>
-						<a href="/" className="btn btn-ghost">
+						<Link href="/" className="btn btn-ghost">
 							{t("backHome")}
-						</a>
+						</Link>
 					</div>
 				</div>
 			</div>

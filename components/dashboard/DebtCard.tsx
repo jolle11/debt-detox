@@ -1,5 +1,6 @@
-import { useRouter } from "next/navigation";
 import { useMemo } from "react";
+import type { MarkPaymentAsPaidFn } from "@/hooks/usePayments";
+import { useRouter } from "@/i18n/routing";
 import { calculateDebtStatus } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
 import DebtActions from "./DebtActions";
@@ -10,6 +11,7 @@ import DebtProgressWithPayments from "./DebtProgressWithPayments";
 interface DebtCardProps {
 	debt: Debt;
 	payments: Payment[];
+	onMarkPaymentAsPaid: MarkPaymentAsPaidFn;
 	onEdit?: (debt: Debt) => void;
 	onDelete?: (debt: Debt) => void;
 	onComplete?: (debt: Debt) => void;
@@ -18,6 +20,7 @@ interface DebtCardProps {
 export default function DebtCard({
 	debt,
 	payments,
+	onMarkPaymentAsPaid,
 	onEdit,
 	onDelete,
 	onComplete,
@@ -33,19 +36,49 @@ export default function DebtCard({
 		router.push(`/debt/${debt.id}`);
 	};
 
+	const handleCardContainerClick = (
+		event: React.MouseEvent<HTMLDivElement>,
+	) => {
+		const target = event.target as HTMLElement;
+
+		if (target.closest("[data-stop-card-click='true']")) {
+			return;
+		}
+
+		handleCardClick();
+	};
+
+	const handleCardKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+		if (event.key === "Enter" || event.key === " ") {
+			event.preventDefault();
+			handleCardClick();
+		}
+	};
+
 	return (
+		/* biome-ignore lint/a11y/useSemanticElements: card container needs button semantics while preserving nested action controls */
 		<div
 			className={`card bg-base-100 shadow cursor-pointer hover:shadow-lg transition-shadow ${status === "completed" ? "opacity-75" : ""}`}
-			onClick={handleCardClick}
+			role="button"
+			tabIndex={0}
+			onClick={handleCardContainerClick}
+			onKeyDown={handleCardKeyDown}
 		>
 			<div className="card-body p-3 sm:p-5 lg:p-6">
 				{/* Header: Name + Entity + Actions */}
 				<div className="flex justify-between items-start gap-2">
 					<div className="flex-1 min-w-0">
-						<h3 className="card-title text-base sm:text-xl leading-tight truncate">{debt.name}</h3>
-						<p className="text-sm sm:text-base text-base-content/70">{debt.entity}</p>
+						<h3 className="card-title text-base sm:text-xl leading-tight truncate">
+							{debt.name}
+						</h3>
+						<p className="text-sm sm:text-base text-base-content/70">
+							{debt.entity}
+						</p>
 					</div>
-					<div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
+					<div
+						className="flex items-center gap-1 shrink-0"
+						data-stop-card-click="true"
+					>
 						<DebtActions
 							debt={debt}
 							onEdit={onEdit}
@@ -72,7 +105,11 @@ export default function DebtCard({
 
 				{/* Payment status — integrated into bottom row on desktop */}
 				<div className="mt-2 sm:mt-3 flex items-center justify-between">
-					<DebtPaymentStatus debt={debt} payments={debtPayments} />
+					<DebtPaymentStatus
+						debt={debt}
+						payments={debtPayments}
+						onMarkPaymentAsPaid={onMarkPaymentAsPaid}
+					/>
 				</div>
 			</div>
 		</div>
