@@ -1,4 +1,5 @@
 import type { PaymentStats } from "@/data/debtDetail";
+import { parseDateOnly } from "@/lib/dateOnly";
 import type { Debt, Payment } from "@/lib/types";
 
 /**
@@ -10,7 +11,8 @@ export function calculateElapsedPayments(
 	numberOfPayments: number,
 	now: Date = new Date(),
 ): number {
-	const firstPayment = new Date(firstPaymentDate);
+	const firstPayment = parseDateOnly(firstPaymentDate);
+	if (!firstPayment) return 0;
 
 	if (now < firstPayment) return 0;
 

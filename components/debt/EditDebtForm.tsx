@@ -5,16 +5,10 @@ import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import FormInput from "@/components/ui/FormInput";
+import { normalizeDateOnlyString } from "@/lib/dateOnly";
 import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import { type EditDebtFormData, editDebtSchema } from "@/lib/schemas";
 import type { Debt } from "@/lib/types";
-
-function formatDateForInput(dateString: string) {
-	if (!dateString) return "";
-	const date = new Date(dateString);
-	if (Number.isNaN(date.getTime())) return "";
-	return date.toISOString().split("T")[0];
-}
 
 interface EditDebtFormProps {
 	debt: Debt;
@@ -43,11 +37,15 @@ export default function EditDebtForm({
 			name: debt.name || "",
 			entity: debt.entity || "",
 			down_payment: debt.down_payment ?? undefined,
-			first_payment_date: formatDateForInput(debt.first_payment_date || ""),
+			first_payment_date: normalizeDateOnlyString(
+				debt.first_payment_date || "",
+			),
 			monthly_amount: debt.monthly_amount,
 			number_of_payments: debt.number_of_payments,
 			final_payment: debt.final_payment ?? undefined,
-			final_payment_date: formatDateForInput(debt.final_payment_date || ""),
+			final_payment_date: normalizeDateOnlyString(
+				debt.final_payment_date || "",
+			),
 		},
 	});
 
@@ -56,11 +54,15 @@ export default function EditDebtForm({
 			name: debt.name || "",
 			entity: debt.entity || "",
 			down_payment: debt.down_payment ?? undefined,
-			first_payment_date: formatDateForInput(debt.first_payment_date || ""),
+			first_payment_date: normalizeDateOnlyString(
+				debt.first_payment_date || "",
+			),
 			monthly_amount: debt.monthly_amount,
 			number_of_payments: debt.number_of_payments,
 			final_payment: debt.final_payment ?? undefined,
-			final_payment_date: formatDateForInput(debt.final_payment_date || ""),
+			final_payment_date: normalizeDateOnlyString(
+				debt.final_payment_date || "",
+			),
 		});
 	}, [debt, reset]);
 

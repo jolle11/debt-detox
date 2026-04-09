@@ -1,3 +1,9 @@
+import {
+	addMonthsToDateOnly,
+	compareDateOnlyStrings,
+	normalizeDateOnlyString,
+} from "./dateOnly";
+
 interface DebtDateInput {
 	first_payment_date: string;
 	number_of_payments: number;
@@ -5,17 +11,14 @@ interface DebtDateInput {
 	final_payment_date?: string;
 }
 
-function toDateOnlyString(date: Date): string {
-	return date.toISOString().split("T")[0];
-}
-
 export function calculateLastMonthlyPaymentDate(
 	firstPaymentDate: string,
 	numberOfPayments: number,
 ): string {
-	const date = new Date(firstPaymentDate);
-	date.setMonth(date.getMonth() + Math.max(numberOfPayments - 1, 0));
-	return toDateOnlyString(date);
+	return addMonthsToDateOnly(
+		firstPaymentDate,
+		Math.max(numberOfPayments - 1, 0),
+	);
 }
 
 export function resolveFinalPaymentDate({
@@ -25,23 +28,22 @@ export function resolveFinalPaymentDate({
 	final_payment_date,
 }: DebtDateInput): string {
 	const hasFinalPayment = (final_payment ?? 0) > 0;
-	const lastMonthlyPaymentDate = new Date(
-		calculateLastMonthlyPaymentDate(first_payment_date, number_of_payments),
+	const lastMonthlyPaymentDate = calculateLastMonthlyPaymentDate(
+		first_payment_date,
+		number_of_payments,
 	);
 
 	if (final_payment_date) {
-		const providedDate = new Date(final_payment_date);
+		const providedDate = normalizeDateOnlyString(final_payment_date);
 		if (
-			!Number.isNaN(providedDate.getTime()) &&
-			(!hasFinalPayment || providedDate > lastMonthlyPaymentDate)
+			providedDate &&
+			(!hasFinalPayment ||
+				compareDateOnlyStrings(providedDate, lastMonthlyPaymentDate) > 0)
 		) {
-			return final_payment_date;
+			return providedDate;
 		}
 	}
 
-	const resolvedDate = new Date(first_payment_date);
 	const monthOffset = number_of_payments - 1 + (hasFinalPayment ? 1 : 0);
-	resolvedDate.setMonth(resolvedDate.getMonth() + Math.max(monthOffset, 0));
-
-	return toDateOnlyString(resolvedDate);
+	return addMonthsToDateOnly(first_payment_date, Math.max(monthOffset, 0));
 }

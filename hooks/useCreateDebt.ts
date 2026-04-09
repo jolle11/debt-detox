@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
+import { parseDateOnly } from "@/lib/dateOnly";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt } from "@/lib/types";
 
@@ -50,10 +51,10 @@ export function useCreateDebt(): UseCreateDebtReturn {
 
 			// Calcular cuántas cuotas históricas hay (excluyendo el mes actual)
 			const now = new Date();
-			const startDate = new Date(debtData.first_payment_date);
+			const startDate = parseDateOnly(debtData.first_payment_date);
 			let historicalCount = 0;
 
-			if (startDate < now) {
+			if (startDate && startDate < now) {
 				for (let i = 0; i < debtData.number_of_payments; i++) {
 					const paymentDate = new Date(startDate);
 					paymentDate.setMonth(paymentDate.getMonth() + i);

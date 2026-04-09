@@ -2,6 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
+import { getTodayDateOnly, parseDateOnly } from "@/lib/dateOnly";
 import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import pb from "@/lib/pocketbase";
 import { COLLECTIONS, type Debt, type Payment } from "@/lib/types";
@@ -43,7 +44,7 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 				throw new Error("No tienes permisos para completar esta deuda");
 			}
 
-			const today = new Date().toISOString().split("T")[0];
+			const today = getTodayDateOnly();
 
 			// Mark all existing unpaid monthly payments as paid (exclude extra payments)
 			const unpaidPayments = payments.filter(
@@ -61,30 +62,34 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 			}
 
 			// Generate all missing monthly payments from the debt structure
-			const startDate = new Date(debt.first_payment_date);
+			const startDate = parseDateOnly(debt.first_payment_date);
 			const allPaymentPeriods = [];
 
 			// Generate all expected monthly payment periods
-			for (let i = 0; i < debt.number_of_payments; i++) {
-				const paymentDate = new Date(startDate);
-				paymentDate.setMonth(paymentDate.getMonth() + i);
+			if (startDate) {
+				for (let i = 0; i < debt.number_of_payments; i++) {
+					const paymentDate = new Date(startDate);
+					paymentDate.setMonth(paymentDate.getMonth() + i);
 
-				allPaymentPeriods.push({
-					month: paymentDate.getMonth() + 1,
-					year: paymentDate.getFullYear(),
-					amount: debt.monthly_amount,
-				});
+					allPaymentPeriods.push({
+						month: paymentDate.getMonth() + 1,
+						year: paymentDate.getFullYear(),
+						amount: debt.monthly_amount,
+					});
+				}
 			}
 
 			// Add final payment if it exists
 			if (debt.final_payment && debt.final_payment > 0) {
-				const finalPaymentDate = new Date(resolveFinalPaymentDate(debt));
+				const finalPaymentDate = parseDateOnly(resolveFinalPaymentDate(debt));
 
-				allPaymentPeriods.push({
-					month: finalPaymentDate.getMonth() + 1,
-					year: finalPaymentDate.getFullYear(),
-					amount: debt.final_payment,
-				});
+				if (finalPaymentDate) {
+					allPaymentPeriods.push({
+						month: finalPaymentDate.getMonth() + 1,
+						year: finalPaymentDate.getFullYear(),
+						amount: debt.final_payment,
+					});
+				}
 			}
 
 			// Create payments for periods that don't exist yet (only monthly payments, not extra payments)

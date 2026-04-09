@@ -1,5 +1,8 @@
+import { calculateElapsedPayments } from "@/utils/debtCalculations";
 import { getCurrencySymbol } from "./currencies";
+import { parseDateOnly } from "./dateOnly";
 import { resolveFinalPaymentDate } from "./debtDates";
+import type { Payment } from "./types";
 
 export function formatNumber(
 	value: number,
@@ -27,9 +30,6 @@ export function formatInteger(value: number, locale: string = "es-ES"): string {
 	return formatNumber(value, 0, locale);
 }
 
-import { calculateElapsedPayments } from "@/utils/debtCalculations";
-import type { Payment } from "./types";
-
 // Nuevo modelo de cálculos basado en cuotas y fechas específicas
 
 export type DebtLifecycleStatus = "pending" | "active" | "completed";
@@ -41,8 +41,8 @@ export function calculateDebtLifecycleStatus(
 ): DebtLifecycleStatus {
 	if (finalPaymentDate) {
 		const now = new Date();
-		const finalDate = new Date(finalPaymentDate);
-		if (finalDate <= now) {
+		const finalDate = parseDateOnly(finalPaymentDate);
+		if (finalDate && finalDate <= now) {
 			return "completed";
 		}
 	}
@@ -51,14 +51,9 @@ export function calculateDebtLifecycleStatus(
 	if (firstPaymentDate) {
 		const now = new Date();
 		const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-		const firstDate = new Date(firstPaymentDate);
-		const firstPaymentDay = new Date(
-			firstDate.getFullYear(),
-			firstDate.getMonth(),
-			firstDate.getDate(),
-		);
+		const firstPaymentDay = parseDateOnly(firstPaymentDate);
 
-		if (today < firstPaymentDay && !hasPaidPayments) {
+		if (firstPaymentDay && today < firstPaymentDay && !hasPaidPayments) {
 			return "pending";
 		}
 	}
@@ -101,11 +96,15 @@ export function calculatePaidAmount(debt: {
 	final_payment_date?: string;
 }): number {
 	const now = new Date();
-	const firstPayment = new Date(debt.first_payment_date);
+	const firstPayment = parseDateOnly(debt.first_payment_date);
 
 	// If no final payment date, calculate it
 	const finalPaymentDate = resolveFinalPaymentDate(debt);
-	const finalPayment = new Date(finalPaymentDate);
+	const finalPayment = parseDateOnly(finalPaymentDate);
+
+	if (!firstPayment || !finalPayment) {
+		return debt.down_payment || 0;
+	}
 
 	let paidAmount = debt.down_payment || 0; // Entrada siempre está pagada
 
@@ -161,8 +160,8 @@ export function calculatePaidAmountWithPayments(
 	// Agregar pago final si corresponde
 	const now = new Date();
 	if (debt.final_payment_date) {
-		const finalPayment = new Date(debt.final_payment_date);
-		if (now >= finalPayment && debt.final_payment) {
+		const finalPayment = parseDateOnly(debt.final_payment_date);
+		if (finalPayment && now >= finalPayment && debt.final_payment) {
 			paidAmount += debt.final_payment;
 		}
 	}
@@ -199,11 +198,11 @@ export function calculatePaymentProgress(debt: {
 	totalPayments: number;
 } {
 	const now = new Date();
-	const firstPayment = new Date(debt.first_payment_date);
+	const firstPayment = parseDateOnly(debt.first_payment_date);
 
 	// If no final payment date, calculate it
 	const finalPaymentDate = resolveFinalPaymentDate(debt);
-	const finalPayment = new Date(finalPaymentDate);
+	const finalPayment = parseDateOnly(finalPaymentDate);
 
 	// Contar pagos totales (cuotas mensuales + cuota final si existe)
 	let totalPayments = debt.number_of_payments;
@@ -213,7 +212,7 @@ export function calculatePaymentProgress(debt: {
 
 	let paidPayments = 0;
 
-	if (now < firstPayment) {
+	if (!firstPayment || !finalPayment || now < firstPayment) {
 		// Aún no empezó
 		const totalAmount = calculateTotalAmount(debt);
 		const percentage = debt.down_payment

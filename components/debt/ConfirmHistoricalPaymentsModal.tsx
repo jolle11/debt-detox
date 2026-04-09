@@ -7,6 +7,7 @@ import type { HistoricalPaymentInfo } from "@/hooks/useCreateDebt";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
 import { useToast } from "@/hooks/useToast";
+import { parseDateOnly } from "@/lib/dateOnly";
 
 interface ConfirmHistoricalPaymentsModalProps {
 	info: HistoricalPaymentInfo | null;
@@ -30,32 +31,34 @@ export default function ConfirmHistoricalPaymentsModal({
 	const totalAmount = info.count * info.monthlyAmount;
 
 	// Generar la lista de meses históricos con la fecha de pago correspondiente
-	const startDate = new Date(info.firstPaymentDate);
-	const paymentDay = startDate.getDate();
+	const startDate = parseDateOnly(info.firstPaymentDate);
+	const paymentDay = startDate?.getDate() ?? 1;
 	const historicalMonths: Array<{
 		month: number;
 		year: number;
 		paidDate: string;
 	}> = [];
-	for (let i = 0; i < info.count; i++) {
-		const paymentDate = new Date(startDate);
-		paymentDate.setMonth(paymentDate.getMonth() + i);
-		// Ajustar el día de pago (por si el mes tiene menos días)
-		paymentDate.setDate(
-			Math.min(
-				paymentDay,
-				new Date(
-					paymentDate.getFullYear(),
-					paymentDate.getMonth() + 1,
-					0,
-				).getDate(),
-			),
-		);
-		historicalMonths.push({
-			month: paymentDate.getMonth() + 1,
-			year: paymentDate.getFullYear(),
-			paidDate: paymentDate.toISOString(),
-		});
+	if (startDate) {
+		for (let i = 0; i < info.count; i++) {
+			const paymentDate = new Date(startDate);
+			paymentDate.setMonth(paymentDate.getMonth() + i);
+			// Ajustar el día de pago (por si el mes tiene menos días)
+			paymentDate.setDate(
+				Math.min(
+					paymentDay,
+					new Date(
+						paymentDate.getFullYear(),
+						paymentDate.getMonth() + 1,
+						0,
+					).getDate(),
+				),
+			);
+			historicalMonths.push({
+				month: paymentDate.getMonth() + 1,
+				year: paymentDate.getFullYear(),
+				paidDate: paymentDate.toISOString(),
+			});
+		}
 	}
 
 	const handleConfirm = async () => {
@@ -71,7 +74,7 @@ export default function ConfirmHistoricalPaymentsModal({
 			await markMultiplePaymentsAsPaid(info.debtId, paymentData);
 			toast.success("historicalPaymentsMarked");
 			onClose();
-		} catch (error) {
+		} catch (_error) {
 			toast.error("genericError");
 		} finally {
 			setIsLoading(false);
