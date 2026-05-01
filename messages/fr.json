@@ -422,6 +422,10 @@
 			"title": "Lien expiré",
 			"description": "Ce lien a expiré ou n'est plus valide. Demandez au propriétaire d'en générer un nouveau."
 		},
+		"unavailable": {
+			"title": "Lien indisponible",
+			"description": "Le lien existe, mais son contenu partagé n'a pas pu être chargé. Vérifiez la configuration d'accès ou réessayez plus tard."
+		},
 		"common": {
 			"notSpecified": "Non précisée"
 		},

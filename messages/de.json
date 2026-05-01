@@ -422,6 +422,10 @@
 			"title": "Link abgelaufen",
 			"description": "Dieser Link ist abgelaufen oder nicht mehr gültig. Bitte den Besitzer, einen neuen zu erstellen."
 		},
+		"unavailable": {
+			"title": "Link nicht verfuegbar",
+			"description": "Der Link existiert, aber der geteilte Inhalt konnte nicht geladen werden. Pruefe die Zugriffsregeln oder versuche es spaeter erneut."
+		},
 		"common": {
 			"notSpecified": "Nicht angegeben"
 		},

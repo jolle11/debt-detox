@@ -418,6 +418,10 @@
 			"title": "Link verlopen",
 			"description": "Deze link is verlopen of niet meer geldig. Vraag de eigenaar om een nieuwe link te genereren."
 		},
+		"unavailable": {
+			"title": "Link niet beschikbaar",
+			"description": "De link bestaat, maar de gedeelde inhoud kon niet worden geladen. Controleer de toegangsconfiguratie of probeer het later opnieuw."
+		},
 		"common": {
 			"notSpecified": "Niet opgegeven"
 		},

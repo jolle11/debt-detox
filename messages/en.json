@@ -418,6 +418,10 @@
 			"title": "Link expired",
 			"description": "This link has expired or is no longer valid. Ask the owner to generate a new one."
 		},
+		"unavailable": {
+			"title": "Link unavailable",
+			"description": "The link exists, but its shared content could not be loaded. Check the access configuration or try again later."
+		},
 		"common": {
 			"notSpecified": "Not specified"
 		},

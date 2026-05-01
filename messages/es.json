@@ -418,6 +418,10 @@
 			"title": "Enlace expirado",
 			"description": "Este enlace ha expirado o no es válido. Pide al propietario que genere uno nuevo."
 		},
+		"unavailable": {
+			"title": "Enlace no disponible",
+			"description": "El enlace existe, pero no se ha podido cargar su contenido compartido. Revisa la configuración de acceso o inténtalo de nuevo más tarde."
+		},
 		"common": {
 			"notSpecified": "No especificada"
 		},
