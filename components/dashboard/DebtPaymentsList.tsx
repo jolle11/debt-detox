@@ -314,6 +314,7 @@ export default function DebtPaymentsList({
 											<>
 												<input
 													type="number"
+													lang={locale}
 													value={editAmount}
 													onChange={(e) => setEditAmount(e.target.value)}
 													className="input input-xs input-bordered w-24 font-mono"
@@ -474,6 +475,7 @@ export default function DebtPaymentsList({
 														<>
 															<input
 																type="number"
+																lang={locale}
 																value={editAmount}
 																onChange={(e) => setEditAmount(e.target.value)}
 																className="input input-xs input-bordered w-20 font-mono"

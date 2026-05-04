@@ -1,3 +1,6 @@
+"use client";
+
+import { useLocale } from "next-intl";
 import type { UseFormRegisterReturn } from "react-hook-form";
 
 interface FormInputProps {
@@ -31,6 +34,8 @@ export default function FormInput({
 	min,
 	max,
 }: FormInputProps) {
+	const locale = useLocale();
+
 	return (
 		<div className="form-control">
 			<label className="label pb-2">
@@ -42,6 +47,7 @@ export default function FormInput({
 					className={`input input-bordered w-full ${error ? "input-error" : ""} ${className}`}
 					placeholder={placeholder}
 					disabled={disabled}
+					lang={locale}
 					step={step}
 					min={min}
 					max={max}
@@ -56,6 +62,7 @@ export default function FormInput({
 					placeholder={placeholder}
 					required={required}
 					disabled={disabled}
+					lang={locale}
 					step={step}
 					min={min}
 					max={max}

@@ -1,7 +1,7 @@
 "use client";
 
 import { PlusCircle, XIcon } from "@phosphor-icons/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
@@ -23,6 +23,7 @@ export default function AddExtraPaymentModal({
 	onSuccess,
 }: AddExtraPaymentModalProps) {
 	const t = useTranslations();
+	const locale = useLocale();
 	const toast = useToast();
 	const { addExtraPayment, payments } = usePayments(debt?.id);
 	const { formatCurrency } = useCurrency();
@@ -188,6 +189,7 @@ export default function AddExtraPaymentModal({
 						</label>
 						<input
 							type="number"
+							lang={locale}
 							step="0.01"
 							min="0.01"
 							max={maxAmount}

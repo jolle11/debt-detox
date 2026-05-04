@@ -118,6 +118,8 @@ export default function EditDebtForm({
 						<FormInput
 							label={t("debt.create.downPayment")}
 							type="number"
+							step="0.01"
+							min="0"
 							registration={register("down_payment")}
 							placeholder="0.00"
 						/>
@@ -146,6 +148,8 @@ export default function EditDebtForm({
 						<FormInput
 							label={t("debt.create.monthlyAmount")}
 							type="number"
+							step="0.01"
+							min="0.01"
 							registration={register("monthly_amount")}
 							placeholder="0.00"
 							error={
@@ -156,6 +160,8 @@ export default function EditDebtForm({
 						<FormInput
 							label={t("debt.create.numberOfPayments")}
 							type="number"
+							step="1"
+							min="1"
 							registration={register("number_of_payments")}
 							placeholder="12"
 							error={
@@ -168,6 +174,8 @@ export default function EditDebtForm({
 						<FormInput
 							label={t("debt.create.finalPayment")}
 							type="number"
+							step="0.01"
+							min="0"
 							registration={register("final_payment")}
 							placeholder="0.00"
 						/>
