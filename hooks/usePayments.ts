@@ -3,7 +3,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { parseDateOnly } from "@/lib/dateOnly";
-import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import pb from "@/lib/pocketbase";
 import {
 	COLLECTIONS,
@@ -372,96 +371,14 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		debtId: string,
 		amount: number,
 		strategy: ExtraPaymentStrategy = "none",
-		debt?: Debt,
-		currentPayments?: Payment[],
+		_debt?: Debt,
+		_currentPayments?: Payment[],
 	): Promise<void> => {
 		try {
-			const now = new Date();
-			const month = now.getMonth() + 1;
-			const year = now.getFullYear();
-
-			// Crear un pago extra
-			await pb.collection(COLLECTIONS.PAYMENTS).create({
-				debt_id: debtId,
-				month,
-				year,
-				planned_amount: 0,
-				actual_amount: amount,
-				paid: true,
-				paid_date: now.toISOString(),
-				is_extra_payment: true,
+			await pb.send(`/api/debt-detox/debts/${debtId}/extra-payment`, {
+				method: "POST",
+				body: { amount, strategy },
 			});
-
-			// Recalcular cuotas según la estrategia elegida
-			if (strategy !== "none" && debt) {
-				const debtPayments = currentPayments || [];
-
-				// Calcular total pagado (cuotas regulares + extras, incluyendo el nuevo pago)
-				const totalPaidFromPayments = debtPayments
-					.filter((p) => p.paid)
-					.reduce((sum, p) => sum + (p.actual_amount || p.planned_amount), 0);
-				const totalPaid =
-					(debt.down_payment || 0) + totalPaidFromPayments + amount;
-
-				// Calcular total original de la deuda (usando valores originales)
-				const origMonthly = debt.original_monthly_amount || debt.monthly_amount;
-				const origPayments =
-					debt.original_number_of_payments || debt.number_of_payments;
-				const totalDebt =
-					(debt.down_payment || 0) +
-					origMonthly * origPayments +
-					(debt.final_payment || 0);
-
-				// Saldo restante después de la aportación
-				const remainingBalance = Math.max(0, totalDebt - totalPaid);
-
-				// Cuotas ya pagadas (solo regulares, no extras)
-				const paidInstallments = debtPayments.filter(
-					(p) => p.paid && !p.is_extra_payment,
-				).length;
-
-				// Guardar valores originales si es la primera vez que se recalcula
-				const updateData: Record<string, unknown> = {};
-				if (
-					!debt.original_monthly_amount &&
-					!debt.original_number_of_payments
-				) {
-					updateData.original_monthly_amount = debt.monthly_amount;
-					updateData.original_number_of_payments = debt.number_of_payments;
-				}
-
-				if (strategy === "reduce_amount") {
-					// Mantener cuotas, reducir importe
-					const remainingInstallments =
-						debt.number_of_payments - paidInstallments;
-					if (remainingInstallments > 0) {
-						const newMonthlyAmount =
-							Math.round((remainingBalance / remainingInstallments) * 100) /
-							100;
-						updateData.monthly_amount = newMonthlyAmount;
-					}
-				} else if (strategy === "reduce_installments") {
-					// Mantener importe, reducir cuotas
-					if (debt.monthly_amount > 0) {
-						const newRemainingInstallments = Math.ceil(
-							remainingBalance / debt.monthly_amount,
-						);
-						updateData.number_of_payments =
-							paidInstallments + newRemainingInstallments;
-
-						updateData.final_payment_date = resolveFinalPaymentDate({
-							first_payment_date: debt.first_payment_date,
-							number_of_payments: paidInstallments + newRemainingInstallments,
-							final_payment: debt.final_payment,
-							final_payment_date: debt.final_payment_date,
-						});
-					}
-				}
-
-				if (Object.keys(updateData).length > 0) {
-					await pb.collection(COLLECTIONS.DEBTS).update(debtId, updateData);
-				}
-			}
 
 			// Invalidar cache para refetch automático
 			queryClient.invalidateQueries({ queryKey: ["payments"] });

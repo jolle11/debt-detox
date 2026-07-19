@@ -8,6 +8,7 @@
 		"pb:down": "docker compose down",
 		"pb:logs": "docker compose logs -f pocketbase",
 		"pb:reset-user-password": "node scripts/reset-pocketbase-user-password.mjs",
+		"test:pb": "node --test --test-concurrency=1 tests/integration/*.test.mjs",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",

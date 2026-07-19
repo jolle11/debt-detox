@@ -35,6 +35,20 @@ pnpm pb:reset-user-password
 
 La utilidad solicita las credenciales de superusuario y la nueva contraseña sin mostrarlas ni guardarlas en archivos o argumentos del proceso.
 
+## Pruebas de integración
+
+La suite construye una imagen PocketBase desechable, aplica todas las migraciones y prueba rutas y permisos mediante la API pública real:
+
+```bash
+pnpm test:pb
+```
+
+Requiere Docker y no utiliza ni modifica la base local o de producción.
+
+## Rutas de dominio
+
+- `POST /api/debt-detox/debts/{id}/extra-payment`: registra un pago extra y recalcula la deuda dentro de una única transacción.
+
 Para empezar de cero, elimina manualmente `pocketbase/pb_data` únicamente después de comprobar que no contiene datos necesarios.
 
 ## Flujo de cambios
