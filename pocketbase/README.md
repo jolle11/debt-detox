@@ -47,6 +47,8 @@ Requiere Docker y no utiliza ni modifica la base local o de producción.
 
 ## Rutas de dominio
 
+- `POST /api/debt-detox/debts`: crea una deuda, fija sus valores originales y calcula su calendario en el servidor.
+- `POST /api/debt-detox/debts/{id}/historical-payments`: confirma todas las cuotas históricas en una única transacción idempotente.
 - `POST /api/debt-detox/debts/{id}/extra-payment`: registra un pago extra y recalcula la deuda dentro de una única transacción.
 - `POST /api/debt-detox/debts/{id}/complete`: completa la deuda y todos sus pagos ordinarios dentro de una única transacción idempotente.
 

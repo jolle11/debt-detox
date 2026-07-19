@@ -2,7 +2,6 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
-import { parseDateOnly } from "@/lib/dateOnly";
 import pb from "@/lib/pocketbase";
 import {
 	COLLECTIONS,
@@ -24,16 +23,7 @@ interface UsePaymentsReturn {
 		actualAmount?: number,
 		paidDate?: string,
 	) => Promise<void>;
-	markMultiplePaymentsAsPaid: (
-		debtId: string,
-		paymentData: Array<{
-			month: number;
-			year: number;
-			plannedAmount: number;
-			actualAmount?: number;
-			paidDate?: string;
-		}>,
-	) => Promise<void>;
+	confirmHistoricalPayments: (debtId: string) => Promise<void>;
 	unmarkPaymentAsPaid: (paymentId: string) => Promise<void>;
 	updatePaymentAmount: (paymentId: string, amount: number) => Promise<void>;
 	deleteExtraPayment: (paymentId: string) => Promise<void>;
@@ -49,12 +39,6 @@ interface UsePaymentsReturn {
 		month: number,
 		year: number,
 	) => Payment | null;
-	generateHistoricalPayments: (
-		debtId: string,
-		firstPaymentDate: string,
-		monthlyAmount: number,
-		numberOfPayments: number,
-	) => Promise<void>;
 }
 
 export type MarkPaymentAsPaidFn = UsePaymentsReturn["markPaymentAsPaid"];
@@ -253,32 +237,12 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		});
 	};
 
-	const markMultiplePaymentsAsPaid = async (
-		debtId: string,
-		paymentData: Array<{
-			month: number;
-			year: number;
-			plannedAmount: number;
-			actualAmount?: number;
-			paidDate?: string;
-		}>,
-	) => {
-		try {
-			// Procesar cada pago
-			for (const payment of paymentData) {
-				await markPaymentAsPaid(
-					debtId,
-					payment.month,
-					payment.year,
-					payment.plannedAmount,
-					payment.actualAmount,
-					payment.paidDate,
-				);
-			}
-		} catch (err) {
-			console.error("Error marking multiple payments as paid:", err);
-			throw err;
-		}
+	const confirmHistoricalPayments = async (debtId: string) => {
+		await pb.send(`/api/debt-detox/debts/${debtId}/historical-payments`, {
+			method: "POST",
+		});
+		queryClient.invalidateQueries({ queryKey: ["payments"] });
+		queryClient.invalidateQueries({ queryKey: ["debts"] });
 	};
 
 	const getPaymentStatus = (
@@ -291,80 +255,6 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 				(p) => p.debt_id === debtId && p.month === month && p.year === year,
 			) || null
 		);
-	};
-
-	const generateHistoricalPayments = async (
-		debtId: string,
-		firstPaymentDate: string,
-		monthlyAmount: number,
-		numberOfPayments: number,
-	) => {
-		try {
-			const now = new Date();
-			const startDate = parseDateOnly(firstPaymentDate);
-
-			// Solo generar pagos históricos si la primera cuota es anterior a hoy
-			if (!startDate || startDate >= now) {
-				return; // Es una financiación nueva, no generar pagos históricos
-			}
-
-			// Una sola query para traer todos los pagos existentes de esta deuda
-			const existingPayments = await pb
-				.collection(COLLECTIONS.PAYMENTS)
-				.getFullList({
-					filter: pb.filter("debt_id = {:debtId} && deleted = null", {
-						debtId,
-					}),
-				});
-
-			// Construir un set de claves "mes-año" para lookup O(1)
-			const existingKeys = new Set(
-				existingPayments.map((p) => `${p.month}-${p.year}`),
-			);
-
-			// Calcular en memoria qué meses faltan
-			const missingPayments = [];
-
-			for (let i = 0; i < numberOfPayments; i++) {
-				const paymentDate = new Date(startDate);
-				paymentDate.setMonth(paymentDate.getMonth() + i);
-
-				// Solo generar pagos para fechas anteriores a hoy
-				if (paymentDate >= now) break;
-
-				const year = paymentDate.getFullYear();
-				const month = paymentDate.getMonth() + 1;
-
-				if (!existingKeys.has(`${month}-${year}`)) {
-					missingPayments.push({
-						debt_id: debtId,
-						month,
-						year,
-						planned_amount: monthlyAmount,
-						actual_amount: monthlyAmount,
-						paid: true,
-						paid_date: new Date(
-							paymentDate.getFullYear(),
-							paymentDate.getMonth(),
-							1,
-						).toISOString(),
-					});
-				}
-			}
-
-			// Crear todos los pagos faltantes en paralelo
-			await Promise.all(
-				missingPayments.map((payment) =>
-					pb.collection(COLLECTIONS.PAYMENTS).create(payment),
-				),
-			);
-
-			// Invalidar cache para refetch automático
-			queryClient.invalidateQueries({ queryKey: ["payments"] });
-		} catch (err) {
-			console.error("Error generating historical payments:", err);
-			throw err;
-		}
 	};
 
 	const addExtraPayment = async (
@@ -445,12 +335,11 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		error: error?.message || null,
 		refetch,
 		markPaymentAsPaid,
-		markMultiplePaymentsAsPaid,
+		confirmHistoricalPayments,
 		unmarkPaymentAsPaid,
 		updatePaymentAmount,
 		deleteExtraPayment,
 		addExtraPayment,
 		getPaymentStatus,
-		generateHistoricalPayments,
 	};
 }

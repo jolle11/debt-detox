@@ -22,7 +22,7 @@ export default function ConfirmHistoricalPaymentsModal({
 }: ConfirmHistoricalPaymentsModalProps) {
 	const t = useTranslations();
 	const toast = useToast();
-	const { markMultiplePaymentsAsPaid } = usePayments(info?.debtId);
+	const { confirmHistoricalPayments } = usePayments(info?.debtId);
 	const { formatCurrency } = useCurrency();
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -64,14 +64,7 @@ export default function ConfirmHistoricalPaymentsModal({
 	const handleConfirm = async () => {
 		setIsLoading(true);
 		try {
-			const paymentData = historicalMonths.map(({ month, year, paidDate }) => ({
-				month,
-				year,
-				plannedAmount: info.monthlyAmount,
-				actualAmount: info.monthlyAmount,
-				paidDate,
-			}));
-			await markMultiplePaymentsAsPaid(info.debtId, paymentData);
+			await confirmHistoricalPayments(info.debtId);
 			toast.success("historicalPaymentsMarked");
 			onClose();
 		} catch (_error) {
@@ -164,7 +157,12 @@ export default function ConfirmHistoricalPaymentsModal({
 					</button>
 				</div>
 			</div>
-			<div className="modal-backdrop" onClick={handleSkip}></div>
+			<button
+				type="button"
+				className="modal-backdrop"
+				aria-label={t("common.cancel")}
+				onClick={handleSkip}
+			></button>
 		</div>
 	);
 }

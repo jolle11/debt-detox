@@ -126,6 +126,111 @@ after(() => {
 	cleanup();
 });
 
+test("authenticated user can create a debt with server-owned immutable values", async () => {
+	const result = await owner.send("/api/debt-detox/debts", {
+		method: "POST",
+		body: {
+			name: "New debt",
+			entity: "New lender",
+			first_payment_date: "2025-01-15",
+			monthly_amount: 125,
+			number_of_payments: 18,
+		},
+	});
+
+	assert.equal(result.debt.user_id, ownerRecord.id);
+	assert.equal(result.debt.original_monthly_amount, 125);
+	assert.equal(result.debt.original_number_of_payments, 18);
+	assert.equal(result.historicalInfo.debtId, result.debt.id);
+	assert.equal(result.historicalInfo.count, 18);
+});
+
+test("invalid debt plan is rejected without creating a debt", async () => {
+	await assert.rejects(
+		owner.send("/api/debt-detox/debts", {
+			method: "POST",
+			body: {
+				name: "Invalid debt",
+				entity: "Invalid lender",
+				first_payment_date: "2026-08-15",
+				monthly_amount: 0,
+				number_of_payments: 12,
+			},
+		}),
+		(error) => error?.status === 400,
+	);
+
+	const records = await owner.collection("debts").getFullList({
+		filter: 'name = "Invalid debt"',
+	});
+	assert.equal(records.length, 0);
+});
+
+test("owner can confirm all historical payments atomically", async () => {
+	const created = await owner.send("/api/debt-detox/debts", {
+		method: "POST",
+		body: {
+			name: "Historical debt",
+			entity: "Historical lender",
+			first_payment_date: "2025-01-15",
+			monthly_amount: 80,
+			number_of_payments: 18,
+		},
+	});
+
+	const result = await owner.send(
+		`/api/debt-detox/debts/${created.debt.id}/historical-payments`,
+		{ method: "POST" },
+	);
+
+	assert.equal(result.created, 18);
+	const payments = await owner.collection("payments").getFullList({
+		filter: `debt_id = "${created.debt.id}"`,
+	});
+	assert.equal(payments.length, 18);
+	assert.equal(
+		payments.every((payment) => payment.paid && payment.actual_amount === 80),
+		true,
+	);
+});
+
+test("confirming historical payments twice does not create duplicates", async () => {
+	const created = await owner.send("/api/debt-detox/debts", {
+		method: "POST",
+		body: {
+			name: "Idempotent historical debt",
+			entity: "Historical lender",
+			first_payment_date: "2025-01-15",
+			monthly_amount: 80,
+			number_of_payments: 18,
+		},
+	});
+	const path = `/api/debt-detox/debts/${created.debt.id}/historical-payments`;
+
+	await owner.send(path, { method: "POST" });
+	const secondResult = await owner.send(path, { method: "POST" });
+
+	const payments = await owner.collection("payments").getFullList({
+		filter: `debt_id = "${created.debt.id}"`,
+	});
+	assert.equal(secondResult.created, 0);
+	assert.equal(payments.length, 18);
+});
+
+test("another user cannot confirm historical payments", async () => {
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/debts/${debt.id}/historical-payments`, {
+			method: "POST",
+		}),
+		(error) => error?.status === 404,
+	);
+
+	const payments = await owner.collection("payments").getFullList({
+		filter: `debt_id = "${debt.id}"`,
+	});
+	assert.equal(payments.length, 0);
+});
+
 test("owner can register an extra payment", async () => {
 	const result = await owner.send(
 		`/api/debt-detox/debts/${debt.id}/extra-payment`,
