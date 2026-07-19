@@ -12,7 +12,7 @@ Este documento separa los pasos ya automatizados en el repositorio de las operac
 - Reglas por propietario para todas las escrituras.
 - Acceso compartido condicionado al header y token exactos.
 - Hooks que derivan `user_id` de la sesión autenticada.
-- Healthcheck nativo de PocketBase en `/api/health`.
+- Healthcheck propio en `/api/debt-detox/health`, que confirma también la carga de hooks.
 - Reinicio ante fallo y configuración Railway as code.
 - Entorno local con Docker Compose.
 
@@ -55,9 +55,9 @@ Acciones manuales en Railway:
 5. Añade `PB_ALLOWED_ORIGINS` con los orígenes del frontend separados por comas, por ejemplo `https://debtdetox.app,https://www.debtdetox.app`.
 6. Añade un Railway Volume con mount path exacto `/pb/pb_data`.
 7. Genera un dominio temporal de Railway.
-8. Confirma que `https://DOMINIO/api/health` devuelve HTTP 200.
+8. Confirma que `https://DOMINIO/api/debt-detox/health` devuelve HTTP 200 y el identificador `debt-detox-pocketbase`.
 9. Crea el primer superusuario desde el enlace de instalación de los logs o con Railway Shell.
-10. Configura un healthcheck en `/api/health` si Railway no ha importado `railway.json`.
+10. Configura un healthcheck en `/api/debt-detox/health` si Railway no ha importado `railway.json`.
 
 No montes el volumen en `/pb`: ocultaría el binario, hooks y migraciones copiados en la imagen.
 
@@ -102,7 +102,7 @@ Acciones manuales:
 - [ ] Configura también backups nativos de PocketBase hacia almacenamiento S3-compatible externo.
 - [ ] Guarda al menos una copia fuera del proyecto y la cuenta de Railway.
 - [ ] Programa una restauración de prueba mensual en staging.
-- [ ] Añade monitorización externa para `/api/health`; el healthcheck de despliegue de Railway no es monitorización continua.
+- [ ] Añade monitorización externa para `/api/debt-detox/health`; el healthcheck de despliegue de Railway no es monitorización continua.
 - [ ] Configura alertas de capacidad del volumen y errores HTTP.
 - [ ] Documenta quién tiene acceso de superusuario y rota credenciales periódicamente.
 

@@ -13,7 +13,7 @@ pnpm pb:logs
 
 - API: `http://127.0.0.1:8090/api/`
 - Dashboard: `http://127.0.0.1:8090/_/`
-- Healthcheck: `http://127.0.0.1:8090/api/health`
+- Healthcheck propio: `http://127.0.0.1:8090/api/debt-detox/health`
 
 La primera ejecución imprime en los logs un enlace de instalación para crear el primer superusuario. También puede crearse desde el contenedor:
 
