@@ -33,7 +33,7 @@ routerAdd(
 		};
 
 		const data = new DynamicModel({
-			amount: 0,
+			amount: -0,
 			strategy: "none",
 		});
 		e.bindBody(data);

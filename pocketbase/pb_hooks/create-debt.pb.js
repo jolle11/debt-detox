@@ -35,11 +35,11 @@ routerAdd(
 		const data = new DynamicModel({
 			name: "",
 			entity: "",
-			down_payment: 0,
+			down_payment: -0,
 			first_payment_date: "",
-			monthly_amount: 0,
+			monthly_amount: -0,
 			number_of_payments: 0,
-			final_payment: 0,
+			final_payment: -0,
 			final_payment_date: "",
 		});
 		e.bindBody(data);

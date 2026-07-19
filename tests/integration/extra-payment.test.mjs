@@ -133,13 +133,13 @@ test("authenticated user can create a debt with server-owned immutable values", 
 			name: "New debt",
 			entity: "New lender",
 			first_payment_date: "2025-01-15",
-			monthly_amount: 125,
+			monthly_amount: 125.5,
 			number_of_payments: 18,
 		},
 	});
 
 	assert.equal(result.debt.user_id, ownerRecord.id);
-	assert.equal(result.debt.original_monthly_amount, 125);
+	assert.equal(result.debt.original_monthly_amount, 125.5);
 	assert.equal(result.debt.original_number_of_payments, 18);
 	assert.equal(result.historicalInfo.debtId, result.debt.id);
 	assert.equal(result.historicalInfo.count, 18);
@@ -344,20 +344,45 @@ test("another user cannot edit someone else's debt", async () => {
 	assert.equal(unchangedDebt.name, "Integration debt");
 });
 
+test("owner can edit a legacy debt without original plan values", async () => {
+	const legacyDebt = await admin.collection("debts").create({
+		user_id: ownerRecord.id,
+		name: "Legacy debt",
+		entity: "Legacy lender",
+		first_payment_date: "2024-01-31",
+		monthly_amount: 75.5,
+		number_of_payments: 24,
+	});
+	assert.equal(legacyDebt.user_id, ownerRecord.id);
+
+	const result = await owner.send(`/api/debt-detox/debts/${legacyDebt.id}`, {
+		method: "PATCH",
+		body: {
+			name: "Edited legacy debt",
+			entity: legacyDebt.entity,
+			first_payment_date: "2024-01-31",
+			monthly_amount: 75.5,
+			number_of_payments: 20,
+		},
+	});
+
+	assert.equal(result.debt.name, "Edited legacy debt");
+});
+
 test("owner can register an extra payment", async () => {
 	const result = await owner.send(
 		`/api/debt-detox/debts/${debt.id}/extra-payment`,
 		{
 			method: "POST",
 			body: {
-				amount: 250,
+				amount: 250.5,
 				strategy: "none",
 			},
 		},
 	);
 
 	assert.equal(result.payment.debt_id, debt.id);
-	assert.equal(result.payment.actual_amount, 250);
+	assert.equal(result.payment.actual_amount, 250.5);
 	assert.equal(result.payment.is_extra_payment, true);
 	assert.equal(result.debt.id, debt.id);
 });

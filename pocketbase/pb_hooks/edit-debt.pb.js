@@ -35,11 +35,11 @@ routerAdd(
 		const data = new DynamicModel({
 			name: "",
 			entity: "",
-			down_payment: 0,
+			down_payment: -0,
 			first_payment_date: "",
-			monthly_amount: 0,
+			monthly_amount: -0,
 			number_of_payments: 0,
-			final_payment: 0,
+			final_payment: -0,
 			final_payment_date: "",
 		});
 		e.bindBody(data);
@@ -57,6 +57,12 @@ routerAdd(
 			const debt = txApp.findRecordById("debts", debtId);
 			if (debt.get("user_id") !== e.auth.id) {
 				throw new NotFoundError("Debt not found");
+			}
+			if (!debt.get("original_monthly_amount")) {
+				debt.set("original_monthly_amount", debt.get("monthly_amount"));
+			}
+			if (!debt.get("original_number_of_payments")) {
+				debt.set("original_number_of_payments", debt.get("number_of_payments"));
 			}
 
 			debt.set("name", data.name.trim());
