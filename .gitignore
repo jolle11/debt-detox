@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# PocketBase runtime state and local binary (schema/hooks remain versioned)
+/pocketbase/pb_data/
+/pocketbase/pocketbase

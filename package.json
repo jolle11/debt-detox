@@ -4,6 +4,9 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev --turbopack",
+		"pb:up": "docker compose up --build -d pocketbase",
+		"pb:down": "docker compose down",
+		"pb:logs": "docker compose logs -f pocketbase",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",

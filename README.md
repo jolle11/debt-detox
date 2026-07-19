@@ -86,6 +86,14 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 3. Arranca PocketBase y configura las colecciones necesarias.
 
+La opción recomendada ya incluida en el repositorio es:
+
+```bash
+pnpm pb:up
+```
+
+Esto construye la versión fijada de PocketBase, aplica las migraciones y conserva los datos locales en `pocketbase/pb_data`.
+
 4. Inicia la aplicación:
 
 ```bash
@@ -197,6 +205,8 @@ pnpm lint     # Lint del proyecto
 - [`POCKETBASE-SCHEMA.md`](/Users/jordiolleballeste/Desktop/debt-detox/POCKETBASE-SCHEMA.md): esquema y reglas para PocketBase
 - [`FEATURES.md`](/Users/jordiolleballeste/Desktop/debt-detox/FEATURES.md): backlog de mejoras futuras
 - [`DEVELOPMENT_PLAN.md`](/Users/jordiolleballeste/Desktop/debt-detox/DEVELOPMENT_PLAN.md): notas de planificación
+- [`pocketbase/README.md`](/Users/jordiolleballeste/Desktop/debt-detox/pocketbase/README.md): desarrollo y mantenimiento del backend versionado
+- [`docs/POCKETBASE-RAILWAY-RUNBOOK.md`](/Users/jordiolleballeste/Desktop/debt-detox/docs/POCKETBASE-RAILWAY-RUNBOOK.md): migración, despliegue, rollback y tareas manuales de Railway
 
 ## Estado
 
