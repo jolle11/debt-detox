@@ -231,6 +231,119 @@ test("another user cannot confirm historical payments", async () => {
 	assert.equal(payments.length, 0);
 });
 
+test("owner can edit a debt without changing its immutable values", async () => {
+	const result = await owner.send(`/api/debt-detox/debts/${debt.id}`, {
+		method: "PATCH",
+		body: {
+			name: "Edited debt",
+			entity: "Edited lender",
+			first_payment_date: "2026-02-15",
+			monthly_amount: 150,
+			number_of_payments: 10,
+			original_monthly_amount: 999,
+			original_number_of_payments: 999,
+			user_id: "attacker-controlled",
+		},
+	});
+
+	assert.equal(result.debt.name, "Edited debt");
+	assert.equal(result.debt.monthly_amount, 150);
+	assert.equal(result.debt.number_of_payments, 10);
+	assert.equal(result.debt.user_id, ownerRecord.id);
+	assert.equal(result.debt.original_monthly_amount, 100);
+	assert.equal(result.debt.original_number_of_payments, 12);
+	assert.equal(result.debt.final_payment_date.slice(0, 10), "2026-11-15");
+});
+
+test("editing reconciles future installments while preserving payment history", async () => {
+	const paidOutside = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 1,
+		year: 2026,
+		planned_amount: 100,
+		actual_amount: 90,
+		paid: true,
+		paid_date: "2026-01-15",
+		is_extra_payment: false,
+	});
+	const futureInside = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 3,
+		year: 2026,
+		planned_amount: 100,
+		paid: false,
+		is_extra_payment: false,
+	});
+	const futureOutside = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 12,
+		year: 2026,
+		planned_amount: 100,
+		paid: false,
+		is_extra_payment: false,
+	});
+	const extraPayment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 12,
+		year: 2026,
+		planned_amount: 0,
+		actual_amount: 40,
+		paid: true,
+		paid_date: "2026-01-20",
+		is_extra_payment: true,
+	});
+
+	await owner.send(`/api/debt-detox/debts/${debt.id}`, {
+		method: "PATCH",
+		body: {
+			name: debt.name,
+			entity: debt.entity,
+			first_payment_date: "2026-02-15",
+			monthly_amount: 150,
+			number_of_payments: 10,
+		},
+	});
+
+	const payments = await owner.collection("payments").getFullList({
+		filter: `debt_id = "${debt.id}"`,
+	});
+	assert.equal(
+		payments.some((payment) => payment.id === paidOutside.id),
+		true,
+	);
+	assert.equal(
+		payments.some((payment) => payment.id === futureOutside.id),
+		false,
+	);
+	assert.equal(
+		payments.some((payment) => payment.id === extraPayment.id),
+		true,
+	);
+	assert.equal(
+		payments.find((payment) => payment.id === futureInside.id).planned_amount,
+		150,
+	);
+});
+
+test("another user cannot edit someone else's debt", async () => {
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/debts/${debt.id}`, {
+			method: "PATCH",
+			body: {
+				name: "Stolen debt",
+				entity: debt.entity,
+				first_payment_date: debt.first_payment_date,
+				monthly_amount: debt.monthly_amount,
+				number_of_payments: debt.number_of_payments,
+			},
+		}),
+		(error) => error?.status === 404,
+	);
+
+	const unchangedDebt = await owner.collection("debts").getOne(debt.id);
+	assert.equal(unchangedDebt.name, "Integration debt");
+});
+
 test("owner can register an extra payment", async () => {
 	const result = await owner.send(
 		`/api/debt-detox/debts/${debt.id}/extra-payment`,

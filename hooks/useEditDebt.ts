@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import pb from "@/lib/pocketbase";
-import { COLLECTIONS, type Debt } from "@/lib/types";
+import type { Debt } from "@/lib/types";
 
 interface UseEditDebtReturn {
 	editDebt: (
@@ -31,26 +31,14 @@ export function useEditDebt(): UseEditDebtReturn {
 				throw new Error("Usuario no autenticado");
 			}
 
-			// Verify the debt belongs to the current user before updating
-			const existingDebt = await pb
-				.collection(COLLECTIONS.DEBTS)
-				.getOne(debtId, {
-					filter: pb.filter("user_id = {:userId}", { userId: user.id }),
-				});
-
-			if (!existingDebt) {
-				throw new Error("No tienes permisos para editar esta deuda");
-			}
-
-			const updatedDebt = await pb
-				.collection(COLLECTIONS.DEBTS)
-				.update(debtId, debtData);
-
-			return updatedDebt;
+			return pb.send<{ debt: Debt }>(`/api/debt-detox/debts/${debtId}`, {
+				method: "PATCH",
+				body: debtData,
+			});
 		},
 		onSuccess: () => {
-			// Invalidar cache de debts para refetch automático
 			queryClient.invalidateQueries({ queryKey: ["debts"] });
+			queryClient.invalidateQueries({ queryKey: ["payments"] });
 		},
 	});
 
