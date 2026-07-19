@@ -2,10 +2,8 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
-import { getTodayDateOnly, parseDateOnly } from "@/lib/dateOnly";
-import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import pb from "@/lib/pocketbase";
-import { COLLECTIONS, type Debt, type Payment } from "@/lib/types";
+import type { Debt, Payment } from "@/lib/types";
 
 interface UseCompleteDebtReturn {
 	completeDebt: (debt: Debt, payments?: Payment[]) => Promise<void>;
@@ -19,13 +17,7 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 	const { user } = useAuth();
 
 	const mutation = useMutation({
-		mutationFn: async ({
-			debt,
-			payments = [],
-		}: {
-			debt: Debt;
-			payments: Payment[];
-		}) => {
+		mutationFn: async (debt: Debt) => {
 			if (!pb.authStore.isValid || !user?.id) {
 				throw new Error("Usuario no autenticado");
 			}
@@ -33,97 +25,10 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 				throw new Error("Deuda inválida");
 			}
 
-			// Verify the debt belongs to the current user
-			const existingDebt = await pb
-				.collection(COLLECTIONS.DEBTS)
-				.getOne(debt.id, {
-					filter: pb.filter("user_id = {:userId}", { userId: user.id }),
-				});
-
-			if (!existingDebt) {
-				throw new Error("No tienes permisos para completar esta deuda");
-			}
-
-			const today = getTodayDateOnly();
-
-			// Mark all existing unpaid monthly payments as paid (exclude extra payments)
-			const unpaidPayments = payments.filter(
-				(p) => !p.paid && !p.is_extra_payment,
+			return pb.send<{ debt: Debt }>(
+				`/api/debt-detox/debts/${debt.id}/complete`,
+				{ method: "POST" },
 			);
-			for (const payment of unpaidPayments) {
-				if (!payment.id) {
-					continue;
-				}
-				await pb.collection(COLLECTIONS.PAYMENTS).update(payment.id, {
-					paid: true,
-					actual_amount: payment.planned_amount,
-					paid_date: today,
-				});
-			}
-
-			// Generate all missing monthly payments from the debt structure
-			const startDate = parseDateOnly(debt.first_payment_date);
-			const allPaymentPeriods = [];
-
-			// Generate all expected monthly payment periods
-			if (startDate) {
-				for (let i = 0; i < debt.number_of_payments; i++) {
-					const paymentDate = new Date(startDate);
-					paymentDate.setMonth(paymentDate.getMonth() + i);
-
-					allPaymentPeriods.push({
-						month: paymentDate.getMonth() + 1,
-						year: paymentDate.getFullYear(),
-						amount: debt.monthly_amount,
-					});
-				}
-			}
-
-			// Add final payment if it exists
-			if (debt.final_payment && debt.final_payment > 0) {
-				const finalPaymentDate = parseDateOnly(resolveFinalPaymentDate(debt));
-
-				if (finalPaymentDate) {
-					allPaymentPeriods.push({
-						month: finalPaymentDate.getMonth() + 1,
-						year: finalPaymentDate.getFullYear(),
-						amount: debt.final_payment,
-					});
-				}
-			}
-
-			// Create payments for periods that don't exist yet (only monthly payments, not extra payments)
-			for (const period of allPaymentPeriods) {
-				const existingPayment = payments.find(
-					(p) =>
-						p.month === period.month &&
-						p.year === period.year &&
-						!p.is_extra_payment,
-				);
-
-				if (!existingPayment) {
-					await pb.collection(COLLECTIONS.PAYMENTS).create({
-						debt_id: debt.id,
-						month: period.month,
-						year: period.year,
-						planned_amount: period.amount,
-						actual_amount: period.amount,
-						paid: true,
-						paid_date: today,
-						is_extra_payment: false,
-					});
-				}
-			}
-
-			// Update debt to mark as completed with today's date as final payment date
-			const updatedDebt = await pb
-				.collection(COLLECTIONS.DEBTS)
-				.update(debt.id, {
-					...debt,
-					final_payment_date: today,
-				});
-
-			return updatedDebt;
 		},
 		onSuccess: () => {
 			// Invalidar cache para refetch automático
@@ -134,9 +39,9 @@ export function useCompleteDebt(): UseCompleteDebtReturn {
 
 	const completeDebt = async (
 		debt: Debt,
-		payments: Payment[] = [],
+		_payments: Payment[] = [],
 	): Promise<void> => {
-		await mutation.mutateAsync({ debt, payments });
+		await mutation.mutateAsync(debt);
 	};
 
 	return {

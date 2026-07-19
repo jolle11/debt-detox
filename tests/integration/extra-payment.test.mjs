@@ -219,3 +219,98 @@ test("another user cannot add a payment to someone else's debt", async () => {
 	});
 	assert.equal(payments.length, 0);
 });
+
+test("owner can complete a debt and all its monthly payments", async () => {
+	await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 1,
+		year: 2026,
+		planned_amount: 100,
+		paid: false,
+		is_extra_payment: false,
+	});
+
+	const result = await owner.send(`/api/debt-detox/debts/${debt.id}/complete`, {
+		method: "POST",
+	});
+
+	assert.equal(result.debt.id, debt.id);
+	assert.equal(
+		result.debt.final_payment_date.slice(0, 10),
+		new Date().toISOString().slice(0, 10),
+	);
+
+	const payments = await owner.collection("payments").getFullList({
+		filter: `debt_id = "${debt.id}" && is_extra_payment = false`,
+	});
+	assert.equal(payments.length, 12);
+	assert.equal(
+		payments.every((payment) => payment.paid),
+		true,
+	);
+});
+
+test("completing a debt twice does not duplicate monthly payments", async () => {
+	await owner.send(`/api/debt-detox/debts/${debt.id}/complete`, {
+		method: "POST",
+	});
+	await owner.send(`/api/debt-detox/debts/${debt.id}/complete`, {
+		method: "POST",
+	});
+
+	const payments = await owner.collection("payments").getFullList({
+		filter: `debt_id = "${debt.id}" && is_extra_payment = false`,
+	});
+	assert.equal(payments.length, 12);
+});
+
+test("completion preserves extra payments and creates the separate final payment", async () => {
+	await admin.collection("debts").update(debt.id, {
+		final_payment: 75,
+		final_payment_date: "2027-01-15",
+	});
+	const extraPayment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 7,
+		year: 2026,
+		planned_amount: 0,
+		actual_amount: 50,
+		paid: true,
+		paid_date: "2026-07-01",
+		is_extra_payment: true,
+	});
+
+	await owner.send(`/api/debt-detox/debts/${debt.id}/complete`, {
+		method: "POST",
+	});
+
+	const payments = await owner.collection("payments").getFullList({
+		filter: `debt_id = "${debt.id}"`,
+	});
+	const preservedExtra = payments.find(
+		(payment) => payment.id === extraPayment.id,
+	);
+	const finalPayment = payments.find(
+		(payment) =>
+			!payment.is_extra_payment && payment.month === 1 && payment.year === 2027,
+	);
+	assert.equal(payments.length, 14);
+	assert.equal(preservedExtra.actual_amount, 50);
+	assert.equal(finalPayment.actual_amount, 75);
+});
+
+test("another user cannot complete someone else's debt", async () => {
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/debts/${debt.id}/complete`, {
+			method: "POST",
+		}),
+		(error) => error?.status === 404,
+	);
+
+	const unchangedDebt = await owner.collection("debts").getOne(debt.id);
+	const payments = await owner.collection("payments").getFullList({
+		filter: `debt_id = "${debt.id}"`,
+	});
+	assert.equal(unchangedDebt.final_payment_date, "");
+	assert.equal(payments.length, 0);
+});

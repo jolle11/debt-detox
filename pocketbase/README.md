@@ -48,6 +48,7 @@ Requiere Docker y no utiliza ni modifica la base local o de producción.
 ## Rutas de dominio
 
 - `POST /api/debt-detox/debts/{id}/extra-payment`: registra un pago extra y recalcula la deuda dentro de una única transacción.
+- `POST /api/debt-detox/debts/{id}/complete`: completa la deuda y todos sus pagos ordinarios dentro de una única transacción idempotente.
 
 Para empezar de cero, elimina manualmente `pocketbase/pb_data` únicamente después de comprobar que no contiene datos necesarios.
 
