@@ -7,6 +7,7 @@
 		"pb:up": "docker compose up --build -d pocketbase",
 		"pb:down": "docker compose down",
 		"pb:logs": "docker compose logs -f pocketbase",
+		"pb:reset-user-password": "node scripts/reset-pocketbase-user-password.mjs",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",

@@ -27,6 +27,14 @@ Detener el servicio no elimina los datos:
 pnpm pb:down
 ```
 
+Para cambiar la contraseña de un registro de `users` cuando el dashboard no muestra los campos protegidos, ejecuta la utilidad interactiva desde la raíz del proyecto:
+
+```bash
+pnpm pb:reset-user-password
+```
+
+La utilidad solicita las credenciales de superusuario y la nueva contraseña sin mostrarlas ni guardarlas en archivos o argumentos del proceso.
+
 Para empezar de cero, elimina manualmente `pocketbase/pb_data` únicamente después de comprobar que no contiene datos necesarios.
 
 ## Flujo de cambios
