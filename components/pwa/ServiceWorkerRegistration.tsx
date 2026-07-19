@@ -12,7 +12,28 @@ export default function ServiceWorkerRegistration() {
 			return;
 		}
 
-		void navigator.serviceWorker.register("/sw.js");
+		let reloading = false;
+		const handleControllerChange = () => {
+			if (reloading) return;
+			reloading = true;
+			window.location.reload();
+		};
+
+		navigator.serviceWorker.addEventListener(
+			"controllerchange",
+			handleControllerChange,
+		);
+
+		void navigator.serviceWorker
+			.register("/sw.js", { updateViaCache: "none" })
+			.then((registration) => registration.update());
+
+		return () => {
+			navigator.serviceWorker.removeEventListener(
+				"controllerchange",
+				handleControllerChange,
+			);
+		};
 	}, []);
 
 	return null;
