@@ -17,14 +17,14 @@ interface LocaleSeo {
 
 const localeSeo: Record<SupportedLocale, LocaleSeo> = {
 	es: {
-		title: "Controla deudas, prestamos y cuotas",
+		title: "Controla deudas, préstamos y cuotas",
 		description:
-			"Gestiona deudas, prestamos y pagos mensuales en una app simple. Sigue tu progreso, controla fechas de cuotas y comparte vistas cuando lo necesites.",
+			"Gestiona deudas, préstamos y pagos mensuales en una app simple. Sigue tu progreso, controla fechas de cuotas y comparte vistas cuando lo necesites.",
 		openGraphLocale: "es_ES",
 		features: [
-			"Seguimiento de deudas y prestamos",
+			"Seguimiento de deudas y préstamos",
 			"Control de cuotas y fechas de pago",
-			"Visualizacion del progreso de amortizacion",
+			"Visualización del progreso de amortización",
 			"Vistas compartidas con enlaces privados",
 		],
 	},
@@ -41,21 +41,21 @@ const localeSeo: Record<SupportedLocale, LocaleSeo> = {
 		],
 	},
 	fr: {
-		title: "Suivez vos dettes, prets et mensualites",
+		title: "Suivez vos dettes, prêts et mensualités",
 		description:
-			"Gerez vos dettes, prets et paiements mensuels dans une seule application. Suivez votre progression, vos echeances et partagez des vues privees si besoin.",
+			"Gérez vos dettes, prêts et paiements mensuels dans une seule application. Suivez votre progression, vos échéances et partagez des vues privées si besoin.",
 		openGraphLocale: "fr_FR",
 		features: [
-			"Suivi des dettes et prets",
-			"Gestion des mensualites",
+			"Suivi des dettes et prêts",
+			"Gestion des mensualités",
 			"Visualisation de la progression",
-			"Vues partagees privees",
+			"Vues partagées privées",
 		],
 	},
 	de: {
 		title: "Verwalte Schulden, Kredite und Monatsraten",
 		description:
-			"Behalte Schulden, Kredite und monatliche Zahlungen im Blick. Verfolge Fortschritt, Falligkeiten und teile private Ansichten bei Bedarf.",
+			"Behalte Schulden, Kredite und monatliche Zahlungen im Blick. Verfolge Fortschritt, Fälligkeiten und teile private Ansichten bei Bedarf.",
 		openGraphLocale: "de_DE",
 		features: [
 			"Schulden- und Kreditverwaltung",
@@ -65,27 +65,27 @@ const localeSeo: Record<SupportedLocale, LocaleSeo> = {
 		],
 	},
 	pt: {
-		title: "Controle dividas, emprestimos e parcelas",
+		title: "Controle dívidas, empréstimos e parcelas",
 		description:
-			"Gerencie dividas, emprestimos e pagamentos mensais em um so lugar. Acompanhe seu progresso, datas de vencimento e compartilhe visualizacoes privadas.",
+			"Gerencie dívidas, empréstimos e pagamentos mensais em um só lugar. Acompanhe seu progresso, datas de vencimento e compartilhe visualizações privadas.",
 		openGraphLocale: "pt_PT",
 		features: [
-			"Controle de dividas e emprestimos",
+			"Controle de dívidas e empréstimos",
 			"Acompanhamento de parcelas mensais",
-			"Visualizacao do progresso",
+			"Visualização do progresso",
 			"Compartilhamento privado",
 		],
 	},
 	nl: {
 		title: "Beheer schulden, leningen en maandlasten",
 		description:
-			"Beheer schulden, leningen en maandelijkse betalingen in een overzichtelijke app. Volg aflossing, vervaldata en deel priveoverzichten wanneer nodig.",
+			"Beheer schulden, leningen en maandelijkse betalingen in een overzichtelijke app. Volg aflossing, vervaldata en deel privéoverzichten wanneer nodig.",
 		openGraphLocale: "nl_NL",
 		features: [
 			"Schulden en leningen beheren",
 			"Maandelijkse betalingen volgen",
 			"Aflosvoortgang visualiseren",
-			"Prive gedeelde overzichten",
+			"Privé gedeelde overzichten",
 		],
 	},
 };

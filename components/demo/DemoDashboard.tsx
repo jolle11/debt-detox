@@ -48,7 +48,7 @@ export default function DemoDashboard({
 			<div className="bg-gradient-to-r from-primary to-secondary p-4 rounded-xl mb-6 text-white">
 				<div className="flex items-center justify-between">
 					<div>
-						<h3 className="text-lg font-bold">{tLanding("demo.title")}</h3>
+						<p className="text-lg font-bold">{tLanding("demo.title")}</p>
 						<p className="text-sm opacity-90">{tLanding("demo.subtitle")}</p>
 					</div>
 					<button

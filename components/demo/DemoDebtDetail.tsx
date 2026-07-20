@@ -102,7 +102,7 @@ export default function DemoDebtDetail({
 					</button>
 					<div className="flex items-center gap-2">
 						<div>
-							<h1 className="text-xl font-bold">{debt.name}</h1>
+							<h3 className="text-xl font-bold">{debt.name}</h3>
 							<p className="text-sm text-base-content/70">{debt.entity}</p>
 						</div>
 						<div className="flex items-center gap-1">
