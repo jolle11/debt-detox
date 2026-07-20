@@ -77,6 +77,7 @@ export const landingSections: LandingSection[] = [
 export const hero = {
 	icon: "💳",
 	title: "Debt Detox",
+	taglineKey: "hero.tagline",
 	subtitleKey: "hero.subtitle",
 	featuresKey: "hero.features",
 };

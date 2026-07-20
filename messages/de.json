@@ -103,10 +103,12 @@
 	},
 	"landing": {
 		"hero": {
+			"tagline": "Verwalte Schulden, Kredite und Monatsraten",
 			"subtitle": "Übernehmen Sie die Kontrolle über Ihre finanziellen Verpflichtungen",
 			"features": "Kostenlos • Keine versteckten Gebühren • Ihre Daten bleiben privat"
 		},
 		"features": {
+			"heading": "Wichtigste Funktionen",
 			"trackProgress": {
 				"title": "Fortschritt Verfolgen",
 				"description": "Überwachen Sie Ihre Schuldenzahlungen und sehen Sie, wie nah Sie der Freiheit sind"

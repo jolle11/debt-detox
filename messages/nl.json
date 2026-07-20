@@ -101,10 +101,12 @@
 	},
 	"landing": {
 		"hero": {
+			"tagline": "Beheer schulden, leningen en maandlasten",
 			"subtitle": "Neem controle over uw financiële verplichtingen",
 			"features": "Gratis • Geen verborgen kosten • Uw gegevens blijven privé"
 		},
 		"features": {
+			"heading": "Belangrijkste functies",
 			"trackProgress": {
 				"title": "Voortgang Volgen",
 				"description": "Houd uw schuldbetalingen bij en zie hoe dicht u bij vrijheid bent"

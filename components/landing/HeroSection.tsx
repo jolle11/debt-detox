@@ -18,22 +18,29 @@ export default function HeroSection({ onLoginClick }: HeroSectionProps) {
 				<div className="max-w-4xl">
 					<header className="mb-8">
 						<div className="text-6xl mb-4">{hero.icon}</div>
-						<h1
-							id="landing-title"
-							className="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
-						>
-							{hero.title}
+						<h1 id="landing-title" className="text-5xl font-bold">
+							<span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+								{hero.title}
+							</span>
+							<span className="block text-2xl font-semibold text-base-content/90 mt-3">
+								{tLanding(hero.taglineKey)}
+							</span>
 						</h1>
 						<p className="text-xl text-base-content/80 mt-4">
 							{tLanding(hero.subtitleKey)}
 						</p>
 					</header>
 
-					<div className="grid md:grid-cols-3 gap-8 my-16">
-						{heroFeatures.map((feature, index) => (
-							<FeatureCard key={index} feature={feature} />
-						))}
-					</div>
+					<section aria-labelledby="landing-features" className="my-16">
+						<h2 id="landing-features" className="sr-only">
+							{tLanding("features.heading")}
+						</h2>
+						<div className="grid md:grid-cols-3 gap-8">
+							{heroFeatures.map((feature, index) => (
+								<FeatureCard key={index} feature={feature} />
+							))}
+						</div>
+					</section>
 
 					<div className="space-y-4">
 						<button

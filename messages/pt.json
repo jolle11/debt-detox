@@ -101,10 +101,12 @@
 	},
 	"landing": {
 		"hero": {
+			"tagline": "Controle dívidas, empréstimos e parcelas",
 			"subtitle": "Tenha controle sobre seus compromissos financeiros",
 			"features": "Gratuito • Sem taxas ocultas • Seus dados permanecem privados"
 		},
 		"features": {
+			"heading": "Principais funcionalidades",
 			"trackProgress": {
 				"title": "Acompanhar Progresso",
 				"description": "Monitore seus pagamentos de dívidas e veja o quão perto você está da liberdade"

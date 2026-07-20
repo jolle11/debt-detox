@@ -101,10 +101,12 @@
 	},
 	"landing": {
 		"hero": {
+			"tagline": "Track debts, loans and monthly payments",
 			"subtitle": "Take control of your financial commitments",
 			"features": "Free to use • No hidden fees • Your data stays private"
 		},
 		"features": {
+			"heading": "Key features",
 			"trackProgress": {
 				"title": "Track Progress",
 				"description": "Monitor your debt payments and see how close you are to freedom"

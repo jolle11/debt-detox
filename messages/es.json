@@ -101,10 +101,12 @@
 	},
 	"landing": {
 		"hero": {
+			"tagline": "Controla deudas, préstamos y cuotas",
 			"subtitle": "Toma control de tus compromisos financieros",
 			"features": "Gratuito • Sin tarifas ocultas • Tus datos permanecen privados"
 		},
 		"features": {
+			"heading": "Características principales",
 			"trackProgress": {
 				"title": "Seguir Progreso",
 				"description": "Monitorea tus pagos de deudas y ve qué tan cerca estás de la libertad"

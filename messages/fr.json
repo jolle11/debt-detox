@@ -103,10 +103,12 @@
 	},
 	"landing": {
 		"hero": {
+			"tagline": "Suivez vos dettes, prêts et mensualités",
 			"subtitle": "Prenez le contrôle de vos engagements financiers",
 			"features": "Gratuit • Aucuns frais cachés • Vos données restent privées"
 		},
 		"features": {
+			"heading": "Fonctionnalités principales",
 			"trackProgress": {
 				"title": "Suivre le Progrès",
 				"description": "Surveillez vos paiements de dettes et voyez à quel point vous êtes proche de la liberté"
