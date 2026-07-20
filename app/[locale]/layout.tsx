@@ -62,6 +62,11 @@ export default async function LocaleLayout({
 		<html lang={locale}>
 			<head>
 				<script defer src="https://assets.onedollarstats.com/stonks.js" />
+				<script
+					defer
+					src="https://umamis.up.railway.app/script.js"
+					data-website-id="f17fd756-bf3a-47e8-9f20-840ef9418a0f"
+				/>
 			</head>
 			<body
 				className={`${inconsolata.variable} antialiased`}
