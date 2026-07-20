@@ -84,17 +84,6 @@ const sortPaymentsByDateDesc = (payments: Payment[]): Payment[] =>
 		return right.month - left.month;
 	});
 
-const assertAuthorizedDebtAccess = async (
-	userId: string,
-	debtId: string,
-): Promise<void> => {
-	const authorizedDebtIds = await getAuthorizedDebtIds(userId, debtId);
-
-	if (authorizedDebtIds.length === 0) {
-		throw new Error("No autorizado para operar sobre esta deuda");
-	}
-};
-
 const fetchPayments = async (
 	userId: string,
 	debtId?: string,
@@ -160,7 +149,7 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 			debtId,
 			month,
 			year,
-			plannedAmount,
+			plannedAmount: _plannedAmount,
 			actualAmount,
 			paidDate,
 		}: {
@@ -175,41 +164,16 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 				throw new Error("Usuario no autenticado");
 			}
 
-			await assertAuthorizedDebtAccess(user.id, debtId);
-
-			// Buscar si ya existe un payment para este mes/año
-			const existingPayments = await pb
-				.collection(COLLECTIONS.PAYMENTS)
-				.getFullList({
-					filter: pb.filter(
-						"debt_id = {:debtId} && month = {:month} && year = {:year} && deleted = null",
-						{ debtId, month, year },
-					),
-				});
-
-			const amountToPay = actualAmount || plannedAmount;
-			const dateToUse = paidDate || new Date().toISOString();
-
-			if (existingPayments.length > 0) {
-				// Actualizar el payment existente
-				const payment = existingPayments[0];
-				return await pb.collection(COLLECTIONS.PAYMENTS).update(payment.id, {
-					paid: true,
-					paid_date: dateToUse,
-					actual_amount: amountToPay,
-				});
-			} else {
-				// Crear un nuevo payment
-				return await pb.collection(COLLECTIONS.PAYMENTS).create({
-					debt_id: debtId,
-					month,
-					year,
-					planned_amount: plannedAmount,
-					actual_amount: amountToPay,
-					paid: true,
-					paid_date: dateToUse,
-				});
-			}
+			return pb.send<{ payment: Payment }>(
+				`/api/debt-detox/debts/${debtId}/payments/${year}/${month}`,
+				{
+					method: "PUT",
+					body: {
+						actual_amount: actualAmount,
+						paid_date: paidDate,
+					},
+				},
+			);
 		},
 		onSuccess: () => {
 			// Invalidar cache de payments para refetch automático
@@ -281,10 +245,8 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 
 	const unmarkPaymentAsPaid = async (paymentId: string): Promise<void> => {
 		try {
-			await pb.collection(COLLECTIONS.PAYMENTS).update(paymentId, {
-				paid: false,
-				paid_date: null,
-				actual_amount: null,
+			await pb.send(`/api/debt-detox/payments/${paymentId}/unmark`, {
+				method: "POST",
 			});
 
 			// Invalidar cache para refetch automático
@@ -301,8 +263,9 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		amount: number,
 	): Promise<void> => {
 		try {
-			await pb.collection(COLLECTIONS.PAYMENTS).update(paymentId, {
-				actual_amount: amount,
+			await pb.send(`/api/debt-detox/payments/${paymentId}/amount`, {
+				method: "PATCH",
+				body: { amount },
 			});
 
 			// Invalidar cache para refetch automático

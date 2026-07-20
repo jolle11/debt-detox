@@ -369,6 +369,143 @@ test("owner can edit a legacy debt without original plan values", async () => {
 	assert.equal(result.debt.name, "Edited legacy debt");
 });
 
+test("owner can mark a scheduled installment as paid", async () => {
+	const result = await owner.send(
+		`/api/debt-detox/debts/${debt.id}/payments/2026/3`,
+		{
+			method: "PUT",
+			body: {
+				actual_amount: 95.5,
+				paid_date: "2026-03-14",
+				planned_amount: 999,
+			},
+		},
+	);
+
+	assert.equal(result.payment.debt_id, debt.id);
+	assert.equal(result.payment.month, 3);
+	assert.equal(result.payment.year, 2026);
+	assert.equal(result.payment.planned_amount, 100);
+	assert.equal(result.payment.actual_amount, 95.5);
+	assert.equal(result.payment.paid, true);
+});
+
+test("marking the same installment twice updates it without duplicates", async () => {
+	const path = `/api/debt-detox/debts/${debt.id}/payments/2026/3`;
+	await owner.send(path, {
+		method: "PUT",
+		body: { actual_amount: 95.5 },
+	});
+	const second = await owner.send(path, {
+		method: "PUT",
+		body: { actual_amount: 90.25 },
+	});
+
+	const payments = await owner.collection("payments").getFullList({
+		filter: `debt_id = "${debt.id}" && year = 2026 && month = 3`,
+	});
+	assert.equal(payments.length, 1);
+	assert.equal(second.payment.actual_amount, 90.25);
+});
+
+test("owner can unmark a paid installment", async () => {
+	const payment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 3,
+		year: 2026,
+		planned_amount: 100,
+		actual_amount: 95.5,
+		paid: true,
+		paid_date: "2026-03-14",
+		is_extra_payment: false,
+	});
+
+	const result = await owner.send(
+		`/api/debt-detox/payments/${payment.id}/unmark`,
+		{ method: "POST" },
+	);
+
+	assert.equal(result.payment.id, payment.id);
+	assert.equal(result.payment.paid, false);
+	assert.equal(result.payment.actual_amount, 0);
+	assert.equal(result.payment.paid_date, "");
+});
+
+test("owner can update the actual payment amount", async () => {
+	const payment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 3,
+		year: 2026,
+		planned_amount: 100,
+		actual_amount: 100,
+		paid: true,
+		paid_date: "2026-03-14",
+		is_extra_payment: false,
+	});
+
+	const result = await owner.send(
+		`/api/debt-detox/payments/${payment.id}/amount`,
+		{ method: "PATCH", body: { amount: 87.25 } },
+	);
+
+	assert.equal(result.payment.id, payment.id);
+	assert.equal(result.payment.actual_amount, 87.25);
+	assert.equal(result.payment.planned_amount, 100);
+});
+
+test("installment outside the debt plan is rejected without a write", async () => {
+	await assert.rejects(
+		owner.send(`/api/debt-detox/debts/${debt.id}/payments/2027/3`, {
+			method: "PUT",
+			body: { actual_amount: 100 },
+		}),
+		(error) => error?.status === 400,
+	);
+
+	const payments = await owner.collection("payments").getFullList({
+		filter: `debt_id = "${debt.id}" && year = 2027 && month = 3`,
+	});
+	assert.equal(payments.length, 0);
+});
+
+test("another user cannot mutate installments", async () => {
+	const payment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 3,
+		year: 2026,
+		planned_amount: 100,
+		actual_amount: 100,
+		paid: true,
+		paid_date: "2026-03-14",
+		is_extra_payment: false,
+	});
+
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/debts/${debt.id}/payments/2026/4`, {
+			method: "PUT",
+			body: { actual_amount: 100 },
+		}),
+		(error) => error?.status === 404,
+	);
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/payments/${payment.id}/unmark`, {
+			method: "POST",
+		}),
+		(error) => error?.status === 404,
+	);
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/payments/${payment.id}/amount`, {
+			method: "PATCH",
+			body: { amount: 1 },
+		}),
+		(error) => error?.status === 404,
+	);
+
+	const unchanged = await owner.collection("payments").getOne(payment.id);
+	assert.equal(unchanged.paid, true);
+	assert.equal(unchanged.actual_amount, 100);
+});
+
 test("owner can register an extra payment", async () => {
 	const result = await owner.send(
 		`/api/debt-detox/debts/${debt.id}/extra-payment`,
