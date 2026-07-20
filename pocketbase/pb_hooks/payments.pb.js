@@ -191,3 +191,33 @@ routerAdd(
 	},
 	$apis.requireAuth("users"),
 );
+
+routerAdd(
+	"DELETE",
+	"/api/debt-detox/payments/{id}/extra",
+	(e) => {
+		const paymentId = e.request.pathValue("id");
+		let deletedAt = "";
+
+		e.app.runInTransaction((txApp) => {
+			const payment = txApp.findRecordById("payments", paymentId);
+			const debt = txApp.findRecordById("debts", payment.get("debt_id"));
+			if (
+				debt.get("user_id") !== e.auth.id ||
+				!payment.get("is_extra_payment")
+			) {
+				throw new NotFoundError("Extra payment not found");
+			}
+
+			deletedAt = payment.getString("deleted");
+			if (!deletedAt) {
+				deletedAt = new Date().toISOString().replace("T", " ");
+				payment.set("deleted", deletedAt);
+				txApp.save(payment);
+			}
+		});
+
+		return e.json(200, { deleted: true, deletedAt });
+	},
+	$apis.requireAuth("users"),
+);

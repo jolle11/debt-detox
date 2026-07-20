@@ -49,10 +49,12 @@ Requiere Docker y no utiliza ni modifica la base local o de producción.
 
 - `POST /api/debt-detox/debts`: crea una deuda, fija sus valores originales y calcula su calendario en el servidor.
 - `PATCH /api/debt-detox/debts/{id}`: edita una deuda y reconcilia sus cuotas futuras sin alterar pagos realizados ni aportaciones extra.
+- `DELETE /api/debt-detox/debts/{id}`: elimina lógicamente una deuda, todos sus pagos y sus enlaces compartidos individuales en una transacción idempotente.
 - `POST /api/debt-detox/debts/{id}/historical-payments`: confirma todas las cuotas históricas en una única transacción idempotente.
 - `PUT /api/debt-detox/debts/{id}/payments/{year}/{month}`: marca una cuota válida como pagada y deriva su importe previsto del calendario.
 - `POST /api/debt-detox/payments/{id}/unmark`: desmarca una cuota ordinaria pagada.
 - `PATCH /api/debt-detox/payments/{id}/amount`: actualiza el importe real de un pago perteneciente al usuario.
+- `DELETE /api/debt-detox/payments/{id}/extra`: elimina lógicamente una aportación extra sin permitir borrar cuotas ordinarias.
 - `POST /api/debt-detox/debts/{id}/extra-payment`: registra un pago extra y recalcula la deuda dentro de una única transacción.
 - `POST /api/debt-detox/debts/{id}/complete`: completa la deuda y todos sus pagos ordinarios dentro de una única transacción idempotente.
 

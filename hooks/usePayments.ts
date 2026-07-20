@@ -279,8 +279,8 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 
 	const deleteExtraPayment = async (paymentId: string): Promise<void> => {
 		try {
-			await pb.collection(COLLECTIONS.PAYMENTS).update(paymentId, {
-				deleted: new Date().toISOString(),
+			await pb.send(`/api/debt-detox/payments/${paymentId}/extra`, {
+				method: "DELETE",
 			});
 
 			// Invalidar cache para refetch automático

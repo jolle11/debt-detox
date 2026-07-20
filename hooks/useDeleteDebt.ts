@@ -3,7 +3,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import pb from "@/lib/pocketbase";
-import { COLLECTIONS } from "@/lib/types";
 
 interface UseDeleteDebtReturn {
 	deleteDebt: (debtId: string) => Promise<void>;
@@ -21,52 +20,14 @@ export function useDeleteDebt(): UseDeleteDebtReturn {
 				throw new Error("Usuario no autenticado");
 			}
 
-			// Verify the debt belongs to the current user before deleting
-			const existingDebt = await pb
-				.collection(COLLECTIONS.DEBTS)
-				.getOne(debtId, {
-					filter: pb.filter("user_id = {:userId}", { userId: user.id }),
-				});
-
-			if (!existingDebt) {
-				throw new Error("No tienes permisos para eliminar esta deuda");
-			}
-
-			const deletedAt = new Date().toISOString();
-
-			// Revoke any shared links for this debt before hiding it.
-			const sharedLinks = await pb
-				.collection(COLLECTIONS.SHARED_DEBTS)
-				.getFullList({
-					filter: pb.filter(
-						"debt_id = {:debtId} && user_id = {:userId} && deleted = null",
-						{
-							debtId,
-							userId: user.id,
-						},
-					),
-				});
-
-			await Promise.all(
-				sharedLinks.map((link) =>
-					pb.collection(COLLECTIONS.SHARED_DEBTS).update(link.id, {
-						deleted: deletedAt,
-					}),
-				),
+			return pb.send<{ deleted: boolean; deletedAt: string }>(
+				`/api/debt-detox/debts/${debtId}`,
+				{ method: "DELETE" },
 			);
-
-			// Soft delete: set the deleted field to current date
-			const deletedDebt = await pb
-				.collection(COLLECTIONS.DEBTS)
-				.update(debtId, {
-					deleted: deletedAt,
-				});
-
-			return deletedDebt;
 		},
 		onSuccess: () => {
-			// Invalidar cache de debts para refetch automático
 			queryClient.invalidateQueries({ queryKey: ["debts"] });
+			queryClient.invalidateQueries({ queryKey: ["payments"] });
 		},
 	});
 

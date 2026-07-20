@@ -506,6 +506,66 @@ test("another user cannot mutate installments", async () => {
 	assert.equal(unchanged.actual_amount, 100);
 });
 
+test("owner can delete a debt with its payments and shared links", async () => {
+	const payment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 3,
+		year: 2026,
+		planned_amount: 100,
+		actual_amount: 100,
+		paid: true,
+		paid_date: "2026-03-14",
+		is_extra_payment: false,
+	});
+	const sharedLink = await admin.collection("shared_debts").create({
+		token: "delete-debt-integration-token-001",
+		debt_id: debt.id,
+		user_id: ownerRecord.id,
+		expires_at: "2027-01-01",
+		show_amounts: true,
+		show_entity: true,
+		show_dates: true,
+	});
+
+	const result = await owner.send(`/api/debt-detox/debts/${debt.id}`, {
+		method: "DELETE",
+	});
+
+	assert.equal(result.deleted, true);
+	const deletedDebt = await admin.collection("debts").getOne(debt.id);
+	const deletedPayment = await admin.collection("payments").getOne(payment.id);
+	const deletedLink = await admin
+		.collection("shared_debts")
+		.getOne(sharedLink.id);
+	assert.notEqual(deletedDebt.deleted, "");
+	assert.notEqual(deletedPayment.deleted, "");
+	assert.notEqual(deletedLink.deleted, "");
+});
+
+test("deleting the same debt twice is idempotent", async () => {
+	const first = await owner.send(`/api/debt-detox/debts/${debt.id}`, {
+		method: "DELETE",
+	});
+	const second = await owner.send(`/api/debt-detox/debts/${debt.id}`, {
+		method: "DELETE",
+	});
+
+	assert.equal(second.deleted, true);
+	assert.equal(second.deletedAt, first.deletedAt);
+});
+
+test("another user cannot delete someone else's debt", async () => {
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/debts/${debt.id}`, {
+			method: "DELETE",
+		}),
+		(error) => error?.status === 404,
+	);
+
+	const unchanged = await owner.collection("debts").getOne(debt.id);
+	assert.equal(unchanged.deleted, "");
+});
+
 test("owner can register an extra payment", async () => {
 	const result = await owner.send(
 		`/api/debt-detox/debts/${debt.id}/extra-payment`,
@@ -522,6 +582,71 @@ test("owner can register an extra payment", async () => {
 	assert.equal(result.payment.actual_amount, 250.5);
 	assert.equal(result.payment.is_extra_payment, true);
 	assert.equal(result.debt.id, debt.id);
+});
+
+test("owner can delete an extra payment", async () => {
+	const payment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 7,
+		year: 2026,
+		planned_amount: 0,
+		actual_amount: 40.5,
+		paid: true,
+		paid_date: "2026-07-20",
+		is_extra_payment: true,
+	});
+
+	const result = await owner.send(
+		`/api/debt-detox/payments/${payment.id}/extra`,
+		{ method: "DELETE" },
+	);
+
+	assert.equal(result.deleted, true);
+	const deletedPayment = await admin.collection("payments").getOne(payment.id);
+	assert.notEqual(deletedPayment.deleted, "");
+});
+
+test("extra payment deletion rejects ordinary and foreign payments", async () => {
+	const ordinaryPayment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 3,
+		year: 2026,
+		planned_amount: 100,
+		actual_amount: 100,
+		paid: true,
+		paid_date: "2026-03-14",
+		is_extra_payment: false,
+	});
+	const extraPayment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 7,
+		year: 2026,
+		planned_amount: 0,
+		actual_amount: 40,
+		paid: true,
+		paid_date: "2026-07-20",
+		is_extra_payment: true,
+	});
+
+	await assert.rejects(
+		owner.send(`/api/debt-detox/payments/${ordinaryPayment.id}/extra`, {
+			method: "DELETE",
+		}),
+		(error) => error?.status === 404,
+	);
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/payments/${extraPayment.id}/extra`, {
+			method: "DELETE",
+		}),
+		(error) => error?.status === 404,
+	);
+
+	const ordinary = await owner
+		.collection("payments")
+		.getOne(ordinaryPayment.id);
+	const extra = await owner.collection("payments").getOne(extraPayment.id);
+	assert.equal(ordinary.deleted, "");
+	assert.equal(extra.deleted, "");
 });
 
 test("invalid strategy is rejected without creating a payment", async () => {
