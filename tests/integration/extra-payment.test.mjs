@@ -431,6 +431,133 @@ test("owner can unmark a paid installment", async () => {
 	assert.equal(result.payment.paid_date, "");
 });
 
+test("owner can reactivate a completed debt by unmarking an installment", async () => {
+	await admin.collection("debts").update(debt.id, {
+		final_payment_date: new Date().toISOString().slice(0, 10),
+	});
+	const payment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 3,
+		year: 2026,
+		planned_amount: 100,
+		actual_amount: 100,
+		paid: true,
+		paid_date: "2026-03-14",
+		is_extra_payment: false,
+	});
+	const extraPayment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 7,
+		year: 2026,
+		planned_amount: 0,
+		actual_amount: 40,
+		paid: true,
+		paid_date: "2026-07-20",
+		is_extra_payment: true,
+	});
+
+	const result = await owner.send(
+		`/api/debt-detox/payments/${payment.id}/reactivate`,
+		{ method: "POST" },
+	);
+
+	assert.equal(result.payment.paid, false);
+	assert.equal(result.debt.final_payment_date.slice(0, 10), "2026-12-15");
+	const preservedExtra = await owner
+		.collection("payments")
+		.getOne(extraPayment.id);
+	assert.equal(preservedExtra.actual_amount, 40);
+	assert.equal(preservedExtra.paid, true);
+});
+
+test("reactivating the same installment twice is idempotent", async () => {
+	const payment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 3,
+		year: 2026,
+		planned_amount: 100,
+		actual_amount: 100,
+		paid: true,
+		paid_date: "2026-03-14",
+		is_extra_payment: false,
+	});
+	const path = `/api/debt-detox/payments/${payment.id}/reactivate`;
+
+	const first = await owner.send(path, { method: "POST" });
+	const second = await owner.send(path, { method: "POST" });
+
+	assert.equal(second.payment.paid, false);
+	assert.equal(second.debt.final_payment_date, first.debt.final_payment_date);
+});
+
+test("reactivation rejects foreign installments and extra payments", async () => {
+	const installment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 3,
+		year: 2026,
+		planned_amount: 100,
+		actual_amount: 100,
+		paid: true,
+		paid_date: "2026-03-14",
+		is_extra_payment: false,
+	});
+	const extraPayment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 7,
+		year: 2026,
+		planned_amount: 0,
+		actual_amount: 40,
+		paid: true,
+		paid_date: "2026-07-20",
+		is_extra_payment: true,
+	});
+
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/payments/${installment.id}/reactivate`, {
+			method: "POST",
+		}),
+		(error) => error?.status === 404,
+	);
+	await assert.rejects(
+		owner.send(`/api/debt-detox/payments/${extraPayment.id}/reactivate`, {
+			method: "POST",
+		}),
+		(error) => error?.status === 404,
+	);
+
+	const unchangedInstallment = await owner
+		.collection("payments")
+		.getOne(installment.id);
+	assert.equal(unchangedInstallment.paid, true);
+});
+
+test("reactivation restores the original schedule with a separate final payment", async () => {
+	await admin.collection("debts").update(debt.id, {
+		number_of_payments: 8,
+		original_number_of_payments: 12,
+		final_payment: 75,
+		final_payment_date: new Date().toISOString().slice(0, 10),
+	});
+	const payment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 3,
+		year: 2026,
+		planned_amount: 100,
+		actual_amount: 100,
+		paid: true,
+		paid_date: "2026-03-14",
+		is_extra_payment: false,
+	});
+
+	const result = await owner.send(
+		`/api/debt-detox/payments/${payment.id}/reactivate`,
+		{ method: "POST" },
+	);
+
+	assert.equal(result.debt.number_of_payments, 8);
+	assert.equal(result.debt.final_payment_date.slice(0, 10), "2027-01-15");
+});
+
 test("owner can update the actual payment amount", async () => {
 	const payment = await admin.collection("payments").create({
 		debt_id: debt.id,

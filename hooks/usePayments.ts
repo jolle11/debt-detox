@@ -25,6 +25,7 @@ interface UsePaymentsReturn {
 	) => Promise<void>;
 	confirmHistoricalPayments: (debtId: string) => Promise<void>;
 	unmarkPaymentAsPaid: (paymentId: string) => Promise<void>;
+	reactivateDebt: (paymentId: string) => Promise<void>;
 	updatePaymentAmount: (paymentId: string, amount: number) => Promise<void>;
 	deleteExtraPayment: (paymentId: string) => Promise<void>;
 	addExtraPayment: (
@@ -258,6 +259,14 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		}
 	};
 
+	const reactivateDebt = async (paymentId: string): Promise<void> => {
+		await pb.send(`/api/debt-detox/payments/${paymentId}/reactivate`, {
+			method: "POST",
+		});
+		queryClient.invalidateQueries({ queryKey: ["payments"] });
+		queryClient.invalidateQueries({ queryKey: ["debts"] });
+	};
+
 	const updatePaymentAmount = async (
 		paymentId: string,
 		amount: number,
@@ -300,6 +309,7 @@ export function usePayments(debtId?: string): UsePaymentsReturn {
 		markPaymentAsPaid,
 		confirmHistoricalPayments,
 		unmarkPaymentAsPaid,
+		reactivateDebt,
 		updatePaymentAmount,
 		deleteExtraPayment,
 		addExtraPayment,

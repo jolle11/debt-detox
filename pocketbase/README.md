@@ -53,6 +53,7 @@ Requiere Docker y no utiliza ni modifica la base local o de producción.
 - `POST /api/debt-detox/debts/{id}/historical-payments`: confirma todas las cuotas históricas en una única transacción idempotente.
 - `PUT /api/debt-detox/debts/{id}/payments/{year}/{month}`: marca una cuota válida como pagada y deriva su importe previsto del calendario.
 - `POST /api/debt-detox/payments/{id}/unmark`: desmarca una cuota ordinaria pagada.
+- `POST /api/debt-detox/payments/{id}/reactivate`: desmarca una cuota y reactiva su deuda restaurando el calendario original en una única transacción.
 - `PATCH /api/debt-detox/payments/{id}/amount`: actualiza el importe real de un pago perteneciente al usuario.
 - `DELETE /api/debt-detox/payments/{id}/extra`: elimina lógicamente una aportación extra sin permitir borrar cuotas ordinarias.
 - `POST /api/debt-detox/debts/{id}/extra-payment`: registra un pago extra y recalcula la deuda dentro de una única transacción.

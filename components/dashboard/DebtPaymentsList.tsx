@@ -10,17 +10,14 @@ import {
 	WarningCircle,
 	XCircle,
 } from "@phosphor-icons/react";
-import { useQueryClient } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
 import { parseDateOnly } from "@/lib/dateOnly";
-import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import { calculateDebtStatus } from "@/lib/format";
-import pb from "@/lib/pocketbase";
-import { COLLECTIONS, type Debt, type Payment } from "@/lib/types";
+import type { Debt, Payment } from "@/lib/types";
 
 interface DebtPaymentsListProps {
 	debt: Debt;
@@ -35,10 +32,10 @@ export default function DebtPaymentsList({
 }: DebtPaymentsListProps) {
 	const t = useTranslations("paymentsList");
 	const locale = useLocale();
-	const queryClient = useQueryClient();
 	const { formatCurrency } = useCurrency();
 	const {
 		unmarkPaymentAsPaid,
+		reactivateDebt,
 		updatePaymentAmount,
 		deleteExtraPayment,
 		markPaymentAsPaid,
@@ -160,24 +157,7 @@ export default function DebtPaymentsList({
 		if (!pendingUnmarkId) return;
 		setIsReactivating(true);
 		try {
-			// Desmarcar el pago
-			await unmarkPaymentAsPaid(pendingUnmarkId);
-
-			// Recalcular final_payment_date basándose en la estructura original
-			const origPayments =
-				debt.original_number_of_payments || debt.number_of_payments;
-
-			await pb.collection(COLLECTIONS.DEBTS).update(debt.id!, {
-				final_payment_date: resolveFinalPaymentDate({
-					first_payment_date: debt.first_payment_date,
-					number_of_payments: origPayments,
-					final_payment: debt.final_payment,
-				}),
-			});
-
-			// Invalidar caches para refetch
-			queryClient.invalidateQueries({ queryKey: ["debts"] });
-			queryClient.invalidateQueries({ queryKey: ["payments"] });
+			await reactivateDebt(pendingUnmarkId);
 		} catch (error) {
 			console.error("Error reactivating debt:", error);
 		} finally {
@@ -219,7 +199,7 @@ export default function DebtPaymentsList({
 	const handleSaveEdit = async (paymentId: string) => {
 		try {
 			const amount = parseFloat(editAmount);
-			if (!isNaN(amount) && amount > 0) {
+			if (!Number.isNaN(amount) && amount > 0) {
 				await updatePaymentAmount(paymentId, amount);
 				setEditingPaymentId(null);
 				setEditAmount("");
@@ -380,7 +360,7 @@ export default function DebtPaymentsList({
 							</tr>
 						</thead>
 						<tbody>
-							{allExpectedPayments.map((expectedPayment, index) => {
+							{allExpectedPayments.map((expectedPayment) => {
 								const {
 									month,
 									year,
@@ -615,10 +595,13 @@ export default function DebtPaymentsList({
 							</button>
 						</div>
 					</div>
-					<div
+					<button
+						type="button"
 						className="modal-backdrop"
-						onClick={() => !isReactivating && setPendingUnmarkId(null)}
-					></div>
+						aria-label={tDebt("reactivate.cancel")}
+						onClick={() => setPendingUnmarkId(null)}
+						disabled={isReactivating}
+					></button>
 				</div>
 			)}
 		</div>

@@ -160,6 +160,82 @@ routerAdd(
 );
 
 routerAdd(
+	"POST",
+	"/api/debt-detox/payments/{id}/reactivate",
+	(e) => {
+		const addMonthsToDateOnly = (dateValue, monthOffset) => {
+			const dateOnly = String(dateValue).slice(0, 10);
+			const year = parseInt(dateOnly.slice(0, 4), 10);
+			const month = parseInt(dateOnly.slice(5, 7), 10);
+			const day = parseInt(dateOnly.slice(8, 10), 10);
+			const totalMonths = year * 12 + (month - 1) + monthOffset;
+			const targetYear = Math.floor(totalMonths / 12);
+			const targetMonth = (totalMonths % 12) + 1;
+			const leapYear =
+				targetYear % 4 === 0 &&
+				(targetYear % 100 !== 0 || targetYear % 400 === 0);
+			const daysByMonth = [
+				31,
+				leapYear ? 29 : 28,
+				31,
+				30,
+				31,
+				30,
+				31,
+				31,
+				30,
+				31,
+				30,
+				31,
+			];
+			const targetDay = Math.min(day, daysByMonth[targetMonth - 1]);
+			const pad = (value) => (value < 10 ? `0${value}` : String(value));
+			return `${targetYear}-${pad(targetMonth)}-${pad(targetDay)}`;
+		};
+
+		const paymentId = e.request.pathValue("id");
+		let savedPayment = null;
+		let savedDebt = null;
+		e.app.runInTransaction((txApp) => {
+			const payment = txApp.findRecordById("payments", paymentId);
+			const debt = txApp.findRecordById("debts", payment.get("debt_id"));
+			if (
+				debt.get("user_id") !== e.auth.id ||
+				payment.getString("deleted") ||
+				payment.get("is_extra_payment")
+			) {
+				throw new NotFoundError("Payment not found");
+			}
+
+			payment.set("paid", false);
+			payment.set("paid_date", null);
+			payment.set("actual_amount", null);
+			txApp.save(payment);
+
+			const paymentCount =
+				debt.get("original_number_of_payments") ||
+				debt.get("number_of_payments");
+			const hasFinalPayment = (debt.get("final_payment") || 0) > 0;
+			const finalMonthOffset = paymentCount - 1 + (hasFinalPayment ? 1 : 0);
+			debt.set(
+				"final_payment_date",
+				addMonthsToDateOnly(
+					debt.getString("first_payment_date"),
+					Math.max(finalMonthOffset, 0),
+				),
+			);
+			txApp.save(debt);
+
+			savedPayment = payment;
+			savedDebt = debt;
+		});
+
+		return e.json(200, { payment: savedPayment, debt: savedDebt });
+	},
+	$apis.requireAuth("users"),
+);
+
+routerAdd(
 	"PATCH",
 	"/api/debt-detox/payments/{id}/amount",
 	(e) => {
