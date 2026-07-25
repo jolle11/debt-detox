@@ -46,6 +46,7 @@ routerAdd(
 		}
 
 		let savedPayment = null;
+		let savedDebt = null;
 		e.app.runInTransaction((txApp) => {
 			const debt = txApp.findRecordById("debts", debtId);
 			if (debt.get("user_id") !== e.auth.id) {
@@ -122,10 +123,66 @@ routerAdd(
 				data.paid_date || new Date().toISOString().slice(0, 10),
 			);
 			txApp.save(payment);
+
+			const expectedPeriods = {};
+			for (
+				let offset = 0;
+				offset < debt.get("number_of_payments");
+				offset += 1
+			) {
+				expectedPeriods[
+					addMonthsToDateOnly(
+						debt.getString("first_payment_date"),
+						offset,
+					).slice(0, 7)
+				] = true;
+			}
+			if ((debt.get("final_payment") || 0) > 0) {
+				const lastMonthlyDate = addMonthsToDateOnly(
+					debt.getString("first_payment_date"),
+					Math.max(debt.get("number_of_payments") - 1, 0),
+				);
+				const configuredFinalDate = debt
+					.getString("final_payment_date")
+					.slice(0, 10);
+				const finalPaymentDate =
+					configuredFinalDate > lastMonthlyDate
+						? configuredFinalDate
+						: addMonthsToDateOnly(
+								debt.getString("first_payment_date"),
+								debt.get("number_of_payments"),
+							);
+				expectedPeriods[finalPaymentDate.slice(0, 7)] = true;
+			}
+
+			const paidPayments = txApp.findRecordsByFilter(
+				"payments",
+				`debt_id = "${debt.id}" && deleted = null && is_extra_payment = false && paid = true`,
+				"",
+				0,
+				0,
+			);
+			const paidPeriods = {};
+			for (const paidPayment of paidPayments) {
+				paidPeriods[
+					`${paidPayment.get("year")}-${
+						paidPayment.get("month") < 10 ? "0" : ""
+					}${paidPayment.get("month")}`
+				] = true;
+			}
+			const allInstallmentsPaid = Object.keys(expectedPeriods).every(
+				(period) => paidPeriods[period],
+			);
+			if (allInstallmentsPaid && !debt.getString("completed_at")) {
+				debt.set("completed_at", payment.getString("paid_date").slice(0, 10));
+				txApp.save(debt);
+			}
+
 			savedPayment = payment;
+			savedDebt = debt;
 		});
 
-		return e.json(200, { payment: savedPayment });
+		return e.json(200, { payment: savedPayment, debt: savedDebt });
 	},
 	$apis.requireAuth("users"),
 );

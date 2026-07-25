@@ -408,6 +408,33 @@ test("marking the same installment twice updates it without duplicates", async (
 	assert.equal(second.payment.actual_amount, 90.25);
 });
 
+test("marking the last pending installment completes the debt", async () => {
+	for (let month = 1; month <= 11; month += 1) {
+		await admin.collection("payments").create({
+			debt_id: debt.id,
+			month,
+			year: 2026,
+			planned_amount: 100,
+			actual_amount: 100,
+			paid: true,
+			paid_date: "2026-11-15",
+			is_extra_payment: false,
+		});
+	}
+
+	const result = await owner.send(
+		`/api/debt-detox/debts/${debt.id}/payments/2026/12`,
+		{
+			method: "PUT",
+			body: { paid_date: "2026-12-15" },
+		},
+	);
+
+	assert.equal(result.debt.completed_at.slice(0, 10), "2026-12-15");
+	const persistedDebt = await owner.collection("debts").getOne(debt.id);
+	assert.equal(persistedDebt.completed_at.slice(0, 10), "2026-12-15");
+});
+
 test("owner can unmark a paid installment", async () => {
 	const payment = await admin.collection("payments").create({
 		debt_id: debt.id,
