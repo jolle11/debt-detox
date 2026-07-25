@@ -433,16 +433,18 @@ test("owner can unmark a paid installment", async () => {
 
 test("owner can reactivate a completed debt by unmarking an installment", async () => {
 	await admin.collection("debts").update(debt.id, {
+		first_payment_date: "2024-01-15",
+		completed_at: new Date().toISOString().slice(0, 10),
 		final_payment_date: new Date().toISOString().slice(0, 10),
 	});
 	const payment = await admin.collection("payments").create({
 		debt_id: debt.id,
 		month: 3,
-		year: 2026,
+		year: 2024,
 		planned_amount: 100,
 		actual_amount: 100,
 		paid: true,
-		paid_date: "2026-03-14",
+		paid_date: "2024-03-14",
 		is_extra_payment: false,
 	});
 	const extraPayment = await admin.collection("payments").create({
@@ -462,7 +464,8 @@ test("owner can reactivate a completed debt by unmarking an installment", async 
 	);
 
 	assert.equal(result.payment.paid, false);
-	assert.equal(result.debt.final_payment_date.slice(0, 10), "2026-12-15");
+	assert.equal(result.debt.completed_at, "");
+	assert.equal(result.debt.final_payment_date.slice(0, 10), "2024-12-15");
 	const preservedExtra = await owner
 		.collection("payments")
 		.getOne(extraPayment.id);
@@ -853,6 +856,9 @@ test("another user cannot add a payment to someone else's debt", async () => {
 });
 
 test("owner can complete a debt and all its monthly payments", async () => {
+	await admin.collection("debts").update(debt.id, {
+		final_payment_date: "2026-12-15",
+	});
 	await admin.collection("payments").create({
 		debt_id: debt.id,
 		month: 1,
@@ -868,9 +874,10 @@ test("owner can complete a debt and all its monthly payments", async () => {
 
 	assert.equal(result.debt.id, debt.id);
 	assert.equal(
-		result.debt.final_payment_date.slice(0, 10),
+		result.debt.completed_at.slice(0, 10),
 		new Date().toISOString().slice(0, 10),
 	);
+	assert.equal(result.debt.final_payment_date.slice(0, 10), "2026-12-15");
 
 	const payments = await owner.collection("payments").getFullList({
 		filter: `debt_id = "${debt.id}" && is_extra_payment = false`,

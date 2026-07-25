@@ -99,7 +99,7 @@ routerAdd(
 				txApp.save(finalPayment);
 			}
 
-			debt.set("final_payment_date", today);
+			debt.set("completed_at", today);
 			txApp.save(debt);
 			savedDebt = debt;
 		});

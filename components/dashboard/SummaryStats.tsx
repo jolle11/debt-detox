@@ -23,10 +23,10 @@ export default function SummaryStats({ debts }: SummaryStatsProps) {
 	const { formatCurrency } = useCurrency();
 
 	const activeDebts = debts.filter(
-		(d) => calculateDebtStatus(d.final_payment_date) === "active",
+		(d) => calculateDebtStatus(d.completed_at) === "active",
 	);
 	const completedDebts = debts.filter(
-		(d) => calculateDebtStatus(d.final_payment_date) === "completed",
+		(d) => calculateDebtStatus(d.completed_at) === "completed",
 	);
 
 	const totalDebt = activeDebts.reduce(

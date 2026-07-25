@@ -35,16 +35,12 @@ export function formatInteger(value: number, locale: string = "es-ES"): string {
 export type DebtLifecycleStatus = "pending" | "active" | "completed";
 
 export function calculateDebtLifecycleStatus(
-	finalPaymentDate: string | undefined,
+	completedAt: string | undefined,
 	firstPaymentDate?: string,
 	payments: Payment[] = [],
 ): DebtLifecycleStatus {
-	if (finalPaymentDate) {
-		const now = new Date();
-		const finalDate = parseDateOnly(finalPaymentDate);
-		if (finalDate && finalDate <= now) {
-			return "completed";
-		}
+	if (completedAt) {
+		return "completed";
 	}
 
 	const hasPaidPayments = payments.some((payment) => payment.paid);
@@ -62,9 +58,9 @@ export function calculateDebtLifecycleStatus(
 }
 
 export function calculateDebtStatus(
-	finalPaymentDate: string | undefined,
+	completedAt: string | undefined,
 ): "active" | "completed" {
-	const lifecycleStatus = calculateDebtLifecycleStatus(finalPaymentDate);
+	const lifecycleStatus = calculateDebtLifecycleStatus(completedAt);
 	return lifecycleStatus === "completed" ? "completed" : "active";
 }
 

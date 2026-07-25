@@ -20,7 +20,7 @@ export default function DemoDebtCard({
 	onEdit,
 	onDelete,
 }: DemoDebtCardProps) {
-	const status = calculateDebtStatus(debt.final_payment_date);
+	const status = calculateDebtStatus(debt.completed_at);
 
 	const handleCardClick = () => {
 		onDebtClick(debt);

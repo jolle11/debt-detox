@@ -41,7 +41,7 @@ export default function DebtPaymentStatus({
 		: null;
 	const isCurrentMonthPaid = currentPaymentStatus?.paid || false;
 	const lifecycleStatus = calculateDebtLifecycleStatus(
-		debt.final_payment_date,
+		debt.completed_at,
 		debt.first_payment_date,
 		payments,
 	);

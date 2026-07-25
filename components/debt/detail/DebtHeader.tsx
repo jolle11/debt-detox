@@ -25,7 +25,7 @@ export default function DebtHeader({
 }: DebtHeaderProps) {
 	const t = useTranslations();
 	const status = calculateDebtLifecycleStatus(
-		debt.final_payment_date,
+		debt.completed_at,
 		debt.first_payment_date,
 		payments,
 	);

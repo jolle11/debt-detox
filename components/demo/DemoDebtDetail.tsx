@@ -35,7 +35,7 @@ export default function DemoDebtDetail({
 	const { payments } = useDemoContext();
 	const debtPayments = payments.filter((p) => p.debt_id === debt.id);
 	const status = calculateDebtLifecycleStatus(
-		debt.final_payment_date,
+		debt.completed_at,
 		debt.first_payment_date,
 		debtPayments,
 	);

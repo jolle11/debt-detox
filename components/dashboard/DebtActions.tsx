@@ -17,7 +17,7 @@ export default function DebtActions({
 	onComplete,
 }: DebtActionsProps) {
 	const t = useTranslations();
-	const status = calculateDebtStatus(debt.final_payment_date);
+	const status = calculateDebtStatus(debt.completed_at);
 
 	const actions = [
 		{

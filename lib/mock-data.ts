@@ -42,6 +42,7 @@ export const mockDebts: Debt[] = [
 		down_payment: 100,
 		first_payment_date: "2024-11-01",
 		final_payment_date: "2025-02-28", // Pasado - COMPLETADA
+		completed_at: "2025-02-28",
 		monthly_amount: 120,
 		number_of_payments: 4,
 		final_payment: 0,

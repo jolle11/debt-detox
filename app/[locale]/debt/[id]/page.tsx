@@ -76,8 +76,7 @@ export default function DebtDetailPage() {
 
 	const paymentStats = calculatePaymentStats(debt, payments);
 	const isFullyPaid = paymentStats.pendingAmount === 0;
-	const isCompleted =
-		debt.final_payment_date && new Date(debt.final_payment_date) <= new Date();
+	const isCompleted = Boolean(debt.completed_at);
 
 	return (
 		<div className="container mx-auto px-4 py-6">

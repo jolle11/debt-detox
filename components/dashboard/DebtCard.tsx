@@ -25,7 +25,7 @@ export default function DebtCard({
 	onDelete,
 	onComplete,
 }: DebtCardProps) {
-	const status = calculateDebtStatus(debt.final_payment_date);
+	const status = calculateDebtStatus(debt.completed_at);
 	const router = useRouter();
 	const debtPayments = useMemo(
 		() => payments.filter((p) => p.debt_id === debt.id),

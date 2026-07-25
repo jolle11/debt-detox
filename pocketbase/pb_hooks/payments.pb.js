@@ -224,6 +224,7 @@ routerAdd(
 					Math.max(finalMonthOffset, 0),
 				),
 			);
+			debt.set("completed_at", null);
 			txApp.save(debt);
 
 			savedPayment = payment;

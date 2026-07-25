@@ -140,8 +140,7 @@ export default function DebtPaymentsList({
 
 	const handleUnmarkPayment = async (paymentId: string) => {
 		// Si la deuda está completada, pedir confirmación primero
-		const isCompleted =
-			calculateDebtStatus(debt.final_payment_date) === "completed";
+		const isCompleted = calculateDebtStatus(debt.completed_at) === "completed";
 		if (isCompleted) {
 			setPendingUnmarkId(paymentId);
 			return;

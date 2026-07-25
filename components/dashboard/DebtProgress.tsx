@@ -10,7 +10,7 @@ export default function DebtProgress({ debt }: DebtProgressProps) {
 	const t = useTranslations();
 	const { percentage, paidPayments, totalPayments } =
 		calculatePaymentProgress(debt);
-	const status = calculateDebtStatus(debt.final_payment_date);
+	const status = calculateDebtStatus(debt.completed_at);
 
 	return (
 		<div className="mt-4 space-y-2">
