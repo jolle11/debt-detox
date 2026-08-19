@@ -916,6 +916,39 @@ test("owner can complete a debt and all its monthly payments", async () => {
 	);
 });
 
+test("completion preserves paid dates for installments that were already paid", async () => {
+	const alreadyPaid = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 1,
+		year: 2026,
+		planned_amount: 100,
+		actual_amount: 100,
+		paid: true,
+		paid_date: "2026-01-18",
+		is_extra_payment: false,
+	});
+
+	await owner.send(`/api/debt-detox/debts/${debt.id}/complete`, {
+		method: "POST",
+	});
+
+	const payments = await owner.collection("payments").getFullList({
+		filter: `debt_id = "${debt.id}" && is_extra_payment = false`,
+	});
+	const preservedPayment = payments.find(
+		(payment) => payment.id === alreadyPaid.id,
+	);
+	const newlyPaidPayment = payments.find(
+		(payment) => payment.year === 2026 && payment.month === 2,
+	);
+
+	assert.equal(preservedPayment.paid_date.slice(0, 10), "2026-01-18");
+	assert.equal(
+		newlyPaidPayment.paid_date.slice(0, 10),
+		new Date().toISOString().slice(0, 10),
+	);
+});
+
 test("completing a debt twice does not duplicate monthly payments", async () => {
 	await owner.send(`/api/debt-detox/debts/${debt.id}/complete`, {
 		method: "POST",

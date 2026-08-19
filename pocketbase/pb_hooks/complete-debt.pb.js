@@ -58,10 +58,12 @@ routerAdd(
 					payment.set("is_extra_payment", false);
 				}
 
-				payment.set("paid", true);
-				payment.set("actual_amount", payment.get("planned_amount"));
-				payment.set("paid_date", today);
-				txApp.save(payment);
+				if (!payment.get("paid")) {
+					payment.set("paid", true);
+					payment.set("actual_amount", payment.get("planned_amount"));
+					payment.set("paid_date", today);
+					txApp.save(payment);
+				}
 			}
 
 			const finalAmount = debt.get("final_payment") || 0;
@@ -93,10 +95,12 @@ routerAdd(
 					finalPayment.set("is_extra_payment", false);
 				}
 
-				finalPayment.set("paid", true);
-				finalPayment.set("actual_amount", finalAmount);
-				finalPayment.set("paid_date", today);
-				txApp.save(finalPayment);
+				if (!finalPayment.get("paid")) {
+					finalPayment.set("paid", true);
+					finalPayment.set("actual_amount", finalAmount);
+					finalPayment.set("paid_date", today);
+					txApp.save(finalPayment);
+				}
 			}
 
 			debt.set("completed_at", today);
