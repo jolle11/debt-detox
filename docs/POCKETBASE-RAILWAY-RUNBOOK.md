@@ -4,7 +4,7 @@ Este documento separa los pasos ya automatizados en el repositorio de las operac
 
 ## Lo que ya está automatizado
 
-- PocketBase 0.39.1 fijado en `pocketbase/Dockerfile`, igual que la instancia de origen.
+- PocketBase 0.39.11 fijado en `pocketbase/Dockerfile`. La instancia de origen durante la migración usaba 0.39.1.
 - Build multi-arquitectura para amd64 y arm64.
 - Esquema inicial de `users`, `debts`, `payments`, `shared_debts` y `shared_profiles`.
 - Adopción no destructiva de las colecciones existentes.
@@ -28,7 +28,7 @@ Estas acciones son manuales porque requieren acceso a la instancia actual:
 - [ ] Cuenta registros por colección y guarda los totales.
 - [ ] Comprueba cuántos archivos hay subidos y el tamaño aproximado de `pb_data`.
 
-La versión de origen confirmada es PocketBase 0.39.1 y el repositorio usa exactamente la misma. No actualices PocketBase durante el corte; la actualización debe hacerse y probarse en un despliegue posterior.
+La versión de origen confirmada durante la migración era PocketBase 0.39.1. No actualices PocketBase durante un corte; cualquier actualización debe hacerse y probarse en un despliegue posterior. El repositorio usa actualmente 0.39.11.
 
 ## Fase 1: backup y ensayo local
 

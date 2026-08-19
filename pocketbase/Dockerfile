@@ -1,6 +1,6 @@
 FROM alpine:3.22
 
-ARG PB_VERSION=0.39.1
+ARG PB_VERSION=0.39.11
 ARG TARGETARCH
 
 RUN apk add --no-cache ca-certificates unzip wget \

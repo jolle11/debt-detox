@@ -1,6 +1,6 @@
 # PocketBase de Debt Detox
 
-Esta carpeta es la fuente de verdad del backend. La imagen fija PocketBase 0.39.1, igual que la instancia de producción durante la migración, y despliega las migraciones y hooks incluidos en Git. `pb_data` es estado de ejecución y nunca debe versionarse.
+Esta carpeta es la fuente de verdad del backend. La imagen fija PocketBase 0.39.11 y despliega las migraciones y hooks incluidos en Git. `pb_data` es estado de ejecución y nunca debe versionarse.
 
 ## Desarrollo local
 
