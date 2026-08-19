@@ -145,6 +145,38 @@ test("authenticated user can create a debt with server-owned immutable values", 
 	assert.equal(result.historicalInfo.count, 18);
 });
 
+test("owner can create a debt from its first and final payment dates", async () => {
+	const result = await owner.send("/api/debt-detox/debts", {
+		method: "POST",
+		body: {
+			name: "Date-based debt",
+			entity: "Date-based lender",
+			first_payment_date: "2026-09-15",
+			final_payment_date: "2027-08-15",
+			monthly_amount: 100,
+		},
+	});
+
+	assert.equal(result.debt.number_of_payments, 12);
+	assert.equal(result.debt.original_number_of_payments, 12);
+	assert.equal(result.debt.final_payment_date.slice(0, 10), "2027-08-15");
+});
+
+test("creating a debt requires a payment count or final payment date", async () => {
+	await assert.rejects(
+		owner.send("/api/debt-detox/debts", {
+			method: "POST",
+			body: {
+				name: "Incomplete debt",
+				entity: "Incomplete lender",
+				first_payment_date: "2026-09-15",
+				monthly_amount: 100,
+			},
+		}),
+		(error) => error?.status === 400,
+	);
+});
+
 test("invalid debt plan is rejected without creating a debt", async () => {
 	await assert.rejects(
 		owner.send("/api/debt-detox/debts", {

@@ -538,7 +538,10 @@
 		"positive": "Must be a positive number",
 		"integer": "Must be a whole number",
 		"passwordMismatch": "Passwords do not match",
-		"invalidAmount": "Please enter a valid amount"
+		"invalidAmount": "Please enter a valid amount",
+		"paymentPlanRequired": "Enter the number of payments or the final payment date",
+		"paymentPlanMismatch": "The number of payments does not match the dates",
+		"finalDateAfterFirst": "The final payment date must be after the first"
 	},
 	"emptyStates": {
 		"active": {

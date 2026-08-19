@@ -542,7 +542,10 @@
 		"positive": "Muss eine positive Zahl sein",
 		"integer": "Muss eine ganze Zahl sein",
 		"passwordMismatch": "Passwörter stimmen nicht überein",
-		"invalidAmount": "Bitte geben Sie einen gültigen Betrag ein"
+		"invalidAmount": "Bitte geben Sie einen gültigen Betrag ein",
+		"paymentPlanRequired": "Geben Sie die Ratenanzahl oder das Datum der letzten Rate an",
+		"paymentPlanMismatch": "Die Ratenanzahl stimmt nicht mit den Daten überein",
+		"finalDateAfterFirst": "Das Datum der letzten Rate muss nach dem ersten liegen"
 	},
 	"emptyStates": {
 		"active": {

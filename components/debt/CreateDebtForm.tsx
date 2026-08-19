@@ -4,7 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import FormInput from "@/components/ui/FormInput";
-import { resolveFinalPaymentDate } from "@/lib/debtDates";
+import {
+	calculateNumberOfPayments,
+	resolveFinalPaymentDate,
+} from "@/lib/debtDates";
 import { type CreateDebtFormData, createDebtSchema } from "@/lib/schemas";
 import type { Debt } from "@/lib/types";
 
@@ -44,11 +47,18 @@ export default function CreateDebtForm({
 	});
 
 	const onFormSubmit = (data: CreateDebtFormData) => {
+		const numberOfPayments =
+			data.number_of_payments ??
+			calculateNumberOfPayments({
+				first_payment_date: data.first_payment_date,
+				final_payment_date: data.final_payment_date || "",
+				final_payment: data.final_payment,
+			});
 		let finalPaymentDate = data.final_payment_date || "";
-		if (data.first_payment_date && data.number_of_payments) {
+		if (data.first_payment_date && numberOfPayments) {
 			finalPaymentDate = resolveFinalPaymentDate({
 				first_payment_date: data.first_payment_date,
-				number_of_payments: data.number_of_payments,
+				number_of_payments: numberOfPayments,
 				final_payment: data.final_payment,
 				final_payment_date: data.final_payment_date || undefined,
 			});
@@ -64,7 +74,7 @@ export default function CreateDebtForm({
 			first_payment_date: data.first_payment_date,
 			monthly_amount: data.monthly_amount,
 			is_shared: data.is_shared,
-			number_of_payments: data.number_of_payments,
+			number_of_payments: numberOfPayments,
 			final_payment: data.final_payment || undefined,
 			final_payment_date: finalPaymentDate || undefined,
 		};
@@ -119,6 +129,13 @@ export default function CreateDebtForm({
 							label={t("debt.create.finalPaymentDate")}
 							type="date"
 							registration={register("final_payment_date")}
+							error={
+								errors.final_payment_date?.message
+									? errors.final_payment_date.message.includes("follow")
+										? tv("finalDateAfterFirst")
+										: tv("paymentPlanRequired")
+									: undefined
+							}
 						/>
 					</div>
 
@@ -144,7 +161,13 @@ export default function CreateDebtForm({
 							registration={register("number_of_payments")}
 							placeholder="12"
 							error={
-								errors.number_of_payments?.message ? tv("positive") : undefined
+								errors.number_of_payments?.message
+									? errors.number_of_payments.message.includes("required")
+										? tv("paymentPlanRequired")
+										: errors.number_of_payments.message.includes("match")
+											? tv("paymentPlanMismatch")
+											: tv("positive")
+									: undefined
 							}
 						/>
 					</div>

@@ -538,7 +538,10 @@
 		"positive": "Deve ser um número positivo",
 		"integer": "Deve ser um número inteiro",
 		"passwordMismatch": "As senhas não coincidem",
-		"invalidAmount": "Insira um valor válido"
+		"invalidAmount": "Insira um valor válido",
+		"paymentPlanRequired": "Indique o número de prestações ou a data da última prestação",
+		"paymentPlanMismatch": "O número de prestações não corresponde às datas",
+		"finalDateAfterFirst": "A data da última prestação deve ser posterior à primeira"
 	},
 	"emptyStates": {
 		"active": {

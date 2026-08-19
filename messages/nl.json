@@ -538,7 +538,10 @@
 		"positive": "Moet een positief getal zijn",
 		"integer": "Moet een geheel getal zijn",
 		"passwordMismatch": "Wachtwoorden komen niet overeen",
-		"invalidAmount": "Voer een geldig bedrag in"
+		"invalidAmount": "Voer een geldig bedrag in",
+		"paymentPlanRequired": "Voer het aantal termijnen of de datum van de laatste termijn in",
+		"paymentPlanMismatch": "Het aantal termijnen komt niet overeen met de datums",
+		"finalDateAfterFirst": "De datum van de laatste termijn moet na de eerste liggen"
 	},
 	"emptyStates": {
 		"active": {

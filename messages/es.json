@@ -538,7 +538,10 @@
 		"positive": "Debe ser un número positivo",
 		"integer": "Debe ser un número entero",
 		"passwordMismatch": "Las contraseñas no coinciden",
-		"invalidAmount": "Introduce un importe válido"
+		"invalidAmount": "Introduce un importe válido",
+		"paymentPlanRequired": "Indica el número de cuotas o la fecha de la última cuota",
+		"paymentPlanMismatch": "El número de cuotas no coincide con las fechas",
+		"finalDateAfterFirst": "La fecha de la última cuota debe ser posterior a la primera"
 	},
 	"emptyStates": {
 		"active": {

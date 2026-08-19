@@ -542,7 +542,10 @@
 		"positive": "Doit être un nombre positif",
 		"integer": "Doit être un nombre entier",
 		"passwordMismatch": "Les mots de passe ne correspondent pas",
-		"invalidAmount": "Veuillez entrer un montant valide"
+		"invalidAmount": "Veuillez entrer un montant valide",
+		"paymentPlanRequired": "Indiquez le nombre de paiements ou la date du dernier paiement",
+		"paymentPlanMismatch": "Le nombre de paiements ne correspond pas aux dates",
+		"finalDateAfterFirst": "La date du dernier paiement doit être postérieure à la première"
 	},
 	"emptyStates": {
 		"active": {

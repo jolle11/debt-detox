@@ -31,6 +31,31 @@ routerAdd(
 			const pad = (value) => (value < 10 ? `0${value}` : String(value));
 			return `${targetYear}-${pad(targetMonth)}-${pad(targetDay)}`;
 		};
+		const calculateNumberOfPayments = (
+			firstPaymentDate,
+			finalPaymentDate,
+			hasSeparateFinalPayment,
+		) => {
+			const firstDate = String(firstPaymentDate).slice(0, 10);
+			const finalDate = String(finalPaymentDate).slice(0, 10);
+			if (!firstDate || !finalDate || finalDate < firstDate) {
+				throw new BadRequestError("Invalid payment dates");
+			}
+
+			const firstYear = parseInt(firstDate.slice(0, 4), 10);
+			const firstMonth = parseInt(firstDate.slice(5, 7), 10);
+			const finalYear = parseInt(finalDate.slice(0, 4), 10);
+			const finalMonth = parseInt(finalDate.slice(5, 7), 10);
+			const numberOfPayments =
+				(finalYear - firstYear) * 12 +
+				(finalMonth - firstMonth) +
+				(hasSeparateFinalPayment ? 0 : 1);
+
+			if (numberOfPayments < 1) {
+				throw new BadRequestError("Invalid payment dates");
+			}
+			return numberOfPayments;
+		};
 
 		const data = new DynamicModel({
 			name: "",
@@ -44,11 +69,28 @@ routerAdd(
 			final_payment_date: "",
 		});
 		e.bindBody(data);
+		const configuredFinalDate = String(data.final_payment_date).slice(0, 10);
+		const hasSeparateFinalPayment = data.final_payment > 0;
+		let numberOfPayments = data.number_of_payments;
+		if (configuredFinalDate) {
+			const calculatedPayments = calculateNumberOfPayments(
+				data.first_payment_date,
+				configuredFinalDate,
+				hasSeparateFinalPayment,
+			);
+			if (
+				data.number_of_payments > 0 &&
+				data.number_of_payments !== calculatedPayments
+			) {
+				throw new BadRequestError("Payment count does not match payment dates");
+			}
+			numberOfPayments = calculatedPayments;
+		}
 
 		if (!data.name.trim() || !data.entity.trim()) {
 			throw new BadRequestError("Name and entity are required");
 		}
-		if (data.monthly_amount <= 0 || data.number_of_payments < 1) {
+		if (data.monthly_amount <= 0 || numberOfPayments < 1) {
 			throw new BadRequestError("Invalid payment plan");
 		}
 
@@ -63,17 +105,15 @@ routerAdd(
 			debt.set("first_payment_date", data.first_payment_date);
 			debt.set("monthly_amount", data.monthly_amount);
 			debt.set("is_shared", data.is_shared);
-			debt.set("number_of_payments", data.number_of_payments);
+			debt.set("number_of_payments", numberOfPayments);
 			debt.set("original_monthly_amount", data.monthly_amount);
-			debt.set("original_number_of_payments", data.number_of_payments);
+			debt.set("original_number_of_payments", numberOfPayments);
 			debt.set("final_payment", data.final_payment);
 
 			const lastMonthlyDate = addMonthsToDateOnly(
 				data.first_payment_date,
-				Math.max(data.number_of_payments - 1, 0),
+				Math.max(numberOfPayments - 1, 0),
 			);
-			const configuredFinalDate = String(data.final_payment_date).slice(0, 10);
-			const hasSeparateFinalPayment = data.final_payment > 0;
 			const finalPaymentDate =
 				configuredFinalDate &&
 				(!hasSeparateFinalPayment || configuredFinalDate > lastMonthlyDate)
@@ -81,7 +121,7 @@ routerAdd(
 					: addMonthsToDateOnly(
 							data.first_payment_date,
 							Math.max(
-								data.number_of_payments - 1 + (hasSeparateFinalPayment ? 1 : 0),
+								numberOfPayments - 1 + (hasSeparateFinalPayment ? 1 : 0),
 								0,
 							),
 						);
@@ -93,7 +133,7 @@ routerAdd(
 
 		const currentPeriod = new Date().toISOString().slice(0, 7);
 		let historicalCount = 0;
-		for (let offset = 0; offset < data.number_of_payments; offset += 1) {
+		for (let offset = 0; offset < numberOfPayments; offset += 1) {
 			const period = addMonthsToDateOnly(data.first_payment_date, offset).slice(
 				0,
 				7,
