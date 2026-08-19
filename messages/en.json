@@ -175,8 +175,11 @@
 			"submit": "Create Financing",
 			"submitting": "Creating...",
 			"success": "Financing created successfully!",
-			"error": "Error creating financing"
+			"error": "Error creating financing",
+			"shared": "Shared financing",
+			"sharedDescription": "Only 50% of the payment will count toward your monthly total."
 		},
+		"shared": { "badge": "Shared" },
 		"edit": {
 			"title": "Edit Financing",
 			"submit": "Save Changes",

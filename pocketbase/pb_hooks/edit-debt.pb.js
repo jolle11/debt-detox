@@ -38,6 +38,7 @@ routerAdd(
 			down_payment: -0,
 			first_payment_date: "",
 			monthly_amount: -0,
+			is_shared: false,
 			number_of_payments: 0,
 			final_payment: -0,
 			final_payment_date: "",
@@ -70,6 +71,7 @@ routerAdd(
 			debt.set("down_payment", data.down_payment);
 			debt.set("first_payment_date", data.first_payment_date);
 			debt.set("monthly_amount", data.monthly_amount);
+			debt.set("is_shared", data.is_shared);
 			debt.set("number_of_payments", data.number_of_payments);
 			debt.set("final_payment", data.final_payment);
 

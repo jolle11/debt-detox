@@ -185,8 +185,11 @@
 			"submit": "Crear Financiación",
 			"submitting": "Creando...",
 			"success": "¡Financiación creada correctamente!",
-			"error": "Error al crear la financiación"
+			"error": "Error al crear la financiación",
+			"shared": "Financiación compartida",
+			"sharedDescription": "Solo se sumará el 50 % de la cuota al total mensual que pagas."
 		},
+		"shared": { "badge": "Compartida" },
 		"edit": {
 			"title": "Editar Financiación",
 			"submit": "Guardar Cambios",

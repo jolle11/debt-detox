@@ -179,8 +179,11 @@
 			"submit": "Finanzierung Erstellen",
 			"submitting": "Erstelle...",
 			"success": "Finanzierung erfolgreich erstellt!",
-			"error": "Fehler beim Erstellen der Finanzierung"
+			"error": "Fehler beim Erstellen der Finanzierung",
+			"shared": "Geteilte Finanzierung",
+			"sharedDescription": "Nur 50 % der Rate werden zu Ihrer monatlichen Gesamtsumme addiert."
 		},
+		"shared": { "badge": "Geteilt" },
 		"edit": {
 			"title": "Finanzierung Bearbeiten",
 			"submit": "Änderungen Speichern",

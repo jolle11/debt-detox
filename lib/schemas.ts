@@ -28,6 +28,7 @@ export const createDebtSchema = z.object({
 	down_payment: z.coerce.number().min(0).optional(),
 	first_payment_date: z.string().min(1),
 	monthly_amount: z.coerce.number().positive(),
+	is_shared: z.boolean().default(false),
 	number_of_payments: z.coerce.number().int().positive(),
 	final_payment: z.coerce.number().min(0).optional(),
 	final_payment_date: z.string().optional(),

@@ -13,6 +13,7 @@ import {
 	calculateRemainingAmount,
 } from "@/lib/format";
 import type { Debt } from "@/lib/types";
+import { calculateMonthlyContribution } from "@/utils/debtCalculations";
 
 interface SummaryStatsProps {
 	debts: Debt[];
@@ -34,7 +35,7 @@ export default function SummaryStats({ debts }: SummaryStatsProps) {
 		0,
 	);
 	const totalMonthlyPayment = activeDebts.reduce(
-		(sum, debt) => sum + debt.monthly_amount,
+		(sum, debt) => sum + calculateMonthlyContribution(debt),
 		0,
 	);
 	const averageProgress =

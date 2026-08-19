@@ -179,8 +179,11 @@
 			"submit": "Créer le Financement",
 			"submitting": "Création...",
 			"success": "Financement créé avec succès !",
-			"error": "Erreur lors de la création du financement"
+			"error": "Erreur lors de la création du financement",
+			"shared": "Financement partagé",
+			"sharedDescription": "Seuls 50 % de la mensualité seront ajoutés à votre total mensuel."
 		},
+		"shared": { "badge": "Partagé" },
 		"edit": {
 			"title": "Modifier le Financement",
 			"submit": "Enregistrer les Modifications",

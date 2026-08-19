@@ -1,3 +1,5 @@
+import { UsersThreeIcon } from "@phosphor-icons/react";
+import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 import type { MarkPaymentAsPaidFn } from "@/hooks/usePayments";
 import { useRouter } from "@/i18n/routing";
@@ -25,6 +27,7 @@ export default function DebtCard({
 	onDelete,
 	onComplete,
 }: DebtCardProps) {
+	const t = useTranslations();
 	const status = calculateDebtStatus(debt.completed_at);
 	const router = useRouter();
 	const debtPayments = useMemo(
@@ -74,6 +77,12 @@ export default function DebtCard({
 						<p className="text-sm sm:text-base text-base-content/70">
 							{debt.entity}
 						</p>
+						{debt.is_shared && (
+							<div className="badge badge-secondary badge-sm gap-1 mt-2">
+								<UsersThreeIcon className="w-3.5 h-3.5" />
+								{t("debt.shared.badge")}
+							</div>
+						)}
 					</div>
 					<div
 						className="flex items-center gap-1 shrink-0"

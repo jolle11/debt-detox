@@ -18,6 +18,7 @@ import {
 	resolveSharedCurrency,
 } from "@/lib/sharedPresentation";
 import type { Debt, SharedProfile } from "@/lib/types";
+import { calculateMonthlyContribution } from "@/utils/debtCalculations";
 
 interface SharedProfileViewProps {
 	debts: Debt[];
@@ -63,7 +64,7 @@ export default function SharedProfileView({
 		0,
 	);
 	const totalMonthlyPayment = activeDebts.reduce(
-		(sum, debt) => sum + debt.monthly_amount,
+		(sum, debt) => sum + calculateMonthlyContribution(debt),
 		0,
 	);
 	const averageProgress =

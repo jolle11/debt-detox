@@ -185,8 +185,11 @@
 			"submit": "Criar Financiamento",
 			"submitting": "Criando...",
 			"success": "Financiamento criado com sucesso!",
-			"error": "Erro ao criar o financiamento"
+			"error": "Erro ao criar o financiamento",
+			"shared": "Financiamento partilhado",
+			"sharedDescription": "Apenas 50% da prestação será incluída no seu total mensal."
 		},
+		"shared": { "badge": "Partilhado" },
 		"edit": {
 			"title": "Editar Financiamento",
 			"submit": "Guardar Alterações",

@@ -185,8 +185,11 @@
 			"submit": "Financiering Aanmaken",
 			"submitting": "Aanmaken...",
 			"success": "Financiering succesvol aangemaakt!",
-			"error": "Fout bij aanmaken van financiering"
+			"error": "Fout bij aanmaken van financiering",
+			"shared": "Gedeelde financiering",
+			"sharedDescription": "Slechts 50% van de termijn telt mee in je maandtotaal."
 		},
+		"shared": { "badge": "Gedeeld" },
 		"edit": {
 			"title": "Financiering Bewerken",
 			"submit": "Wijzigingen Opslaan",

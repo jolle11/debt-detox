@@ -41,6 +41,7 @@ export default function EditDebtForm({
 				debt.first_payment_date || "",
 			),
 			monthly_amount: debt.monthly_amount,
+			is_shared: debt.is_shared ?? false,
 			number_of_payments: debt.number_of_payments,
 			final_payment: debt.final_payment ?? undefined,
 			final_payment_date: normalizeDateOnlyString(
@@ -58,6 +59,7 @@ export default function EditDebtForm({
 				debt.first_payment_date || "",
 			),
 			monthly_amount: debt.monthly_amount,
+			is_shared: debt.is_shared ?? false,
 			number_of_payments: debt.number_of_payments,
 			final_payment: debt.final_payment ?? undefined,
 			final_payment_date: normalizeDateOnlyString(
@@ -85,6 +87,7 @@ export default function EditDebtForm({
 			down_payment: data.down_payment || undefined,
 			first_payment_date: data.first_payment_date,
 			monthly_amount: data.monthly_amount,
+			is_shared: data.is_shared,
 			number_of_payments: data.number_of_payments,
 			final_payment: data.final_payment || undefined,
 			final_payment_date: finalPaymentDate || undefined,
@@ -180,6 +183,22 @@ export default function EditDebtForm({
 							placeholder="0.00"
 						/>
 					</div>
+
+					<label className="flex items-start gap-3 p-4 rounded-xl border border-base-300 cursor-pointer hover:bg-base-200/50 transition-colors">
+						<input
+							type="checkbox"
+							className="checkbox checkbox-primary mt-0.5"
+							{...register("is_shared")}
+						/>
+						<span>
+							<span className="block font-medium">
+								{t("debt.create.shared")}
+							</span>
+							<span className="block text-sm text-base-content/60">
+								{t("debt.create.sharedDescription")}
+							</span>
+						</span>
+					</label>
 
 					<div className="card-actions justify-end mt-8">
 						<button

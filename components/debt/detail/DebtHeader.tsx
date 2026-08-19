@@ -8,6 +8,7 @@ import {
 	PlusCircle,
 	ShareNetwork,
 	TrashIcon,
+	UsersThreeIcon,
 } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { type DebtHeaderProps, debtStatusConfig } from "@/data/debtDetail";
@@ -137,8 +138,16 @@ export default function DebtHeader({
 					</div>
 				</div>
 			</div>
-			<div className={`badge ${statusConfig.badge} flex-shrink-0`}>
-				{t(statusConfig.key)}
+			<div className="flex flex-col sm:flex-row items-end sm:items-center gap-2 flex-shrink-0">
+				{debt.is_shared && (
+					<div className="badge badge-secondary gap-1">
+						<UsersThreeIcon className="w-3.5 h-3.5" />
+						{t("debt.shared.badge")}
+					</div>
+				)}
+				<div className={`badge ${statusConfig.badge}`}>
+					{t(statusConfig.key)}
+				</div>
 			</div>
 		</div>
 	);

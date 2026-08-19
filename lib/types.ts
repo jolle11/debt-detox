@@ -6,6 +6,7 @@ export interface Debt {
 	down_payment?: number; // Entrada/pago inicial
 	first_payment_date: string; // Fecha de la primera cuota
 	monthly_amount: number; // Importe mensual actual (puede cambiar con aportaciones extra)
+	is_shared?: boolean; // El usuario asume el 50 % de la cuota mensual
 	number_of_payments: number; // Número de cuotas actual (puede cambiar con aportaciones extra)
 	original_monthly_amount?: number; // Importe mensual original (inmutable)
 	original_number_of_payments?: number; // Número de cuotas original (inmutable)

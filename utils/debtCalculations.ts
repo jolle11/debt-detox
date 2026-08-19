@@ -2,6 +2,10 @@ import type { PaymentStats } from "@/data/debtDetail";
 import { parseDateOnly } from "@/lib/dateOnly";
 import type { Debt, Payment } from "@/lib/types";
 
+export function calculateMonthlyContribution(debt: Debt): number {
+	return debt.monthly_amount * (debt.is_shared ? 0.5 : 1);
+}
+
 /**
  * Calcula cuántas cuotas mensuales han transcurrido desde la primera fecha de pago
  * hasta hoy, respetando el día exacto del mes. Retorna un valor entre 0 y numberOfPayments.
