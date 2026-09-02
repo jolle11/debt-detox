@@ -1,6 +1,10 @@
 "use client";
+import { SlidersHorizontalIcon } from "@phosphor-icons/react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { toast } from "sonner";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import DashboardWidgetEditor from "@/components/dashboard/DashboardWidgetEditor";
 import DebtsList from "@/components/dashboard/DebtsList";
 import SummaryStats from "@/components/dashboard/SummaryStats";
 import CompleteDebtModal from "@/components/debt/CompleteDebtModal";
@@ -11,6 +15,7 @@ import LandingPage from "@/components/landing/LandingPage";
 import SkeletonDebtsList from "@/components/ui/skeletons/SkeletonDebtsList";
 import SkeletonSummaryStats from "@/components/ui/skeletons/SkeletonSummaryStats";
 import { useDebtsContext } from "@/contexts/DebtsContext";
+import { useDashboardWidgets } from "@/hooks/useDashboardWidgets";
 import { usePayments } from "@/hooks/usePayments";
 import type { Debt } from "@/lib/types";
 
@@ -19,7 +24,10 @@ export default function Dashboard() {
 	const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
 	const [deletingDebt, setDeletingDebt] = useState<Debt | null>(null);
 	const [completingDebt, setCompletingDebt] = useState<Debt | null>(null);
+	const [showWidgetEditor, setShowWidgetEditor] = useState(false);
+	const t = useTranslations("dashboard.customize");
 	const { debts, isLoading, error } = useDebtsContext();
+	const { widgets, saveWidgets, isSaving } = useDashboardWidgets();
 
 	// Centralizar payments para todos los componentes del dashboard
 	const {
@@ -44,8 +52,18 @@ export default function Dashboard() {
 					</div>
 				) : (
 					<>
-						{/* Summary Cards */}
-						<SummaryStats debts={debts} />
+						<div className="flex justify-end">
+							<button
+								type="button"
+								className="btn btn-ghost btn-sm"
+								onClick={() => setShowWidgetEditor(true)}
+							>
+								<SlidersHorizontalIcon className="w-4 h-4" />
+								{widgets.length === 0 ? t("addWidgets") : t("button")}
+							</button>
+						</div>
+
+						<SummaryStats debts={debts} payments={payments} widgets={widgets} />
 
 						{/* Debt List */}
 						<DebtsList
@@ -86,6 +104,22 @@ export default function Dashboard() {
 				debt={completingDebt}
 				isOpen={!!completingDebt}
 				onClose={() => setCompletingDebt(null)}
+			/>
+
+			<DashboardWidgetEditor
+				isOpen={showWidgetEditor}
+				widgets={widgets}
+				isSaving={isSaving}
+				onClose={() => setShowWidgetEditor(false)}
+				onSave={async (nextWidgets) => {
+					try {
+						await saveWidgets(nextWidgets);
+						toast.success(t("saved"));
+						setShowWidgetEditor(false);
+					} catch {
+						toast.error(t("saveError"));
+					}
+				}}
 			/>
 		</ProtectedRoute>
 	);

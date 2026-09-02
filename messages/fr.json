@@ -16,6 +16,78 @@
 			"paidOff": "Dettes remboursées",
 			"ofAllDebts": "De toutes les dettes"
 		},
+		"customize": {
+			"button": "Personnaliser le résumé",
+			"addWidgets": "Ajouter des widgets",
+			"title": "Personnaliser le résumé",
+			"description": "Ajoutez, supprimez et réorganisez les indicateurs.",
+			"selected": "Widgets sélectionnés",
+			"available": "Widgets disponibles",
+			"empty": "Aucun widget ne sera affiché. Ajoutez-en un depuis le catalogue.",
+			"allAdded": "Tous les widgets disponibles ont été ajoutés.",
+			"restore": "Restaurer les valeurs",
+			"cancel": "Annuler",
+			"save": "Enregistrer",
+			"close": "Fermer",
+			"saved": "Résumé mis à jour",
+			"saveError": "Impossible d’enregistrer la configuration",
+			"moveUp": "Monter {name}",
+			"moveDown": "Descendre {name}",
+			"remove": "Supprimer {name}"
+		},
+		"widgets": {
+			"remainingDebt": {
+				"title": "Dette restante",
+				"description": "{count, plural, =0 {Aucune dette active} =1 {# dette active} other {# dettes actives}}",
+				"catalogDescription": "Montant restant à payer."
+			},
+			"monthlyPayment": {
+				"title": "Paiement mensuel",
+				"description": "Total mensuel",
+				"catalogDescription": "Somme des mensualités actives."
+			},
+			"completedDebts": {
+				"title": "Terminées",
+				"description": "Dettes remboursées",
+				"catalogDescription": "Nombre de financements terminés."
+			},
+			"averageProgress": {
+				"title": "Progression moyenne",
+				"description": "Sur toutes les dettes actives",
+				"catalogDescription": "Pourcentage moyen de progression."
+			},
+			"originalDebt": {
+				"title": "Total financé",
+				"description": "Montant initial cumulé",
+				"catalogDescription": "Valeur initiale de tous les financements."
+			},
+			"totalPaid": {
+				"title": "Total payé",
+				"description": "Montant déjà réglé",
+				"catalogDescription": "Montant total déjà payé."
+			},
+			"activeDebts": {
+				"title": "Actives",
+				"description": "Financements en cours",
+				"catalogDescription": "Nombre de financements encore actifs."
+			},
+			"paidThisMonth": {
+				"title": "Payé ce mois-ci",
+				"description": "Paiements enregistrés ce mois",
+				"catalogDescription": "Montant payé pendant le mois en cours."
+			},
+			"extraPayments": {
+				"title": "Paiements extra",
+				"description": "Cumul extraordinaire",
+				"catalogDescription": "Total des paiements extraordinaires."
+			},
+			"nextCompletion": {
+				"title": "Prochaine à terminer",
+				"description": "Aucune date prévue",
+				"empty": "Aucune",
+				"catalogDescription": "Financement qui se terminera en premier."
+			}
+		},
 		"tabs": {
 			"all": "Toutes",
 			"active": "Actives",

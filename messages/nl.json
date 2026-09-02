@@ -16,6 +16,78 @@
 			"paidOff": "Afgeloste schulden",
 			"ofAllDebts": "Van alle schulden"
 		},
+		"customize": {
+			"button": "Overzicht aanpassen",
+			"addWidgets": "Widgets toevoegen",
+			"title": "Overzicht aanpassen",
+			"description": "Voeg indicatoren toe, verwijder ze en wijzig de volgorde.",
+			"selected": "Geselecteerde widgets",
+			"available": "Beschikbare widgets",
+			"empty": "Er worden geen widgets getoond. Voeg er een toe uit de catalogus.",
+			"allAdded": "Alle beschikbare widgets zijn toegevoegd.",
+			"restore": "Standaard herstellen",
+			"cancel": "Annuleren",
+			"save": "Opslaan",
+			"close": "Sluiten",
+			"saved": "Overzicht bijgewerkt",
+			"saveError": "De configuratie kon niet worden opgeslagen",
+			"moveUp": "{name} omhoog",
+			"moveDown": "{name} omlaag",
+			"remove": "{name} verwijderen"
+		},
+		"widgets": {
+			"remainingDebt": {
+				"title": "Resterende schuld",
+				"description": "{count, plural, =0 {Geen actieve schulden} =1 {# actieve schuld} other {# actieve schulden}}",
+				"catalogDescription": "Bedrag dat nog betaald moet worden."
+			},
+			"monthlyPayment": {
+				"title": "Maandbetaling",
+				"description": "Maandelijks totaal",
+				"catalogDescription": "Som van actieve maandtermijnen."
+			},
+			"completedDebts": {
+				"title": "Voltooid",
+				"description": "Afgeloste schulden",
+				"catalogDescription": "Aantal afgeronde financieringen."
+			},
+			"averageProgress": {
+				"title": "Gemiddelde voortgang",
+				"description": "Over alle actieve schulden",
+				"catalogDescription": "Gemiddeld voltooiingspercentage."
+			},
+			"originalDebt": {
+				"title": "Totaal gefinancierd",
+				"description": "Gecombineerd oorspronkelijk bedrag",
+				"catalogDescription": "Oorspronkelijke waarde van alle financieringen."
+			},
+			"totalPaid": {
+				"title": "Totaal betaald",
+				"description": "Reeds afgelost bedrag",
+				"catalogDescription": "Totaalbedrag dat al is betaald."
+			},
+			"activeDebts": {
+				"title": "Actief",
+				"description": "Lopende financieringen",
+				"catalogDescription": "Aantal nog actieve financieringen."
+			},
+			"paidThisMonth": {
+				"title": "Deze maand betaald",
+				"description": "Betalingen deze maand",
+				"catalogDescription": "Bedrag betaald in de huidige maand."
+			},
+			"extraPayments": {
+				"title": "Extra betalingen",
+				"description": "Cumulatief extra bedrag",
+				"catalogDescription": "Totaal van buitengewone betalingen."
+			},
+			"nextCompletion": {
+				"title": "Eerstvolgende afronding",
+				"description": "Geen datum gepland",
+				"empty": "Geen",
+				"catalogDescription": "Financiering die als eerste eindigt."
+			}
+		},
 		"tabs": {
 			"all": "Alle",
 			"active": "Actief",

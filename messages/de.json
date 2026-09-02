@@ -16,6 +16,78 @@
 			"paidOff": "Bezahlte Schulden",
 			"ofAllDebts": "Von allen Schulden"
 		},
+		"customize": {
+			"button": "Übersicht anpassen",
+			"addWidgets": "Widgets hinzufügen",
+			"title": "Übersicht anpassen",
+			"description": "Kennzahlen hinzufügen, entfernen und neu anordnen.",
+			"selected": "Ausgewählte Widgets",
+			"available": "Verfügbare Widgets",
+			"empty": "Es werden keine Widgets angezeigt. Fügen Sie eines aus dem Katalog hinzu.",
+			"allAdded": "Alle verfügbaren Widgets wurden hinzugefügt.",
+			"restore": "Standard wiederherstellen",
+			"cancel": "Abbrechen",
+			"save": "Speichern",
+			"close": "Schließen",
+			"saved": "Übersicht aktualisiert",
+			"saveError": "Konfiguration konnte nicht gespeichert werden",
+			"moveUp": "{name} nach oben",
+			"moveDown": "{name} nach unten",
+			"remove": "{name} entfernen"
+		},
+		"widgets": {
+			"remainingDebt": {
+				"title": "Restschuld",
+				"description": "{count, plural, =0 {Keine aktiven Schulden} =1 {# aktive Schuld} other {# aktive Schulden}}",
+				"catalogDescription": "Noch zu zahlender Betrag."
+			},
+			"monthlyPayment": {
+				"title": "Monatliche Zahlung",
+				"description": "Monatliche Summe",
+				"catalogDescription": "Summe der aktiven Monatsraten."
+			},
+			"completedDebts": {
+				"title": "Abgeschlossen",
+				"description": "Bezahlte Schulden",
+				"catalogDescription": "Anzahl abgeschlossener Finanzierungen."
+			},
+			"averageProgress": {
+				"title": "Durchschnittsfortschritt",
+				"description": "Über alle aktiven Schulden",
+				"catalogDescription": "Durchschnittlicher Abschlussgrad."
+			},
+			"originalDebt": {
+				"title": "Gesamtfinanzierung",
+				"description": "Ursprünglicher Gesamtbetrag",
+				"catalogDescription": "Ursprünglicher Wert aller Finanzierungen."
+			},
+			"totalPaid": {
+				"title": "Insgesamt bezahlt",
+				"description": "Bereits beglichener Betrag",
+				"catalogDescription": "Bisher insgesamt gezahlter Betrag."
+			},
+			"activeDebts": {
+				"title": "Aktiv",
+				"description": "Laufende Finanzierungen",
+				"catalogDescription": "Anzahl noch aktiver Finanzierungen."
+			},
+			"paidThisMonth": {
+				"title": "Diesen Monat bezahlt",
+				"description": "Diesen Monat erfasste Zahlungen",
+				"catalogDescription": "Im aktuellen Monat gezahlter Betrag."
+			},
+			"extraPayments": {
+				"title": "Sonderzahlungen",
+				"description": "Zusätzlicher Gesamtbetrag",
+				"catalogDescription": "Summe aller Sonderzahlungen."
+			},
+			"nextCompletion": {
+				"title": "Nächster Abschluss",
+				"description": "Kein Datum geplant",
+				"empty": "Keine",
+				"catalogDescription": "Finanzierung, die zuerst endet."
+			}
+		},
 		"tabs": {
 			"all": "Alle",
 			"active": "Aktiv",

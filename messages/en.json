@@ -16,6 +16,78 @@
 			"paidOff": "Debts paid off",
 			"ofAllDebts": "Of all debts"
 		},
+		"customize": {
+			"button": "Customize summary",
+			"addWidgets": "Add widgets",
+			"title": "Customize summary",
+			"description": "Add, remove, and reorder the indicators on your dashboard.",
+			"selected": "Selected widgets",
+			"available": "Available widgets",
+			"empty": "No widgets will be shown. Add one from the catalog below.",
+			"allAdded": "You have added every available widget.",
+			"restore": "Restore defaults",
+			"cancel": "Cancel",
+			"save": "Save",
+			"close": "Close",
+			"saved": "Summary updated",
+			"saveError": "The configuration could not be saved",
+			"moveUp": "Move {name} up",
+			"moveDown": "Move {name} down",
+			"remove": "Remove {name}"
+		},
+		"widgets": {
+			"remainingDebt": {
+				"title": "Remaining debt",
+				"description": "{count, plural, =0 {No active debts} =1 {# active debt} other {# active debts}}",
+				"catalogDescription": "Amount that remains to be paid."
+			},
+			"monthlyPayment": {
+				"title": "Monthly payment",
+				"description": "Monthly total",
+				"catalogDescription": "Sum of active monthly installments."
+			},
+			"completedDebts": {
+				"title": "Completed",
+				"description": "Debts paid off",
+				"catalogDescription": "Number of completed financing plans."
+			},
+			"averageProgress": {
+				"title": "Average progress",
+				"description": "Across all active debts",
+				"catalogDescription": "Average completion percentage."
+			},
+			"originalDebt": {
+				"title": "Total financed",
+				"description": "Combined original amount",
+				"catalogDescription": "Original value of all financing plans."
+			},
+			"totalPaid": {
+				"title": "Total paid",
+				"description": "Amount already settled",
+				"catalogDescription": "Total amount you have already paid."
+			},
+			"activeDebts": {
+				"title": "Active",
+				"description": "Ongoing financing plans",
+				"catalogDescription": "Number of financing plans still active."
+			},
+			"paidThisMonth": {
+				"title": "Paid this month",
+				"description": "Payments recorded this month",
+				"catalogDescription": "Amount paid during the current month."
+			},
+			"extraPayments": {
+				"title": "Extra payments",
+				"description": "Cumulative extra amount",
+				"catalogDescription": "Total extraordinary payments made."
+			},
+			"nextCompletion": {
+				"title": "Next to complete",
+				"description": "No expected date",
+				"empty": "None",
+				"catalogDescription": "Financing plan due to finish first."
+			}
+		},
 		"tabs": {
 			"all": "All",
 			"active": "Active",

@@ -63,7 +63,7 @@ export default function DemoDashboard({
 			{/* Demo Dashboard Content */}
 			<div className="space-y-4">
 				{/* Summary Cards */}
-				<SummaryStats debts={debts} />
+				<SummaryStats debts={debts} payments={payments} />
 
 				{/* Debt List */}
 				<DemoDebtsList

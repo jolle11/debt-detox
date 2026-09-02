@@ -1,97 +1,144 @@
 import {
+	CalendarCheckIcon,
 	ChartBarIcon,
 	CheckCircleIcon,
 	ClockIcon,
+	ListChecksIcon,
 	MoneyIcon,
+	PiggyBankIcon,
+	TrendUpIcon,
+	WalletIcon,
 } from "@phosphor-icons/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import StatCard from "@/components/dashboard/StatCard";
 import { useCurrency } from "@/hooks/useCurrency";
 import {
-	calculateDebtStatus,
-	calculatePaymentProgress,
-	calculateRemainingAmount,
-} from "@/lib/format";
-import type { Debt } from "@/lib/types";
-import { calculateMonthlyContribution } from "@/utils/debtCalculations";
+	calculateDashboardMetrics,
+	type DashboardWidgetId,
+} from "@/lib/dashboardWidgets";
+import { parseDateOnly } from "@/lib/dateOnly";
+import { resolveFinalPaymentDate } from "@/lib/debtDates";
+import type { Debt, Payment } from "@/lib/types";
 
 interface SummaryStatsProps {
 	debts: Debt[];
+	payments?: Payment[];
+	widgets?: DashboardWidgetId[];
 }
 
-export default function SummaryStats({ debts }: SummaryStatsProps) {
-	const t = useTranslations();
+const iconClassName = "w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7";
+
+export default function SummaryStats({
+	debts,
+	payments = [],
+	widgets = [
+		"remainingDebt",
+		"monthlyPayment",
+		"completedDebts",
+		"averageProgress",
+	],
+}: SummaryStatsProps) {
+	const t = useTranslations("dashboard.widgets");
+	const locale = useLocale();
 	const { formatCurrency } = useCurrency();
-
-	const activeDebts = debts.filter(
-		(d) => calculateDebtStatus(d.completed_at) === "active",
-	);
-	const completedDebts = debts.filter(
-		(d) => calculateDebtStatus(d.completed_at) === "completed",
-	);
-
-	const totalDebt = activeDebts.reduce(
-		(sum, debt) => sum + calculateRemainingAmount(debt),
-		0,
-	);
-	const totalMonthlyPayment = activeDebts.reduce(
-		(sum, debt) => sum + calculateMonthlyContribution(debt),
-		0,
-	);
-	const averageProgress =
-		activeDebts.length > 0
-			? Math.round(
-					activeDebts.reduce(
-						(sum, debt) => sum + calculatePaymentProgress(debt).percentage,
-						0,
-					) / activeDebts.length,
-				)
-			: 0;
-
-	const stats = [
+	const metrics = calculateDashboardMetrics(debts, payments);
+	const nextDate = metrics.nextCompletion
+		? parseDateOnly(resolveFinalPaymentDate(metrics.nextCompletion))
+		: null;
+	const cards: Record<
+		DashboardWidgetId,
 		{
-			title: t("dashboard.stats.totalDebt"),
-			value: formatCurrency(totalDebt),
-			description: t("dashboard.stats.activeDebts", {
-				count: activeDebts.length,
+			title: string;
+			value: string | number;
+			description: string;
+			icon: React.ReactNode;
+			variant: "primary" | "secondary" | "accent" | "info";
+		}
+	> = {
+		remainingDebt: {
+			title: t("remainingDebt.title"),
+			value: formatCurrency(metrics.remainingDebt),
+			description: t("remainingDebt.description", {
+				count: metrics.activeDebts,
 			}),
-			icon: <MoneyIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />,
-			variant: "primary" as const,
+			icon: <MoneyIcon className={iconClassName} />,
+			variant: "primary",
 		},
-		{
-			title: t("dashboard.stats.monthlyPayment"),
-			value: formatCurrency(totalMonthlyPayment),
-			description: t("dashboard.stats.monthlyTotal"),
-			icon: <ClockIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />,
-			variant: "secondary" as const,
+		monthlyPayment: {
+			title: t("monthlyPayment.title"),
+			value: formatCurrency(metrics.monthlyPayment),
+			description: t("monthlyPayment.description"),
+			icon: <ClockIcon className={iconClassName} />,
+			variant: "secondary",
 		},
-		{
-			title: t("dashboard.stats.completed"),
-			value: completedDebts.length,
-			description: t("dashboard.stats.paidOff"),
-			icon: <CheckCircleIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />,
-			variant: "accent" as const,
+		completedDebts: {
+			title: t("completedDebts.title"),
+			value: metrics.completedDebts,
+			description: t("completedDebts.description"),
+			icon: <CheckCircleIcon className={iconClassName} />,
+			variant: "accent",
 		},
-		{
-			title: t("dashboard.stats.averageProgress"),
-			value: `${averageProgress}%`,
-			description: t("dashboard.stats.ofAllDebts"),
-			icon: <ChartBarIcon className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />,
-			variant: "info" as const,
+		averageProgress: {
+			title: t("averageProgress.title"),
+			value: `${metrics.averageProgress}%`,
+			description: t("averageProgress.description"),
+			icon: <ChartBarIcon className={iconClassName} />,
+			variant: "info",
 		},
-	];
+		originalDebt: {
+			title: t("originalDebt.title"),
+			value: formatCurrency(metrics.originalDebt),
+			description: t("originalDebt.description"),
+			icon: <WalletIcon className={iconClassName} />,
+			variant: "secondary",
+		},
+		totalPaid: {
+			title: t("totalPaid.title"),
+			value: formatCurrency(metrics.totalPaid),
+			description: t("totalPaid.description"),
+			icon: <PiggyBankIcon className={iconClassName} />,
+			variant: "accent",
+		},
+		activeDebts: {
+			title: t("activeDebts.title"),
+			value: metrics.activeDebts,
+			description: t("activeDebts.description"),
+			icon: <ListChecksIcon className={iconClassName} />,
+			variant: "primary",
+		},
+		paidThisMonth: {
+			title: t("paidThisMonth.title"),
+			value: formatCurrency(metrics.paidThisMonth),
+			description: t("paidThisMonth.description"),
+			icon: <CalendarCheckIcon className={iconClassName} />,
+			variant: "info",
+		},
+		extraPayments: {
+			title: t("extraPayments.title"),
+			value: formatCurrency(metrics.extraPayments),
+			description: t("extraPayments.description"),
+			icon: <TrendUpIcon className={iconClassName} />,
+			variant: "accent",
+		},
+		nextCompletion: {
+			title: t("nextCompletion.title"),
+			value: metrics.nextCompletion?.name ?? t("nextCompletion.empty"),
+			description: nextDate
+				? new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
+						nextDate,
+					)
+				: t("nextCompletion.description"),
+			icon: <CalendarCheckIcon className={iconClassName} />,
+			variant: "secondary",
+		},
+	};
+
+	if (widgets.length === 0) return null;
 
 	return (
-		<div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-			{stats.map((stat, index) => (
-				<StatCard
-					key={index}
-					title={stat.title}
-					value={stat.value}
-					description={stat.description}
-					icon={stat.icon}
-					variant={stat.variant}
-				/>
+		<div className="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+			{widgets.map((widgetId) => (
+				<StatCard key={widgetId} {...cards[widgetId]} />
 			))}
 		</div>
 	);
