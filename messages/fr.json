@@ -282,6 +282,15 @@
 		"passwordMismatch": "Les mots de passe ne correspondent pas",
 		"currencyUpdated": "Devise mise à jour avec succès !",
 		"currencyError": "Échec de la mise à jour de la devise",
+		"amountFormat": "Format des montants",
+		"editAmountFormat": "Modifier le format",
+		"amountFormatUpdated": "Format des montants mis à jour !",
+		"amountFormatError": "Échec de la mise à jour du format",
+		"amountFormatOptions": {
+			"automatic": "Décimales automatiques",
+			"two_decimals": "Toujours deux décimales",
+			"no_decimals": "Sans décimales"
+		},
 		"editName": "Modifier le Nom",
 		"notLoggedIn": "Non connecté",
 		"loginRequired": "Veuillez vous connecter pour voir votre profil"

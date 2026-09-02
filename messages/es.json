@@ -278,6 +278,15 @@
 		"passwordMismatch": "Las contraseñas no coinciden",
 		"currencyUpdated": "¡Moneda actualizada correctamente!",
 		"currencyError": "Error al actualizar la moneda",
+		"amountFormat": "Formato de importes",
+		"editAmountFormat": "Editar formato",
+		"amountFormatUpdated": "¡Formato de importes actualizado!",
+		"amountFormatError": "Error al actualizar el formato de importes",
+		"amountFormatOptions": {
+			"automatic": "Decimales automáticos",
+			"two_decimals": "Siempre dos decimales",
+			"no_decimals": "Sin decimales"
+		},
 		"editName": "Editar Nombre",
 		"notLoggedIn": "No has iniciado sesión",
 		"loginRequired": "Por favor, inicia sesión para ver tu perfil"

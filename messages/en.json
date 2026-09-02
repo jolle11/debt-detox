@@ -278,6 +278,15 @@
 		"passwordMismatch": "Passwords don't match",
 		"currencyUpdated": "Currency updated successfully!",
 		"currencyError": "Failed to update currency",
+		"amountFormat": "Amount format",
+		"editAmountFormat": "Edit format",
+		"amountFormatUpdated": "Amount format updated!",
+		"amountFormatError": "Failed to update amount format",
+		"amountFormatOptions": {
+			"automatic": "Automatic decimals",
+			"two_decimals": "Always two decimals",
+			"no_decimals": "No decimals"
+		},
 		"editName": "Edit Name",
 		"notLoggedIn": "Not logged in",
 		"loginRequired": "Please log in to view your profile"

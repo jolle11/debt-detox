@@ -278,6 +278,15 @@
 		"passwordMismatch": "As senhas não coincidem",
 		"currencyUpdated": "Moeda atualizada com sucesso!",
 		"currencyError": "Erro ao atualizar a moeda",
+		"amountFormat": "Formato dos valores",
+		"editAmountFormat": "Editar formato",
+		"amountFormatUpdated": "Formato dos valores atualizado!",
+		"amountFormatError": "Erro ao atualizar o formato dos valores",
+		"amountFormatOptions": {
+			"automatic": "Casas decimais automáticas",
+			"two_decimals": "Sempre duas casas decimais",
+			"no_decimals": "Sem casas decimais"
+		},
 		"editName": "Editar Nome",
 		"notLoggedIn": "Você não entrou",
 		"loginRequired": "Por favor, entre para ver seu perfil"

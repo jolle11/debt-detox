@@ -282,6 +282,15 @@
 		"passwordMismatch": "Passwörter stimmen nicht überein",
 		"currencyUpdated": "Währung erfolgreich aktualisiert!",
 		"currencyError": "Fehler beim Aktualisieren der Währung",
+		"amountFormat": "Betragsformat",
+		"editAmountFormat": "Format bearbeiten",
+		"amountFormatUpdated": "Betragsformat aktualisiert!",
+		"amountFormatError": "Betragsformat konnte nicht aktualisiert werden",
+		"amountFormatOptions": {
+			"automatic": "Automatische Dezimalstellen",
+			"two_decimals": "Immer zwei Dezimalstellen",
+			"no_decimals": "Ohne Dezimalstellen"
+		},
 		"editName": "Name bearbeiten",
 		"notLoggedIn": "Nicht angemeldet",
 		"loginRequired": "Bitte melden Sie sich an, um Ihr Profil anzuzeigen"

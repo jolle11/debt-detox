@@ -4,6 +4,22 @@ import { parseDateOnly } from "./dateOnly";
 import { resolveFinalPaymentDate } from "./debtDates";
 import type { Payment } from "./types";
 
+export const AMOUNT_FORMATS = [
+	"automatic",
+	"two_decimals",
+	"no_decimals",
+] as const;
+export type AmountFormat = (typeof AMOUNT_FORMATS)[number];
+
+export function resolveAmountDecimals(
+	value: number,
+	amountFormat: AmountFormat = "automatic",
+): number {
+	if (amountFormat === "two_decimals") return 2;
+	if (amountFormat === "no_decimals") return 0;
+	return value % 1 === 0 ? 0 : 2;
+}
+
 export function formatNumber(
 	value: number,
 	decimals: number = 2,
@@ -19,8 +35,9 @@ export function formatCurrency(
 	value: number,
 	userCurrency?: string,
 	locale: string = "es-ES",
+	amountFormat: AmountFormat = "automatic",
 ): string {
-	const decimals = value % 1 === 0 ? 0 : 2;
+	const decimals = resolveAmountDecimals(value, amountFormat);
 	const formatted = formatNumber(value, decimals, locale);
 	const currencySymbol = userCurrency ? getCurrencySymbol(userCurrency) : "€";
 	return `${formatted} ${currencySymbol}`;

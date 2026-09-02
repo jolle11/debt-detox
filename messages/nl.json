@@ -278,6 +278,15 @@
 		"passwordMismatch": "Wachtwoorden komen niet overeen",
 		"currencyUpdated": "Valuta succesvol bijgewerkt!",
 		"currencyError": "Fout bij bijwerken van valuta",
+		"amountFormat": "Bedragnotatie",
+		"editAmountFormat": "Notatie bewerken",
+		"amountFormatUpdated": "Bedragnotatie bijgewerkt!",
+		"amountFormatError": "Bedragnotatie kon niet worden bijgewerkt",
+		"amountFormatOptions": {
+			"automatic": "Automatische decimalen",
+			"two_decimals": "Altijd twee decimalen",
+			"no_decimals": "Geen decimalen"
+		},
 		"editName": "Naam Bewerken",
 		"notLoggedIn": "U bent niet ingelogd",
 		"loginRequired": "Log in om uw profiel te bekijken"

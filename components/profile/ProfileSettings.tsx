@@ -1,6 +1,7 @@
 "use client";
 
 import type { RecordModel } from "pocketbase";
+import AmountFormatSection from "./AmountFormatSection";
 import CurrencySection from "./CurrencySection";
 import EmailSection from "./EmailSection";
 import NameSection from "./NameSection";
@@ -22,6 +23,8 @@ export default function ProfileSettings({
 			<EmailSection user={user} />
 
 			<CurrencySection user={user} refreshUser={refreshUser} />
+
+			<AmountFormatSection user={user} refreshUser={refreshUser} />
 
 			<PasswordSection user={user} />
 		</div>
