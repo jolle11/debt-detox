@@ -11,6 +11,22 @@ export const AMOUNT_FORMATS = [
 ] as const;
 export type AmountFormat = (typeof AMOUNT_FORMATS)[number];
 
+export const NUMBER_FORMATS = [
+	"locale",
+	"comma_decimal",
+	"dot_decimal",
+] as const;
+export type NumberFormat = (typeof NUMBER_FORMATS)[number];
+
+export function resolveNumberLocale(
+	locale: string,
+	numberFormat: NumberFormat = "locale",
+): string {
+	if (numberFormat === "comma_decimal") return "de-DE";
+	if (numberFormat === "dot_decimal") return "en-US";
+	return locale;
+}
+
 export function resolveAmountDecimals(
 	value: number,
 	amountFormat: AmountFormat = "automatic",

@@ -286,6 +286,13 @@
 		"editAmountFormat": "Format bearbeiten",
 		"amountFormatUpdated": "Betragsformat aktualisiert!",
 		"amountFormatError": "Betragsformat konnte nicht aktualisiert werden",
+		"numberFormat": "Trennzeichen",
+		"amountFormatPreview": "Vorschau",
+		"numberFormatOptions": {
+			"locale": "Nach Sprache",
+			"comma_decimal": "1.234,56",
+			"dot_decimal": "1,234.56"
+		},
 		"amountFormatOptions": {
 			"automatic": "Automatische Dezimalstellen",
 			"two_decimals": "Immer zwei Dezimalstellen",

@@ -286,6 +286,13 @@
 		"editAmountFormat": "Modifier le format",
 		"amountFormatUpdated": "Format des montants mis à jour !",
 		"amountFormatError": "Échec de la mise à jour du format",
+		"numberFormat": "Séparateurs",
+		"amountFormatPreview": "Aperçu",
+		"numberFormatOptions": {
+			"locale": "Selon la langue",
+			"comma_decimal": "1.234,56",
+			"dot_decimal": "1,234.56"
+		},
 		"amountFormatOptions": {
 			"automatic": "Décimales automatiques",
 			"two_decimals": "Toujours deux décimales",

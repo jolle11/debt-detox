@@ -282,6 +282,13 @@
 		"editAmountFormat": "Edit format",
 		"amountFormatUpdated": "Amount format updated!",
 		"amountFormatError": "Failed to update amount format",
+		"numberFormat": "Separators",
+		"amountFormatPreview": "Preview",
+		"numberFormatOptions": {
+			"locale": "Based on language",
+			"comma_decimal": "1.234,56",
+			"dot_decimal": "1,234.56"
+		},
 		"amountFormatOptions": {
 			"automatic": "Automatic decimals",
 			"two_decimals": "Always two decimals",

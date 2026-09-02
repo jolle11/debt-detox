@@ -282,6 +282,13 @@
 		"editAmountFormat": "Editar formato",
 		"amountFormatUpdated": "¡Formato de importes actualizado!",
 		"amountFormatError": "Error al actualizar el formato de importes",
+		"numberFormat": "Separadores",
+		"amountFormatPreview": "Vista previa",
+		"numberFormatOptions": {
+			"locale": "Según el idioma",
+			"comma_decimal": "1.234,56",
+			"dot_decimal": "1,234.56"
+		},
 		"amountFormatOptions": {
 			"automatic": "Decimales automáticos",
 			"two_decimals": "Siempre dos decimales",
