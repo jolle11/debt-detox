@@ -59,6 +59,7 @@ export default function DebtsList({
 					{sortedDebts.map((debt) => (
 						<DebtCard
 							key={debt.id}
+							sortBy={preference.by}
 							debt={debt}
 							payments={payments}
 							onMarkPaymentAsPaid={onMarkPaymentAsPaid}

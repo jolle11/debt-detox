@@ -14,7 +14,7 @@ import {
 interface DebtSortControlProps {
 	preference: DebtSortPreference;
 	isSaving: boolean;
-	onChange: (preference: DebtSortPreference) => Promise<void>;
+	onChange: (preference: Partial<DebtSortPreference>) => Promise<void>;
 }
 
 export default function DebtSortControl({
@@ -24,7 +24,7 @@ export default function DebtSortControl({
 }: DebtSortControlProps) {
 	const t = useTranslations("debtSort");
 	const id = useId();
-	const save = async (next: DebtSortPreference) => {
+	const save = async (next: Partial<DebtSortPreference>) => {
 		try {
 			await onChange(next);
 		} catch {
@@ -36,7 +36,10 @@ export default function DebtSortControl({
 			className="mb-4 flex w-full flex-wrap items-center gap-2 lg:mb-6 lg:w-auto"
 			aria-busy={isSaving}
 		>
-			<label htmlFor={id} className="w-full text-sm text-base-content/70 sm:w-auto">
+			<label
+				htmlFor={id}
+				className="w-full text-sm text-base-content/70 sm:w-auto"
+			>
 				{t("label")}
 			</label>
 			<div className="grid w-full min-w-0 grid-cols-1 gap-2 min-[420px]:grid-cols-2 sm:flex sm:w-auto sm:flex-1 lg:flex-none">
@@ -63,7 +66,6 @@ export default function DebtSortControl({
 					disabled={isSaving}
 					onChange={(event) =>
 						void save({
-							...preference,
 							direction: event.target.value as SortDirection,
 						})
 					}

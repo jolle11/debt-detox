@@ -12,6 +12,7 @@ import {
 	calculateDebtStatus,
 	calculateRemainingAmountWithPayments,
 } from "@/lib/format";
+import type { DebtSortKey } from "@/lib/debtSorting";
 import type { Debt, Payment } from "@/lib/types";
 import DebtActions from "./DebtActions";
 import DebtInfo from "./DebtInfo";
@@ -19,6 +20,7 @@ import DebtPaymentStatus from "./DebtPaymentStatus";
 import DebtProgressWithPayments from "./DebtProgressWithPayments";
 
 interface DebtCardProps {
+	sortBy?: DebtSortKey;
 	debt: Debt;
 	payments: Payment[];
 	onMarkPaymentAsPaid: MarkPaymentAsPaidFn;
@@ -28,6 +30,7 @@ interface DebtCardProps {
 }
 
 export default function DebtCard({
+	sortBy,
 	debt,
 	payments,
 	onMarkPaymentAsPaid,
@@ -106,15 +109,20 @@ export default function DebtCard({
 					<p className="text-sm font-semibold tabular-nums text-primary sm:text-base">
 						<PrivateAmount>
 							{formatCurrency(
-								remainingAmount * (debt.collaborator_id ? 0.5 : 1),
+								(sortBy === "monthly" ? debt.monthly_amount : remainingAmount) *
+									(debt.collaborator_id ? 0.5 : 1),
 							)}
 						</PrivateAmount>
 					</p>
 					<p className="text-xs text-base-content/60">
 						{t(
-							debt.collaborator_id
-								? "collaboration.yourRemaining"
-								: "dashboard.debt.remainingAmount",
+							sortBy === "monthly"
+								? debt.collaborator_id
+									? "collaboration.yourMonthly"
+									: "dashboard.debt.monthlyAmount"
+								: debt.collaborator_id
+									? "collaboration.yourRemaining"
+									: "dashboard.debt.remainingAmount",
 						)}
 					</p>
 				</div>

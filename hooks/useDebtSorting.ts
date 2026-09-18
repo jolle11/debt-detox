@@ -20,10 +20,14 @@ export function useDebtSorting(debts: Debt[], payments: Payment[]) {
 		preference,
 		sortedDebts: sortDebts(debts, payments, preference, locale),
 		isSaving: savingDebtSort,
-		saveSort: async (next: DebtSortPreference) => {
+		saveSort: async (next: Partial<DebtSortPreference>) => {
 			await savePreferences({
-				debt_sort_by: next.by,
-				debt_sort_direction: next.direction,
+				// Send only changed fields: a direction event may still hold the
+				// previous render's criterion while its save is in flight.
+				...(next.by !== undefined ? { debt_sort_by: next.by } : {}),
+				...(next.direction !== undefined
+					? { debt_sort_direction: next.direction }
+					: {}),
 			});
 		},
 	};
