@@ -107,7 +107,9 @@ export function sortDebts(
 			pending: scheduled ? (paid ? 1 : 0) : 2,
 			end: end?.getTime() ?? null,
 			created: dateValue(debt.created),
-			remaining: calculateRemainingAmountWithPayments(debt, records),
+			remaining:
+				calculateRemainingAmountWithPayments(debt, records) *
+				(debt.collaborator_id ? 0.5 : 1),
 			progress: debt.completed_at
 				? 100
 				: Math.min(
@@ -134,7 +136,10 @@ export function sortDebts(
 				break;
 			case "monthly":
 				result =
-					(left.debt.monthly_amount - right.debt.monthly_amount) * direction;
+					(left.debt.monthly_amount * (left.debt.collaborator_id ? 0.5 : 1) -
+						right.debt.monthly_amount *
+							(right.debt.collaborator_id ? 0.5 : 1)) *
+					direction;
 				break;
 			case "end_date":
 				result = compareNumbers(left.end, right.end, direction);

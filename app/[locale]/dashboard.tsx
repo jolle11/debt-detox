@@ -3,6 +3,7 @@ import { SlidersHorizontalIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
+import InvitationInbox from "@/components/collaboration/InvitationInbox";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import DashboardWidgetEditor from "@/components/dashboard/DashboardWidgetEditor";
 import DebtsList from "@/components/dashboard/DebtsList";
@@ -41,6 +42,7 @@ export default function Dashboard() {
 	return (
 		<ProtectedRoute fallback={authFallback}>
 			<div className="space-y-4">
+				<InvitationInbox />
 				{isLoading || paymentsLoading ? (
 					<>
 						<SkeletonSummaryStats />

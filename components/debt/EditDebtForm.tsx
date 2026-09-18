@@ -25,6 +25,7 @@ export default function EditDebtForm({
 }: EditDebtFormProps) {
 	const t = useTranslations();
 	const tv = useTranslations("validation");
+	const tc = useTranslations("collaboration");
 
 	const {
 		register,
@@ -88,6 +89,7 @@ export default function EditDebtForm({
 			first_payment_date: data.first_payment_date,
 			monthly_amount: data.monthly_amount,
 			is_shared: data.is_shared,
+			invite_email: data.invite_email,
 			number_of_payments: data.number_of_payments,
 			final_payment: data.final_payment || undefined,
 			final_payment_date: finalPaymentDate || undefined,
@@ -188,6 +190,7 @@ export default function EditDebtForm({
 						<input
 							type="checkbox"
 							className="checkbox checkbox-primary mt-0.5"
+							disabled={!!debt.collaborator_id}
 							{...register("is_shared")}
 						/>
 						<span>
@@ -199,6 +202,20 @@ export default function EditDebtForm({
 							</span>
 						</span>
 					</label>
+
+					{!debt.collaborator_id && (
+						<div className="rounded-xl border border-base-300 p-4 space-y-2">
+							<FormInput
+								label={tc("optionalEmail")}
+								type="email"
+								registration={register("invite_email")}
+								error={errors.invite_email ? tv("email") : undefined}
+							/>
+							<p className="text-sm text-base-content/60">
+								{tc("inviteFormHelp")}
+							</p>
+						</div>
+					)}
 
 					<div className="card-actions justify-end mt-8">
 						<button

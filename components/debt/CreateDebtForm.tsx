@@ -26,6 +26,7 @@ export default function CreateDebtForm({
 }: CreateDebtFormProps) {
 	const t = useTranslations();
 	const tv = useTranslations("validation");
+	const tc = useTranslations("collaboration");
 
 	const {
 		register,
@@ -74,6 +75,7 @@ export default function CreateDebtForm({
 			first_payment_date: data.first_payment_date,
 			monthly_amount: data.monthly_amount,
 			is_shared: data.is_shared,
+			invite_email: data.invite_email,
 			number_of_payments: numberOfPayments,
 			final_payment: data.final_payment || undefined,
 			final_payment_date: finalPaymentDate || undefined,
@@ -198,6 +200,18 @@ export default function CreateDebtForm({
 							</span>
 						</span>
 					</label>
+
+					<div className="rounded-xl border border-base-300 p-4 space-y-2">
+						<FormInput
+							label={tc("optionalEmail")}
+							type="email"
+							registration={register("invite_email")}
+							error={errors.invite_email ? tv("email") : undefined}
+						/>
+						<p className="text-sm text-base-content/60">
+							{tc("inviteFormHelp")}
+						</p>
+					</div>
 
 					<div className="card-actions justify-end mt-8">
 						<button

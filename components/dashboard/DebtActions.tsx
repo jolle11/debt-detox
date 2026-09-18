@@ -1,5 +1,6 @@
 import { DotsThreeIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
+import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "@/i18n/routing";
 import { calculateDebtStatus } from "@/lib/format";
 import type { Debt } from "@/lib/types";
@@ -20,6 +21,8 @@ export default function DebtActions({
 	hideStatus = false,
 }: DebtActionsProps) {
 	const t = useTranslations();
+	const { user } = useAuth();
+	const canManage = !debt.collaborator_id || debt.user_id === user?.id;
 	const status = calculateDebtStatus(debt.completed_at);
 
 	const actions = [
@@ -75,29 +78,31 @@ export default function DebtActions({
 					tabIndex={0}
 					className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
 				>
-					{actions.map((action) => (
-						<li key={action.key}>
-							{action.key === "viewDetails" ? (
-								<Link href={`/debt/${debt.id}`}>{action.label}</Link>
-							) : (
-								<button
-									type="button"
-									className={action.className}
-									onClick={() => {
-										if (action.key === "edit" && onEdit) {
-											onEdit(debt);
-										} else if (action.key === "delete" && onDelete) {
-											onDelete(debt);
-										} else if (action.key === "complete" && onComplete) {
-											onComplete(debt);
-										}
-									}}
-								>
-									{action.label}
-								</button>
-							)}
-						</li>
-					))}
+					{actions
+						.filter((action) => canManage || action.key === "viewDetails")
+						.map((action) => (
+							<li key={action.key}>
+								{action.key === "viewDetails" ? (
+									<Link href={`/debt/${debt.id}`}>{action.label}</Link>
+								) : (
+									<button
+										type="button"
+										className={action.className}
+										onClick={() => {
+											if (action.key === "edit" && onEdit) {
+												onEdit(debt);
+											} else if (action.key === "delete" && onDelete) {
+												onDelete(debt);
+											} else if (action.key === "complete" && onComplete) {
+												onComplete(debt);
+											}
+										}}
+									>
+										{action.label}
+									</button>
+								)}
+							</li>
+						))}
 				</ul>
 			</div>
 		</div>

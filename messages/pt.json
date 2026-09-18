@@ -1,4 +1,36 @@
 {
+	"collaboration": {
+		"title": "Partilhar com uma pessoa",
+		"invitations": "Convites para financiamentos",
+		"acceptHelp": "Ao aceitar, terás acesso ao financiamento e a todo o histórico. A tua parte será de 50 %. Ambos podem registar e corrigir prestações; o criador gere as condições e o acesso.",
+		"from": "Convite de {name} · divisão 50/50",
+		"accept": "Aceitar",
+		"reject": "Recusar",
+		"accepted": "Convite aceite",
+		"rejected": "Convite recusado",
+		"with": "Partilhado com {name}",
+		"member": "Participante",
+		"paymentHelp": "O detalhe apresenta os valores totais. Marcar uma prestação regista o pagamento completo à entidade para ambos, sem registar transferências entre vocês.",
+		"removeHelp": "A outra pessoa perderá o acesso. Os pagamentos e os seus autores serão mantidos. Será recuperada a tua configuração anterior individual ou partilhada sem conta associada.",
+		"remove": "Retirar acesso",
+		"cancel": "Cancelar",
+		"pending": "Convite pendente para {name} · expira em {date}",
+		"cancelInvitation": "Cancelar convite",
+		"email": "E-mail de uma pessoa registada",
+		"optionalEmail": "Convidar uma pessoa registada (opcional)",
+		"invite": "Convidar com 50 %",
+		"inviteHelp": "O convite aparece no dashboard e expira após 7 dias. Até ser aceite, não dá acesso nem altera os totais da outra pessoa.",
+		"sent": "Convite enviado",
+		"inviteError": "Não foi possível convidar. Verifica se o e-mail pertence a outra conta registada e se não há convites pendentes.",
+		"actionError": "Não foi possível concluir a ação. Atualiza e tenta novamente.",
+		"loadError": "Não foi possível carregar os convites.",
+		"yourRemaining": "O teu valor pendente",
+		"yourMonthly": "A tua parte mensal",
+		"totalMonthly": "Prestação total",
+		"recordedBy": "Registado por {name}",
+		"fullAmounts": "Valores totais do financiamento (a tua parte: 50%)",
+		"inviteFormHelp": "O convite aparece no dashboard e expira após 7 dias. Até ser aceite, não dá acesso nem altera os totais da outra pessoa. Deixa o e-mail vazio para manter a partilha sem conta associada."
+	},
 	"debtSort": {
 		"label": "Ordenar por",
 		"direction": "Direção",
@@ -317,7 +349,9 @@
 			"shared": "Financiamento partilhado",
 			"sharedDescription": "Apenas 50% da prestação será incluída no seu total mensal."
 		},
-		"shared": { "badge": "Partilhado" },
+		"shared": {
+			"badge": "Partilhado"
+		},
 		"edit": {
 			"title": "Editar Financiamento",
 			"submit": "Guardar Alterações",

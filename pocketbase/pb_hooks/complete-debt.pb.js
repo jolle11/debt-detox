@@ -62,6 +62,11 @@ routerAdd(
 					payment.set("paid", true);
 					payment.set("actual_amount", payment.get("planned_amount"));
 					payment.set("paid_date", today);
+					require(`${__hooks}/lib/collaboration.js`).stamp(
+						payment,
+						debt,
+						e.auth,
+					);
 					txApp.save(payment);
 				}
 			}
@@ -99,6 +104,11 @@ routerAdd(
 					finalPayment.set("paid", true);
 					finalPayment.set("actual_amount", finalAmount);
 					finalPayment.set("paid_date", today);
+					require(`${__hooks}/lib/collaboration.js`).stamp(
+						finalPayment,
+						debt,
+						e.auth,
+					);
 					txApp.save(finalPayment);
 				}
 			}

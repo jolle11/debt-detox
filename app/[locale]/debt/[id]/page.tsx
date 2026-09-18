@@ -3,6 +3,7 @@
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import DebtCollaboration from "@/components/collaboration/DebtCollaboration";
 import DebtPaymentsList from "@/components/dashboard/DebtPaymentsList";
 import AddExtraPaymentModal from "@/components/debt/AddExtraPaymentModal";
 import CompleteDebtModal from "@/components/debt/CompleteDebtModal";
@@ -92,8 +93,10 @@ export default function DebtDetailPage() {
 				onBack={() => router.back()}
 			/>
 
+			<DebtCollaboration debt={debt} />
+
 			{/* Alert when debt is fully paid but not marked as completed */}
-			{isFullyPaid && !isCompleted && (
+			{isFullyPaid && !isCompleted && debt.user_id === user.id && (
 				<div className="alert alert-success mb-4 shadow-lg">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"

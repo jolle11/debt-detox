@@ -1,4 +1,36 @@
 {
+	"collaboration": {
+		"title": "Share with another person",
+		"invitations": "Financing invitations",
+		"acceptHelp": "Accepting gives you access to the financing and its full history. Your share is 50%. Both people can record and correct installments; the creator manages terms and access.",
+		"from": "Invitation from {name} · 50/50 split",
+		"accept": "Accept",
+		"reject": "Decline",
+		"accepted": "Invitation accepted",
+		"rejected": "Invitation declined",
+		"with": "Shared with {name}",
+		"member": "Participant",
+		"paymentHelp": "The detail shows the full financing amounts. Marking an installment records the full payment to the lender for both people; it does not record transfers between you.",
+		"removeHelp": "The other person will lose access. Payments and their recorded authors will remain. Your previous individual or unlinked shared setting will be restored.",
+		"remove": "Remove access",
+		"cancel": "Cancel",
+		"pending": "Invitation pending for {name} · expires {date}",
+		"cancelInvitation": "Cancel invitation",
+		"email": "Registered user’s email",
+		"optionalEmail": "Invite a registered user (optional)",
+		"invite": "Invite with a 50% share",
+		"inviteHelp": "The invitation appears on their dashboard and expires after 7 days. Until they accept, they have no access and their totals stay unchanged.",
+		"sent": "Invitation sent",
+		"inviteError": "Could not invite. Check that the email belongs to another registered account and there is no pending invitation.",
+		"actionError": "Could not complete the action. Refresh and try again.",
+		"loadError": "Could not load invitations.",
+		"yourRemaining": "Your remaining amount",
+		"yourMonthly": "Your monthly share",
+		"totalMonthly": "Total installment",
+		"recordedBy": "Recorded by {name}",
+		"fullAmounts": "Full financing amounts (your share: 50%)",
+		"inviteFormHelp": "The invitation appears on their dashboard and expires after 7 days. Until they accept, they have no access and their totals stay unchanged. Leave the email empty to keep using unlinked sharing."
+	},
 	"debtSort": {
 		"label": "Sort by",
 		"direction": "Direction",
@@ -307,7 +339,9 @@
 			"shared": "Shared financing",
 			"sharedDescription": "Only 50% of the payment will count toward your monthly total."
 		},
-		"shared": { "badge": "Shared" },
+		"shared": {
+			"badge": "Shared"
+		},
 		"edit": {
 			"title": "Edit Financing",
 			"submit": "Save Changes",

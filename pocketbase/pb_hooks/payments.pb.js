@@ -49,7 +49,9 @@ routerAdd(
 		let savedDebt = null;
 		e.app.runInTransaction((txApp) => {
 			const debt = txApp.findRecordById("debts", debtId);
-			if (debt.get("user_id") !== e.auth.id) {
+			if (
+				!require(`${__hooks}/lib/collaboration.js`).isMember(debt, e.auth.id)
+			) {
 				throw new NotFoundError("Debt not found");
 			}
 
@@ -111,6 +113,15 @@ routerAdd(
 				payment.set("is_extra_payment", false);
 			}
 
+			if (
+				debt.getString("collaborator_id") &&
+				payment.get("paid") &&
+				!payment.getString("deleted")
+			) {
+				savedPayment = payment;
+				savedDebt = debt;
+				return;
+			}
 			payment.set("deleted", null);
 			payment.set("planned_amount", plannedAmount);
 			payment.set(
@@ -122,6 +133,7 @@ routerAdd(
 				"paid_date",
 				data.paid_date || new Date().toISOString().slice(0, 10),
 			);
+			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 			txApp.save(payment);
 
 			const expectedPeriods = {};
@@ -198,7 +210,7 @@ routerAdd(
 			const payment = txApp.findRecordById("payments", paymentId);
 			const debt = txApp.findRecordById("debts", payment.get("debt_id"));
 			if (
-				debt.get("user_id") !== e.auth.id ||
+				!require(`${__hooks}/lib/collaboration.js`).isMember(debt, e.auth.id) ||
 				payment.get("is_extra_payment")
 			) {
 				throw new NotFoundError("Payment not found");
@@ -207,6 +219,7 @@ routerAdd(
 			payment.set("paid", false);
 			payment.set("paid_date", null);
 			payment.set("actual_amount", null);
+			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 			txApp.save(payment);
 			savedPayment = payment;
 		});
@@ -257,7 +270,7 @@ routerAdd(
 			const payment = txApp.findRecordById("payments", paymentId);
 			const debt = txApp.findRecordById("debts", payment.get("debt_id"));
 			if (
-				debt.get("user_id") !== e.auth.id ||
+				!require(`${__hooks}/lib/collaboration.js`).isMember(debt, e.auth.id) ||
 				payment.getString("deleted") ||
 				payment.get("is_extra_payment")
 			) {
@@ -267,6 +280,7 @@ routerAdd(
 			payment.set("paid", false);
 			payment.set("paid_date", null);
 			payment.set("actual_amount", null);
+			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 			txApp.save(payment);
 
 			const paymentCount =
@@ -309,14 +323,17 @@ routerAdd(
 			const payment = txApp.findRecordById("payments", paymentId);
 			const debt = txApp.findRecordById("debts", payment.get("debt_id"));
 			if (
-				debt.get("user_id") !== e.auth.id ||
+				!require(`${__hooks}/lib/collaboration.js`).isMember(debt, e.auth.id) ||
 				payment.getString("deleted") ||
-				!payment.get("paid")
+				!payment.get("paid") ||
+				(payment.get("is_extra_payment") &&
+					debt.getString("user_id") !== e.auth.id)
 			) {
 				throw new NotFoundError("Payment not found");
 			}
 
 			payment.set("actual_amount", data.amount);
+			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 			txApp.save(payment);
 			savedPayment = payment;
 		});
@@ -347,6 +364,7 @@ routerAdd(
 			if (!deletedAt) {
 				deletedAt = new Date().toISOString().replace("T", " ");
 				payment.set("deleted", deletedAt);
+				require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 				txApp.save(payment);
 			}
 		});

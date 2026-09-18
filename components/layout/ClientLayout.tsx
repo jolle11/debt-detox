@@ -9,6 +9,7 @@ import Header from "@/components/layout/Header";
 import ServiceWorkerRegistration from "@/components/pwa/ServiceWorkerRegistration";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { DebtsProvider } from "@/contexts/DebtsContext";
+import { useCollaborationSync } from "@/hooks/useCollaborationSync";
 import { useAuthSync } from "@/hooks/useAuthSync";
 import { makeQueryClient } from "@/lib/query-client";
 
@@ -25,6 +26,7 @@ function AppLayout({ children }: ClientLayoutProps) {
 
 	// Sync queries with auth state changes
 	useAuthSync();
+	useCollaborationSync();
 
 	// Keep the landing indexable and visible while auth initializes.
 	if (isPublicLandingRoute) {

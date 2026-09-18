@@ -1,4 +1,36 @@
 {
+	"collaboration": {
+		"title": "Mit einer Person teilen",
+		"invitations": "Finanzierungseinladungen",
+		"acceptHelp": "Nach der Annahme siehst du die Finanzierung und ihren gesamten Verlauf. Dein Anteil beträgt 50 %. Beide können Raten erfassen und korrigieren; der Ersteller verwaltet Konditionen und Zugriff.",
+		"from": "Einladung von {name} · Aufteilung 50/50",
+		"accept": "Annehmen",
+		"reject": "Ablehnen",
+		"accepted": "Einladung angenommen",
+		"rejected": "Einladung abgelehnt",
+		"with": "Geteilt mit {name}",
+		"member": "Teilnehmer",
+		"paymentHelp": "Die Detailansicht zeigt die Gesamtbeträge. Das Markieren einer Rate erfasst die vollständige Zahlung an den Kreditgeber für beide, keine Überweisungen zwischen euch.",
+		"removeHelp": "Die andere Person verliert den Zugriff. Zahlungen und ihre Bearbeiter bleiben erhalten. Deine vorherige Einstellung für eine individuelle oder unverbundene geteilte Finanzierung wird wiederhergestellt.",
+		"remove": "Zugriff entziehen",
+		"cancel": "Abbrechen",
+		"pending": "Einladung für {name} ausstehend · gültig bis {date}",
+		"cancelInvitation": "Einladung zurückziehen",
+		"email": "E-Mail einer registrierten Person",
+		"optionalEmail": "Registrierte Person einladen (optional)",
+		"invite": "Mit 50 % einladen",
+		"inviteHelp": "Die Einladung erscheint im Dashboard und läuft nach 7 Tagen ab. Bis zur Annahme gibt es keinen Zugriff und keine Änderung der Summen.",
+		"sent": "Einladung gesendet",
+		"inviteError": "Einladung nicht möglich. Prüfe, ob die E-Mail zu einem anderen registrierten Konto gehört und keine Einladung aussteht.",
+		"actionError": "Aktion fehlgeschlagen. Aktualisiere die Seite und versuche es erneut.",
+		"loadError": "Einladungen konnten nicht geladen werden.",
+		"yourRemaining": "Dein Restbetrag",
+		"yourMonthly": "Dein monatlicher Anteil",
+		"totalMonthly": "Gesamtrate",
+		"recordedBy": "Erfasst von {name}",
+		"fullAmounts": "Gesamtbeträge der Finanzierung (dein Anteil: 50 %)",
+		"inviteFormHelp": "Die Einladung erscheint im Dashboard und läuft nach 7 Tagen ab. Bis zur Annahme gibt es keinen Zugriff und keine Änderung der Summen. Ohne E-Mail bleibt das Teilen ohne verknüpftes Konto verfügbar."
+	},
 	"debtSort": {
 		"label": "Sortieren nach",
 		"direction": "Sortierrichtung",
@@ -311,7 +343,9 @@
 			"shared": "Geteilte Finanzierung",
 			"sharedDescription": "Nur 50 % der Rate werden zu Ihrer monatlichen Gesamtsumme addiert."
 		},
-		"shared": { "badge": "Geteilt" },
+		"shared": {
+			"badge": "Geteilt"
+		},
 		"edit": {
 			"title": "Finanzierung Bearbeiten",
 			"submit": "Änderungen Speichern",

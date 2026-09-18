@@ -6,6 +6,10 @@ export interface Debt {
 	down_payment?: number; // Entrada/pago inicial
 	first_payment_date: string; // Fecha de la primera cuota
 	monthly_amount: number; // Importe mensual actual (puede cambiar con aportaciones extra)
+	collaborator_id?: string;
+	collaborator_name?: string;
+	owner_name?: string;
+	invite_email?: string; // Request-only: not stored on the debt.
 	is_shared?: boolean; // El usuario asume el 50 % de la cuota mensual
 	number_of_payments: number; // Número de cuotas actual (puede cambiar con aportaciones extra)
 	original_monthly_amount?: number; // Importe mensual original (inmutable)
@@ -24,7 +28,26 @@ export type ExtraPaymentStrategy =
 	| "reduce_installments"
 	| "reduce_amount";
 
+export interface DebtInvitation {
+	id: string;
+	debt_id: string;
+	debt_name: string;
+	sender_id: string;
+	sender_name: string;
+	recipient_id: string;
+	recipient_name: string;
+	status: "pending" | "accepted" | "rejected" | "cancelled" | "revoked";
+	expires_at: string;
+}
+
 export interface Payment {
+	recorded_by?: string;
+	recorded_by_name?: string;
+	sharing_snapshot?: {
+		owner: string;
+		collaborator: string;
+		owner_percent: number;
+	};
 	id?: string;
 	debt_id: string;
 	month: number;

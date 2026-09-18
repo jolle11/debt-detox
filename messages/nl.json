@@ -1,4 +1,36 @@
 {
+	"collaboration": {
+		"title": "Met iemand delen",
+		"invitations": "Uitnodigingen voor financieringen",
+		"acceptHelp": "Na acceptatie zie je de financiering en de volledige geschiedenis. Jouw aandeel is 50%. Beiden kunnen termijnen registreren en corrigeren; de maker beheert de voorwaarden en toegang.",
+		"from": "Uitnodiging van {name} · verdeling 50/50",
+		"accept": "Accepteren",
+		"reject": "Afwijzen",
+		"accepted": "Uitnodiging geaccepteerd",
+		"rejected": "Uitnodiging afgewezen",
+		"with": "Gedeeld met {name}",
+		"member": "Deelnemer",
+		"paymentHelp": "De detailpagina toont de volledige bedragen. Een termijn markeren registreert de volledige betaling aan de kredietgever voor beiden, geen onderlinge overboekingen.",
+		"removeHelp": "De andere persoon verliest toegang. Betalingen en hun auteurs blijven bewaard. Je vorige instelling voor individuele of niet-gekoppelde gedeelde financiering wordt hersteld.",
+		"remove": "Toegang intrekken",
+		"cancel": "Annuleren",
+		"pending": "Uitnodiging voor {name} in afwachting · verloopt op {date}",
+		"cancelInvitation": "Uitnodiging annuleren",
+		"email": "E-mail van een geregistreerde persoon",
+		"optionalEmail": "Een geregistreerde persoon uitnodigen (optioneel)",
+		"invite": "Uitnodigen voor 50%",
+		"inviteHelp": "De uitnodiging verschijnt op het dashboard en verloopt na 7 dagen. Tot acceptatie is er geen toegang en veranderen de totalen niet.",
+		"sent": "Uitnodiging verzonden",
+		"inviteError": "Uitnodigen mislukt. Controleer of het e-mailadres bij een ander geregistreerd account hoort en er geen uitnodiging openstaat.",
+		"actionError": "Actie mislukt. Vernieuw de pagina en probeer opnieuw.",
+		"loadError": "Uitnodigingen konden niet worden geladen.",
+		"yourRemaining": "Jouw resterende bedrag",
+		"yourMonthly": "Jouw maandelijkse aandeel",
+		"totalMonthly": "Totale termijn",
+		"recordedBy": "Geregistreerd door {name}",
+		"fullAmounts": "Totale financieringsbedragen (jouw aandeel: 50%)",
+		"inviteFormHelp": "De uitnodiging verschijnt op het dashboard en verloopt na 7 dagen. Tot acceptatie is er geen toegang en veranderen de totalen niet. Laat het e-mailadres leeg om zonder gekoppeld account te blijven delen."
+	},
 	"debtSort": {
 		"label": "Sorteren op",
 		"direction": "Sorteerrichting",
@@ -317,7 +349,9 @@
 			"shared": "Gedeelde financiering",
 			"sharedDescription": "Slechts 50% van de termijn telt mee in je maandtotaal."
 		},
-		"shared": { "badge": "Gedeeld" },
+		"shared": {
+			"badge": "Gedeeld"
+		},
 		"edit": {
 			"title": "Financiering Bewerken",
 			"submit": "Wijzigingen Opslaan",

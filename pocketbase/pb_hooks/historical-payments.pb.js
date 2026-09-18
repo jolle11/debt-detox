@@ -82,6 +82,7 @@ routerAdd(
 				payment.set("actual_amount", debt.get("monthly_amount"));
 				payment.set("paid", true);
 				payment.set("paid_date", paymentDate);
+				require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 				txApp.save(payment);
 			}
 		});

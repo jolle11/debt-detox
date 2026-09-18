@@ -51,11 +51,17 @@ const getAuthorizedDebtIds = async (
 	debtId?: string,
 ): Promise<string[]> => {
 	const filter = debtId
-		? pb.filter("deleted = null && user_id = {:userId} && id = {:debtId}", {
-				userId,
-				debtId,
-			})
-		: pb.filter("deleted = null && user_id = {:userId}", { userId });
+		? pb.filter(
+				"deleted = null && (user_id = {:userId} || collaborator_id = {:userId}) && id = {:debtId}",
+				{
+					userId,
+					debtId,
+				},
+			)
+		: pb.filter(
+				"deleted = null && (user_id = {:userId} || collaborator_id = {:userId})",
+				{ userId },
+			);
 
 	const debts = await pb.collection(COLLECTIONS.DEBTS).getFullList({
 		filter,

@@ -1,4 +1,36 @@
 {
+	"collaboration": {
+		"title": "Partager avec une personne",
+		"invitations": "Invitations à des financements",
+		"acceptHelp": "En acceptant, vous accédez au financement et à tout son historique. Votre part est de 50 %. Les deux participants peuvent enregistrer et corriger les échéances ; le créateur gère les conditions et l’accès.",
+		"from": "Invitation de {name} · partage 50/50",
+		"accept": "Accepter",
+		"reject": "Refuser",
+		"accepted": "Invitation acceptée",
+		"rejected": "Invitation refusée",
+		"with": "Partagé avec {name}",
+		"member": "Participant",
+		"paymentHelp": "Le détail affiche les montants totaux. Marquer une échéance enregistre le paiement complet au prêteur pour les deux participants, sans enregistrer de transferts entre vous.",
+		"removeHelp": "L’autre personne perdra l’accès. Les paiements et leurs auteurs seront conservés. Votre ancien réglage individuel ou partagé sans compte lié sera rétabli.",
+		"remove": "Retirer l’accès",
+		"cancel": "Annuler",
+		"pending": "Invitation en attente pour {name} · expire le {date}",
+		"cancelInvitation": "Annuler l’invitation",
+		"email": "E-mail d’une personne inscrite",
+		"optionalEmail": "Inviter une personne inscrite (facultatif)",
+		"invite": "Inviter à 50 %",
+		"inviteHelp": "L’invitation apparaît dans son tableau de bord et expire après 7 jours. Aucun accès ni changement de ses totaux avant acceptation.",
+		"sent": "Invitation envoyée",
+		"inviteError": "Invitation impossible. Vérifiez que l’e-mail appartient à un autre compte inscrit et qu’aucune invitation n’est en attente.",
+		"actionError": "Action impossible. Actualisez et réessayez.",
+		"loadError": "Impossible de charger les invitations.",
+		"yourRemaining": "Votre montant restant",
+		"yourMonthly": "Votre part mensuelle",
+		"totalMonthly": "Mensualité totale",
+		"recordedBy": "Enregistré par {name}",
+		"fullAmounts": "Montants totaux du financement (votre part : 50 %)",
+		"inviteFormHelp": "L’invitation apparaît dans son tableau de bord et expire après 7 jours. Aucun accès ni changement de ses totaux avant acceptation. Laissez l’e-mail vide pour conserver le partage sans compte lié."
+	},
 	"debtSort": {
 		"label": "Trier par",
 		"direction": "Sens du tri",
@@ -311,7 +343,9 @@
 			"shared": "Financement partagé",
 			"sharedDescription": "Seuls 50 % de la mensualité seront ajoutés à votre total mensuel."
 		},
-		"shared": { "badge": "Partagé" },
+		"shared": {
+			"badge": "Partagé"
+		},
 		"edit": {
 			"title": "Modifier le Financement",
 			"submit": "Enregistrer les Modifications",

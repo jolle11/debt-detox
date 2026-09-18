@@ -68,6 +68,7 @@ routerAdd(
 			payment.set("paid", true);
 			payment.set("paid_date", now.toISOString());
 			payment.set("is_extra_payment", true);
+			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 			txApp.save(payment);
 
 			if (data.strategy !== "none") {

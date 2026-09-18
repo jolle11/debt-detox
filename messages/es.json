@@ -1,4 +1,36 @@
 {
+	"collaboration": {
+		"title": "Compartir con una persona",
+		"invitations": "Invitaciones a financiaciones",
+		"acceptHelp": "Al aceptar verás la financiación y su historial completo. Tu parte será del 50 %. Ambos podréis registrar y corregir cuotas; el creador gestionará las condiciones y el acceso.",
+		"from": "Invitación de {name} · reparto 50/50",
+		"accept": "Aceptar",
+		"reject": "Rechazar",
+		"accepted": "Invitación aceptada",
+		"rejected": "Invitación rechazada",
+		"with": "Compartida con {name}",
+		"member": "Participante",
+		"paymentHelp": "Los importes del detalle son los totales de la financiación. Marcar una cuota registra el pago completo a la entidad para ambos; no registra transferencias entre vosotros.",
+		"removeHelp": "La otra persona perderá acceso. Se conservarán los pagos y quién los registró. Se recuperará tu configuración anterior de financiación individual o compartida sin vincular.",
+		"remove": "Retirar acceso",
+		"cancel": "Cancelar",
+		"pending": "Invitación pendiente para {name} · caduca el {date}",
+		"cancelInvitation": "Cancelar invitación",
+		"email": "Correo de una persona registrada",
+		"optionalEmail": "Invitar a una persona registrada (opcional)",
+		"invite": "Invitar al 50 %",
+		"inviteHelp": "La invitación aparece en su dashboard y caduca a los 7 días. Hasta que acepte no tendrá acceso ni se cambiarán sus totales.",
+		"sent": "Invitación enviada",
+		"inviteError": "No se pudo invitar. Comprueba que el correo pertenece a otra cuenta registrada y que no hay una invitación pendiente.",
+		"actionError": "No se pudo realizar la acción. Actualiza e inténtalo de nuevo.",
+		"loadError": "No se pudieron cargar las invitaciones.",
+		"yourRemaining": "Tu importe pendiente",
+		"yourMonthly": "Tu cuota mensual",
+		"totalMonthly": "Cuota total",
+		"recordedBy": "Registrado por {name}",
+		"fullAmounts": "Importes totales de la financiación (tu parte: 50 %)",
+		"inviteFormHelp": "La invitación aparece en su dashboard y caduca a los 7 días. Hasta que acepte no tendrá acceso ni se cambiarán sus totales. Puedes dejar el correo vacío y seguir usando la opción compartida sin vincular."
+	},
 	"debtSort": {
 		"label": "Ordenar por",
 		"direction": "Dirección",
@@ -317,7 +349,9 @@
 			"shared": "Financiación compartida",
 			"sharedDescription": "Solo se sumará el 50 % de la cuota al total mensual que pagas."
 		},
-		"shared": { "badge": "Compartida" },
+		"shared": {
+			"badge": "Compartida"
+		},
 		"edit": {
 			"title": "Editar Financiación",
 			"submit": "Guardar Cambios",

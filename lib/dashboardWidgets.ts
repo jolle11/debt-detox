@@ -70,7 +70,8 @@ export function calculateDashboardMetrics(
 	}
 
 	const originalDebt = debts.reduce(
-		(sum, debt) => sum + calculateTotalAmount(debt),
+		(sum, debt) =>
+			sum + calculateTotalAmount(debt) * (debt.collaborator_id ? 0.5 : 1),
 		0,
 	);
 	const remainingDebt = activeDebts.reduce(
@@ -79,7 +80,8 @@ export function calculateDashboardMetrics(
 			calculateRemainingAmountWithPayments(
 				debt,
 				paymentsByDebt.get(debt.id ?? "") ?? [],
-			),
+			) *
+				(debt.collaborator_id ? 0.5 : 1),
 		0,
 	);
 	const activeProgress = activeDebts.map(
@@ -89,6 +91,11 @@ export function calculateDashboardMetrics(
 				paymentsByDebt.get(debt.id ?? "") ?? [],
 			).percentage,
 	);
+	const personalPaymentAmount = (payment: Payment) =>
+		(payment.actual_amount ?? payment.planned_amount) *
+		(debts.find((debt) => debt.id === payment.debt_id)?.collaborator_id
+			? 0.5
+			: 1);
 	const paidThisMonth = payments
 		.filter(
 			(payment) =>
@@ -96,16 +103,10 @@ export function calculateDashboardMetrics(
 				payment.month === now.getMonth() + 1 &&
 				payment.year === now.getFullYear(),
 		)
-		.reduce(
-			(sum, payment) => sum + (payment.actual_amount ?? payment.planned_amount),
-			0,
-		);
+		.reduce((sum, payment) => sum + personalPaymentAmount(payment), 0);
 	const extraPayments = payments
 		.filter((payment) => payment.paid && payment.is_extra_payment)
-		.reduce(
-			(sum, payment) => sum + (payment.actual_amount ?? payment.planned_amount),
-			0,
-		);
+		.reduce((sum, payment) => sum + personalPaymentAmount(payment), 0);
 	const nextCompletion =
 		[...activeDebts].sort((left, right) =>
 			resolveFinalPaymentDate(left).localeCompare(

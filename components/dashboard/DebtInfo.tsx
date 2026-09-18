@@ -79,6 +79,11 @@ export default function DebtInfo({ debt, payments = [] }: DebtInfoProps) {
 
 	return (
 		<div className="space-y-2 sm:space-y-3">
+			{debt.collaborator_id && (
+				<p className="text-xs text-base-content/70">
+					{t("collaboration.fullAmounts")}
+				</p>
+			)}
 			{/* Primary financial stats — always 4 columns on desktop */}
 			<div className="grid grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-2 sm:gap-4">
 				{primaryItems.map((item, index) => (

@@ -30,6 +30,7 @@ const debtFields = {
 	first_payment_date: z.string().min(1),
 	monthly_amount: z.coerce.number().positive(),
 	is_shared: z.boolean().default(false),
+	invite_email: z.union([z.string().trim().email(), z.literal("")]).optional(),
 	number_of_payments: z.preprocess(
 		(value) => (value === "" || value == null ? undefined : value),
 		z.coerce.number().int().positive().optional(),

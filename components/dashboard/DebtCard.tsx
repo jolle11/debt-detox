@@ -4,6 +4,7 @@ import PrivateAmount from "@/components/ui/PrivateAmount";
 import { CaretDownIcon, UsersThreeIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { type MouseEvent, useId, useMemo, useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/hooks/useCurrency";
 import type { MarkPaymentAsPaidFn } from "@/hooks/usePayments";
 import { Link } from "@/i18n/routing";
@@ -35,6 +36,7 @@ export default function DebtCard({
 	onComplete,
 }: DebtCardProps) {
 	const t = useTranslations();
+	const { user } = useAuth();
 	const { formatCurrency } = useCurrency();
 	const [expanded, setExpanded] = useState(false);
 	const detailsId = useId();
@@ -88,15 +90,32 @@ export default function DebtCard({
 							</span>
 						)}
 					</div>
-					<p className="truncate text-xs text-base-content/60">{debt.entity}</p>
+					<p className="truncate text-xs text-base-content/60">
+						{debt.collaborator_id
+							? t("collaboration.with", {
+									name:
+										debt.user_id === user?.id
+											? debt.collaborator_name || t("collaboration.member")
+											: debt.owner_name || t("collaboration.member"),
+								})
+							: debt.entity}
+					</p>
 				</div>
 
 				<div className="col-start-1 row-start-2 min-w-0 sm:col-start-2 sm:row-start-1 sm:text-right">
 					<p className="text-sm font-semibold tabular-nums text-primary sm:text-base">
-						<PrivateAmount>{formatCurrency(remainingAmount)}</PrivateAmount>
+						<PrivateAmount>
+							{formatCurrency(
+								remainingAmount * (debt.collaborator_id ? 0.5 : 1),
+							)}
+						</PrivateAmount>
 					</p>
 					<p className="text-xs text-base-content/60">
-						{t("dashboard.debt.remainingAmount")}
+						{t(
+							debt.collaborator_id
+								? "collaboration.yourRemaining"
+								: "dashboard.debt.remainingAmount",
+						)}
 					</p>
 				</div>
 

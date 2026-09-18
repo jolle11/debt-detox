@@ -10,6 +10,7 @@ import {
 	WarningCircle,
 	XCircle,
 } from "@phosphor-icons/react";
+import { useAuth } from "@/contexts/AuthContext";
 import PrivateAmount from "@/components/ui/PrivateAmount";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
@@ -32,6 +33,9 @@ export default function DebtPaymentsList({
 	isLoading,
 }: DebtPaymentsListProps) {
 	const t = useTranslations("paymentsList");
+	const tc = useTranslations("collaboration");
+	const { user } = useAuth();
+	const canManage = debt.user_id === user?.id;
 	const locale = useLocale();
 	const { formatCurrency } = useCurrency();
 	const {
@@ -330,6 +334,7 @@ export default function DebtPaymentsList({
 														)
 													}
 													className="btn btn-xs btn-ghost"
+													hidden={!canManage}
 													title="Edit amount"
 												>
 													<PencilSimple className="w-3 h-3" />
@@ -337,6 +342,7 @@ export default function DebtPaymentsList({
 												<button
 													onClick={() => handleDeleteExtraPayment(payment.id!)}
 													className="btn btn-xs btn-ghost text-error"
+													hidden={!canManage}
 													title="Delete extra payment"
 												>
 													<Trash className="w-3 h-3" />
@@ -451,7 +457,16 @@ export default function DebtPaymentsList({
 										</td>
 										<td className="text-sm text-base-content/70">
 											{payment?.paid_date ? (
-												formatPaymentDate(payment.paid_date)
+												<>
+													{formatPaymentDate(payment.paid_date)}
+													{payment.recorded_by_name && (
+														<span className="block text-xs text-base-content/60">
+															{tc("recordedBy", {
+																name: payment.recorded_by_name,
+															})}
+														</span>
+													)}
+												</>
 											) : (
 												<span className="text-base-content/40">-</span>
 											)}
