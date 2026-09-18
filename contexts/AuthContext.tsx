@@ -22,7 +22,7 @@ interface AuthContextType {
 	user: RecordModel | null;
 	setHideAmounts: (hidden: boolean) => Promise<void>;
 	savingPrivacy: boolean;
-	savingPreferences: boolean;
+	savingDebtSort: boolean;
 	savePreferences: (updates: UserPreferencesUpdate) => Promise<void>;
 	login: (email: string, password: string) => Promise<void>;
 	register: (
@@ -43,8 +43,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<RecordModel | null>(null);
 	const [loading, setLoading] = useState(true);
-	const [savingPreferences, setSavingPreferences] = useState(false);
-	const preferenceSaveInFlight = useRef(false);
+	const [pendingSaves, setPendingSaves] = useState({ privacy: 0, sort: 0 });
+	const preferenceSaveInFlight = useRef(0);
+	const preferenceSaveQueue = useRef<Promise<void>>(Promise.resolve());
 	const preferenceRevision = useRef(0);
 
 	useEffect(() => {
@@ -88,22 +89,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 	const savePreferences = async (updates: UserPreferencesUpdate) => {
 		const userId = pb.authStore.record?.id;
-		if (!userId || preferenceSaveInFlight.current)
-			throw new Error("Preferences cannot be saved now");
-		preferenceSaveInFlight.current = true;
+		if (!userId) throw new Error("Preferences require an authenticated user");
+		const privacy = updates.hide_amounts !== undefined ? 1 : 0;
+		const sort =
+			updates.debt_sort_by !== undefined ||
+			updates.debt_sort_direction !== undefined
+				? 1
+				: 0;
+		preferenceSaveInFlight.current += 1;
 		preferenceRevision.current += 1;
-		setSavingPreferences(true);
+		setPendingSaves((pending) => ({
+			privacy: pending.privacy + privacy,
+			sort: pending.sort + sort,
+		}));
+
+		// Serialize writes so full profile responses cannot overwrite a newer preference.
+		const save = preferenceSaveQueue.current
+			.catch(() => {})
+			.then(async () => {
+				if (pb.authStore.record?.id !== userId)
+					throw new Error("Session changed before saving preferences");
+				const updated = await pb.collection("users").update(userId, updates);
+				if (
+					Object.entries(updates).some(([key, value]) => updated[key] !== value)
+				) {
+					throw new Error("Preferences were not saved");
+				}
+				if (pb.authStore.record?.id === userId)
+					pb.authStore.save(pb.authStore.token, updated);
+			});
+		preferenceSaveQueue.current = save;
 		try {
-			const updated = await pb.collection("users").update(userId, updates);
-			if (
-				Object.entries(updates).some(([key, value]) => updated[key] !== value)
-			)
-				throw new Error("Preferences were not saved");
-			if (pb.authStore.record?.id === userId)
-				pb.authStore.save(pb.authStore.token, updated);
+			await save;
 		} finally {
-			preferenceSaveInFlight.current = false;
-			setSavingPreferences(false);
+			preferenceSaveInFlight.current -= 1;
+			setPendingSaves((pending) => ({
+				privacy: pending.privacy - privacy,
+				sort: pending.sort - sort,
+			}));
 		}
 	};
 
@@ -206,8 +229,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const value = {
 		user,
 		setHideAmounts,
-		savingPrivacy: savingPreferences,
-		savingPreferences,
+		savingPrivacy: pendingSaves.privacy > 0,
+		savingDebtSort: pendingSaves.sort > 0,
 		savePreferences,
 		login,
 		register,

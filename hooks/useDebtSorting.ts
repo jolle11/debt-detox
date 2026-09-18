@@ -10,7 +10,7 @@ import {
 import type { Debt, Payment } from "@/lib/types";
 
 export function useDebtSorting(debts: Debt[], payments: Payment[]) {
-	const { user, savePreferences, savingPreferences } = useAuth();
+	const { user, savePreferences, savingDebtSort } = useAuth();
 	const locale = useLocale();
 	const preference = normalizeDebtSort(
 		user?.debt_sort_by,
@@ -19,7 +19,7 @@ export function useDebtSorting(debts: Debt[], payments: Payment[]) {
 	return {
 		preference,
 		sortedDebts: sortDebts(debts, payments, preference, locale),
-		isSaving: savingPreferences,
+		isSaving: savingDebtSort,
 		saveSort: async (next: DebtSortPreference) => {
 			await savePreferences({
 				debt_sort_by: next.by,

@@ -5,16 +5,18 @@ interface UserAvatarProps {
 		name?: string;
 		email?: string;
 	};
-	size?: "sm" | "md";
+	size?: "xs" | "sm" | "md";
 }
 
 export default function UserAvatar({ user, size = "sm" }: UserAvatarProps) {
 	const sizeClasses = {
+		xs: "w-6 h-6",
 		sm: "w-8 h-8",
 		md: "w-12 h-12",
 	};
 
 	const textClasses = {
+		xs: "text-xs",
 		sm: "text-sm",
 		md: "text-lg",
 	};
@@ -25,7 +27,7 @@ export default function UserAvatar({ user, size = "sm" }: UserAvatarProps) {
 
 	return (
 		<div
-			className={`${sizeClasses[size]} bg-primary text-primary-content rounded-full flex items-center justify-center font-semibold`}
+			className={`${sizeClasses[size]} bg-primary text-primary-content rounded-full shrink-0 flex items-center justify-center font-semibold`}
 		>
 			<span className={textClasses[size]}>{initial}</span>
 		</div>

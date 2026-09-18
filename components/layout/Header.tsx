@@ -28,7 +28,7 @@ export default function Header() {
 	return (
 		<>
 			<header className="bg-base-200 shadow-lg">
-				<div className="navbar container mx-auto">
+				<div className="navbar container mx-auto gap-2">
 					<div className="flex-1">
 						<Link
 							href={user ? "/dashboard" : "/"}
@@ -65,7 +65,7 @@ export default function Header() {
 										role="button"
 										className="btn btn-ghost btn-sm gap-2"
 									>
-										<UserAvatar user={user} size="sm" />
+										<UserAvatar user={user} size="xs" />
 										<span className="hidden sm:inline truncate max-w-24">
 											{user.name || user.email}
 										</span>
