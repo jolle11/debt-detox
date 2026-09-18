@@ -1,5 +1,6 @@
 "use client";
 
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import { FileTextIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import type { DebtStructureProps } from "@/data/debtDetail";
@@ -52,11 +53,13 @@ export default function DebtStructure({
 									{t(`debtDetail.structure.${key}`)}:
 								</span>
 								<span className="font-medium text-lg">
-									{isString
-										? value
-										: value && typeof value === "number" && value > 0
-											? formatCurrency(value)
-											: t("debtDetail.structure.notApplicable")}
+									{isString ? (
+										value
+									) : value && typeof value === "number" && value > 0 ? (
+										<PrivateAmount>{formatCurrency(value)}</PrivateAmount>
+									) : (
+										t("debtDetail.structure.notApplicable")
+									)}
 								</span>
 							</div>
 						);
@@ -67,7 +70,7 @@ export default function DebtStructure({
 								{t("debtDetail.structure.total")}:
 							</span>
 							<span className="font-bold text-2xl">
-								{formatCurrency(totalAmount)}
+								<PrivateAmount>{formatCurrency(totalAmount)}</PrivateAmount>
 							</span>
 						</div>
 					</div>

@@ -1,5 +1,6 @@
 "use client";
 
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import { CreditCardIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import type { DebtPaymentDetailsProps } from "@/data/debtDetail";
@@ -57,7 +58,13 @@ export default function DebtPaymentDetails({
 								<div className="text-base font-medium text-base-content/60 uppercase tracking-wide mb-2">
 									{t(`debtDetail.paymentDetails.${key}`)}
 								</div>
-								<div className={`${textSize} font-bold ${color}`}>{value}</div>
+								<div className={`${textSize} font-bold ${color}`}>
+									{key === "paidAmount" || key === "toPay" ? (
+										<PrivateAmount>{value}</PrivateAmount>
+									) : (
+										value
+									)}
+								</div>
 								{subtitle && (
 									<div className="text-base text-base-content/70 mt-1">
 										{subtitle}

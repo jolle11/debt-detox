@@ -1,5 +1,6 @@
 "use client";
 
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import { ClockCounterClockwise, XIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -123,7 +124,9 @@ export default function ConfirmHistoricalPaymentsModal({
 								>
 									<span className="capitalize">{monthName}</span>
 									<span className="font-mono text-base-content/70">
-										{formatCurrency(info.monthlyAmount)}
+										<PrivateAmount>
+											{formatCurrency(info.monthlyAmount)}
+										</PrivateAmount>
 									</span>
 								</div>
 							);

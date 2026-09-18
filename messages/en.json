@@ -1,4 +1,12 @@
 {
+	"privacy": {
+		"title": "Amount privacy",
+		"hide": "Hide amounts",
+		"show": "Show amounts",
+		"hiddenAmount": "Hidden amount",
+		"description": "Hide amounts with dots in your summary, debts and payments. Saved to your account across devices. Editing fields remain visible so you can review them.",
+		"saveError": "Could not save your preference. Please try again."
+	},
 	"nav": {
 		"title": "💰 Debt Detox",
 		"addDebt": "Add Debt",

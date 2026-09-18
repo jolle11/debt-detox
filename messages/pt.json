@@ -1,4 +1,12 @@
 {
+	"privacy": {
+		"title": "Privacidade dos valores",
+		"hide": "Ocultar valores",
+		"show": "Mostrar valores",
+		"hiddenAmount": "Valor oculto",
+		"description": "Oculta os valores com pontos no resumo, nas dívidas e nos pagamentos. A preferência é guardada na tua conta entre dispositivos. Os campos de edição continuam visíveis para revisão.",
+		"saveError": "Não foi possível guardar a preferência. Tenta novamente."
+	},
 	"nav": {
 		"title": "💰 Debt Detox",
 		"addDebt": "Adicionar Dívida",

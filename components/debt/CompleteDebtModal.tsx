@@ -1,5 +1,6 @@
 "use client";
 
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import { CheckCircleIcon, XIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useCompleteDebt } from "@/hooks/useCompleteDebt";
@@ -78,7 +79,11 @@ export default function CompleteDebtModal({
 								<p className="font-semibold">
 									{t("debt.complete.remainingAmount")}
 								</p>
-								<p className="text-lg">{formatCurrency(remainingAmount)}</p>
+								<p className="text-lg">
+									<PrivateAmount>
+										{formatCurrency(remainingAmount)}
+									</PrivateAmount>
+								</p>
 								<p className="text-sm mt-2">
 									{t("debt.complete.finalPaymentNote")}
 								</p>

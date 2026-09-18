@@ -18,6 +18,8 @@ export function useCurrency() {
 	const numberLocale = resolveNumberLocale(locale, numberFormat);
 
 	const formatCurrency = (value: number): string => {
+		// Also mask amounts embedded in translated messages and tooltips.
+		if (user?.hide_amounts === true) return "••••";
 		return baseFormatCurrency(value, userCurrency, numberLocale, amountFormat);
 	};
 

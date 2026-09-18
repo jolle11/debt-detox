@@ -1,4 +1,12 @@
 {
+	"privacy": {
+		"title": "Privacy van bedragen",
+		"hide": "Bedragen verbergen",
+		"show": "Bedragen tonen",
+		"hiddenAmount": "Verborgen bedrag",
+		"description": "Verberg bedragen met stippen in je overzicht, schulden en betalingen. Deze voorkeur wordt voor al je apparaten in je account opgeslagen. Invoervelden blijven zichtbaar om te controleren.",
+		"saveError": "Je voorkeur kon niet worden opgeslagen. Probeer het opnieuw."
+	},
 	"nav": {
 		"title": "💰 Debt Detox",
 		"addDebt": "Schuld Toevoegen",

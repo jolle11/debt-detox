@@ -138,7 +138,18 @@ export default function SummaryStats({
 	return (
 		<div className="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
 			{widgets.map((widgetId) => (
-				<StatCard key={widgetId} {...cards[widgetId]} />
+				<StatCard
+					key={widgetId}
+					{...cards[widgetId]}
+					monetary={[
+						"remainingDebt",
+						"monthlyPayment",
+						"originalDebt",
+						"totalPaid",
+						"paidThisMonth",
+						"extraPayments",
+					].includes(widgetId)}
+				/>
 			))}
 		</div>
 	);

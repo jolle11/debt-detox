@@ -10,6 +10,7 @@ import LanguageSelector from "@/components/LanguageSelector";
 import { Link } from "@/i18n/routing";
 import MobileMenu from "@/components/layout/MobileMenu";
 import MobileMenuButton from "@/components/layout/MobileMenuButton";
+import AmountPrivacyToggle from "@/components/ui/AmountPrivacyToggle";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import UserAvatar from "@/components/ui/UserAvatar";
 import { useAuth } from "@/contexts/AuthContext";
@@ -36,6 +37,8 @@ export default function Header() {
 							{t("nav.title")}
 						</Link>
 					</div>
+
+					<AmountPrivacyToggle />
 
 					{/* Desktop Navigation */}
 					<div className="flex-none hidden md:flex items-center gap-2">

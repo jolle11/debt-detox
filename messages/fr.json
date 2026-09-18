@@ -1,4 +1,12 @@
 {
+	"privacy": {
+		"title": "Confidentialité des montants",
+		"hide": "Masquer les montants",
+		"show": "Afficher les montants",
+		"hiddenAmount": "Montant masqué",
+		"description": "Masque les montants du résumé, des dettes et des paiements avec des points. Ce choix est enregistré dans votre compte sur tous vos appareils. Les champs de modification restent visibles pour vérification.",
+		"saveError": "Impossible d’enregistrer votre préférence. Réessayez."
+	},
 	"nav": {
 		"title": "💰 Debt Detox",
 		"addDebt": "Ajouter Dette",

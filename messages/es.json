@@ -1,4 +1,12 @@
 {
+	"privacy": {
+		"title": "Privacidad de los importes",
+		"hide": "Ocultar importes",
+		"show": "Mostrar importes",
+		"hiddenAmount": "Importe oculto",
+		"description": "Oculta los importes con puntos en el resumen, las deudas y los pagos. Se guarda en tu cuenta y se mantiene entre dispositivos. Los campos de edición siguen visibles para poder revisarlos.",
+		"saveError": "No se pudo guardar la preferencia. Inténtalo de nuevo."
+	},
 	"nav": {
 		"title": "💰 Debt Detox",
 		"addDebt": "Añadir Deuda",

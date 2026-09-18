@@ -1,5 +1,6 @@
 "use client";
 
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import { CaretDownIcon, UsersThreeIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { type MouseEvent, useId, useMemo, useState } from "react";
@@ -92,7 +93,7 @@ export default function DebtCard({
 
 				<div className="col-start-1 row-start-2 min-w-0 sm:col-start-2 sm:row-start-1 sm:text-right">
 					<p className="text-sm font-semibold tabular-nums text-primary sm:text-base">
-						{formatCurrency(remainingAmount)}
+						<PrivateAmount>{formatCurrency(remainingAmount)}</PrivateAmount>
 					</p>
 					<p className="text-xs text-base-content/60">
 						{t("dashboard.debt.remainingAmount")}

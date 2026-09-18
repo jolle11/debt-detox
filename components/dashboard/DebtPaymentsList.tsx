@@ -10,6 +10,7 @@ import {
 	WarningCircle,
 	XCircle,
 } from "@phosphor-icons/react";
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
@@ -270,12 +271,14 @@ export default function DebtPaymentsList({
 						<div className="grid grid-cols-1 gap-2">
 							<div className="text-sm font-medium text-base-content/70 px-2">
 								{t("extraPaymentsTotalLabel")}:{" "}
-								{formatCurrency(
-									extraPayments.reduce(
-										(sum, p) => sum + (p.actual_amount || 0),
-										0,
-									),
-								)}
+								<PrivateAmount>
+									{formatCurrency(
+										extraPayments.reduce(
+											(sum, p) => sum + (p.actual_amount || 0),
+											0,
+										),
+									)}
+								</PrivateAmount>
 							</div>
 							{extraPayments.map((payment) => (
 								<div
@@ -315,7 +318,9 @@ export default function DebtPaymentsList({
 										) : (
 											<>
 												<span className="font-mono text-sm font-semibold text-primary">
-													{formatCurrency(payment.actual_amount || 0)}
+													<PrivateAmount>
+														{formatCurrency(payment.actual_amount || 0)}
+													</PrivateAmount>
 												</span>
 												<button
 													onClick={() =>
@@ -414,7 +419,9 @@ export default function DebtPaymentsList({
 											</div>
 										</td>
 										<td className="text-right font-mono text-sm">
-											{formatCurrency(planned_amount)}
+											<PrivateAmount>
+												{formatCurrency(planned_amount)}
+											</PrivateAmount>
 										</td>
 										<td className="text-right font-mono text-sm">
 											{isPaid ? (
@@ -425,7 +432,9 @@ export default function DebtPaymentsList({
 															: ""
 													}
 												>
-													{formatCurrency(totalActualAmount)}
+													<PrivateAmount>
+														{formatCurrency(totalActualAmount)}
+													</PrivateAmount>
 												</span>
 											) : hasExtraPayments ? (
 												<div className="flex flex-col items-end gap-1">
@@ -519,30 +528,35 @@ export default function DebtPaymentsList({
 							<tr className="font-medium border-t-2">
 								<td colSpan={2}>{t("totalLabel")}</td>
 								<td className="text-right font-mono">
-									{formatCurrency(
-										(debt.original_monthly_amount || debt.monthly_amount) *
-											(debt.original_number_of_payments ||
-												debt.number_of_payments),
-									)}
+									<PrivateAmount>
+										{formatCurrency(
+											(debt.original_monthly_amount || debt.monthly_amount) *
+												(debt.original_number_of_payments ||
+													debt.number_of_payments),
+										)}
+									</PrivateAmount>
 								</td>
 								<td className="text-right font-mono">
-									{formatCurrency(
-										Math.min(
-											allExpectedPayments.reduce(
-												(sum, ep) => sum + ep.totalActualAmount,
-												0,
-											) +
-												extraPayments.reduce(
-													(sum, p) => sum + (p.actual_amount || 0),
+									<PrivateAmount>
+										{formatCurrency(
+											Math.min(
+												allExpectedPayments.reduce(
+													(sum, ep) => sum + ep.totalActualAmount,
 													0,
-												),
-											(debt.down_payment || 0) +
-												(debt.original_monthly_amount || debt.monthly_amount) *
-													(debt.original_number_of_payments ||
-														debt.number_of_payments) +
-												(debt.final_payment || 0),
-										),
-									)}
+												) +
+													extraPayments.reduce(
+														(sum, p) => sum + (p.actual_amount || 0),
+														0,
+													),
+												(debt.down_payment || 0) +
+													(debt.original_monthly_amount ||
+														debt.monthly_amount) *
+														(debt.original_number_of_payments ||
+															debt.number_of_payments) +
+													(debt.final_payment || 0),
+											),
+										)}
+									</PrivateAmount>
 								</td>
 								<td></td>
 								<td></td>

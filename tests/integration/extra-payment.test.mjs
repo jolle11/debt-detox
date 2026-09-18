@@ -1045,3 +1045,26 @@ test("another user cannot complete someone else's debt", async () => {
 	assert.equal(unchangedDebt.final_payment_date, "");
 	assert.equal(payments.length, 0);
 });
+
+test("amount privacy persists across independent sessions and auth refresh", async () => {
+	const initial = await owner.collection("users").getOne(ownerRecord.id);
+	assert.equal(initial.hide_amounts, false);
+	const saved = await owner.collection("users").update(ownerRecord.id, { hide_amounts: true });
+	assert.equal(saved.hide_amounts, true);
+
+	const mobile = new PocketBase(BASE_URL);
+	await mobile.collection("users").authWithPassword("owner@debt-detox.test", "owner-password");
+	assert.equal(mobile.authStore.record.hide_amounts, true);
+	await owner.collection("users").update(ownerRecord.id, { hide_amounts: false });
+	const refreshed = await mobile.collection("users").authRefresh();
+	assert.equal(refreshed.record.hide_amounts, false);
+});
+
+test("another user cannot change amount privacy", async () => {
+	await assert.rejects(
+		otherUser.collection("users").update(ownerRecord.id, { hide_amounts: true }),
+		(error) => error?.status === 404,
+	);
+	const unchanged = await owner.collection("users").getOne(ownerRecord.id);
+	assert.equal(unchanged.hide_amounts, false);
+});

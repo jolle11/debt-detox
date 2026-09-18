@@ -6,12 +6,15 @@ import {
 	type ReactNode,
 	useContext,
 	useEffect,
+	useRef,
 	useState,
 } from "react";
 import pb from "@/lib/pocketbase";
 
 interface AuthContextType {
 	user: RecordModel | null;
+	setHideAmounts: (hidden: boolean) => Promise<void>;
+	savingPrivacy: boolean;
 	login: (email: string, password: string) => Promise<void>;
 	register: (
 		email: string,
@@ -31,16 +34,68 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<RecordModel | null>(null);
 	const [loading, setLoading] = useState(true);
+	const [savingPrivacy, setSavingPrivacy] = useState(false);
+	const privacySaveInFlight = useRef(false);
+	const privacyRevision = useRef(0);
 
 	useEffect(() => {
 		// Check authentication status on mount
 		checkAuthStatus();
 
 		// Listen for auth changes
-		pb.authStore.onChange(() => {
+		return pb.authStore.onChange(() => {
 			setUser(pb.authStore.model);
 		});
 	}, []);
+
+	// Reload profile preferences when returning to a device with an existing session.
+	useEffect(() => {
+		const syncPreferences = async () => {
+			const userId = pb.authStore.record?.id;
+			const revision = privacyRevision.current;
+			if (
+				document.visibilityState !== "visible" ||
+				!userId ||
+				privacySaveInFlight.current
+			)
+				return;
+			try {
+				const updated = await pb.collection("users").getOne(userId);
+				if (
+					pb.authStore.record?.id === userId &&
+					!privacySaveInFlight.current &&
+					revision === privacyRevision.current
+				) {
+					pb.authStore.save(pb.authStore.token, updated);
+				}
+			} catch {
+				// Keep the last saved preference when the device is offline.
+			}
+		};
+		document.addEventListener("visibilitychange", syncPreferences);
+		return () =>
+			document.removeEventListener("visibilitychange", syncPreferences);
+	}, []);
+
+	const setHideAmounts = async (hidden: boolean) => {
+		const userId = pb.authStore.record?.id;
+		if (!userId || privacySaveInFlight.current) return;
+		privacySaveInFlight.current = true;
+		privacyRevision.current += 1;
+		setSavingPrivacy(true);
+		try {
+			const updated = await pb
+				.collection("users")
+				.update(userId, { hide_amounts: hidden });
+			if (updated.hide_amounts !== hidden)
+				throw new Error("Privacy preference was not saved");
+			if (pb.authStore.record?.id === userId)
+				pb.authStore.save(pb.authStore.token, updated);
+		} finally {
+			privacySaveInFlight.current = false;
+			setSavingPrivacy(false);
+		}
+	};
 
 	const login = async (email: string, password: string) => {
 		try {
@@ -137,6 +192,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 	const value = {
 		user,
+		setHideAmounts,
+		savingPrivacy,
 		login,
 		register,
 		logout,

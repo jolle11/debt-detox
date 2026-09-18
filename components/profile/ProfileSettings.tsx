@@ -5,6 +5,7 @@ import AmountFormatSection from "./AmountFormatSection";
 import CurrencySection from "./CurrencySection";
 import EmailSection from "./EmailSection";
 import NameSection from "./NameSection";
+import PrivacySection from "./PrivacySection";
 import PasswordSection from "./PasswordSection";
 
 interface ProfileSettingsProps {
@@ -25,6 +26,8 @@ export default function ProfileSettings({
 			<CurrencySection user={user} refreshUser={refreshUser} />
 
 			<AmountFormatSection user={user} refreshUser={refreshUser} />
+
+			<PrivacySection />
 
 			<PasswordSection user={user} />
 		</div>

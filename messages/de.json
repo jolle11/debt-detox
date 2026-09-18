@@ -1,4 +1,12 @@
 {
+	"privacy": {
+		"title": "Beträge verbergen",
+		"hide": "Beträge ausblenden",
+		"show": "Beträge anzeigen",
+		"hiddenAmount": "Verborgener Betrag",
+		"description": "Beträge in Übersicht, Schulden und Zahlungen werden durch Punkte ersetzt. Die Einstellung wird geräteübergreifend in deinem Konto gespeichert. Eingabefelder bleiben zur Kontrolle sichtbar.",
+		"saveError": "Deine Einstellung konnte nicht gespeichert werden. Bitte erneut versuchen."
+	},
 	"nav": {
 		"title": "💰 Debt Detox",
 		"addDebt": "Schuld Hinzufügen",
