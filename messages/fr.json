@@ -1,4 +1,49 @@
 {
+	"debtSort": {
+		"label": "Trier par",
+		"direction": "Sens du tri",
+		"saving": "Enregistrement du tri",
+		"saveError": "Impossible d’enregistrer le tri. Réessayez.",
+		"criteria": {
+			"pending": "À payer ce mois-ci",
+			"remaining": "Montant restant",
+			"monthly": "Mensualité",
+			"end_date": "Date de fin",
+			"progress": "Progression",
+			"created": "Date de création",
+			"name": "Nom"
+		},
+		"directions": {
+			"pending": {
+				"asc": "À payer en premier",
+				"desc": "Payées en premier"
+			},
+			"remaining": {
+				"asc": "Croissant",
+				"desc": "Décroissant"
+			},
+			"end_date": {
+				"asc": "Plus proches",
+				"desc": "Plus lointaines"
+			},
+			"progress": {
+				"asc": "Moins avancées",
+				"desc": "Plus avancées"
+			},
+			"created": {
+				"asc": "Plus anciennes",
+				"desc": "Plus récentes"
+			},
+			"monthly": {
+				"asc": "Croissant",
+				"desc": "Décroissant"
+			},
+			"name": {
+				"asc": "A–Z",
+				"desc": "Z–A"
+			}
+		}
+	},
 	"privacy": {
 		"title": "Confidentialité des montants",
 		"hide": "Masquer les montants",

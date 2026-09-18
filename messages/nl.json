@@ -1,4 +1,49 @@
 {
+	"debtSort": {
+		"label": "Sorteren op",
+		"direction": "Sorteerrichting",
+		"saving": "Volgorde opslaan",
+		"saveError": "De volgorde kon niet worden opgeslagen. Probeer het opnieuw.",
+		"criteria": {
+			"pending": "Deze maand onbetaald",
+			"remaining": "Resterend bedrag",
+			"monthly": "Maandbedrag",
+			"end_date": "Einddatum",
+			"progress": "Voortgang",
+			"created": "Aanmaakdatum",
+			"name": "Naam"
+		},
+		"directions": {
+			"pending": {
+				"asc": "Onbetaald eerst",
+				"desc": "Betaald eerst"
+			},
+			"remaining": {
+				"asc": "Laag naar hoog",
+				"desc": "Hoog naar laag"
+			},
+			"end_date": {
+				"asc": "Vroegste eerst",
+				"desc": "Laatste eerst"
+			},
+			"progress": {
+				"asc": "Minste voortgang",
+				"desc": "Meeste voortgang"
+			},
+			"created": {
+				"asc": "Oudste eerst",
+				"desc": "Nieuwste eerst"
+			},
+			"monthly": {
+				"asc": "Laag naar hoog",
+				"desc": "Hoog naar laag"
+			},
+			"name": {
+				"asc": "A–Z",
+				"desc": "Z–A"
+			}
+		}
+	},
 	"privacy": {
 		"title": "Privacy van bedragen",
 		"hide": "Bedragen verbergen",

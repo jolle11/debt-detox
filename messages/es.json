@@ -1,4 +1,49 @@
 {
+	"debtSort": {
+		"label": "Ordenar por",
+		"direction": "Dirección",
+		"saving": "Guardando orden",
+		"saveError": "No se pudo guardar el orden. Inténtalo de nuevo.",
+		"criteria": {
+			"pending": "Pendientes este mes",
+			"remaining": "Importe pendiente",
+			"monthly": "Cuota mensual",
+			"end_date": "Fecha de finalización",
+			"progress": "Progreso",
+			"created": "Fecha de creación",
+			"name": "Nombre"
+		},
+		"directions": {
+			"pending": {
+				"asc": "Pendientes primero",
+				"desc": "Pagadas primero"
+			},
+			"remaining": {
+				"asc": "Menor a mayor",
+				"desc": "Mayor a menor"
+			},
+			"end_date": {
+				"asc": "Más próximas",
+				"desc": "Más lejanas"
+			},
+			"progress": {
+				"asc": "Menos avanzado",
+				"desc": "Más avanzado"
+			},
+			"created": {
+				"asc": "Más antiguas",
+				"desc": "Más recientes"
+			},
+			"monthly": {
+				"asc": "Menor a mayor",
+				"desc": "Mayor a menor"
+			},
+			"name": {
+				"asc": "A–Z",
+				"desc": "Z–A"
+			}
+		}
+	},
 	"privacy": {
 		"title": "Privacidad de los importes",
 		"hide": "Ocultar importes",

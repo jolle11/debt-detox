@@ -1,4 +1,49 @@
 {
+	"debtSort": {
+		"label": "Sortieren nach",
+		"direction": "Sortierrichtung",
+		"saving": "Reihenfolge speichern",
+		"saveError": "Reihenfolge konnte nicht gespeichert werden. Bitte erneut versuchen.",
+		"criteria": {
+			"pending": "Diesen Monat offen",
+			"remaining": "Restbetrag",
+			"monthly": "Monatsrate",
+			"end_date": "Enddatum",
+			"progress": "Fortschritt",
+			"created": "Erstellungsdatum",
+			"name": "Name"
+		},
+		"directions": {
+			"pending": {
+				"asc": "Offene zuerst",
+				"desc": "Bezahlte zuerst"
+			},
+			"remaining": {
+				"asc": "Aufsteigend",
+				"desc": "Absteigend"
+			},
+			"end_date": {
+				"asc": "Früheste zuerst",
+				"desc": "Späteste zuerst"
+			},
+			"progress": {
+				"asc": "Wenig Fortschritt",
+				"desc": "Viel Fortschritt"
+			},
+			"created": {
+				"asc": "Älteste zuerst",
+				"desc": "Neueste zuerst"
+			},
+			"monthly": {
+				"asc": "Aufsteigend",
+				"desc": "Absteigend"
+			},
+			"name": {
+				"asc": "A–Z",
+				"desc": "Z–A"
+			}
+		}
+	},
 	"privacy": {
 		"title": "Beträge verbergen",
 		"hide": "Beträge ausblenden",

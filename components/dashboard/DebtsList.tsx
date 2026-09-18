@@ -1,6 +1,8 @@
 import { useTranslations } from "next-intl";
 import DebtCard from "@/components/dashboard/DebtCard";
 import DebtFilterTabs from "@/components/dashboard/DebtFilterTabs";
+import DebtSortControl from "@/components/dashboard/DebtSortControl";
+import { useDebtSorting } from "@/hooks/useDebtSorting";
 import EmptyState from "@/components/dashboard/EmptyState";
 import { useDebtFilter } from "@/hooks/useDebtFilter";
 import type { MarkPaymentAsPaidFn } from "@/hooks/usePayments";
@@ -28,6 +30,10 @@ export default function DebtsList({
 	const t = useTranslations();
 	const { activeFilter, setActiveFilter, filteredDebts, counts } =
 		useDebtFilter(debts);
+	const { preference, sortedDebts, isSaving, saveSort } = useDebtSorting(
+		filteredDebts,
+		payments,
+	);
 
 	return (
 		<div className="card bg-base-100 shadow">
@@ -36,14 +42,21 @@ export default function DebtsList({
 					{t("dashboard.title")}
 				</h2>
 
-				<DebtFilterTabs
-					activeFilter={activeFilter}
-					onFilterChange={setActiveFilter}
-					counts={counts}
-				/>
+				<div className="flex flex-col lg:flex-row lg:items-center lg:justify-between lg:gap-4">
+					<DebtFilterTabs
+						activeFilter={activeFilter}
+						onFilterChange={setActiveFilter}
+						counts={counts}
+					/>
+					<DebtSortControl
+						preference={preference}
+						isSaving={isSaving}
+						onChange={saveSort}
+					/>
+				</div>
 
 				<div className="space-y-2">
-					{filteredDebts.map((debt) => (
+					{sortedDebts.map((debt) => (
 						<DebtCard
 							key={debt.id}
 							debt={debt}

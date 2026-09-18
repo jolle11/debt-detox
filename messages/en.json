@@ -1,4 +1,49 @@
 {
+	"debtSort": {
+		"label": "Sort by",
+		"direction": "Direction",
+		"saving": "Saving order",
+		"saveError": "Could not save the order. Please try again.",
+		"criteria": {
+			"pending": "Unpaid this month",
+			"remaining": "Remaining amount",
+			"monthly": "Monthly installment",
+			"end_date": "End date",
+			"progress": "Progress",
+			"created": "Date created",
+			"name": "Name"
+		},
+		"directions": {
+			"pending": {
+				"asc": "Unpaid first",
+				"desc": "Paid first"
+			},
+			"remaining": {
+				"asc": "Low to high",
+				"desc": "High to low"
+			},
+			"end_date": {
+				"asc": "Earliest first",
+				"desc": "Latest first"
+			},
+			"progress": {
+				"asc": "Least complete",
+				"desc": "Most complete"
+			},
+			"created": {
+				"asc": "Oldest first",
+				"desc": "Newest first"
+			},
+			"monthly": {
+				"asc": "Low to high",
+				"desc": "High to low"
+			},
+			"name": {
+				"asc": "A–Z",
+				"desc": "Z–A"
+			}
+		}
+	},
 	"privacy": {
 		"title": "Amount privacy",
 		"hide": "Hide amounts",

@@ -9,12 +9,21 @@ import {
 	useRef,
 	useState,
 } from "react";
+import type { DebtSortKey, SortDirection } from "@/lib/debtSorting";
 import pb from "@/lib/pocketbase";
+
+interface UserPreferencesUpdate {
+	hide_amounts?: boolean;
+	debt_sort_by?: DebtSortKey;
+	debt_sort_direction?: SortDirection;
+}
 
 interface AuthContextType {
 	user: RecordModel | null;
 	setHideAmounts: (hidden: boolean) => Promise<void>;
 	savingPrivacy: boolean;
+	savingPreferences: boolean;
+	savePreferences: (updates: UserPreferencesUpdate) => Promise<void>;
 	login: (email: string, password: string) => Promise<void>;
 	register: (
 		email: string,
@@ -34,9 +43,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<RecordModel | null>(null);
 	const [loading, setLoading] = useState(true);
-	const [savingPrivacy, setSavingPrivacy] = useState(false);
-	const privacySaveInFlight = useRef(false);
-	const privacyRevision = useRef(0);
+	const [savingPreferences, setSavingPreferences] = useState(false);
+	const preferenceSaveInFlight = useRef(false);
+	const preferenceRevision = useRef(0);
 
 	useEffect(() => {
 		// Check authentication status on mount
@@ -52,19 +61,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	useEffect(() => {
 		const syncPreferences = async () => {
 			const userId = pb.authStore.record?.id;
-			const revision = privacyRevision.current;
+			const revision = preferenceRevision.current;
 			if (
 				document.visibilityState !== "visible" ||
 				!userId ||
-				privacySaveInFlight.current
+				preferenceSaveInFlight.current
 			)
 				return;
 			try {
 				const updated = await pb.collection("users").getOne(userId);
 				if (
 					pb.authStore.record?.id === userId &&
-					!privacySaveInFlight.current &&
-					revision === privacyRevision.current
+					!preferenceSaveInFlight.current &&
+					revision === preferenceRevision.current
 				) {
 					pb.authStore.save(pb.authStore.token, updated);
 				}
@@ -77,25 +86,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			document.removeEventListener("visibilitychange", syncPreferences);
 	}, []);
 
-	const setHideAmounts = async (hidden: boolean) => {
+	const savePreferences = async (updates: UserPreferencesUpdate) => {
 		const userId = pb.authStore.record?.id;
-		if (!userId || privacySaveInFlight.current) return;
-		privacySaveInFlight.current = true;
-		privacyRevision.current += 1;
-		setSavingPrivacy(true);
+		if (!userId || preferenceSaveInFlight.current)
+			throw new Error("Preferences cannot be saved now");
+		preferenceSaveInFlight.current = true;
+		preferenceRevision.current += 1;
+		setSavingPreferences(true);
 		try {
-			const updated = await pb
-				.collection("users")
-				.update(userId, { hide_amounts: hidden });
-			if (updated.hide_amounts !== hidden)
-				throw new Error("Privacy preference was not saved");
+			const updated = await pb.collection("users").update(userId, updates);
+			if (
+				Object.entries(updates).some(([key, value]) => updated[key] !== value)
+			)
+				throw new Error("Preferences were not saved");
 			if (pb.authStore.record?.id === userId)
 				pb.authStore.save(pb.authStore.token, updated);
 		} finally {
-			privacySaveInFlight.current = false;
-			setSavingPrivacy(false);
+			preferenceSaveInFlight.current = false;
+			setSavingPreferences(false);
 		}
 	};
+
+	const setHideAmounts = (hidden: boolean) =>
+		savePreferences({ hide_amounts: hidden });
 
 	const login = async (email: string, password: string) => {
 		try {
@@ -193,7 +206,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const value = {
 		user,
 		setHideAmounts,
-		savingPrivacy,
+		savingPrivacy: savingPreferences,
+		savingPreferences,
+		savePreferences,
 		login,
 		register,
 		logout,

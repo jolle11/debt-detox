@@ -1,4 +1,49 @@
 {
+	"debtSort": {
+		"label": "Ordenar por",
+		"direction": "Direção",
+		"saving": "A guardar ordem",
+		"saveError": "Não foi possível guardar a ordem. Tenta novamente.",
+		"criteria": {
+			"pending": "Por pagar este mês",
+			"remaining": "Valor pendente",
+			"monthly": "Prestação mensal",
+			"end_date": "Data de fim",
+			"progress": "Progresso",
+			"created": "Data de criação",
+			"name": "Nome"
+		},
+		"directions": {
+			"pending": {
+				"asc": "Por pagar primeiro",
+				"desc": "Pagas primeiro"
+			},
+			"remaining": {
+				"asc": "Menor para maior",
+				"desc": "Maior para menor"
+			},
+			"end_date": {
+				"asc": "Mais próximas",
+				"desc": "Mais distantes"
+			},
+			"progress": {
+				"asc": "Menos avançadas",
+				"desc": "Mais avançadas"
+			},
+			"created": {
+				"asc": "Mais antigas",
+				"desc": "Mais recentes"
+			},
+			"monthly": {
+				"asc": "Menor para maior",
+				"desc": "Maior para menor"
+			},
+			"name": {
+				"asc": "A–Z",
+				"desc": "Z–A"
+			}
+		}
+	},
 	"privacy": {
 		"title": "Privacidade dos valores",
 		"hide": "Ocultar valores",

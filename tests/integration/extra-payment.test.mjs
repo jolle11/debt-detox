@@ -1068,3 +1068,30 @@ test("another user cannot change amount privacy", async () => {
 	const unchanged = await owner.collection("users").getOne(ownerRecord.id);
 	assert.equal(unchanged.hide_amounts, false);
 });
+
+test("debt sorting preferences persist across sessions without changing amount privacy", async () => {
+	const saved = await owner.collection("users").update(ownerRecord.id, {
+		debt_sort_by: "remaining", debt_sort_direction: "desc", hide_amounts: true,
+	});
+	assert.equal(saved.debt_sort_by, "remaining");
+	const mobile = new PocketBase(BASE_URL);
+	await mobile.collection("users").authWithPassword("owner@debt-detox.test", "owner-password");
+	assert.equal(mobile.authStore.record.debt_sort_by, "remaining");
+	assert.equal(mobile.authStore.record.debt_sort_direction, "desc");
+	await mobile.collection("users").update(ownerRecord.id, {debt_sort_by:"name",debt_sort_direction:"asc"});
+	const refreshed = await owner.collection("users").authRefresh();
+	assert.equal(refreshed.record.debt_sort_by, "name");
+	assert.equal(refreshed.record.debt_sort_direction, "asc");
+	assert.equal(refreshed.record.hide_amounts, true);
+	await owner.collection("users").update(ownerRecord.id, {hide_amounts:false});
+});
+
+test("sorting preferences reject invalid values and updates by another user", async () => {
+	for (const update of [{debt_sort_by:"unknown"},{debt_sort_direction:"unknown"}]) {
+		await assert.rejects(owner.collection("users").update(ownerRecord.id,update), error=>error?.status===400);
+	}
+	await assert.rejects(otherUser.collection("users").update(ownerRecord.id,{debt_sort_by:"monthly"}),error=>error?.status===404);
+	const unchanged = await owner.collection("users").getOne(ownerRecord.id);
+	assert.equal(unchanged.debt_sort_by,"name");
+	assert.equal(unchanged.debt_sort_direction,"asc");
+});
