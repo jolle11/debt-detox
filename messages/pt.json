@@ -97,6 +97,8 @@
 			"totalAmount": "Valor total",
 			"paidAmount": "Valor pago",
 			"remainingAmount": "Valor pendente",
+			"expand": "Mostrar detalhes",
+			"collapse": "Ocultar detalhes",
 			"monthlyAmount": "Prestação mensal",
 			"finalPayment": "Prestação final",
 			"finalPaymentDate": "Data última prestação",
@@ -107,6 +109,7 @@
 				"completed": "Concluída"
 			},
 			"actions": {
+				"label": "Ações",
 				"viewDetails": "Ver detalhes",
 				"recordPayment": "Registrar pagamento",
 				"edit": "Editar",
@@ -380,6 +383,7 @@
 		"completed": "Concluída",
 		"pendingStart": "Pendente de início",
 		"monthlyPaid": "Mensalidade paga",
+		"payInstallment": "Pagar prestação",
 		"markAsPaid": "Marcar como paga",
 		"allPaymentsCompleted": "Todos os pagamentos concluídos",
 		"nextPayment": "Próxima prestação",

@@ -97,6 +97,8 @@
 			"totalAmount": "Gesamtbetrag",
 			"paidAmount": "Bezahlter Betrag",
 			"remainingAmount": "Ausstehender Betrag",
+			"expand": "Details anzeigen",
+			"collapse": "Details ausblenden",
 			"monthlyAmount": "Monatliche Rate",
 			"finalPayment": "Schlusszahlung",
 			"finalPaymentDate": "Datum Schlusszahlung",
@@ -109,6 +111,7 @@
 				"completed": "Abgeschlossen"
 			},
 			"actions": {
+				"label": "Aktionen",
 				"viewDetails": "Details anzeigen",
 				"recordPayment": "Zahlung erfassen",
 				"edit": "Bearbeiten",
@@ -384,6 +387,7 @@
 		"completed": "Abgeschlossen",
 		"pendingStart": "Ausstehender Start",
 		"monthlyPaid": "Monatliche Rate bezahlt",
+		"payInstallment": "Rate bezahlen",
 		"markAsPaid": "Als bezahlt markieren",
 		"allPaymentsCompleted": "Alle Zahlungen abgeschlossen",
 		"nextPayment": "Nächste Zahlung",

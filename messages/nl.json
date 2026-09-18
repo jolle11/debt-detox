@@ -97,6 +97,8 @@
 			"totalAmount": "Totaalbedrag",
 			"paidAmount": "Betaald bedrag",
 			"remainingAmount": "Resterend bedrag",
+			"expand": "Details tonen",
+			"collapse": "Details verbergen",
 			"monthlyAmount": "Maandelijkse termijn",
 			"finalPayment": "Eindtermijn",
 			"finalPaymentDate": "Datum laatste termijn",
@@ -107,6 +109,7 @@
 				"completed": "Voltooid"
 			},
 			"actions": {
+				"label": "Acties",
 				"viewDetails": "Details bekijken",
 				"recordPayment": "Betaling registreren",
 				"edit": "Bewerken",
@@ -380,6 +383,7 @@
 		"completed": "Voltooid",
 		"pendingStart": "In afwachting van start",
 		"monthlyPaid": "Maandelijkse betaling gedaan",
+		"payInstallment": "Termijn betalen",
 		"markAsPaid": "Markeren als betaald",
 		"allPaymentsCompleted": "Alle betalingen voltooid",
 		"nextPayment": "Volgende termijn",

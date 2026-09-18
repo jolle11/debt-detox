@@ -42,7 +42,7 @@ export default function DebtsList({
 					counts={counts}
 				/>
 
-				<div className="space-y-4">
+				<div className="space-y-2">
 					{filteredDebts.map((debt) => (
 						<DebtCard
 							key={debt.id}

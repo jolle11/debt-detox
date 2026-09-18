@@ -1,9 +1,15 @@
-import { UsersThreeIcon } from "@phosphor-icons/react";
+"use client";
+
+import { CaretDownIcon, UsersThreeIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
-import { useMemo } from "react";
+import { type MouseEvent, useId, useMemo, useState } from "react";
+import { useCurrency } from "@/hooks/useCurrency";
 import type { MarkPaymentAsPaidFn } from "@/hooks/usePayments";
-import { useRouter } from "@/i18n/routing";
-import { calculateDebtStatus } from "@/lib/format";
+import { Link } from "@/i18n/routing";
+import {
+	calculateDebtStatus,
+	calculateRemainingAmountWithPayments,
+} from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
 import DebtActions from "./DebtActions";
 import DebtInfo from "./DebtInfo";
@@ -28,99 +34,119 @@ export default function DebtCard({
 	onComplete,
 }: DebtCardProps) {
 	const t = useTranslations();
+	const { formatCurrency } = useCurrency();
+	const [expanded, setExpanded] = useState(false);
+	const detailsId = useId();
 	const status = calculateDebtStatus(debt.completed_at);
-	const router = useRouter();
 	const debtPayments = useMemo(
 		() => payments.filter((p) => p.debt_id === debt.id),
 		[payments, debt.id],
 	);
+	const remainingAmount = calculateRemainingAmountWithPayments(
+		debt,
+		debtPayments,
+	);
 
-	const handleCardClick = () => {
-		router.push(`/debt/${debt.id}`);
-	};
-
-	const handleCardContainerClick = (
-		event: React.MouseEvent<HTMLDivElement>,
-	) => {
-		const target = event.target as HTMLElement;
-
-		if (target.closest("[data-stop-card-click='true']")) {
+	const handleCardClick = (event: MouseEvent<HTMLElement>) => {
+		const target = event.target as Element;
+		if (
+			target.closest(
+				"a, button, input, select, textarea, [role='button'], .dropdown",
+			)
+		) {
 			return;
 		}
-
-		handleCardClick();
-	};
-
-	const handleCardKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-		if (event.key === "Enter" || event.key === " ") {
-			event.preventDefault();
-			handleCardClick();
-		}
+		setExpanded((value) => !value);
 	};
 
 	return (
-		/* biome-ignore lint/a11y/useSemanticElements: card container needs button semantics while preserving nested action controls */
-		<div
-			className={`card bg-base-100 shadow cursor-pointer hover:shadow-lg transition-shadow ${status === "completed" ? "opacity-75" : ""}`}
-			role="button"
-			tabIndex={0}
-			onClick={handleCardContainerClick}
-			onKeyDown={handleCardKeyDown}
+		// biome-ignore lint/a11y/useKeyWithClickEvents: the disclosure button provides equivalent keyboard interaction.
+		// biome-ignore lint/a11y/noNoninteractiveElementInteractions: card clicks delegate to the accessible disclosure button without nesting interactive controls.
+		<article
+			onClick={handleCardClick}
+			className={`cursor-pointer rounded-xl border border-base-300 bg-base-100 transition-colors hover:border-primary/40 ${status === "completed" ? "opacity-75" : ""}`}
 		>
-			<div className="card-body p-3 sm:p-5 lg:p-6">
-				{/* Header: Name + Entity + Actions */}
-				<div className="flex justify-between items-start gap-2">
-					<div className="flex-1 min-w-0">
-						<h3 className="card-title text-base sm:text-xl leading-tight truncate">
-							{debt.name}
+			<div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-1 gap-y-2 p-3 sm:grid-cols-[minmax(0,1fr)_auto_auto_auto_auto] sm:gap-x-4 sm:px-4">
+				<div className="min-w-0">
+					<div className="flex items-center gap-2">
+						<h3 className="min-w-0 truncate text-sm font-semibold sm:text-base">
+							<Link
+								href={`/debt/${debt.id}`}
+								className="hover:text-primary hover:underline"
+								title={debt.name}
+							>
+								{debt.name}
+							</Link>
 						</h3>
-						<p className="text-sm sm:text-base text-base-content/70">
-							{debt.entity}
-						</p>
 						{debt.is_shared && (
-							<div className="badge badge-secondary badge-sm gap-1 mt-2">
-								<UsersThreeIcon className="w-3.5 h-3.5" />
-								{t("debt.shared.badge")}
-							</div>
+							<span
+								className="shrink-0 text-secondary"
+								title={t("debt.shared.badge")}
+							>
+								<UsersThreeIcon size={16} aria-label={t("debt.shared.badge")} />
+							</span>
 						)}
 					</div>
-					<div
-						className="flex items-center gap-1 shrink-0"
-						data-stop-card-click="true"
-					>
-						<DebtActions
-							debt={debt}
-							onEdit={onEdit}
-							onDelete={onDelete}
-							onComplete={onComplete}
-						/>
-					</div>
+					<p className="truncate text-xs text-base-content/60">{debt.entity}</p>
 				</div>
 
-				{/* Divider */}
-				<div className="divider my-0 sm:my-1" />
-
-				{/* Stats grid */}
-				<DebtInfo debt={debt} payments={debtPayments} />
-
-				{/* Progress section */}
-				<div className="mt-3 sm:mt-4">
-					<DebtProgressWithPayments
-						debt={debt}
-						payments={debtPayments}
-						isLoading={false}
-					/>
+				<div className="col-start-1 row-start-2 min-w-0 sm:col-start-2 sm:row-start-1 sm:text-right">
+					<p className="text-sm font-semibold tabular-nums text-primary sm:text-base">
+						{formatCurrency(remainingAmount)}
+					</p>
+					<p className="text-xs text-base-content/60">
+						{t("dashboard.debt.remainingAmount")}
+					</p>
 				</div>
 
-				{/* Payment status — integrated into bottom row on desktop */}
-				<div className="mt-2 sm:mt-3 flex items-center justify-between">
+				<div className="col-span-2 col-start-2 row-start-2 justify-self-end sm:col-span-1 sm:col-start-3 sm:row-start-1">
 					<DebtPaymentStatus
 						debt={debt}
 						payments={debtPayments}
 						onMarkPaymentAsPaid={onMarkPaymentAsPaid}
+						compact
 					/>
 				</div>
+
+				<div className="col-start-2 row-start-1 sm:col-start-4">
+					<DebtActions
+						debt={debt}
+						onEdit={onEdit}
+						onDelete={onDelete}
+						onComplete={onComplete}
+						hideStatus
+					/>
+				</div>
+				<button
+					type="button"
+					className="btn btn-ghost btn-sm btn-square col-start-3 row-start-1 justify-self-end sm:col-start-5"
+					onClick={() => setExpanded((value) => !value)}
+					aria-expanded={expanded}
+					aria-controls={detailsId}
+					aria-label={`${t(expanded ? "dashboard.debt.collapse" : "dashboard.debt.expand")}: ${debt.name}`}
+				>
+					<CaretDownIcon
+						size={18}
+						className={`transition-transform motion-reduce:transition-none ${expanded ? "rotate-180" : ""}`}
+						aria-hidden="true"
+					/>
+				</button>
 			</div>
-		</div>
+
+			<div
+				id={detailsId}
+				hidden={!expanded}
+				className="border-t border-base-300 p-3 sm:p-4"
+			>
+				{expanded && (
+					<>
+						<DebtInfo debt={debt} payments={debtPayments} />
+						<div className="mt-4">
+							<DebtProgressWithPayments debt={debt} payments={debtPayments} />
+						</div>
+					</>
+				)}
+			</div>
+		</article>
 	);
 }

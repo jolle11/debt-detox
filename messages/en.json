@@ -97,6 +97,8 @@
 			"totalAmount": "Total amount",
 			"paidAmount": "Paid amount",
 			"remainingAmount": "Remaining amount",
+			"expand": "Show details",
+			"collapse": "Hide details",
 			"monthlyAmount": "Monthly payment",
 			"finalPayment": "Final payment",
 			"finalPaymentDate": "Final payment date",
@@ -107,6 +109,7 @@
 				"completed": "Completed"
 			},
 			"actions": {
+				"label": "Actions",
 				"viewDetails": "View details",
 				"recordPayment": "Record payment",
 				"edit": "Edit",
@@ -380,6 +383,7 @@
 		"completed": "Completed",
 		"pendingStart": "Pending start",
 		"monthlyPaid": "Monthly payment paid",
+		"payInstallment": "Pay installment",
 		"markAsPaid": "Mark as paid",
 		"allPaymentsCompleted": "All payments completed",
 		"nextPayment": "Next payment",

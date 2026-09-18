@@ -10,12 +10,14 @@ interface DebtPaymentStatusProps {
 	debt: Debt;
 	payments: Payment[];
 	onMarkPaymentAsPaid: MarkPaymentAsPaidFn;
+	compact?: boolean;
 }
 
 export default function DebtPaymentStatus({
 	debt,
 	payments,
 	onMarkPaymentAsPaid,
+	compact = false,
 }: DebtPaymentStatusProps) {
 	const [isProcessing, setIsProcessing] = useState(false);
 	const t = useTranslations("paymentStatus");
@@ -73,7 +75,11 @@ export default function DebtPaymentStatus({
 	if (isDebtCompleted) {
 		return (
 			<div className="flex items-center gap-3">
-				<div className="badge badge-success badge-lg">{t("completed")}</div>
+				<div
+					className={`badge badge-success ${compact ? "badge-sm whitespace-nowrap" : "badge-lg"}`}
+				>
+					{t("completed")}
+				</div>
 			</div>
 		);
 	}
@@ -82,7 +88,11 @@ export default function DebtPaymentStatus({
 	if (lifecycleStatus === "pending") {
 		return (
 			<div className="flex items-center gap-3">
-				<div className="badge badge-neutral badge-lg">{t("pendingStart")}</div>
+				<div
+					className={`badge badge-neutral ${compact ? "badge-sm whitespace-nowrap" : "badge-lg"}`}
+				>
+					{t("pendingStart")}
+				</div>
 			</div>
 		);
 	}
@@ -90,17 +100,22 @@ export default function DebtPaymentStatus({
 	return (
 		<div className="flex items-center gap-3">
 			{isCurrentMonthPaid ? (
-				<div className="badge badge-success badge-lg">{t("monthlyPaid")}</div>
+				<div
+					className={`badge badge-success ${compact ? "badge-sm whitespace-nowrap" : "badge-lg"}`}
+				>
+					{t("monthlyPaid")}
+				</div>
 			) : (
 				<button
 					onClick={handleMarkAsPaid}
 					disabled={isProcessing}
-					className="btn btn-primary btn-sm sm:btn-md"
+					type="button"
+					className={`btn btn-primary ${compact ? "btn-sm whitespace-nowrap" : "btn-sm sm:btn-md"}`}
 				>
 					{isProcessing ? (
 						<span className="loading loading-spinner loading-sm"></span>
 					) : (
-						t("markAsPaid")
+						t(compact ? "payInstallment" : "markAsPaid")
 					)}
 				</button>
 			)}

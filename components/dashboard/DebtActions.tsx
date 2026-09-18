@@ -1,5 +1,6 @@
 import { DotsThreeIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 import { calculateDebtStatus } from "@/lib/format";
 import type { Debt } from "@/lib/types";
 
@@ -8,6 +9,7 @@ interface DebtActionsProps {
 	onEdit?: (debt: Debt) => void;
 	onDelete?: (debt: Debt) => void;
 	onComplete?: (debt: Debt) => void;
+	hideStatus?: boolean;
 }
 
 export default function DebtActions({
@@ -15,6 +17,7 @@ export default function DebtActions({
 	onEdit,
 	onDelete,
 	onComplete,
+	hideStatus = false,
 }: DebtActionsProps) {
 	const t = useTranslations();
 	const status = calculateDebtStatus(debt.completed_at);
@@ -48,40 +51,51 @@ export default function DebtActions({
 
 	return (
 		<div className="flex flex-row items-center gap-1">
-			<div
-				className={`badge badge-sm sm:badge-md ${
-					status === "completed" ? "badge-success" : "badge-primary"
-				}`}
-			>
-				{status === "completed"
-					? t("dashboard.debt.status.completed")
-					: t("dashboard.debt.status.active")}
-			</div>
+			{!hideStatus && (
+				<div
+					className={`badge badge-sm sm:badge-md ${
+						status === "completed" ? "badge-success" : "badge-primary"
+					}`}
+				>
+					{status === "completed"
+						? t("dashboard.debt.status.completed")
+						: t("dashboard.debt.status.active")}
+				</div>
+			)}
 
 			<div className="dropdown dropdown-end">
-				<label tabIndex={0} className="btn btn-ghost btn-xs sm:btn-sm">
+				<button
+					type="button"
+					aria-label={t("dashboard.debt.actions.label")}
+					className="btn btn-ghost btn-sm btn-square"
+				>
 					<DotsThreeIcon size={16} />
-				</label>
+				</button>
 				<ul
 					tabIndex={0}
 					className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
 				>
 					{actions.map((action) => (
 						<li key={action.key}>
-							<a
-								className={action.className}
-								onClick={() => {
-									if (action.key === "edit" && onEdit) {
-										onEdit(debt);
-									} else if (action.key === "delete" && onDelete) {
-										onDelete(debt);
-									} else if (action.key === "complete" && onComplete) {
-										onComplete(debt);
-									}
-								}}
-							>
-								{action.label}
-							</a>
+							{action.key === "viewDetails" ? (
+								<Link href={`/debt/${debt.id}`}>{action.label}</Link>
+							) : (
+								<button
+									type="button"
+									className={action.className}
+									onClick={() => {
+										if (action.key === "edit" && onEdit) {
+											onEdit(debt);
+										} else if (action.key === "delete" && onDelete) {
+											onDelete(debt);
+										} else if (action.key === "complete" && onComplete) {
+											onComplete(debt);
+										}
+									}}
+								>
+									{action.label}
+								</button>
+							)}
 						</li>
 					))}
 				</ul>
