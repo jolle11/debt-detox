@@ -70,7 +70,7 @@ export default function DebtCard({
 		// biome-ignore lint/a11y/noNoninteractiveElementInteractions: card clicks delegate to the accessible disclosure button without nesting interactive controls.
 		<article
 			onClick={handleCardClick}
-			className={`cursor-pointer rounded-xl border border-base-300 bg-base-100 transition-colors hover:border-primary/40 ${status === "completed" ? "opacity-75" : ""}`}
+			className={`relative focus-within:z-10 cursor-pointer rounded-xl border border-base-300 bg-base-100 transition-colors hover:border-primary/40 ${status === "completed" ? "opacity-75" : ""}`}
 		>
 			<div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-1 gap-y-2 p-3 sm:grid-cols-[minmax(0,1fr)_auto_auto_auto_auto] sm:gap-x-4 sm:px-4">
 				<div className="min-w-0">

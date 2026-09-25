@@ -66,7 +66,12 @@ export default function DebtActions({
 				</div>
 			)}
 
-			<div className="dropdown dropdown-end">
+			{/* Prevent card click handlers from handling menu selections. */}
+			{/* biome-ignore lint/a11y/noStaticElementInteractions: interactive descendants handle keyboard input. */}
+			<div
+				className="dropdown dropdown-end"
+				onClick={(event) => event.stopPropagation()}
+			>
 				<button
 					type="button"
 					aria-label={t("dashboard.debt.actions.label")}
@@ -76,7 +81,7 @@ export default function DebtActions({
 				</button>
 				<ul
 					tabIndex={0}
-					className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+					className="dropdown-content menu z-20 p-2 shadow bg-base-100 rounded-box w-52"
 				>
 					{actions
 						.filter((action) => canManage || action.key === "viewDetails")

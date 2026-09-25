@@ -28,7 +28,7 @@ export default function DemoDebtCard({
 
 	return (
 		<div
-			className={`card bg-base-100 shadow cursor-pointer hover:shadow-lg transition-shadow ${status === "completed" ? "opacity-75" : ""}`}
+			className={`card relative focus-within:z-10 bg-base-100 shadow cursor-pointer hover:shadow-lg transition-shadow ${status === "completed" ? "opacity-75" : ""}`}
 			onClick={handleCardClick}
 		>
 			<div className="card-body p-5">
