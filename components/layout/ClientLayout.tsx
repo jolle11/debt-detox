@@ -2,27 +2,59 @@
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import SessionGuard from "@/components/auth/SessionGuard";
 import Header from "@/components/layout/Header";
 import ServiceWorkerRegistration from "@/components/pwa/ServiceWorkerRegistration";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { DebtsProvider } from "@/contexts/DebtsContext";
-import { useCollaborationSync } from "@/hooks/useCollaborationSync";
 import { useAuthSync } from "@/hooks/useAuthSync";
+import { useCollaborationSync } from "@/hooks/useCollaborationSync";
 import { makeQueryClient } from "@/lib/query-client";
 
 interface ClientLayoutProps {
 	children: React.ReactNode;
 }
 
+function AppToaster() {
+	const [theme, setTheme] = useState<"light" | "dark">("light");
+
+	useEffect(() => {
+		const html = document.documentElement;
+		const syncTheme = () => {
+			setTheme(html.getAttribute("data-theme") === "dark" ? "dark" : "light");
+		};
+		const observer = new MutationObserver(syncTheme);
+		observer.observe(html, {
+			attributes: true,
+			attributeFilter: ["data-theme"],
+		});
+		syncTheme();
+		return () => observer.disconnect();
+	}, []);
+
+	return (
+		<Toaster
+			position="bottom-right"
+			theme={theme}
+			richColors
+			closeButton
+			toastOptions={{
+				style: {
+					fontFamily:
+						"var(--font-inconsolata), Inconsolata, ui-sans-serif, system-ui, sans-serif",
+				},
+			}}
+		/>
+	);
+}
+
 function AppLayout({ children }: ClientLayoutProps) {
 	const { user, loading } = useAuth();
 	const pathname = usePathname();
 	const isPublicLandingRoute =
-		pathname !== null &&
-		/^\/(?:(es|en|fr|de|pt|nl))?\/?$/.test(pathname);
+		pathname !== null && /^\/(?:(es|en|fr|de|pt|nl))?\/?$/.test(pathname);
 
 	// Sync queries with auth state changes
 	useAuthSync();
@@ -66,17 +98,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 			<AuthProvider>
 				<DebtsProvider>
 					<AppLayout>{children}</AppLayout>
-					<Toaster
-						position="bottom-right"
-						richColors
-						closeButton
-						toastOptions={{
-							style: {
-								fontFamily:
-									"var(--font-inconsolata), Inconsolata, ui-sans-serif, system-ui, sans-serif",
-							},
-						}}
-					/>
+					<AppToaster />
 				</DebtsProvider>
 			</AuthProvider>
 		</QueryClientProvider>
