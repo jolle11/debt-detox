@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { createContext, type ReactNode, useContext } from "react";
 import { mockDebts, mockPayments } from "@/lib/mock-data";
 import type { Debt, Payment } from "@/lib/types";
@@ -16,8 +17,21 @@ interface DemoContextType {
 const DemoContext = createContext<DemoContextType | undefined>(undefined);
 
 export function DemoProvider({ children }: { children: ReactNode }) {
+	const t = useTranslations("landing.demo.sample");
 	const demoValue: DemoContextType = {
-		debts: mockDebts,
+		debts: mockDebts.map((debt) => {
+			const sample =
+				debt.id === "demo-laptop"
+					? "laptop"
+					: debt.id === "demo-mobile"
+						? "mobile"
+						: "sofa";
+			return {
+				...debt,
+				name: t(`${sample}.name`),
+				entity: t(`${sample}.entity`),
+			};
+		}),
 		payments: mockPayments,
 		isLoading: false,
 		error: null,

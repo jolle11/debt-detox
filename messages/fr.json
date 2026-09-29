@@ -264,7 +264,7 @@
 	"landing": {
 		"hero": {
 			"tagline": "Suivez vos dettes, prêts et mensualités",
-			"subtitle": "Prenez le contrôle de vos engagements financiers",
+			"subtitle": "Retrouvez vos dettes, paiements et progrès au même endroit.",
 			"features": "Gratuit • Aucuns frais cachés • Vos données restent privées"
 		},
 		"features": {
@@ -280,6 +280,18 @@
 			"stayMotivated": {
 				"title": "Restez Motivé",
 				"description": "Le suivi visuel du progrès vous maintient motivé dans votre parcours"
+			},
+			"customDashboard": {
+				"title": "Un tableau de bord à votre image",
+				"description": "Choisissez les indicateurs à afficher : solde restant, mensualités, progression et plus."
+			},
+			"sharedDebts": {
+				"title": "Dettes partagées",
+				"description": "Invitez une autre personne et voyez votre moitié des mensualités et du solde."
+			},
+			"extraPayments": {
+				"title": "Paiements supplémentaires",
+				"description": "Payez en avance et réduisez le nombre de mensualités ou leur montant."
 			}
 		},
 		"details": {
@@ -300,6 +312,18 @@
 			"entityDetails": {
 				"title": "Détails de l'Entité",
 				"description": "Stockez les informations de l'entité contractante et les détails financiers"
+			},
+			"sortFilter": {
+				"title": "Retrouvez chaque dette",
+				"description": "Filtrez par statut et triez par mensualité impayée, montant, date ou progression."
+			},
+			"monthlyPayments": {
+				"title": "Mensualités à jour",
+				"description": "Marquez la mensualité du mois comme payée et consultez l’historique."
+			},
+			"privacy": {
+				"title": "Confidentialité en un geste",
+				"description": "Masquez les montants lorsque vous consultez votre tableau de bord en public."
 			}
 		},
 		"cta": {
@@ -308,12 +332,27 @@
 		},
 		"demo": {
 			"title": "Aperçu Interactif",
-			"subtitle": "Explorez comment fonctionne Debt Detox avec des données d'exemple",
+			"subtitle": "Essayez le tableau de bord avec des données fictives : filtrez, triez et ouvrez une dette.",
 			"cta": "Créer Mon Compte",
 			"bottomCta": {
 				"title": "Vous Aimez Ce Que Vous Voyez ?",
 				"subtitle": "Créez votre compte gratuit et commencez à gérer vos vraies dettes",
 				"button": "Commencer Gratuitement"
+			},
+			"readOnly": "Ceci est une démo. Créez un compte pour gérer vos propres dettes.",
+			"sample": {
+				"laptop": {
+					"name": "Ordinateur portable",
+					"entity": "Magasin d’électronique"
+				},
+				"mobile": {
+					"name": "Téléphone partagé",
+					"entity": "Opérateur mobile"
+				},
+				"sofa": {
+					"name": "Canapé",
+					"entity": "Magasin de meubles"
+				}
 			}
 		},
 		"footer": {

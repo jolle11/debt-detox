@@ -9,7 +9,7 @@ import {
 	TargetIcon,
 	TrashIcon,
 } from "@phosphor-icons/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import DebtPaymentsList from "@/components/dashboard/DebtPaymentsList";
 import DebtProgressWithPayments from "@/components/dashboard/DebtProgressWithPayments";
 import { useCurrency } from "@/hooks/useCurrency";
@@ -31,6 +31,7 @@ export default function DemoDebtDetail({
 }: DemoDebtDetailProps) {
 	const t = useTranslations();
 	const tLanding = useTranslations("landing");
+	const locale = useLocale();
 	const { formatCurrency } = useCurrency();
 	const { payments } = useDemoContext();
 	const debtPayments = payments.filter((p) => p.debt_id === debt.id);
@@ -48,7 +49,7 @@ export default function DemoDebtDetail({
 		(debt.final_payment || 0);
 
 	const formatDate = (dateString: string) => {
-		return new Date(dateString).toLocaleDateString("es-ES", {
+		return new Date(`${dateString}T12:00:00Z`).toLocaleDateString(locale, {
 			year: "numeric",
 			month: "long",
 			day: "numeric",
@@ -68,9 +69,7 @@ export default function DemoDebtDetail({
 
 	// Handlers para la demo
 	const demoAlert = () => {
-		alert(
-			"¡Esta es solo una demo! Regístrate para gestionar tus deudas reales.",
-		);
+		alert(tLanding("demo.readOnly"));
 	};
 
 	return (
@@ -358,7 +357,7 @@ export default function DemoDebtDetail({
 					{tLanding("demo.bottomCta.title")}
 				</h3>
 				<p className="text-base-content/70 mb-4">
-					Ve todos los detalles, registra pagos, y gestiona tus deudas reales
+					{tLanding("demo.bottomCta.subtitle")}
 				</p>
 				<button onClick={onLoginClick} className="btn btn-primary btn-lg">
 					{tLanding("demo.bottomCta.button")}

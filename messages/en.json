@@ -262,7 +262,7 @@
 	"landing": {
 		"hero": {
 			"tagline": "Track debts, loans and monthly payments",
-			"subtitle": "Take control of your financial commitments",
+			"subtitle": "Keep your debts, payments, and progress in one place.",
 			"features": "Free to use • No hidden fees • Your data stays private"
 		},
 		"features": {
@@ -278,6 +278,18 @@
 			"stayMotivated": {
 				"title": "Stay Motivated",
 				"description": "Visual progress tracking keeps you motivated on your journey"
+			},
+			"customDashboard": {
+				"title": "Your own dashboard",
+				"description": "Choose the metrics you want to see: remaining debt, installments, progress, and more."
+			},
+			"sharedDebts": {
+				"title": "Shared debts",
+				"description": "Invite someone and see your half of each installment and remaining balance."
+			},
+			"extraPayments": {
+				"title": "Extra payments",
+				"description": "Pay ahead and choose whether to reduce installments or the monthly amount."
 			}
 		},
 		"details": {
@@ -298,20 +310,47 @@
 			"entityDetails": {
 				"title": "Entity Details",
 				"description": "Store contracting entity info and financial details"
+			},
+			"sortFilter": {
+				"title": "Find any debt",
+				"description": "Filter by status and sort by unpaid installment, amount, date, or progress."
+			},
+			"monthlyPayments": {
+				"title": "Stay on top of installments",
+				"description": "Mark this month as paid and review each debt’s payment history."
+			},
+			"privacy": {
+				"title": "Privacy in one tap",
+				"description": "Hide amounts when viewing your dashboard around other people."
 			}
 		},
 		"cta": {
 			"title": "Ready to Get Started?",
-			"subtitle": "Join thousands of people taking control of their financial future"
+			"subtitle": "Create your free account and start organizing your debts."
 		},
 		"demo": {
 			"title": "Interactive Preview",
-			"subtitle": "Explore how Debt Detox works with sample data",
+			"subtitle": "Try the updated dashboard with sample data: filter, sort, and open a debt.",
 			"cta": "Create My Account",
 			"bottomCta": {
 				"title": "Like What You See?",
 				"subtitle": "Create your free account and start managing your real debts",
 				"button": "Start Free"
+			},
+			"readOnly": "This is a demo. Create an account to manage your own debts.",
+			"sample": {
+				"laptop": {
+					"name": "Laptop",
+					"entity": "Electronics store"
+				},
+				"mobile": {
+					"name": "Shared phone",
+					"entity": "Mobile carrier"
+				},
+				"sofa": {
+					"name": "Sofa",
+					"entity": "Furniture store"
+				}
 			}
 		},
 		"footer": {

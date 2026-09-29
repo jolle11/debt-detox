@@ -1,8 +1,11 @@
 "use client";
 
+import { SlidersHorizontalIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import DashboardWidgetEditor from "@/components/dashboard/DashboardWidgetEditor";
 import SummaryStats from "@/components/dashboard/SummaryStats";
+import type { DashboardWidgetId } from "@/lib/dashboardWidgets";
 import type { Debt } from "@/lib/types";
 import DemoDebtsList from "./DemoDebtsList";
 import { useDemoContext } from "./DemoProvider";
@@ -19,26 +22,25 @@ export default function DemoDashboard({
 	const t = useTranslations();
 	const tLanding = useTranslations("landing");
 	const { debts, payments } = useDemoContext();
-	const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
-	const [deletingDebt, setDeletingDebt] = useState<Debt | null>(null);
+	const [showWidgetEditor, setShowWidgetEditor] = useState(false);
+	const [widgets, setWidgets] = useState<DashboardWidgetId[]>([
+		"remainingDebt",
+		"monthlyPayment",
+		"completedDebts",
+		"averageProgress",
+	]);
 
 	// Handlers para la demo - no hacen nada real
 	const demoHandlers = {
-		onEdit: (debt: Debt) => {
+		onEdit: (_debt: Debt) => {
 			// En la demo, simplemente mostramos un mensaje
-			alert(
-				"¡Esta es solo una demo! Regístrate para editar tus deudas reales.",
-			);
+			alert(tLanding("demo.readOnly"));
 		},
-		onDelete: (debt: Debt) => {
-			alert(
-				"¡Esta es solo una demo! Regístrate para gestionar tus deudas reales.",
-			);
+		onDelete: (_debt: Debt) => {
+			alert(tLanding("demo.readOnly"));
 		},
 		onAddDebt: () => {
-			alert(
-				"¡Esta es solo una demo! Regístrate para añadir tus deudas reales.",
-			);
+			alert(tLanding("demo.readOnly"));
 		},
 	};
 
@@ -62,8 +64,18 @@ export default function DemoDashboard({
 
 			{/* Demo Dashboard Content */}
 			<div className="space-y-4">
+				<div className="flex justify-end">
+					<button
+						type="button"
+						className="btn btn-ghost btn-sm"
+						onClick={() => setShowWidgetEditor(true)}
+					>
+						<SlidersHorizontalIcon className="h-4 w-4" />
+						{t("dashboard.customize.button")}
+					</button>
+				</div>
 				{/* Summary Cards */}
-				<SummaryStats debts={debts} payments={payments} />
+				<SummaryStats debts={debts} payments={payments} widgets={widgets} />
 
 				{/* Debt List */}
 				<DemoDebtsList
@@ -75,6 +87,16 @@ export default function DemoDashboard({
 					onAddDebt={demoHandlers.onAddDebt}
 				/>
 			</div>
+			<DashboardWidgetEditor
+				isOpen={showWidgetEditor}
+				widgets={widgets}
+				isSaving={false}
+				onClose={() => setShowWidgetEditor(false)}
+				onSave={async (nextWidgets) => {
+					setWidgets(nextWidgets);
+					setShowWidgetEditor(false);
+				}}
+			/>
 
 			{/* Bottom CTA */}
 			<div className="mt-8 p-6 bg-base-100 rounded-xl border-2 border-dashed border-primary/20 text-center">

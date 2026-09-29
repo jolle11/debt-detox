@@ -9,15 +9,16 @@ import type { Debt, Payment } from "@/lib/types";
 interface DemoDebtPaymentStatusProps {
 	debt: Debt;
 	payments: Payment[];
+	compact?: boolean;
 }
 
 export default function DemoDebtPaymentStatus({
 	debt,
 	payments,
+	compact = false,
 }: DemoDebtPaymentStatusProps) {
-	const t = useTranslations();
 	const tPayment = useTranslations("paymentStatus");
-	const tDashboard = useTranslations("dashboard");
+	const tLanding = useTranslations("landing");
 	const [showDemoAlert, setShowDemoAlert] = useState(false);
 
 	const { paidPayments, totalPayments } = calculatePaymentProgressWithPayments(
@@ -33,9 +34,37 @@ export default function DemoDebtPaymentStatus({
 
 	if (paidPayments >= totalPayments) {
 		return (
-			<div className="text-sm text-success font-medium">
-				✅ {tPayment("allPaymentsCompleted")}
+			<div
+				className={
+					compact
+						? "badge badge-success badge-sm whitespace-nowrap"
+						: "text-sm text-success font-medium"
+				}
+			>
+				{tPayment(compact ? "completed" : "allPaymentsCompleted")}
 			</div>
+		);
+	}
+
+	if (compact) {
+		const now = new Date();
+		const currentPayment = payments.find(
+			(payment) =>
+				payment.year === now.getFullYear() &&
+				payment.month === now.getMonth() + 1,
+		);
+		return currentPayment?.paid ? (
+			<span className="badge badge-success badge-sm whitespace-nowrap">
+				{tPayment("monthlyPaid")}
+			</span>
+		) : (
+			<button
+				type="button"
+				className="btn btn-primary btn-sm whitespace-nowrap"
+				onClick={handleMarkAsPaid}
+			>
+				{tPayment("payInstallment")}
+			</button>
 		);
 	}
 
@@ -43,9 +72,7 @@ export default function DemoDebtPaymentStatus({
 		<div className="space-y-2">
 			{showDemoAlert && (
 				<div className="alert alert-info alert-sm">
-					<span className="text-xs">
-						¡Esta es solo una demo! Regístrate para gestionar pagos reales.
-					</span>
+					<span className="text-xs">{tLanding("demo.readOnly")}</span>
 				</div>
 			)}
 

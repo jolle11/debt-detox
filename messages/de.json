@@ -264,7 +264,7 @@
 	"landing": {
 		"hero": {
 			"tagline": "Verwalte Schulden, Kredite und Monatsraten",
-			"subtitle": "Übernehmen Sie die Kontrolle über Ihre finanziellen Verpflichtungen",
+			"subtitle": "Verwalte Schulden, Zahlungen und Fortschritt an einem Ort.",
 			"features": "Kostenlos • Keine versteckten Gebühren • Ihre Daten bleiben privat"
 		},
 		"features": {
@@ -280,6 +280,18 @@
 			"stayMotivated": {
 				"title": "Bleiben Sie Motiviert",
 				"description": "Visuelle Fortschrittsverfolgung hält Sie auf Ihrem Weg motiviert"
+			},
+			"customDashboard": {
+				"title": "Dein Dashboard",
+				"description": "Wähle Kennzahlen wie Restschuld, Raten und Fortschritt selbst aus."
+			},
+			"sharedDebts": {
+				"title": "Gemeinsame Schulden",
+				"description": "Lade eine weitere Person ein und sieh deinen Anteil an Rate und Restschuld."
+			},
+			"extraPayments": {
+				"title": "Sonderzahlungen",
+				"description": "Zahle früher und verringere die Anzahl oder Höhe der Raten."
 			}
 		},
 		"details": {
@@ -300,6 +312,18 @@
 			"entityDetails": {
 				"title": "Entitätsdetails",
 				"description": "Speichern Sie Informationen zur Vertragspartei und Finanzdetails"
+			},
+			"sortFilter": {
+				"title": "Schulden schnell finden",
+				"description": "Filtere nach Status und sortiere nach offener Rate, Betrag, Datum oder Fortschritt."
+			},
+			"monthlyPayments": {
+				"title": "Raten im Blick",
+				"description": "Markiere die Monatsrate als bezahlt und prüfe den Zahlungsverlauf."
+			},
+			"privacy": {
+				"title": "Privatsphäre mit einem Tipp",
+				"description": "Blende Beträge aus, wenn andere dein Dashboard sehen können."
 			}
 		},
 		"cta": {
@@ -308,12 +332,27 @@
 		},
 		"demo": {
 			"title": "Interaktive Vorschau",
-			"subtitle": "Entdecken Sie, wie Debt Detox mit Beispieldaten funktioniert",
+			"subtitle": "Teste das aktuelle Dashboard mit Beispieldaten: filtern, sortieren und Details öffnen.",
 			"cta": "Mein Konto Erstellen",
 			"bottomCta": {
 				"title": "Gefällt Ihnen Was Sie Sehen?",
 				"subtitle": "Erstellen Sie Ihr kostenloses Konto und verwalten Sie Ihre echten Schulden",
 				"button": "Kostenlos Starten"
+			},
+			"readOnly": "Dies ist eine Demo. Erstelle ein Konto, um deine Schulden zu verwalten.",
+			"sample": {
+				"laptop": {
+					"name": "Laptop",
+					"entity": "Elektronikgeschäft"
+				},
+				"mobile": {
+					"name": "Geteiltes Handy",
+					"entity": "Mobilfunkanbieter"
+				},
+				"sofa": {
+					"name": "Sofa",
+					"entity": "Möbelgeschäft"
+				}
 			}
 		},
 		"footer": {

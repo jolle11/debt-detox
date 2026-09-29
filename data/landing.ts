@@ -19,40 +19,40 @@ export interface LandingSection {
 
 export const heroFeatures: LandingFeature[] = [
 	{
-		icon: "📊",
-		titleKey: "features.trackProgress.title",
-		descriptionKey: "features.trackProgress.description",
+		icon: "🧩",
+		titleKey: "features.customDashboard.title",
+		descriptionKey: "features.customDashboard.description",
 	},
 	{
-		icon: "💰",
-		titleKey: "features.managePayments.title",
-		descriptionKey: "features.managePayments.description",
+		icon: "🤝",
+		titleKey: "features.sharedDebts.title",
+		descriptionKey: "features.sharedDebts.description",
 	},
 	{
-		icon: "📈",
-		titleKey: "features.stayMotivated.title",
-		descriptionKey: "features.stayMotivated.description",
+		icon: "⚡",
+		titleKey: "features.extraPayments.title",
+		descriptionKey: "features.extraPayments.description",
 	},
 ];
 
 export const detailsFeatures: LandingDetail[] = [
 	{
-		icon: "💰",
+		icon: "🔎",
 		bgColor: "bg-primary/20",
-		titleKey: "details.amountTracking.title",
-		descriptionKey: "details.amountTracking.description",
+		titleKey: "details.sortFilter.title",
+		descriptionKey: "details.sortFilter.description",
 	},
 	{
-		icon: "📅",
+		icon: "📆",
 		bgColor: "bg-secondary/20",
-		titleKey: "details.dateManagement.title",
-		descriptionKey: "details.dateManagement.description",
+		titleKey: "details.monthlyPayments.title",
+		descriptionKey: "details.monthlyPayments.description",
 	},
 	{
-		icon: "🏦",
+		icon: "🔒",
 		bgColor: "bg-success/20",
-		titleKey: "details.entityDetails.title",
-		descriptionKey: "details.entityDetails.description",
+		titleKey: "details.privacy.title",
+		descriptionKey: "details.privacy.description",
 	},
 ];
 

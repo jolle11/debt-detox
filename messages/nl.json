@@ -262,7 +262,7 @@
 	"landing": {
 		"hero": {
 			"tagline": "Beheer schulden, leningen en maandlasten",
-			"subtitle": "Neem controle over uw financiële verplichtingen",
+			"subtitle": "Beheer schulden, betalingen en voortgang op één plek.",
 			"features": "Gratis • Geen verborgen kosten • Uw gegevens blijven privé"
 		},
 		"features": {
@@ -278,6 +278,18 @@
 			"stayMotivated": {
 				"title": "Blijf Gemotiveerd",
 				"description": "Visuele voortgangsregistratie houdt u gemotiveerd op uw reis"
+			},
+			"customDashboard": {
+				"title": "Jouw dashboard",
+				"description": "Kies welke cijfers je ziet: resterende schuld, termijnen, voortgang en meer."
+			},
+			"sharedDebts": {
+				"title": "Gedeelde schulden",
+				"description": "Nodig iemand uit en bekijk jouw helft van de termijn en het openstaande bedrag."
+			},
+			"extraPayments": {
+				"title": "Extra betalingen",
+				"description": "Betaal vooruit en verlaag het aantal termijnen of het maandbedrag."
 			}
 		},
 		"details": {
@@ -298,6 +310,18 @@
 			"entityDetails": {
 				"title": "Entiteitsdetails",
 				"description": "Bewaar informatie over contracterende entiteit en financiële details"
+			},
+			"sortFilter": {
+				"title": "Vind elke schuld",
+				"description": "Filter op status en sorteer op openstaande termijn, bedrag, datum of voortgang."
+			},
+			"monthlyPayments": {
+				"title": "Termijnen bijhouden",
+				"description": "Markeer deze maand als betaald en bekijk de betaalgeschiedenis."
+			},
+			"privacy": {
+				"title": "Privacy met één tik",
+				"description": "Verberg bedragen wanneer anderen je dashboard kunnen zien."
 			}
 		},
 		"cta": {
@@ -306,12 +330,27 @@
 		},
 		"demo": {
 			"title": "Interactief Voorbeeld",
-			"subtitle": "Ontdek hoe Debt Detox werkt met voorbeeldgegevens",
+			"subtitle": "Probeer het actuele dashboard met voorbeeldgegevens: filter, sorteer en open een schuld.",
 			"cta": "Mijn Account Aanmaken",
 			"bottomCta": {
 				"title": "Bevalt Wat U Ziet?",
 				"subtitle": "Maak uw gratis account aan en begin met het beheren van uw echte schulden",
 				"button": "Gratis Beginnen"
+			},
+			"readOnly": "Dit is een demo. Maak een account aan om je eigen schulden te beheren.",
+			"sample": {
+				"laptop": {
+					"name": "Laptop",
+					"entity": "Elektronicawinkel"
+				},
+				"mobile": {
+					"name": "Gedeelde telefoon",
+					"entity": "Mobiele provider"
+				},
+				"sofa": {
+					"name": "Bank",
+					"entity": "Meubelwinkel"
+				}
 			}
 		},
 		"footer": {

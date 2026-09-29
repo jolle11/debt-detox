@@ -262,7 +262,7 @@
 	"landing": {
 		"hero": {
 			"tagline": "Controla deudas, préstamos y cuotas",
-			"subtitle": "Toma control de tus compromisos financieros",
+			"subtitle": "Organiza tus financiaciones, pagos y progreso en un solo lugar.",
 			"features": "Gratuito • Sin tarifas ocultas • Tus datos permanecen privados"
 		},
 		"features": {
@@ -278,6 +278,18 @@
 			"stayMotivated": {
 				"title": "Mantente Motivado",
 				"description": "El seguimiento visual del progreso te mantiene motivado en tu viaje"
+			},
+			"customDashboard": {
+				"title": "Panel a tu medida",
+				"description": "Elige los indicadores que quieres ver: deuda pendiente, cuotas, progreso y más."
+			},
+			"sharedDebts": {
+				"title": "Deudas compartidas",
+				"description": "Invita a otra persona y consulta tu mitad de la cuota y del importe pendiente."
+			},
+			"extraPayments": {
+				"title": "Pagos extra",
+				"description": "Adelanta dinero y decide si reduces cuotas o el importe mensual."
 			}
 		},
 		"details": {
@@ -298,20 +310,47 @@
 			"entityDetails": {
 				"title": "Detalles de Entidad",
 				"description": "Almacena información de entidad contratante y detalles financieros"
+			},
+			"sortFilter": {
+				"title": "Encuentra cada financiación",
+				"description": "Filtra por estado y ordena por pago pendiente, importe, fecha o progreso."
+			},
+			"monthlyPayments": {
+				"title": "Cuotas al día",
+				"description": "Marca la cuota del mes y revisa el historial de pagos de cada financiación."
+			},
+			"privacy": {
+				"title": "Privacidad a un toque",
+				"description": "Oculta los importes cuando consultes tu panel delante de otras personas."
 			}
 		},
 		"cta": {
 			"title": "¿Listo para Empezar?",
-			"subtitle": "Únete a miles de personas tomando control de su futuro financiero"
+			"subtitle": "Crea tu cuenta gratuita y empieza a organizar tus financiaciones."
 		},
 		"demo": {
 			"title": "Vista Previa Interactiva",
-			"subtitle": "Explora cómo funciona Debt Detox con datos de ejemplo",
+			"subtitle": "Prueba el panel actualizado con datos de ejemplo: filtra, ordena y abre una financiación.",
 			"cta": "Crear Mi Cuenta",
 			"bottomCta": {
 				"title": "¿Te Gusta Lo Que Ves?",
 				"subtitle": "Crea tu cuenta gratuita y empieza a gestionar tus deudas reales",
 				"button": "Empezar Gratis"
+			},
+			"readOnly": "Esta es una demo. Crea una cuenta para gestionar tus propias financiaciones.",
+			"sample": {
+				"laptop": {
+					"name": "Portátil",
+					"entity": "Tienda de tecnología"
+				},
+				"mobile": {
+					"name": "Móvil compartido",
+					"entity": "Operadora"
+				},
+				"sofa": {
+					"name": "Sofá",
+					"entity": "Tienda de muebles"
+				}
 			}
 		},
 		"footer": {

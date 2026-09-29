@@ -262,7 +262,7 @@
 	"landing": {
 		"hero": {
 			"tagline": "Controle dívidas, empréstimos e parcelas",
-			"subtitle": "Tenha controle sobre seus compromissos financeiros",
+			"subtitle": "Organize as suas dívidas, pagamentos e progresso num só lugar.",
 			"features": "Gratuito • Sem taxas ocultas • Seus dados permanecem privados"
 		},
 		"features": {
@@ -278,6 +278,18 @@
 			"stayMotivated": {
 				"title": "Mantenha-se Motivado",
 				"description": "O acompanhamento visual do progresso mantém você motivado em sua jornada"
+			},
+			"customDashboard": {
+				"title": "Painel à sua medida",
+				"description": "Escolha os indicadores que quer ver: dívida restante, prestações, progresso e mais."
+			},
+			"sharedDebts": {
+				"title": "Dívidas partilhadas",
+				"description": "Convide outra pessoa e veja a sua metade da prestação e do saldo restante."
+			},
+			"extraPayments": {
+				"title": "Pagamentos extra",
+				"description": "Antecipe pagamentos e reduza o número ou o valor das prestações."
 			}
 		},
 		"details": {
@@ -298,6 +310,18 @@
 			"entityDetails": {
 				"title": "Detalhes da Entidade",
 				"description": "Armazene informações da entidade contratante e detalhes financeiros"
+			},
+			"sortFilter": {
+				"title": "Encontre cada dívida",
+				"description": "Filtre por estado e ordene por prestação pendente, valor, data ou progresso."
+			},
+			"monthlyPayments": {
+				"title": "Prestações em dia",
+				"description": "Marque a prestação do mês como paga e consulte o histórico."
+			},
+			"privacy": {
+				"title": "Privacidade num toque",
+				"description": "Oculte os valores quando consultar o painel perto de outras pessoas."
 			}
 		},
 		"cta": {
@@ -306,12 +330,27 @@
 		},
 		"demo": {
 			"title": "Visualização Interativa",
-			"subtitle": "Explore como funciona o Debt Detox com dados de exemplo",
+			"subtitle": "Experimente o painel atualizado com dados de exemplo: filtre, ordene e abra uma dívida.",
 			"cta": "Criar Minha Conta",
 			"bottomCta": {
 				"title": "Gostou do Que Vê?",
 				"subtitle": "Crie sua conta gratuita e comece a gerenciar suas dívidas reais",
 				"button": "Começar Grátis"
+			},
+			"readOnly": "Esta é uma demonstração. Crie uma conta para gerir as suas dívidas.",
+			"sample": {
+				"laptop": {
+					"name": "Portátil",
+					"entity": "Loja de tecnologia"
+				},
+				"mobile": {
+					"name": "Telemóvel partilhado",
+					"entity": "Operadora"
+				},
+				"sofa": {
+					"name": "Sofá",
+					"entity": "Loja de móveis"
+				}
 			}
 		},
 		"footer": {
