@@ -11,6 +11,7 @@ export default function DebtStructure({
 	totalAmount,
 }: DebtStructureProps) {
 	const t = useTranslations();
+	const isShared = debt.is_shared || Boolean(debt.collaborator_id);
 
 	const structureItems = [
 		{
@@ -64,6 +65,18 @@ export default function DebtStructure({
 							</div>
 						);
 					})}
+					{isShared && (
+						<div className="flex justify-between items-center gap-4">
+							<span className="text-base text-base-content/70">
+								{t("collaboration.yourMonthly")}:
+							</span>
+							<span className="font-medium text-lg">
+								<PrivateAmount>
+									{formatCurrency(debt.monthly_amount / 2)}
+								</PrivateAmount>
+							</span>
+						</div>
+					)}
 					<div className="bg-base-300 rounded-lg p-4 mt-6">
 						<div className="flex justify-between items-center">
 							<span className="text-base font-medium">

@@ -11,6 +11,7 @@ export default function DebtQuickStats({
 	totalAmount,
 }: DebtStatsProps) {
 	const t = useTranslations();
+	const isShared = debt.is_shared || Boolean(debt.collaborator_id);
 
 	const stats = [
 		{
@@ -52,6 +53,14 @@ export default function DebtQuickStats({
 							<PrivateAmount>{value}</PrivateAmount>
 						)}
 					</div>
+					{key === "monthly" && isShared && (
+						<div className="mt-2 text-sm text-base-content/70">
+							{t("collaboration.yourMonthly")}:{" "}
+							<PrivateAmount>
+								{formatCurrency(debt.monthly_amount / 2)}
+							</PrivateAmount>
+						</div>
+					)}
 				</div>
 			))}
 		</div>
