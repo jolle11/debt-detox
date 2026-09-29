@@ -287,6 +287,32 @@ test("owner can edit a debt without changing its immutable values", async () => 
 	assert.equal(result.debt.final_payment_date.slice(0, 10), "2026-11-15");
 });
 
+test("editing an unstarted debt updates the original total basis", async () => {
+	const futureDebt = await admin.collection("debts").create({
+		user_id: ownerRecord.id,
+		name: "Future debt",
+		entity: "Future lender",
+		first_payment_date: "2099-01-15",
+		monthly_amount: 100,
+		number_of_payments: 12,
+		original_monthly_amount: 100,
+		original_number_of_payments: 12,
+	});
+	const result = await owner.send(`/api/debt-detox/debts/${futureDebt.id}`, {
+		method: "PATCH",
+		body: {
+			name: "Future debt",
+			entity: "Future lender",
+			first_payment_date: "2099-01-15",
+			monthly_amount: 150,
+			number_of_payments: 12,
+			original_monthly_amount: 999,
+		},
+	});
+	assert.equal(result.debt.original_monthly_amount, 150);
+	assert.equal(result.debt.original_number_of_payments, 12);
+});
+
 test("editing reconciles future installments while preserving payment history", async () => {
 	const paidOutside = await admin.collection("payments").create({
 		debt_id: debt.id,

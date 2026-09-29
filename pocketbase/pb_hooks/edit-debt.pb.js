@@ -60,11 +60,28 @@ routerAdd(
 			if (debt.get("user_id") !== e.auth.id) {
 				throw new NotFoundError("Debt not found");
 			}
-			if (!debt.get("original_monthly_amount")) {
-				debt.set("original_monthly_amount", debt.get("monthly_amount"));
-			}
-			if (!debt.get("original_number_of_payments")) {
-				debt.set("original_number_of_payments", debt.get("number_of_payments"));
+			const existingPayments = txApp.findRecordsByFilter(
+				"payments",
+				`debt_id = "${debt.id}" && deleted = null`,
+				"",
+				0,
+				0,
+			);
+			const hasRecordedPayments = existingPayments.some(
+				(payment) => payment.get("paid") || payment.get("is_extra_payment"),
+			);
+			const firstPaymentDate = String(debt.get("first_payment_date")).slice(0, 10);
+			const hasStarted = firstPaymentDate <= new Date().toISOString().slice(0, 10);
+			if (!hasStarted && !hasRecordedPayments) {
+				debt.set("original_monthly_amount", data.monthly_amount);
+				debt.set("original_number_of_payments", data.number_of_payments);
+			} else {
+				if (!debt.get("original_monthly_amount")) {
+					debt.set("original_monthly_amount", debt.get("monthly_amount"));
+				}
+				if (!debt.get("original_number_of_payments")) {
+					debt.set("original_number_of_payments", debt.get("number_of_payments"));
+				}
 			}
 
 			debt.set("name", data.name.trim());
@@ -110,13 +127,6 @@ routerAdd(
 				expectedAmounts[finalPaymentDate.slice(0, 7)] = data.final_payment;
 			}
 
-			const existingPayments = txApp.findRecordsByFilter(
-				"payments",
-				`debt_id = "${debt.id}" && deleted = null`,
-				"",
-				0,
-				0,
-			);
 			const deletedAt = new Date().toISOString();
 			for (const payment of existingPayments) {
 				if (payment.get("is_extra_payment") || payment.get("paid")) {
