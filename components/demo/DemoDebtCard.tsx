@@ -100,14 +100,15 @@ export default function DemoDebtCard({
 						title={debt.entity}
 					>
 						{debt.entity}
+						{debt.collaborator_id && (
+							<>
+								{" · "}
+								{t("collaboration.with", {
+									name: debt.collaborator_name || t("collaboration.member"),
+								})}
+							</>
+						)}
 					</p>
-					{debt.collaborator_id && (
-						<p className="truncate text-xs text-base-content/60">
-							{t("collaboration.with", {
-								name: debt.collaborator_name || t("collaboration.member"),
-							})}
-						</p>
-					)}
 				</div>
 				<div className="col-start-1 row-start-2 min-w-0 sm:col-start-2 sm:row-start-1 sm:text-right">
 					<p className="text-sm font-semibold tabular-nums text-primary sm:text-base">
