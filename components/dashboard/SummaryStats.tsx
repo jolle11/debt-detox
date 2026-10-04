@@ -136,7 +136,17 @@ export default function SummaryStats({
 	if (widgets.length === 0) return null;
 
 	return (
-		<div className="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+		<div
+			className={`grid gap-2 sm:gap-4 ${
+				widgets.length === 1
+					? "grid-cols-1"
+					: widgets.length === 2
+						? "grid-cols-2"
+						: widgets.length === 3
+							? "grid-cols-2 lg:grid-cols-3"
+							: "grid-cols-2 lg:grid-cols-4"
+			}`}
+		>
 			{widgets.map((widgetId) => (
 				<StatCard
 					key={widgetId}

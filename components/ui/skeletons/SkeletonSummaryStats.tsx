@@ -8,7 +8,9 @@ export default function SkeletonSummaryStats({
 	className = "",
 }: SkeletonSummaryStatsProps) {
 	return (
-		<div className={`grid grid-cols-2 md:grid-cols-4 gap-4 ${className}`}>
+		<div
+			className={`grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 ${className}`}
+		>
 			{Array.from({ length: 4 }).map((_, index) => (
 				<SkeletonStatCard key={index} />
 			))}
