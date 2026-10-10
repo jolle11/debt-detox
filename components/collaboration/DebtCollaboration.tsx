@@ -1,5 +1,6 @@
 "use client";
 
+import { CaretDownIcon } from "@phosphor-icons/react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -18,6 +19,7 @@ export default function DebtCollaboration({ debt }: { debt: Debt }) {
 		debt.id,
 	);
 	const [confirmRemove, setConfirmRemove] = useState(false);
+	const [expanded, setExpanded] = useState(false);
 	const owner = debt.user_id === user?.id;
 	const pending = invitations.find(
 		(i) =>
@@ -27,65 +29,84 @@ export default function DebtCollaboration({ debt }: { debt: Debt }) {
 	if (!debt.collaborator_id && !(owner && pending)) return null;
 	return (
 		<section className="card bg-base-100 border border-base-300 p-4 mb-5 space-y-3">
-			<h2 className="font-semibold">{t("title")}</h2>
 			{debt.collaborator_id ? (
 				<>
-					<p className="text-base-content/80">
-						{t("with", {
-							name: owner
-								? debt.collaborator_name || t("member")
-								: debt.owner_name || t("member"),
-						})}{" "}
-						· 50/50
-					</p>
-					<p className="text-base-content/80">
-						{t("yourMonthly")}:{" "}
-						<PrivateAmount>
-							{formatCurrency(debt.monthly_amount / 2)}
-						</PrivateAmount>{" "}
-						· {t("totalMonthly")}:{" "}
-						<PrivateAmount>
-							{formatCurrency(debt.monthly_amount)}
-						</PrivateAmount>
-					</p>
-					<p className="text-sm text-base-content/60">
-						{t("paymentHelp")}
-					</p>
-					{owner &&
-						(confirmRemove ? (
-							<div className="space-y-2">
-								<p>{t("removeHelp")}</p>
-								<div className="flex justify-end gap-2">
-									<button
-										className="btn btn-error btn-sm"
-										disabled={isSaving}
-										onClick={async () => {
-											try {
-												await remove();
-												setConfirmRemove(false);
-											} catch {
-												toast.error(t("actionError"));
-											}
-										}}
-									>
-										{t("remove")}
-									</button>
-									<button
-										className="btn btn-ghost btn-sm"
-										onClick={() => setConfirmRemove(false)}
-									>
-										{t("cancel")}
-									</button>
-								</div>
-							</div>
-						) : (
+					<div className="flex items-center justify-between gap-3">
+						<button
+							type="button"
+							className="flex min-w-0 flex-1 items-center gap-2 text-left"
+							onClick={() => setExpanded((value) => !value)}
+							aria-expanded={expanded}
+						>
+							<CaretDownIcon
+								size={18}
+								className={`shrink-0 transition-transform motion-reduce:transition-none ${expanded ? "rotate-180" : ""}`}
+								aria-hidden="true"
+							/>
+							<span>
+								{t("with", {
+									name: owner
+										? debt.collaborator_name || t("member")
+										: debt.owner_name || t("member"),
+								})}{" "}
+								· 50/50
+							</span>
+						</button>
+						{owner && !confirmRemove && (
 							<button
-								className="btn btn-error btn-sm self-end"
+								className="btn btn-error btn-sm shrink-0"
 								onClick={() => setConfirmRemove(true)}
 							>
 								{t("remove")}
 							</button>
-						))}
+						)}
+					</div>
+					{owner && confirmRemove && (
+						<div className="space-y-2">
+							<p>{t("removeHelp")}</p>
+							<div className="flex justify-end gap-2">
+								<button
+									className="btn btn-error btn-sm"
+									disabled={isSaving}
+									onClick={async () => {
+										try {
+											await remove();
+											setConfirmRemove(false);
+										} catch {
+											toast.error(t("actionError"));
+										}
+									}}
+								>
+									{t("remove")}
+								</button>
+								<button
+									className="btn btn-ghost btn-sm"
+									onClick={() => setConfirmRemove(false)}
+								>
+									{t("cancel")}
+								</button>
+							</div>
+						</div>
+					)}
+					{expanded && (
+						<ul className="list-disc space-y-3 pl-5 text-base-content/80">
+							<li>
+								{t("yourMonthly")}:{" "}
+								<PrivateAmount>
+									{formatCurrency(debt.monthly_amount / 2)}
+								</PrivateAmount>
+							</li>
+							<li>
+								{t("totalMonthly")}:{" "}
+								<PrivateAmount>
+									{formatCurrency(debt.monthly_amount)}
+								</PrivateAmount>
+							</li>
+							<li className="text-sm text-base-content/60">
+								{t("paymentHelp")}
+							</li>
+						</ul>
+					)}
 				</>
 			) : (
 				pending && (
