@@ -31,7 +31,9 @@ export default function DebtQuickStats({
 		},
 		{
 			key: "monthly",
-			value: formatCurrency(debt.monthly_amount),
+			value: formatCurrency(
+				isShared ? debt.monthly_amount / 2 : debt.monthly_amount,
+			),
 			color: "text-secondary",
 		},
 	];
@@ -55,9 +57,9 @@ export default function DebtQuickStats({
 					</div>
 					{key === "monthly" && isShared && (
 						<div className="mt-2 text-sm text-base-content/70">
-							{t("collaboration.yourMonthly")}:{" "}
+							{t("collaboration.totalMonthly")}:{" "}
 							<PrivateAmount>
-								{formatCurrency(debt.monthly_amount / 2)}
+								{formatCurrency(debt.monthly_amount)}
 							</PrivateAmount>
 						</div>
 					)}
