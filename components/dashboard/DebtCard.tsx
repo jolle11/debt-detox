@@ -120,6 +120,18 @@ export default function DebtCard({
 									(debt.collaborator_id ? 0.5 : 1),
 							)}
 						</PrivateAmount>
+						{debt.collaborator_id && (
+							<span className="text-xs font-normal text-base-content/60">
+								{" / "}
+								<PrivateAmount>
+									{formatCurrency(
+										sortBy === "monthly"
+											? debt.monthly_amount
+											: remainingAmount,
+									)}
+								</PrivateAmount>
+							</span>
+						)}
 					</p>
 					<p className="text-xs text-base-content/60">
 						{t(

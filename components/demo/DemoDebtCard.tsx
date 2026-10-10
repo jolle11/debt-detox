@@ -113,6 +113,12 @@ export default function DemoDebtCard({
 				<div className="col-start-1 row-start-2 min-w-0 sm:col-start-2 sm:row-start-1 sm:text-right">
 					<p className="text-sm font-semibold tabular-nums text-primary sm:text-base">
 						{formatCurrency(amount)}
+						{debt.collaborator_id && (
+							<span className="text-xs font-normal text-base-content/60">
+								{" / "}
+								{formatCurrency(amount * 2)}
+							</span>
+						)}
 					</p>
 					<p className="text-xs text-base-content/60">
 						{t(
