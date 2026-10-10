@@ -30,7 +30,7 @@ export default function DebtCollaboration({ debt }: { debt: Debt }) {
 			<h2 className="font-semibold">{t("title")}</h2>
 			{debt.collaborator_id ? (
 				<>
-					<p>
+					<p className="text-base-content/80">
 						{t("with", {
 							name: owner
 								? debt.collaborator_name || t("member")
@@ -38,7 +38,7 @@ export default function DebtCollaboration({ debt }: { debt: Debt }) {
 						})}{" "}
 						· 50/50
 					</p>
-					<p>
+					<p className="text-base-content/80">
 						{t("yourMonthly")}:{" "}
 						<PrivateAmount>
 							{formatCurrency(debt.monthly_amount / 2)}
@@ -48,14 +48,14 @@ export default function DebtCollaboration({ debt }: { debt: Debt }) {
 							{formatCurrency(debt.monthly_amount)}
 						</PrivateAmount>
 					</p>
-					<p className="text-sm text-base-content/70">
+					<p className="text-sm text-base-content/60">
 						{t("paymentHelp")}
 					</p>
 					{owner &&
 						(confirmRemove ? (
 							<div className="space-y-2">
 								<p>{t("removeHelp")}</p>
-								<div className="flex gap-2">
+								<div className="flex justify-end gap-2">
 									<button
 										className="btn btn-error btn-sm"
 										disabled={isSaving}
@@ -80,7 +80,7 @@ export default function DebtCollaboration({ debt }: { debt: Debt }) {
 							</div>
 						) : (
 							<button
-								className="btn btn-ghost btn-sm self-start"
+								className="btn btn-error btn-sm self-end"
 								onClick={() => setConfirmRemove(true)}
 							>
 								{t("remove")}
