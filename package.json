@@ -12,7 +12,7 @@
 		"test:pb": "node --test --test-concurrency=1 tests/integration/*.test.mjs",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint",
+		"lint": "biome check .",
 		"prepare": "husky"
 	},
 	"dependencies": {
@@ -41,11 +41,5 @@
 		"husky": "^9.1.7",
 		"tailwindcss": "^4.2.0",
 		"typescript": "^5.9.3"
-	},
-	"pnpm": {
-		"overrides": {
-			"@types/react": "19.2.2",
-			"@types/react-dom": "19.2.2"
-		}
 	}
 }
