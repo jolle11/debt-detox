@@ -2,16 +2,8 @@ routerAdd(
 	"POST",
 	"/api/debt-detox/debts/{id}/complete",
 	(e) => {
-		const addMonthsToDateOnly = (dateValue, monthOffset) => {
-			const dateOnly = String(dateValue).slice(0, 10);
-			const year = parseInt(dateOnly.slice(0, 4), 10);
-			const month = parseInt(dateOnly.slice(5, 7), 10);
-			const totalMonths = year * 12 + (month - 1) + monthOffset;
-			const targetYear = Math.floor(totalMonths / 12);
-			const targetMonth = (totalMonths % 12) + 1;
-			const pad = (value) => (value < 10 ? `0${value}` : String(value));
-			return `${targetYear}-${pad(targetMonth)}`;
-		};
+		const dates = require(`${__hooks}/lib/dates.js`);
+		const { addMonthsToDateOnly } = dates;
 
 		const debtId = e.request.pathValue("id");
 		let savedDebt = null;
@@ -22,13 +14,14 @@ routerAdd(
 				throw new NotFoundError("Debt not found");
 			}
 
-			const today = new Date().toISOString().slice(0, 10);
+			const today = dates.today(e);
 			const existingPayments = txApp.findRecordsByFilter(
 				"payments",
-				`debt_id = "${debt.id}" && deleted = null`,
+				"debt_id = {:debt} && deleted = null",
 				"",
 				0,
 				0,
+				{ debt: debt.id },
 			);
 			const regularByPeriod = {};
 			for (const payment of existingPayments) {
@@ -73,20 +66,7 @@ routerAdd(
 
 			const finalAmount = debt.get("final_payment") || 0;
 			if (finalAmount > 0) {
-				const lastMonthlyPeriod = addMonthsToDateOnly(
-					debt.getString("first_payment_date"),
-					Math.max(paymentCount - 1, 0),
-				);
-				const configuredFinalPeriod = debt
-					.getString("final_payment_date")
-					.slice(0, 7);
-				const finalPeriod =
-					configuredFinalPeriod > lastMonthlyPeriod
-						? configuredFinalPeriod
-						: addMonthsToDateOnly(
-								debt.getString("first_payment_date"),
-								paymentCount,
-							);
+				const finalPeriod = dates.finalPaymentDate(debt);
 				const finalYear = parseInt(finalPeriod.slice(0, 4), 10);
 				const finalMonth = parseInt(finalPeriod.slice(5, 7), 10);
 				let finalPayment = regularByPeriod[`${finalYear}-${finalMonth}`];

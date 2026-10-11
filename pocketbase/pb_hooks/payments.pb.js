@@ -2,35 +2,8 @@ routerAdd(
 	"PUT",
 	"/api/debt-detox/debts/{id}/payments/{year}/{month}",
 	(e) => {
-		const addMonthsToDateOnly = (dateValue, monthOffset) => {
-			const dateOnly = String(dateValue).slice(0, 10);
-			const year = parseInt(dateOnly.slice(0, 4), 10);
-			const month = parseInt(dateOnly.slice(5, 7), 10);
-			const day = parseInt(dateOnly.slice(8, 10), 10);
-			const totalMonths = year * 12 + (month - 1) + monthOffset;
-			const targetYear = Math.floor(totalMonths / 12);
-			const targetMonth = (totalMonths % 12) + 1;
-			const leapYear =
-				targetYear % 4 === 0 &&
-				(targetYear % 100 !== 0 || targetYear % 400 === 0);
-			const daysByMonth = [
-				31,
-				leapYear ? 29 : 28,
-				31,
-				30,
-				31,
-				30,
-				31,
-				31,
-				30,
-				31,
-				30,
-				31,
-			];
-			const targetDay = Math.min(day, daysByMonth[targetMonth - 1]);
-			const pad = (value) => (value < 10 ? `0${value}` : String(value));
-			return `${targetYear}-${pad(targetMonth)}-${pad(targetDay)}`;
-		};
+		const dates = require(`${__hooks}/lib/dates.js`);
+		const { addMonthsToDateOnly } = dates;
 
 		const data = new DynamicModel({
 			actual_amount: -0,
@@ -55,7 +28,7 @@ routerAdd(
 				throw new NotFoundError("Debt not found");
 			}
 
-			const requestedPeriod = `${year}-${month < 10 ? `0${month}` : month}`;
+			const requestedPeriod = dates.periodOf(year, month);
 			let plannedAmount = null;
 			for (
 				let offset = 0;
@@ -72,24 +45,12 @@ routerAdd(
 				}
 			}
 
-			if (plannedAmount === null && (debt.get("final_payment") || 0) > 0) {
-				const lastMonthlyDate = addMonthsToDateOnly(
-					debt.getString("first_payment_date"),
-					Math.max(debt.get("number_of_payments") - 1, 0),
-				);
-				const configuredFinalDate = debt
-					.getString("final_payment_date")
-					.slice(0, 10);
-				const finalPaymentDate =
-					configuredFinalDate > lastMonthlyDate
-						? configuredFinalDate
-						: addMonthsToDateOnly(
-								debt.getString("first_payment_date"),
-								debt.get("number_of_payments"),
-							);
-				if (finalPaymentDate.slice(0, 7) === requestedPeriod) {
-					plannedAmount = debt.get("final_payment");
-				}
+			const finalPaymentDate = dates.finalPaymentDate(debt);
+			if (
+				plannedAmount === null &&
+				finalPaymentDate.slice(0, 7) === requestedPeriod
+			) {
+				plannedAmount = debt.get("final_payment");
 			}
 
 			if (plannedAmount === null) {
@@ -98,10 +59,11 @@ routerAdd(
 
 			const existingPayments = txApp.findRecordsByFilter(
 				"payments",
-				`debt_id = "${debt.id}" && year = ${year} && month = ${month} && is_extra_payment = false`,
+				"debt_id = {:debt} && year = {:year} && month = {:month} && is_extra_payment = false",
 				"",
 				0,
 				0,
+				{ debt: debt.id, year, month },
 			);
 			let payment = existingPayments[0];
 			if (!payment) {
@@ -131,7 +93,7 @@ routerAdd(
 			payment.set("paid", true);
 			payment.set(
 				"paid_date",
-				data.paid_date || new Date().toISOString().slice(0, 10),
+				dates.isDateOnly(data.paid_date) ? data.paid_date : dates.today(e),
 			);
 			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 			txApp.save(payment);
@@ -149,30 +111,17 @@ routerAdd(
 					).slice(0, 7)
 				] = true;
 			}
-			if ((debt.get("final_payment") || 0) > 0) {
-				const lastMonthlyDate = addMonthsToDateOnly(
-					debt.getString("first_payment_date"),
-					Math.max(debt.get("number_of_payments") - 1, 0),
-				);
-				const configuredFinalDate = debt
-					.getString("final_payment_date")
-					.slice(0, 10);
-				const finalPaymentDate =
-					configuredFinalDate > lastMonthlyDate
-						? configuredFinalDate
-						: addMonthsToDateOnly(
-								debt.getString("first_payment_date"),
-								debt.get("number_of_payments"),
-							);
+			if (finalPaymentDate) {
 				expectedPeriods[finalPaymentDate.slice(0, 7)] = true;
 			}
 
 			const paidPayments = txApp.findRecordsByFilter(
 				"payments",
-				`debt_id = "${debt.id}" && deleted = null && is_extra_payment = false && paid = true`,
+				"debt_id = {:debt} && deleted = null && is_extra_payment = false && paid = true",
 				"",
 				0,
 				0,
+				{ debt: debt.id },
 			);
 			const paidPeriods = {};
 			for (const paidPayment of paidPayments) {
@@ -205,12 +154,14 @@ routerAdd(
 	(e) => {
 		const paymentId = e.request.pathValue("id");
 		let savedPayment = null;
+		let savedDebt = null;
 
 		e.app.runInTransaction((txApp) => {
 			const payment = txApp.findRecordById("payments", paymentId);
 			const debt = txApp.findRecordById("debts", payment.get("debt_id"));
 			if (
 				!require(`${__hooks}/lib/collaboration.js`).isMember(debt, e.auth.id) ||
+				payment.getString("deleted") ||
 				payment.get("is_extra_payment")
 			) {
 				throw new NotFoundError("Payment not found");
@@ -221,10 +172,18 @@ routerAdd(
 			payment.set("actual_amount", null);
 			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 			txApp.save(payment);
+
+			// An unpaid installment means the debt is no longer complete.
+			if (debt.getString("completed_at")) {
+				debt.set("completed_at", null);
+				txApp.save(debt);
+			}
+
 			savedPayment = payment;
+			savedDebt = debt;
 		});
 
-		return e.json(200, { payment: savedPayment });
+		return e.json(200, { payment: savedPayment, debt: savedDebt });
 	},
 	$apis.requireAuth("users"),
 );
@@ -233,35 +192,8 @@ routerAdd(
 	"POST",
 	"/api/debt-detox/payments/{id}/reactivate",
 	(e) => {
-		const addMonthsToDateOnly = (dateValue, monthOffset) => {
-			const dateOnly = String(dateValue).slice(0, 10);
-			const year = parseInt(dateOnly.slice(0, 4), 10);
-			const month = parseInt(dateOnly.slice(5, 7), 10);
-			const day = parseInt(dateOnly.slice(8, 10), 10);
-			const totalMonths = year * 12 + (month - 1) + monthOffset;
-			const targetYear = Math.floor(totalMonths / 12);
-			const targetMonth = (totalMonths % 12) + 1;
-			const leapYear =
-				targetYear % 4 === 0 &&
-				(targetYear % 100 !== 0 || targetYear % 400 === 0);
-			const daysByMonth = [
-				31,
-				leapYear ? 29 : 28,
-				31,
-				30,
-				31,
-				30,
-				31,
-				31,
-				30,
-				31,
-				30,
-				31,
-			];
-			const targetDay = Math.min(day, daysByMonth[targetMonth - 1]);
-			const pad = (value) => (value < 10 ? `0${value}` : String(value));
-			return `${targetYear}-${pad(targetMonth)}-${pad(targetDay)}`;
-		};
+		const dates = require(`${__hooks}/lib/dates.js`);
+		const { addMonthsToDateOnly } = dates;
 
 		const paymentId = e.request.pathValue("id");
 		let savedPayment = null;
@@ -362,6 +294,35 @@ routerAdd(
 
 			deletedAt = payment.getString("deleted");
 			if (!deletedAt) {
+				const snapshot = JSON.parse(
+					payment.getString("strategy_snapshot") || "null",
+				);
+				if (snapshot) {
+					// Later strategies were computed on top of this one, so they
+					// must be undone first to restore a consistent plan.
+					const laterStrategies = txApp.findRecordsByFilter(
+						"payments",
+						"debt_id = {:debt} && is_extra_payment = true && deleted = null && strategy_snapshot != null && id != {:id} && created > {:created}",
+						"",
+						1,
+						0,
+						{
+							debt: debt.id,
+							id: payment.id,
+							created: payment.getString("created"),
+						},
+					);
+					if (laterStrategies.length > 0) {
+						throw new BadRequestError(
+							"Delete newer extra payments that changed the plan first",
+						);
+					}
+					debt.set("monthly_amount", snapshot.monthly_amount);
+					debt.set("number_of_payments", snapshot.number_of_payments);
+					debt.set("final_payment_date", snapshot.final_payment_date);
+					txApp.save(debt);
+				}
+
 				deletedAt = new Date().toISOString().replace("T", " ");
 				payment.set("deleted", deletedAt);
 				require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);

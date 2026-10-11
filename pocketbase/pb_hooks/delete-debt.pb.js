@@ -18,10 +18,11 @@ routerAdd(
 			deletedAt = new Date().toISOString().replace("T", " ");
 			const payments = txApp.findRecordsByFilter(
 				"payments",
-				`debt_id = "${debt.id}"`,
+				"debt_id = {:debt}",
 				"",
 				0,
 				0,
+				{ debt: debt.id },
 			);
 			for (const payment of payments) {
 				if (!payment.getString("deleted")) {
@@ -32,10 +33,11 @@ routerAdd(
 
 			const sharedLinks = txApp.findRecordsByFilter(
 				"shared_debts",
-				`debt_id = "${debt.id}"`,
+				"debt_id = {:debt}",
 				"",
 				0,
 				0,
+				{ debt: debt.id },
 			);
 			for (const link of sharedLinks) {
 				if (!link.getString("deleted")) {

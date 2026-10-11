@@ -731,6 +731,7 @@
 		"debtCompleted": "Financiering succesvol voltooid",
 		"debtReactivated": "Financiering succesvol geheractiveerd",
 		"extraPaymentAdded": "Extra betaling succesvol toegevoegd",
+		"extraPaymentDeleteOrder": "Verwijder eerst de nieuwere extra betalingen die het plan hebben gewijzigd",
 		"historicalPaymentsMarked": "Historische termijnen als betaald gemarkeerd",
 		"linkGenerated": "Deellink gegenereerd",
 		"linkCopied": "Link naar klembord gekopieerd",

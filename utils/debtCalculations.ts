@@ -35,8 +35,15 @@ export function calculateElapsedPayments(
 	const monthsDiff = currentDate.getMonth() - startDate.getMonth();
 	let monthsElapsed = yearsDiff * 12 + monthsDiff;
 
-	// Solo contar un mes como pagado si ya pasó su día de pago (no el mismo día)
-	if (currentDate.getDate() <= startDate.getDate()) {
+	// Solo contar un mes como pagado si ya pasó su día de pago (no el mismo día).
+	// En meses más cortos, la cuota del día 29-31 vence el último día del mes.
+	const daysInCurrentMonth = new Date(
+		currentDate.getFullYear(),
+		currentDate.getMonth() + 1,
+		0,
+	).getDate();
+	const dueDay = Math.min(startDate.getDate(), daysInCurrentMonth);
+	if (currentDate.getDate() <= dueDay) {
 		monthsElapsed--;
 	}
 
@@ -46,8 +53,6 @@ export function calculateElapsedPayments(
 }
 
 export function calculateExpectedPaidPayments(debt: Debt): number {
-	if (typeof window === "undefined") return 0;
-
 	return calculateElapsedPayments(
 		debt.first_payment_date,
 		debt.number_of_payments,
@@ -68,9 +73,9 @@ export function calculatePaymentStats(
 		.filter((p) => p.paid)
 		.reduce((sum, p) => sum + (p.actual_amount || p.planned_amount), 0);
 
-	const effectivePaidPayments = Math.max(
-		registeredPaidPayments,
-		expectedPaidPayments,
+	const effectivePaidPayments = Math.min(
+		Math.max(registeredPaidPayments, expectedPaidPayments),
+		debt.number_of_payments,
 	);
 
 	// Usar valores originales para cálculos de total real de la deuda
@@ -78,22 +83,23 @@ export function calculatePaymentStats(
 	const originalPayments =
 		debt.original_number_of_payments || debt.number_of_payments;
 
-	const estimatedPaidAmount =
-		(debt.down_payment || 0) +
-		Math.max(registeredPaidPayments, expectedPaidPayments) *
-			debt.monthly_amount;
-
 	const totalAmount =
 		(debt.down_payment || 0) +
 		originalMonthly * originalPayments +
 		(debt.final_payment || 0);
 
+	// Lo registrado cuenta por su importe real; las cuotas vencidas sin registrar
+	// se estiman con la cuota actual del plan.
+	const unregisteredElapsedPayments = Math.max(
+		0,
+		expectedPaidPayments - registeredPaidPayments,
+	);
+
 	// El importe pagado nunca puede exceder el total de la deuda
 	const effectivePaidAmount = Math.min(
-		Math.max(
-			(debt.down_payment || 0) + totalRegisteredAmount,
-			estimatedPaidAmount,
-		),
+		(debt.down_payment || 0) +
+			totalRegisteredAmount +
+			unregisteredElapsedPayments * debt.monthly_amount,
 		totalAmount,
 	);
 
@@ -103,7 +109,10 @@ export function calculatePaymentStats(
 		effectivePaidPayments,
 		effectivePaidAmount,
 		totalRegisteredAmount,
-		pendingPayments: debt.number_of_payments - effectivePaidPayments,
+		pendingPayments: Math.max(
+			0,
+			debt.number_of_payments - effectivePaidPayments,
+		),
 		pendingAmount: Math.max(0, totalAmount - effectivePaidAmount),
 	};
 }

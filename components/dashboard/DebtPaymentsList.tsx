@@ -17,6 +17,7 @@ import { useState } from "react";
 import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
+import { useToast } from "@/hooks/useToast";
 import { parseDateOnly } from "@/lib/dateOnly";
 import { calculateDebtStatus } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
@@ -50,6 +51,7 @@ export default function DebtPaymentsList({
 	const [pendingUnmarkId, setPendingUnmarkId] = useState<string | null>(null);
 	const [isReactivating, setIsReactivating] = useState(false);
 	const tDebt = useTranslations("debt");
+	const toast = useToast();
 	// Generate all expected payments based on debt structure
 	const generateAllExpectedPayments = () => {
 		const expectedPayments: Array<{
@@ -187,6 +189,9 @@ export default function DebtPaymentsList({
 			await deleteExtraPayment(paymentId);
 		} catch (error) {
 			console.error("Error deleting extra payment:", error);
+			if ((error as { status?: number }).status === 400) {
+				toast.error("extraPaymentDeleteOrder");
+			}
 		}
 	};
 

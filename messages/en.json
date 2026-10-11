@@ -731,6 +731,7 @@
 		"debtCompleted": "Financing completed successfully",
 		"debtReactivated": "Financing reactivated successfully",
 		"extraPaymentAdded": "Extra payment added successfully",
+		"extraPaymentDeleteOrder": "Delete the newer extra payments that changed the plan first",
 		"historicalPaymentsMarked": "Historical installments marked as paid",
 		"linkGenerated": "Share link generated",
 		"linkCopied": "Link copied to clipboard",

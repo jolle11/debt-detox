@@ -922,6 +922,126 @@ test("reduce_installments keeps monthly amount and shortens the debt", async () 
 	assert.equal(result.debt.final_payment_date.slice(0, 10), "2026-10-15");
 });
 
+test("extra payment strategies exclude the separate final payment", async () => {
+	await admin.collection("debts").update(debt.id, {
+		final_payment: 600,
+		final_payment_date: "2027-01-15",
+	});
+
+	const result = await owner.send(
+		`/api/debt-detox/debts/${debt.id}/extra-payment`,
+		{
+			method: "POST",
+			body: { amount: 200, strategy: "reduce_amount" },
+		},
+	);
+
+	assert.equal(result.debt.monthly_amount, 83.33);
+	assert.equal(result.debt.final_payment, 600);
+});
+
+test("deleting an extra payment restores the plan it changed", async () => {
+	const result = await owner.send(
+		`/api/debt-detox/debts/${debt.id}/extra-payment`,
+		{
+			method: "POST",
+			body: { amount: 250, strategy: "reduce_installments" },
+		},
+	);
+	assert.equal(result.debt.number_of_payments, 10);
+
+	await owner.send(`/api/debt-detox/payments/${result.payment.id}/extra`, {
+		method: "DELETE",
+	});
+
+	const restored = await owner.collection("debts").getOne(debt.id);
+	assert.equal(restored.number_of_payments, 12);
+	assert.equal(restored.monthly_amount, 100);
+});
+
+test("an older plan-changing extra payment cannot be deleted first", async () => {
+	const first = await owner.send(
+		`/api/debt-detox/debts/${debt.id}/extra-payment`,
+		{
+			method: "POST",
+			body: { amount: 100, strategy: "reduce_amount" },
+		},
+	);
+	await owner.send(`/api/debt-detox/debts/${debt.id}/extra-payment`, {
+		method: "POST",
+		body: { amount: 100, strategy: "reduce_amount" },
+	});
+
+	await assert.rejects(
+		owner.send(`/api/debt-detox/payments/${first.payment.id}/extra`, {
+			method: "DELETE",
+		}),
+		(error) => error?.status === 400,
+	);
+});
+
+test("extra payments use the client's local date", async () => {
+	const localDate = new Date(Date.now() + 12 * 60 * 60 * 1000)
+		.toISOString()
+		.slice(0, 10);
+	const result = await owner.send(
+		`/api/debt-detox/debts/${debt.id}/extra-payment`,
+		{
+			method: "POST",
+			headers: { "X-Client-Date": localDate },
+			body: { amount: 50, strategy: "none" },
+		},
+	);
+
+	assert.equal(result.payment.paid_date.slice(0, 10), localDate);
+});
+
+test("unmarking an installment reopens a completed debt", async () => {
+	await admin.collection("debts").update(debt.id, {
+		completed_at: "2026-12-20",
+	});
+	const payment = await admin.collection("payments").create({
+		debt_id: debt.id,
+		month: 3,
+		year: 2026,
+		planned_amount: 100,
+		actual_amount: 100,
+		paid: true,
+		paid_date: "2026-03-15",
+		is_extra_payment: false,
+	});
+
+	const result = await owner.send(
+		`/api/debt-detox/payments/${payment.id}/unmark`,
+		{ method: "POST" },
+	);
+
+	assert.equal(result.debt.completed_at, "");
+});
+
+test("editing rejects invalid dates and negative amounts", async () => {
+	for (const body of [
+		{ first_payment_date: "" },
+		{ first_payment_date: "2026-02-30" },
+		{ down_payment: -10 },
+	]) {
+		await assert.rejects(
+			owner.send(`/api/debt-detox/debts/${debt.id}`, {
+				method: "PATCH",
+				body: {
+					name: "Integration debt",
+					entity: "Integration lender",
+					first_payment_date: "2026-01-15",
+					monthly_amount: 100,
+					number_of_payments: 12,
+					...body,
+				},
+			}),
+			(error) => error?.status === 400,
+		);
+	}
+});
+
 test("another user cannot add a payment to someone else's debt", async () => {
 	await assert.rejects(
 		otherUser.send(`/api/debt-detox/debts/${debt.id}/extra-payment`, {
@@ -1149,7 +1269,7 @@ test("acceptance grants access to one financing without exposing private user pr
 	assert.equal(shared.user_id,ownerRecord.id);
 	await assert.rejects(otherUser.collection("users").getOne(ownerRecord.id),e=>e.status===404);
 	await assert.rejects(otherUser.send(`/api/debt-detox/debts/${debt.id}`,{method:"DELETE"}),e=>e.status===404);
-	await assert.rejects(otherUser.collection("debts").update(debt.id,{name:"Hijacked"}),e=>e.status===404);
+	await assert.rejects(otherUser.collection("debts").update(debt.id,{name:"Hijacked"}),e=>e.status===403||e.status===404);
 	await assert.rejects(otherUser.send(`/api/debt-detox/debts/${debt.id}/complete`,{method:"POST"}),e=>e.status===404);
 });
 
@@ -1183,7 +1303,7 @@ test("revocation immediately blocks access and payments while preserving payment
 	await owner.send(`/api/debt-detox/payments/${preserved.id}/amount`,{method:"PATCH",body:{amount:95}});
 	const corrected=await owner.collection("payments").getOne(preserved.id);
 	assert.deepEqual(corrected.sharing_snapshot,preserved.sharing_snapshot);
-	await owner.collection("payments").update(preserved.id,{sharing_snapshot:{owner:"forged"}});
+	await assert.rejects(owner.collection("payments").update(preserved.id,{sharing_snapshot:{owner:"forged"}}));
 	assert.deepEqual((await owner.collection("payments").getOne(preserved.id)).sharing_snapshot,preserved.sharing_snapshot);
 });
 
@@ -1203,13 +1323,14 @@ test("rejected, cancelled, expired and deleted-debt invitations cannot be accept
 });
 
 test("owners cannot forge membership or audit fields through direct collection writes",async()=>{
-	await owner.collection("debts").update(debt.id,{collaborator_id:otherUser.authStore.record.id,collaborator_name:"Forged"});
+	await assert.rejects(owner.collection("debts").update(debt.id,{collaborator_id:otherUser.authStore.record.id,collaborator_name:"Forged"}));
 	assert.equal((await owner.collection("debts").getOne(debt.id)).collaborator_id,"");
+	await assert.rejects(owner.collection("debts").update(debt.id,{completed_at:"2026-01-01",monthly_amount:1}));
+	assert.equal((await owner.collection("debts").getOne(debt.id)).monthly_amount,100);
 	await acceptPartner();
-	await owner.collection("debts").update(debt.id,{collaborator_id:"",is_shared:false});
+	await assert.rejects(owner.collection("debts").update(debt.id,{collaborator_id:"",is_shared:false}));
 	assert.equal((await owner.collection("debts").getOne(debt.id)).collaborator_id,otherUser.authStore.record.id);
-	const payment=await owner.collection("payments").create({debt_id:debt.id,year:2026,month:1,planned_amount:100,paid:true,recorded_by:otherUser.authStore.record.id});
-	assert.equal(payment.recorded_by,ownerRecord.id);
+	await assert.rejects(owner.collection("payments").create({debt_id:debt.id,year:2026,month:1,planned_amount:100,paid:true,recorded_by:otherUser.authStore.record.id}));
 });
 
 test("debt creation and invitation are atomic and self invitations are rejected",async()=>{

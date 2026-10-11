@@ -731,6 +731,7 @@
 		"debtCompleted": "Financiación completada correctamente",
 		"debtReactivated": "Financiación reactivada correctamente",
 		"extraPaymentAdded": "Pago extra añadido correctamente",
+		"extraPaymentDeleteOrder": "Elimina primero los pagos extra más recientes que modificaron el plan",
 		"historicalPaymentsMarked": "Cuotas históricas marcadas como pagadas",
 		"linkGenerated": "Enlace de compartir generado",
 		"linkCopied": "Enlace copiado al portapapeles",
