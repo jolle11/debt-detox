@@ -64,8 +64,15 @@ export function addMonthsToDateOnly(
 		throw new Error(`Invalid date-only value: ${dateString}`);
 	}
 
-	date.setMonth(date.getMonth() + monthOffset);
-	return formatDateOnly(date);
+	// Same rule as pocketbase/pb_hooks/lib/dates.js: clamp to the last day of
+	// shorter months instead of overflowing (Jan 31 + 1 month = Feb 28/29).
+	const totalMonths = date.getFullYear() * 12 + date.getMonth() + monthOffset;
+	const year = Math.floor(totalMonths / 12);
+	const month = totalMonths - year * 12;
+	const lastDay = new Date(year, month + 1, 0).getDate();
+	return formatDateOnly(
+		new Date(year, month, Math.min(date.getDate(), lastDay)),
+	);
 }
 
 export function getTodayDateOnly(now: Date = new Date()): string {
