@@ -29,7 +29,24 @@
 		"totalMonthly": "Gesamtrate",
 		"recordedBy": "Erfasst von {name}",
 		"fullAmounts": "Gesamtbeträge der Finanzierung (dein Anteil: 50 %)",
-		"inviteFormHelp": "Die Einladung erscheint im Dashboard und läuft nach 7 Tagen ab. Bis zur Annahme gibt es keinen Zugriff und keine Änderung der Summen. Ohne E-Mail bleibt das Teilen ohne verknüpftes Konto verfügbar."
+		"inviteFormHelp": "Die Einladung erscheint im Dashboard und läuft nach 7 Tagen ab. Bis zur Annahme gibt es keinen Zugriff und keine Änderung der Summen. Ohne E-Mail bleibt das Teilen ohne verknüpftes Konto verfügbar.",
+		"activity": {
+			"title": "Letzte Aktivität",
+			"loading": "Aktivität wird geladen…",
+			"loadError": "Die Aktivität konnte nicht geladen werden.",
+			"empty": "Noch keine Aktivität.",
+			"actions": {
+				"payment_marked": "hat die Rate für {period} als bezahlt markiert",
+				"payment_unmarked": "hat die Markierung der Rate für {period} entfernt",
+				"amount_changed": "hat den Betrag der Rate für {period} korrigiert",
+				"extra_added": "hat eine Sonderzahlung hinzugefügt",
+				"extra_deleted": "hat eine Sonderzahlung gelöscht",
+				"debt_completed": "hat die Finanzierung abgeschlossen",
+				"debt_reactivated": "hat die Finanzierung reaktiviert",
+				"debt_edited": "hat die Konditionen bearbeitet",
+				"historical_confirmed": "hat frühere Raten bestätigt"
+			}
+		}
 	},
 	"debtSort": {
 		"label": "Sortieren nach",

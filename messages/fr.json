@@ -29,7 +29,24 @@
 		"totalMonthly": "Mensualité totale",
 		"recordedBy": "Enregistré par {name}",
 		"fullAmounts": "Montants totaux du financement (votre part : 50 %)",
-		"inviteFormHelp": "L’invitation apparaît dans son tableau de bord et expire après 7 jours. Aucun accès ni changement de ses totaux avant acceptation. Laissez l’e-mail vide pour conserver le partage sans compte lié."
+		"inviteFormHelp": "L’invitation apparaît dans son tableau de bord et expire après 7 jours. Aucun accès ni changement de ses totaux avant acceptation. Laissez l’e-mail vide pour conserver le partage sans compte lié.",
+		"activity": {
+			"title": "Activité récente",
+			"loading": "Chargement de l'activité…",
+			"loadError": "Impossible de charger l'activité.",
+			"empty": "Aucune activité pour le moment.",
+			"actions": {
+				"payment_marked": "a marqué l'échéance de {period} comme payée",
+				"payment_unmarked": "a annulé le paiement de l'échéance de {period}",
+				"amount_changed": "a corrigé le montant de l'échéance de {period}",
+				"extra_added": "a ajouté un paiement supplémentaire",
+				"extra_deleted": "a supprimé un paiement supplémentaire",
+				"debt_completed": "a terminé le financement",
+				"debt_reactivated": "a réactivé le financement",
+				"debt_edited": "a modifié les conditions",
+				"historical_confirmed": "a confirmé les échéances passées"
+			}
+		}
 	},
 	"debtSort": {
 		"label": "Trier par",

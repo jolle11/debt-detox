@@ -140,6 +140,13 @@ routerAdd(
 
 			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 			txApp.save(payment);
+			require(`${__hooks}/lib/collaboration.js`).log(
+				txApp,
+				debt,
+				e.auth,
+				"extra_added",
+				{ amount: data.amount },
+			);
 
 			savedPayment = payment;
 			savedDebt = debt;

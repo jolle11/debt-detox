@@ -29,7 +29,24 @@
 		"totalMonthly": "Totale termijn",
 		"recordedBy": "Geregistreerd door {name}",
 		"fullAmounts": "Totale financieringsbedragen (jouw aandeel: 50%)",
-		"inviteFormHelp": "De uitnodiging verschijnt op het dashboard en verloopt na 7 dagen. Tot acceptatie is er geen toegang en veranderen de totalen niet. Laat het e-mailadres leeg om zonder gekoppeld account te blijven delen."
+		"inviteFormHelp": "De uitnodiging verschijnt op het dashboard en verloopt na 7 dagen. Tot acceptatie is er geen toegang en veranderen de totalen niet. Laat het e-mailadres leeg om zonder gekoppeld account te blijven delen.",
+		"activity": {
+			"title": "Recente activiteit",
+			"loading": "Activiteit laden…",
+			"loadError": "De activiteit kon niet worden geladen.",
+			"empty": "Nog geen activiteit.",
+			"actions": {
+				"payment_marked": "markeerde de termijn van {period} als betaald",
+				"payment_unmarked": "maakte de markering van de termijn van {period} ongedaan",
+				"amount_changed": "corrigeerde het bedrag van de termijn van {period}",
+				"extra_added": "voegde een extra betaling toe",
+				"extra_deleted": "verwijderde een extra betaling",
+				"debt_completed": "rondde de financiering af",
+				"debt_reactivated": "heropende de financiering",
+				"debt_edited": "bewerkte de voorwaarden",
+				"historical_confirmed": "bevestigde eerdere termijnen"
+			}
+		}
 	},
 	"debtSort": {
 		"label": "Sorteren op",

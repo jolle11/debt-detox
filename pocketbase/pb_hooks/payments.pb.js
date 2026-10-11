@@ -97,6 +97,13 @@ routerAdd(
 			);
 			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 			txApp.save(payment);
+			require(`${__hooks}/lib/collaboration.js`).log(
+				txApp,
+				debt,
+				e.auth,
+				"payment_marked",
+				{ year, month, amount: payment.get("actual_amount") },
+			);
 
 			const expectedPeriods = {};
 			for (
@@ -172,6 +179,13 @@ routerAdd(
 			payment.set("actual_amount", null);
 			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 			txApp.save(payment);
+			require(`${__hooks}/lib/collaboration.js`).log(
+				txApp,
+				debt,
+				e.auth,
+				"payment_unmarked",
+				{ year: payment.get("year"), month: payment.get("month") },
+			);
 
 			// An unpaid installment means the debt is no longer complete.
 			if (debt.getString("completed_at")) {
@@ -214,6 +228,13 @@ routerAdd(
 			payment.set("actual_amount", null);
 			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 			txApp.save(payment);
+			require(`${__hooks}/lib/collaboration.js`).log(
+				txApp,
+				debt,
+				e.auth,
+				"debt_reactivated",
+				{ year: payment.get("year"), month: payment.get("month") },
+			);
 
 			const paymentCount =
 				debt.get("original_number_of_payments") ||
@@ -267,6 +288,17 @@ routerAdd(
 			payment.set("actual_amount", data.amount);
 			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 			txApp.save(payment);
+			require(`${__hooks}/lib/collaboration.js`).log(
+				txApp,
+				debt,
+				e.auth,
+				"amount_changed",
+				{
+					year: payment.get("year"),
+					month: payment.get("month"),
+					amount: data.amount,
+				},
+			);
 			savedPayment = payment;
 		});
 
@@ -327,6 +359,13 @@ routerAdd(
 				payment.set("deleted", deletedAt);
 				require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 				txApp.save(payment);
+				require(`${__hooks}/lib/collaboration.js`).log(
+					txApp,
+					debt,
+					e.auth,
+					"extra_deleted",
+					{ amount: payment.get("actual_amount") },
+				);
 			}
 		});
 

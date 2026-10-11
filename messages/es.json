@@ -29,7 +29,24 @@
 		"totalMonthly": "Cuota total",
 		"recordedBy": "Registrado por {name}",
 		"fullAmounts": "Importes totales de la financiación (tu parte: 50 %)",
-		"inviteFormHelp": "La invitación aparece en su dashboard y caduca a los 7 días. Hasta que acepte no tendrá acceso ni se cambiarán sus totales. Puedes dejar el correo vacío y seguir usando la opción compartida sin vincular."
+		"inviteFormHelp": "La invitación aparece en su dashboard y caduca a los 7 días. Hasta que acepte no tendrá acceso ni se cambiarán sus totales. Puedes dejar el correo vacío y seguir usando la opción compartida sin vincular.",
+		"activity": {
+			"title": "Actividad reciente",
+			"loading": "Cargando actividad…",
+			"loadError": "No se pudo cargar la actividad.",
+			"empty": "Todavía no hay actividad.",
+			"actions": {
+				"payment_marked": "marcó como pagada la cuota de {period}",
+				"payment_unmarked": "desmarcó la cuota de {period}",
+				"amount_changed": "corrigió el importe de la cuota de {period}",
+				"extra_added": "añadió un pago extra",
+				"extra_deleted": "eliminó un pago extra",
+				"debt_completed": "completó la financiación",
+				"debt_reactivated": "reactivó la financiación",
+				"debt_edited": "editó las condiciones",
+				"historical_confirmed": "confirmó las cuotas anteriores"
+			}
+		}
 	},
 	"debtSort": {
 		"label": "Ordenar por",

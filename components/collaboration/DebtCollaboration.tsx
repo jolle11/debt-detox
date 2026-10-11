@@ -5,6 +5,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
+import DebtActivityList from "@/components/collaboration/DebtActivityList";
 import PrivateAmount from "@/components/ui/PrivateAmount";
 import { useCurrency } from "@/hooks/useCurrency";
 import { useCollaboration } from "@/hooks/useCollaboration";
@@ -15,16 +16,13 @@ export default function DebtCollaboration({ debt }: { debt: Debt }) {
 	const format = useFormatter();
 	const { user } = useAuth();
 	const { formatCurrency } = useCurrency();
-	const { invitations, isSaving, respond, remove } = useCollaboration(
-		debt.id,
-	);
+	const { invitations, isSaving, respond, remove } = useCollaboration(debt.id);
 	const [confirmRemove, setConfirmRemove] = useState(false);
 	const [expanded, setExpanded] = useState(false);
 	const owner = debt.user_id === user?.id;
 	const pending = invitations.find(
 		(i) =>
-			i.status === "pending" &&
-			new Date(i.expires_at).getTime() > Date.now(),
+			i.status === "pending" && new Date(i.expires_at).getTime() > Date.now(),
 	);
 	if (!debt.collaborator_id && !(owner && pending)) return null;
 	return (
@@ -107,6 +105,7 @@ export default function DebtCollaboration({ debt }: { debt: Debt }) {
 							</li>
 						</ul>
 					)}
+					{expanded && debt.id && <DebtActivityList debtId={debt.id} />}
 				</>
 			) : (
 				pending && (
@@ -114,13 +113,10 @@ export default function DebtCollaboration({ debt }: { debt: Debt }) {
 						<p>
 							{t("pending", {
 								name: pending.recipient_name,
-								date: format.dateTime(
-									new Date(pending.expires_at),
-									{
-										day: "numeric",
-										month: "short",
-									},
-								),
+								date: format.dateTime(new Date(pending.expires_at), {
+									day: "numeric",
+									month: "short",
+								}),
 							})}
 						</p>
 						<button

@@ -29,7 +29,24 @@
 		"totalMonthly": "Prestação total",
 		"recordedBy": "Registado por {name}",
 		"fullAmounts": "Valores totais do financiamento (a tua parte: 50%)",
-		"inviteFormHelp": "O convite aparece no dashboard e expira após 7 dias. Até ser aceite, não dá acesso nem altera os totais da outra pessoa. Deixa o e-mail vazio para manter a partilha sem conta associada."
+		"inviteFormHelp": "O convite aparece no dashboard e expira após 7 dias. Até ser aceite, não dá acesso nem altera os totais da outra pessoa. Deixa o e-mail vazio para manter a partilha sem conta associada.",
+		"activity": {
+			"title": "Atividade recente",
+			"loading": "A carregar atividade…",
+			"loadError": "Não foi possível carregar a atividade.",
+			"empty": "Ainda não há atividade.",
+			"actions": {
+				"payment_marked": "marcou a prestação de {period} como paga",
+				"payment_unmarked": "desmarcou a prestação de {period}",
+				"amount_changed": "corrigiu o valor da prestação de {period}",
+				"extra_added": "adicionou um pagamento extra",
+				"extra_deleted": "eliminou um pagamento extra",
+				"debt_completed": "concluiu o financiamento",
+				"debt_reactivated": "reativou o financiamento",
+				"debt_edited": "editou as condições",
+				"historical_confirmed": "confirmou as prestações anteriores"
+			}
+		}
 	},
 	"debtSort": {
 		"label": "Ordenar por",

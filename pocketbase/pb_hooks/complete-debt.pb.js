@@ -95,6 +95,12 @@ routerAdd(
 
 			debt.set("completed_at", today);
 			txApp.save(debt);
+			require(`${__hooks}/lib/collaboration.js`).log(
+				txApp,
+				debt,
+				e.auth,
+				"debt_completed",
+			);
 			savedDebt = debt;
 		});
 

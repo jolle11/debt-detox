@@ -59,6 +59,12 @@ routerAdd(
 				require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
 				txApp.save(payment);
 			}
+			require(`${__hooks}/lib/collaboration.js`).log(
+				txApp,
+				debt,
+				e.auth,
+				"historical_confirmed",
+			);
 		});
 
 		return e.json(200, { created });

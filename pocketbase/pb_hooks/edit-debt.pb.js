@@ -138,6 +138,12 @@ routerAdd(
 			}
 
 			txApp.save(debt);
+			require(`${__hooks}/lib/collaboration.js`).log(
+				txApp,
+				debt,
+				e.auth,
+				"debt_edited",
+			);
 			if (data.invite_email.trim())
 				require(`${__hooks}/lib/collaboration.js`).invite(
 					txApp,

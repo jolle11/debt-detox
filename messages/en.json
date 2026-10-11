@@ -29,7 +29,24 @@
 		"totalMonthly": "Total installment",
 		"recordedBy": "Recorded by {name}",
 		"fullAmounts": "Full financing amounts (your share: 50%)",
-		"inviteFormHelp": "The invitation appears on their dashboard and expires after 7 days. Until they accept, they have no access and their totals stay unchanged. Leave the email empty to keep using unlinked sharing."
+		"inviteFormHelp": "The invitation appears on their dashboard and expires after 7 days. Until they accept, they have no access and their totals stay unchanged. Leave the email empty to keep using unlinked sharing.",
+		"activity": {
+			"title": "Recent activity",
+			"loading": "Loading activity…",
+			"loadError": "Activity could not be loaded.",
+			"empty": "No activity yet.",
+			"actions": {
+				"payment_marked": "marked the {period} installment as paid",
+				"payment_unmarked": "unmarked the {period} installment",
+				"amount_changed": "corrected the {period} installment amount",
+				"extra_added": "added an extra payment",
+				"extra_deleted": "deleted an extra payment",
+				"debt_completed": "completed the financing",
+				"debt_reactivated": "reactivated the financing",
+				"debt_edited": "edited the terms",
+				"historical_confirmed": "confirmed past installments"
+			}
+		}
 	},
 	"debtSort": {
 		"label": "Sort by",

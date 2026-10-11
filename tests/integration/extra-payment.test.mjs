@@ -1375,3 +1375,14 @@ test("clean databases expose sortable timestamps used by the dashboard",async()=
  assert.ok(list.items.length>0);
  assert.ok(list.items.every(record=>record.created));
 });
+
+test("payment changes are recorded in the debt activity for both members",async()=>{
+	await acceptPartner();
+	await otherUser.send(`/api/debt-detox/debts/${debt.id}/payments/2026/1`,{method:"PUT",body:{actual_amount:100}});
+	const activity=await owner.collection("debt_activity").getFullList({filter:`debt_id = "${debt.id}"`});
+	assert.equal(activity.length,1);
+	assert.equal(activity[0].action,"payment_marked");
+	assert.equal(activity[0].actor_id,otherUser.authStore.record.id);
+	assert.equal(activity[0].month,1);
+	await assert.rejects(owner.collection("debt_activity").create({debt_id:debt.id,action:"debt_edited"}));
+});

@@ -1,4 +1,17 @@
 module.exports = {
+	log(app, debt, actor, action, details) {
+		const entry = new Record(app.findCollectionByNameOrId("debt_activity"));
+		entry.set("debt_id", debt.id);
+		entry.set("actor_id", actor.id);
+		entry.set("actor_name", actor.getString("name") || "Member");
+		entry.set("action", action);
+		if (details) {
+			entry.set("year", details.year || 0);
+			entry.set("month", details.month || 0);
+			entry.set("amount", details.amount || 0);
+		}
+		app.save(entry);
+	},
 	isMember(debt, userId) {
 		return (
 			!debt.getString("deleted") &&

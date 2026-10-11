@@ -40,6 +40,29 @@ export interface DebtInvitation {
 	expires_at: string;
 }
 
+export type DebtActivityAction =
+	| "payment_marked"
+	| "payment_unmarked"
+	| "amount_changed"
+	| "extra_added"
+	| "extra_deleted"
+	| "debt_completed"
+	| "debt_reactivated"
+	| "debt_edited"
+	| "historical_confirmed";
+
+export interface DebtActivity {
+	id: string;
+	debt_id: string;
+	actor_id: string;
+	actor_name: string;
+	action: DebtActivityAction;
+	year?: number;
+	month?: number;
+	amount?: number;
+	created: string;
+}
+
 export interface Payment {
 	recorded_by?: string;
 	recorded_by_name?: string;
@@ -91,6 +114,7 @@ export const COLLECTIONS = {
 	PAYMENTS: "payments",
 	SHARED_DEBTS: "shared_debts",
 	SHARED_PROFILES: "shared_profiles",
+	DEBT_ACTIVITY: "debt_activity",
 } as const;
 
 export interface DebtCalculations {
