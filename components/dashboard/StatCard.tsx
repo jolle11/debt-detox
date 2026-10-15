@@ -38,16 +38,16 @@ export default function StatCard({
 				<div className="min-w-0 text-xs sm:text-sm font-medium text-base-content/60 uppercase tracking-wide [overflow-wrap:anywhere]">
 					{title}
 				</div>
-				<div
-					className={`col-span-2 sm:col-span-1 min-w-0 text-base sm:text-xl lg:text-2xl font-bold [overflow-wrap:anywhere] ${variantClasses[variant]}`}
-				>
-					{monetary ? <PrivateAmount>{value}</PrivateAmount> : value}
-				</div>
-				<div className="col-span-2 sm:col-span-1 min-w-0 text-xs sm:text-sm text-base-content/70 [overflow-wrap:anywhere]">
+				<div className="col-span-2 sm:col-span-1 min-w-0 text-[11px] sm:text-xs text-base-content/50 [overflow-wrap:anywhere]">
 					{description}
 				</div>
 				<div
-					className={`col-start-2 row-start-1 sm:row-span-3 flex items-center justify-center w-6 h-6 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-lg shrink-0 ${iconBgClasses[variant]}`}
+					className={`col-span-2 sm:col-span-1 min-w-0 mt-1 text-base sm:text-xl lg:text-2xl font-bold [overflow-wrap:anywhere] ${variantClasses[variant]}`}
+				>
+					{monetary ? <PrivateAmount>{value}</PrivateAmount> : value}
+				</div>
+				<div
+					className={`col-start-2 row-start-1 sm:row-end-4 flex items-center justify-center w-6 h-6 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-lg shrink-0 ${iconBgClasses[variant]}`}
 				>
 					{icon}
 				</div>
