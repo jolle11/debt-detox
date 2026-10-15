@@ -9,3 +9,4 @@ pocketbase
 *.tsbuildinfo
 .env*
 docker-compose.yml
+.railway
