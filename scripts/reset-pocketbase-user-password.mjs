@@ -61,12 +61,18 @@ function readLine(label, { secret = false, defaultValue = "" } = {}) {
 async function main() {
 	console.log("Reset a PocketBase users record password\n");
 
-	const baseUrl = await readLine("PocketBase URL", { defaultValue: DEFAULT_URL });
+	const baseUrl = await readLine("PocketBase URL", {
+		defaultValue: DEFAULT_URL,
+	});
 	const superuserEmail = await readLine("Superuser email");
-	const superuserPassword = await readLine("Superuser password", { secret: true });
+	const superuserPassword = await readLine("Superuser password", {
+		secret: true,
+	});
 	const userEmail = await readLine("Application user email");
 	const newPassword = await readLine("New user password", { secret: true });
-	const passwordConfirm = await readLine("Confirm new user password", { secret: true });
+	const passwordConfirm = await readLine("Confirm new user password", {
+		secret: true,
+	});
 
 	if (newPassword.length < 8) {
 		throw new Error("The new password must contain at least 8 characters.");
@@ -78,14 +84,15 @@ async function main() {
 	const pb = new PocketBase(baseUrl.replace(/\/$/, ""));
 	pb.autoCancellation(false);
 
-	await pb.collection("_superusers").authWithPassword(
-		superuserEmail.trim(),
-		superuserPassword,
-	);
+	await pb
+		.collection("_superusers")
+		.authWithPassword(superuserEmail.trim(), superuserPassword);
 
-	const user = await pb.collection("users").getFirstListItem(
-		pb.filter("email = {:email}", { email: userEmail.trim().toLowerCase() }),
-	);
+	const user = await pb
+		.collection("users")
+		.getFirstListItem(
+			pb.filter("email = {:email}", { email: userEmail.trim().toLowerCase() }),
+		);
 
 	await pb.collection("users").update(user.id, {
 		password: newPassword,

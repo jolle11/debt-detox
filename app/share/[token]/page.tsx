@@ -1,13 +1,14 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import type { ListResult, RecordModel } from "pocketbase";
 import { useEffect, useState } from "react";
 import SharedDebtExpired from "@/components/share/SharedDebtExpired";
-import SharedLinkUnavailable from "@/components/share/SharedLinkUnavailable";
 import SharedDebtView from "@/components/share/SharedDebtView";
+import SharedLinkUnavailable from "@/components/share/SharedLinkUnavailable";
 import pb from "@/lib/pocketbase";
-import { getShareRequestOptions } from "@/lib/shareRequest";
 import { resolveSharedCurrency } from "@/lib/sharedPresentation";
+import { getShareRequestOptions } from "@/lib/shareRequest";
 import type { Debt, Payment, SharedDebt } from "@/lib/types";
 import { COLLECTIONS } from "@/lib/types";
 
@@ -29,7 +30,7 @@ export default function SharePage() {
 	useEffect(() => {
 		async function fetchSharedDebt() {
 			const shareRequestOptions = getShareRequestOptions(token);
-			let shareRecords;
+			let shareRecords: ListResult<RecordModel>;
 
 			try {
 				// Find the shared_debt record by token.

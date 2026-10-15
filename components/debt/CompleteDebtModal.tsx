@@ -1,8 +1,8 @@
 "use client";
 
-import PrivateAmount from "@/components/ui/PrivateAmount";
 import { CheckCircleIcon, XIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import { useCompleteDebt } from "@/hooks/useCompleteDebt";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
@@ -114,6 +114,7 @@ export default function CompleteDebtModal({
 					</div>
 				</div>
 			</div>
+			{/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click is a pointer shortcut; the modal has its own close controls */}
 			<div className="modal-backdrop" onClick={onClose}></div>
 		</div>
 	);

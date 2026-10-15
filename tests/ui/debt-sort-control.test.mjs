@@ -165,6 +165,7 @@ for (const linked of [false, true]) {
 		for (const dir of ["desc", "asc"]) {
 			h.render()[1].props.onChange({ target: { value: dir } });
 			await h.flush();
+			// biome-ignore lint/correctness/useHookAtTopLevel: the test harness renders the hook once per iteration
 			const hook = useDebtSorting([debt], []);
 			const card = text(
 				DebtCard({

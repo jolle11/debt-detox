@@ -4,8 +4,7 @@
 
 @theme {
 	--font-family-sans:
-		var(--font-inconsolata, Inconsolata), ui-sans-serif, system-ui,
-		sans-serif;
+		var(--font-inconsolata, Inconsolata), ui-sans-serif, system-ui, sans-serif;
 	--font-family-mono:
 		var(--font-inconsolata, Inconsolata), ui-monospace, "SF Mono", monospace;
 }

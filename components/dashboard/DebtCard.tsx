@@ -1,18 +1,18 @@
 "use client";
 
-import PrivateAmount from "@/components/ui/PrivateAmount";
 import { CaretDownIcon, UsersThreeIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { type MouseEvent, useId, useMemo, useState } from "react";
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/hooks/useCurrency";
 import type { MarkPaymentAsPaidFn } from "@/hooks/usePayments";
 import { Link } from "@/i18n/routing";
+import type { DebtSortKey } from "@/lib/debtSorting";
 import {
 	calculateDebtStatus,
 	calculateRemainingAmountWithPayments,
 } from "@/lib/format";
-import type { DebtSortKey } from "@/lib/debtSorting";
 import type { Debt, Payment } from "@/lib/types";
 import DebtActions from "./DebtActions";
 import DebtInfo from "./DebtInfo";

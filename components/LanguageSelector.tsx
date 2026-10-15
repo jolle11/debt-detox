@@ -29,15 +29,15 @@ export default function LanguageSelector() {
 
 	return (
 		<div className="dropdown dropdown-start">
-			<div tabIndex={0} role="button" className="btn btn-ghost btn-sm gap-2">
+			<button type="button" className="btn btn-ghost btn-sm gap-2">
 				<TranslateIcon size={16} />
 				<span className="hidden sm:inline">{currentLanguage?.nativeName}</span>
 				<span className="sm:hidden">{currentLanguage?.flag}</span>
 				<CaretDownIcon size={12} />
-			</div>
+			</button>
 
 			<ul
-				tabIndex={0}
+				tabIndex={-1}
 				className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-48 mt-1 border border-base-300"
 			>
 				{languages.map((language) => (

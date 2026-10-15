@@ -10,11 +10,11 @@ import {
 	WarningCircle,
 	XCircle,
 } from "@phosphor-icons/react";
-import { useAuth } from "@/contexts/AuthContext";
-import PrivateAmount from "@/components/ui/PrivateAmount";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import SkeletonPaymentsList from "@/components/ui/skeletons/SkeletonPaymentsList";
+import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
 import { useToast } from "@/hooks/useToast";

@@ -35,7 +35,7 @@ export function useCollaborationSync() {
 		return () => {
 			disposed = true;
 			clearInterval(interval);
-			unsubscribers.forEach((unsubscribe) => unsubscribe());
+			for (const unsubscribe of unsubscribers) unsubscribe();
 		};
 	}, [user?.id, client]);
 }

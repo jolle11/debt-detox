@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import LandingPage from "@/components/landing/LandingPage";
 import {
 	DEFAULT_OG_IMAGE,
-	SITE_NAME,
 	getLanguageAlternates,
-	getLocalizedUrl,
 	getLocaleSeo,
+	getLocalizedUrl,
+	SITE_NAME,
 } from "@/lib/seo";
 
 export async function generateMetadata({
@@ -80,6 +80,7 @@ export default async function HomePage({
 		<>
 			<script
 				type="application/ld+json"
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD built from our own static data
 				dangerouslySetInnerHTML={{
 					__html: JSON.stringify(structuredData),
 				}}

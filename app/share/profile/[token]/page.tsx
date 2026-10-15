@@ -1,13 +1,14 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import type { ListResult, RecordModel } from "pocketbase";
 import { useEffect, useState } from "react";
 import SharedDebtExpired from "@/components/share/SharedDebtExpired";
 import SharedLinkUnavailable from "@/components/share/SharedLinkUnavailable";
 import SharedProfileView from "@/components/share/SharedProfileView";
 import pb from "@/lib/pocketbase";
-import { getShareRequestOptions } from "@/lib/shareRequest";
 import { resolveSharedCurrency } from "@/lib/sharedPresentation";
+import { getShareRequestOptions } from "@/lib/shareRequest";
 import type { Debt, Payment, SharedProfile } from "@/lib/types";
 import { COLLECTIONS } from "@/lib/types";
 
@@ -30,7 +31,7 @@ export default function ShareProfilePage() {
 	useEffect(() => {
 		async function fetchSharedProfile() {
 			const shareRequestOptions = getShareRequestOptions(token);
-			let shareRecords;
+			let shareRecords: ListResult<RecordModel>;
 
 			try {
 				// Find the shared_profile record by token.

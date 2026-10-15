@@ -3,10 +3,10 @@
 import { ShareNetwork, SignOutIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import LanguageSelector from "@/components/LanguageSelector";
-import { Link } from "@/i18n/routing";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useAuth } from "@/contexts/AuthContext";
 import { useSwipe } from "@/hooks/useSwipe";
+import { Link } from "@/i18n/routing";
 import UserAvatar from "../ui/UserAvatar";
 
 interface MobileMenuProps {
@@ -59,6 +59,7 @@ export default function MobileMenu({
 	return (
 		<>
 			{/* Overlay */}
+			{/* biome-ignore lint/a11y/noStaticElementInteractions: overlay click is a pointer shortcut; the menu has its own close control */}
 			<div
 				className={`md:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${
 					isOpen

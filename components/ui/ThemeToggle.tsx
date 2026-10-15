@@ -15,18 +15,17 @@ export default function ThemeToggle() {
 
 	return (
 		<div className="dropdown dropdown-end">
-			<div
-				tabIndex={0}
-				role="button"
+			<button
+				type="button"
 				className="btn btn-ghost btn-circle"
 				title={t("changeTheme")}
 			>
 				<span className="text-lg">
 					{themes.find((t) => t.value === theme)?.icon || "💻"}
 				</span>
-			</div>
+			</button>
 			<ul
-				tabIndex={0}
+				tabIndex={-1}
 				className="menu dropdown-content bg-base-100 rounded-box z-[1] w-40 p-2 shadow border border-base-300"
 			>
 				{themes.map(({ value, label, icon }) => (

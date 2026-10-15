@@ -42,6 +42,7 @@ export default function ShareDebtModal({
 	const [generatedLink, setGeneratedLink] = useState<string | null>(null);
 	const [copied, setCopied] = useState(false);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: refresh links only when the modal opens
 	useEffect(() => {
 		if (isOpen) {
 			fetchActiveLinks();

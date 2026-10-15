@@ -10,16 +10,17 @@ import { useAuth } from "@/contexts/AuthContext";
  */
 export function useAuthSync() {
 	const { user } = useAuth();
+	const userId = user?.id;
 	const queryClient = useQueryClient();
 
 	useEffect(() => {
 		// Cuando el estado del usuario cambia, invalidar todas las queries
-		if (user) {
+		if (userId) {
 			// Usuario logueado: invalidar queries para forzar refetch con nuevas credenciales
 			queryClient.invalidateQueries();
 		} else {
 			// Usuario deslogueado: limpiar todas las queries
 			queryClient.clear();
 		}
-	}, [user?.id, queryClient]); // Solo reaccionar cuando cambia el ID del usuario
+	}, [userId, queryClient]); // Solo reaccionar cuando cambia el ID del usuario
 }

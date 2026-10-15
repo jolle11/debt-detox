@@ -19,11 +19,6 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 	const lastActivityRef = useRef<number>(Date.now());
 	const isCheckingRef = useRef<boolean>(false);
 
-	// Update last activity time on user interaction
-	const updateActivity = () => {
-		lastActivityRef.current = Date.now();
-	};
-
 	// Check session validity periodically
 	const performSessionCheck = useCallback(async () => {
 		if (!user || isCheckingRef.current) return;
@@ -55,6 +50,11 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 
 	useEffect(() => {
 		if (!user) return;
+
+		// Update last activity time on user interaction
+		const updateActivity = () => {
+			lastActivityRef.current = Date.now();
+		};
 
 		// Set up periodic session check
 		intervalRef.current = setInterval(performSessionCheck, checkInterval);

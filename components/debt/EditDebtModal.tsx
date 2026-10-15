@@ -62,6 +62,7 @@ export default function EditDebtModal({
 					isSubmitting={isLoading}
 				/>
 			</div>
+			{/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click is a pointer shortcut; the modal has its own close controls */}
 			<div className="modal-backdrop" onClick={onClose}></div>
 		</div>
 	);

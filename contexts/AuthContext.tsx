@@ -48,6 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	const preferenceSaveQueue = useRef<Promise<void>>(Promise.resolve());
 	const preferenceRevision = useRef(0);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: run the initial auth check only on mount
 	useEffect(() => {
 		// Check authentication status on mount
 		checkAuthStatus();

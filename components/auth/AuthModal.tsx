@@ -46,6 +46,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
 					<RegisterForm onToggleForm={toggleMode} onSuccess={onClose} />
 				)}
 			</div>
+			{/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click is a pointer shortcut; the modal has its own close controls */}
 			<div className="modal-backdrop" onClick={onClose}></div>
 		</div>
 	);

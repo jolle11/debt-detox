@@ -177,7 +177,7 @@ export default function AddExtraPaymentModal({
 
 				<form onSubmit={handleSubmit} className="space-y-4">
 					<div className="form-control">
-						<label className="label">
+						<label htmlFor="extra-payment-amount" className="label">
 							<span className="label-text">
 								{t("debt.extraPayment.amountLabel")}
 							</span>
@@ -188,6 +188,7 @@ export default function AddExtraPaymentModal({
 							</span>
 						</label>
 						<input
+							id="extra-payment-amount"
 							type="number"
 							lang={locale}
 							step="0.01"
@@ -200,21 +201,21 @@ export default function AddExtraPaymentModal({
 							disabled={isLoading || maxAmount <= 0}
 							required
 						/>
-						<label className="label">
+						<div className="label">
 							<span className="label-text-alt text-base-content/70 whitespace-normal break-words leading-relaxed">
 								{t("debt.extraPayment.description")}
 							</span>
-						</label>
+						</div>
 					</div>
 
 					{/* Selector de estrategia */}
 					{showStrategies && (
 						<div className="form-control">
-							<label className="label">
+							<div className="label">
 								<span className="label-text font-semibold">
 									{t("debt.extraPayment.strategyLabel")}
 								</span>
-							</label>
+							</div>
 							<div className="space-y-2">
 								{/* Opción 1: Solo registrar */}
 								<label
@@ -370,6 +371,7 @@ export default function AddExtraPaymentModal({
 					</div>
 				</form>
 			</div>
+			{/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click is a pointer shortcut; the modal has its own close controls */}
 			<div className="modal-backdrop" onClick={handleClose}></div>
 		</div>
 	);

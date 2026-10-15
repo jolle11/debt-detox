@@ -6,7 +6,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import ClientLayout from "@/components/layout/ClientLayout";
 import { routing } from "@/i18n/routing";
-import { DEFAULT_OG_IMAGE, SITE_NAME, getLocaleSeo } from "@/lib/seo";
+import { DEFAULT_OG_IMAGE, getLocaleSeo, SITE_NAME } from "@/lib/seo";
 
 const inconsolata = Inconsolata({
 	variable: "--font-inconsolata",

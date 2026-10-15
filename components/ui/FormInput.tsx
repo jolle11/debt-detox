@@ -1,6 +1,7 @@
 "use client";
 
 import { useLocale } from "next-intl";
+import { useId } from "react";
 import type { UseFormRegisterReturn } from "react-hook-form";
 
 interface FormInputProps {
@@ -35,14 +36,16 @@ export default function FormInput({
 	max,
 }: FormInputProps) {
 	const locale = useLocale();
+	const inputId = useId();
 
 	return (
 		<div className="form-control">
-			<label className="label pb-2">
+			<label htmlFor={inputId} className="label pb-2">
 				<span className="label-text font-medium">{label}</span>
 			</label>
 			{registration ? (
 				<input
+					id={inputId}
 					type={type}
 					className={`input input-bordered w-full ${error ? "input-error" : ""} ${className}`}
 					placeholder={placeholder}
@@ -55,6 +58,7 @@ export default function FormInput({
 				/>
 			) : (
 				<input
+					id={inputId}
 					type={type}
 					className={`input input-bordered w-full ${error ? "input-error" : ""} ${className}`}
 					value={value}
@@ -69,9 +73,9 @@ export default function FormInput({
 				/>
 			)}
 			{error && (
-				<label className="label py-1">
+				<div className="label py-1">
 					<span className="label-text-alt text-error">{error}</span>
-				</label>
+				</div>
 			)}
 		</div>
 	);

@@ -2,9 +2,9 @@ import { useTranslations } from "next-intl";
 import DebtCard from "@/components/dashboard/DebtCard";
 import DebtFilterTabs from "@/components/dashboard/DebtFilterTabs";
 import DebtSortControl from "@/components/dashboard/DebtSortControl";
-import { useDebtSorting } from "@/hooks/useDebtSorting";
 import EmptyState from "@/components/dashboard/EmptyState";
 import { useDebtFilter } from "@/hooks/useDebtFilter";
+import { useDebtSorting } from "@/hooks/useDebtSorting";
 import type { MarkPaymentAsPaidFn } from "@/hooks/usePayments";
 import type { Debt, Payment } from "@/lib/types";
 

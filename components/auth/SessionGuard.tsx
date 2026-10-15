@@ -1,12 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { getLocalizedPath } from "@/lib/seo";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
+import { getLocalizedPath } from "@/lib/seo";
 
 export default function SessionGuard() {
 	const t = useTranslations();

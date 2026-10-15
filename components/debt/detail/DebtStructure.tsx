@@ -1,8 +1,8 @@
 "use client";
 
-import PrivateAmount from "@/components/ui/PrivateAmount";
 import { FileTextIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import type { DebtStructureProps } from "@/data/debtDetail";
 
 export default function DebtStructure({

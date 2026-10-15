@@ -75,8 +75,7 @@ export default function DebtSortControl({
 				</select>
 			</div>
 			{isSaving && (
-				<span
-					role="status"
+				<output
 					className="loading loading-spinner loading-xs"
 					aria-label={t("saving")}
 				/>

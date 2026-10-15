@@ -35,7 +35,7 @@ export function useSwipe({
 				touch.clientX >= window.innerWidth - edgeSize;
 			isSwiping.current = startedFromRightEdge || !!onSwipeRight;
 		},
-		[edgeSize, onSwipeLeft],
+		[edgeSize, onSwipeRight],
 	);
 
 	const handleTouchMove = useCallback((e: TouchEvent) => {

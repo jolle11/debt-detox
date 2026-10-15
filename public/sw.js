@@ -16,13 +16,15 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
 	event.waitUntil(
-		caches.keys().then((keys) =>
-			Promise.all(
-				keys
-					.filter((key) => key !== CACHE_NAME)
-					.map((key) => caches.delete(key)),
+		caches
+			.keys()
+			.then((keys) =>
+				Promise.all(
+					keys
+						.filter((key) => key !== CACHE_NAME)
+						.map((key) => caches.delete(key)),
+				),
 			),
-		),
 	);
 	self.clients.claim();
 });
@@ -45,7 +47,9 @@ self.addEventListener("fetch", (event) => {
 			fetch(request)
 				.then((response) => {
 					const copy = response.clone();
-					void caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+					void caches
+						.open(CACHE_NAME)
+						.then((cache) => cache.put(request, copy));
 					return response;
 				})
 				.catch(async () => {

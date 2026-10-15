@@ -1,7 +1,7 @@
 "use client";
 
-import PrivateAmount from "@/components/ui/PrivateAmount";
 import { useTranslations } from "next-intl";
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import type { DebtStatsProps } from "@/data/debtDetail";
 
 export default function DebtQuickStats({

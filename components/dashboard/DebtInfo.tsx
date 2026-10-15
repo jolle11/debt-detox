@@ -1,5 +1,5 @@
-import PrivateAmount from "@/components/ui/PrivateAmount";
 import { useFormatter, useTranslations } from "next-intl";
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import { useCurrency } from "@/hooks/useCurrency";
 import {
 	calculatePaidAmountWithPayments,
@@ -86,8 +86,8 @@ export default function DebtInfo({ debt, payments = [] }: DebtInfoProps) {
 			)}
 			{/* Primary financial stats — always 4 columns on desktop */}
 			<div className="grid grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-2 sm:gap-4">
-				{primaryItems.map((item, index) => (
-					<div key={index} className="min-w-0">
+				{primaryItems.map((item) => (
+					<div key={item.label} className="min-w-0">
 						<div className="text-xs sm:text-sm font-medium text-base-content/60 uppercase tracking-wide mb-0.5 sm:mb-1">
 							{item.label}
 						</div>
@@ -110,7 +110,7 @@ export default function DebtInfo({ debt, payments = [] }: DebtInfoProps) {
 					}`}
 				>
 					{secondaryItems.map((item, index) => (
-						<div key={index} className="min-w-0">
+						<div key={item.label} className="min-w-0">
 							<div className="text-xs sm:text-sm font-medium text-base-content/60 uppercase tracking-wide mb-0.5 sm:mb-1">
 								{item.label}
 							</div>

@@ -7,7 +7,6 @@ import AuthModal from "@/components/auth/AuthModal";
 import ShareProfileModal from "@/components/dashboard/ShareProfileModal";
 import CreateDebtModal from "@/components/debt/CreateDebtModal";
 import LanguageSelector from "@/components/LanguageSelector";
-import { Link } from "@/i18n/routing";
 import MobileMenu from "@/components/layout/MobileMenu";
 import MobileMenuButton from "@/components/layout/MobileMenuButton";
 import AmountPrivacyToggle from "@/components/ui/AmountPrivacyToggle";
@@ -15,6 +14,7 @@ import ThemeToggle from "@/components/ui/ThemeToggle";
 import UserAvatar from "@/components/ui/UserAvatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDebtsContext } from "@/contexts/DebtsContext";
+import { Link } from "@/i18n/routing";
 
 export default function Header() {
 	const t = useTranslations();
@@ -60,18 +60,14 @@ export default function Header() {
 									+ {t("nav.addDebt")}
 								</button>
 								<div className="dropdown dropdown-end">
-									<div
-										tabIndex={0}
-										role="button"
-										className="btn btn-ghost btn-sm gap-2"
-									>
+									<button type="button" className="btn btn-ghost btn-sm gap-2">
 										<UserAvatar user={user} size="xs" />
 										<span className="hidden sm:inline truncate max-w-24">
 											{user.name || user.email}
 										</span>
-									</div>
+									</button>
 									<ul
-										tabIndex={0}
+										tabIndex={-1}
 										className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow-xl border-2 border-primary/20"
 									>
 										<li className="menu-title">

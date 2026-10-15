@@ -10,8 +10,8 @@ import {
 	TrashIcon,
 	UsersThreeIcon,
 } from "@phosphor-icons/react";
-import { useAuth } from "@/contexts/AuthContext";
 import { useTranslations } from "next-intl";
+import { useAuth } from "@/contexts/AuthContext";
 import { type DebtHeaderProps, debtStatusConfig } from "@/data/debtDetail";
 import { calculateDebtLifecycleStatus } from "@/lib/format";
 
@@ -95,11 +95,11 @@ export default function DebtHeader({
 							</div>
 							{/* Mobile Dropdown Menu */}
 							<div className="dropdown dropdown-end md:hidden flex-shrink-0">
-								<button tabIndex={0} className="btn btn-ghost btn-sm">
+								<button type="button" className="btn btn-ghost btn-sm">
 									<DotsThree className="w-5 h-5" weight="bold" />
 								</button>
 								<ul
-									tabIndex={0}
+									tabIndex={-1}
 									className="dropdown-content z-50 menu p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300"
 								>
 									{status !== "completed" && (

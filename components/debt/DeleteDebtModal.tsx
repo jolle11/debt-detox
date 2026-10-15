@@ -92,6 +92,7 @@ export default function DeleteDebtModal({
 					</button>
 				</div>
 			</div>
+			{/* biome-ignore lint/a11y/noStaticElementInteractions: backdrop click is a pointer shortcut; the modal has its own close controls */}
 			<div className="modal-backdrop" onClick={onClose}></div>
 		</div>
 	);

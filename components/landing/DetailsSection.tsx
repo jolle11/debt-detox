@@ -20,8 +20,8 @@ export default function DetailsSection() {
 				</header>
 
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-					{detailsFeatures.map((detail, index) => (
-						<DetailCard key={index} detail={detail} />
+					{detailsFeatures.map((detail) => (
+						<DetailCard key={detail.titleKey} detail={detail} />
 					))}
 				</div>
 			</div>

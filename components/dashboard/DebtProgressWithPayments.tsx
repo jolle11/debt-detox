@@ -96,7 +96,9 @@ export default function DebtProgressWithPayments({
 						</div>
 					</div>
 				</div>
-				<span className={`text-sm sm:text-base font-semibold text-primary min-w-[3ch] text-right ${animatedPercentage > 15 ? "lg:hidden" : ""}`}>
+				<span
+					className={`text-sm sm:text-base font-semibold text-primary min-w-[3ch] text-right ${animatedPercentage > 15 ? "lg:hidden" : ""}`}
+				>
 					{Math.round(animatedPercentage)}%
 				</span>
 			</div>

@@ -1,9 +1,9 @@
 "use client";
 
-import PrivateAmount from "@/components/ui/PrivateAmount";
 import { ClockCounterClockwise, XIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import PrivateAmount from "@/components/ui/PrivateAmount";
 import type { HistoricalPaymentInfo } from "@/hooks/useCreateDebt";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";

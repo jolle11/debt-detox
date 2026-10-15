@@ -105,7 +105,10 @@ export const NO_INDEX_ROBOTS: NonNullable<Metadata["robots"]> = {
 
 export function getLocaleSeo(locale: string): LocaleSeo {
 	const fallbackLocale = routing.defaultLocale as SupportedLocale;
-	return localeSeo[(locale as SupportedLocale) || fallbackLocale] || localeSeo[fallbackLocale];
+	return (
+		localeSeo[(locale as SupportedLocale) || fallbackLocale] ||
+		localeSeo[fallbackLocale]
+	);
 }
 
 export function getLocalizedPath(locale: string, pathname = "/") {
@@ -130,7 +133,10 @@ export function getLocalizedUrl(locale: string, pathname = "/") {
 export function getLanguageAlternates(pathname = "/") {
 	return {
 		...Object.fromEntries(
-			routing.locales.map((locale) => [locale, getLocalizedUrl(locale, pathname)]),
+			routing.locales.map((locale) => [
+				locale,
+				getLocalizedUrl(locale, pathname),
+			]),
 		),
 		"x-default": getLocalizedUrl(routing.defaultLocale, pathname),
 	};

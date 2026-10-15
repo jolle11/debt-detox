@@ -88,10 +88,11 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 			<form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
 				<div className="space-y-4">
 					<div className="form-control">
-						<label className="label">
+						<label htmlFor="login-email" className="label">
 							<span className="label-text font-medium">{t("email")}</span>
 						</label>
 						<input
+							id="login-email"
 							type="email"
 							placeholder="tu@email.com"
 							className={`input input-bordered w-full focus:input-primary ${errors.email ? "input-error" : ""}`}
@@ -99,16 +100,17 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 							{...register("email")}
 						/>
 						{errors.email && (
-							<label className="label py-1">
+							<div className="label py-1">
 								<span className="label-text-alt text-error">{tv("email")}</span>
-							</label>
+							</div>
 						)}
 					</div>
 					<div className="form-control">
-						<label className="label">
+						<label htmlFor="login-password" className="label">
 							<span className="label-text font-medium">{t("password")}</span>
 						</label>
 						<input
+							id="login-password"
 							type="password"
 							placeholder="••••••••"
 							className={`input input-bordered w-full focus:input-primary ${errors.password ? "input-error" : ""}`}
@@ -116,11 +118,11 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 							{...register("password")}
 						/>
 						{errors.password && (
-							<label className="label py-1">
+							<div className="label py-1">
 								<span className="label-text-alt text-error">
 									{tv("required")}
 								</span>
-							</label>
+							</div>
 						)}
 					</div>
 				</div>
@@ -128,6 +130,7 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 				{isLocked && (
 					<div className="alert alert-warning">
 						<svg
+							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							className="stroke-current shrink-0 h-6 w-6"
 							fill="none"

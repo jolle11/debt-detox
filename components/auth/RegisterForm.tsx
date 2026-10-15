@@ -57,13 +57,14 @@ export default function RegisterForm({
 			<form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
 				<div className="space-y-4">
 					<div className="form-control">
-						<label className="label">
+						<label htmlFor="register-name" className="label">
 							<span className="label-text font-medium">{t("name")}</span>
 							<span className="label-text-alt text-xs text-base-content/60">
 								{t("nameOptional")}
 							</span>
 						</label>
 						<input
+							id="register-name"
 							type="text"
 							placeholder={t("name")}
 							className="input input-bordered w-full focus:input-primary"
@@ -71,57 +72,60 @@ export default function RegisterForm({
 						/>
 					</div>
 					<div className="form-control">
-						<label className="label">
+						<label htmlFor="register-email" className="label">
 							<span className="label-text font-medium">{t("email")}</span>
 						</label>
 						<input
+							id="register-email"
 							type="email"
 							placeholder="tu@email.com"
 							className={`input input-bordered w-full focus:input-primary ${errors.email ? "input-error" : ""}`}
 							{...register("email")}
 						/>
 						{errors.email && (
-							<label className="label py-1">
+							<div className="label py-1">
 								<span className="label-text-alt text-error">{tv("email")}</span>
-							</label>
+							</div>
 						)}
 					</div>
 					<div className="form-control">
-						<label className="label">
+						<label htmlFor="register-password" className="label">
 							<span className="label-text font-medium">{t("password")}</span>
 						</label>
 						<input
+							id="register-password"
 							type="password"
 							placeholder="••••••••"
 							className={`input input-bordered w-full focus:input-primary ${errors.password ? "input-error" : ""}`}
 							{...register("password")}
 						/>
 						{errors.password && (
-							<label className="label py-1">
+							<div className="label py-1">
 								<span className="label-text-alt text-error">
 									{tv("minLength", { min: 8 })}
 								</span>
-							</label>
+							</div>
 						)}
 					</div>
 					<div className="form-control">
-						<label className="label">
+						<label htmlFor="register-password-confirm" className="label">
 							<span className="label-text font-medium">
 								{t("confirmPassword")}
 							</span>
 						</label>
 						<input
+							id="register-password-confirm"
 							type="password"
 							placeholder="••••••••"
 							className={`input input-bordered w-full focus:input-primary ${errors.passwordConfirm ? "input-error" : ""}`}
 							{...register("passwordConfirm")}
 						/>
 						{errors.passwordConfirm && (
-							<label className="label py-1">
+							<div className="label py-1">
 								<span className="label-text-alt text-error">
 									{tv("passwordMismatch")}
 								</span>
-							</label>
+							</div>
 						)}
 					</div>
 				</div>

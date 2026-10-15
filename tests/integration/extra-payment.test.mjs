@@ -1195,20 +1195,28 @@ test("another user cannot complete someone else's debt", async () => {
 test("amount privacy persists across independent sessions and auth refresh", async () => {
 	const initial = await owner.collection("users").getOne(ownerRecord.id);
 	assert.equal(initial.hide_amounts, false);
-	const saved = await owner.collection("users").update(ownerRecord.id, { hide_amounts: true });
+	const saved = await owner
+		.collection("users")
+		.update(ownerRecord.id, { hide_amounts: true });
 	assert.equal(saved.hide_amounts, true);
 
 	const mobile = new PocketBase(BASE_URL);
-	await mobile.collection("users").authWithPassword("owner@debt-detox.test", "owner-password");
+	await mobile
+		.collection("users")
+		.authWithPassword("owner@debt-detox.test", "owner-password");
 	assert.equal(mobile.authStore.record.hide_amounts, true);
-	await owner.collection("users").update(ownerRecord.id, { hide_amounts: false });
+	await owner
+		.collection("users")
+		.update(ownerRecord.id, { hide_amounts: false });
 	const refreshed = await mobile.collection("users").authRefresh();
 	assert.equal(refreshed.record.hide_amounts, false);
 });
 
 test("another user cannot change amount privacy", async () => {
 	await assert.rejects(
-		otherUser.collection("users").update(ownerRecord.id, { hide_amounts: true }),
+		otherUser
+			.collection("users")
+			.update(ownerRecord.id, { hide_amounts: true }),
 		(error) => error?.status === 404,
 	);
 	const unchanged = await owner.collection("users").getOne(ownerRecord.id);
@@ -1217,172 +1225,427 @@ test("another user cannot change amount privacy", async () => {
 
 test("debt sorting preferences persist across sessions without changing amount privacy", async () => {
 	const saved = await owner.collection("users").update(ownerRecord.id, {
-		debt_sort_by: "remaining", debt_sort_direction: "desc", hide_amounts: true,
+		debt_sort_by: "remaining",
+		debt_sort_direction: "desc",
+		hide_amounts: true,
 	});
 	assert.equal(saved.debt_sort_by, "remaining");
 	const mobile = new PocketBase(BASE_URL);
-	await mobile.collection("users").authWithPassword("owner@debt-detox.test", "owner-password");
+	await mobile
+		.collection("users")
+		.authWithPassword("owner@debt-detox.test", "owner-password");
 	assert.equal(mobile.authStore.record.debt_sort_by, "remaining");
 	assert.equal(mobile.authStore.record.debt_sort_direction, "desc");
-	await mobile.collection("users").update(ownerRecord.id, {debt_sort_by:"name",debt_sort_direction:"asc"});
+	await mobile.collection("users").update(ownerRecord.id, {
+		debt_sort_by: "name",
+		debt_sort_direction: "asc",
+	});
 	const refreshed = await owner.collection("users").authRefresh();
 	assert.equal(refreshed.record.debt_sort_by, "name");
 	assert.equal(refreshed.record.debt_sort_direction, "asc");
 	assert.equal(refreshed.record.hide_amounts, true);
-	await owner.collection("users").update(ownerRecord.id, {hide_amounts:false});
+	await owner
+		.collection("users")
+		.update(ownerRecord.id, { hide_amounts: false });
 });
 
 test("sorting preferences reject invalid values and updates by another user", async () => {
-	for (const update of [{debt_sort_by:"unknown"},{debt_sort_direction:"unknown"}]) {
-		await assert.rejects(owner.collection("users").update(ownerRecord.id,update), error=>error?.status===400);
+	for (const update of [
+		{ debt_sort_by: "unknown" },
+		{ debt_sort_direction: "unknown" },
+	]) {
+		await assert.rejects(
+			owner.collection("users").update(ownerRecord.id, update),
+			(error) => error?.status === 400,
+		);
 	}
-	await assert.rejects(otherUser.collection("users").update(ownerRecord.id,{debt_sort_by:"monthly"}),error=>error?.status===404);
+	await assert.rejects(
+		otherUser
+			.collection("users")
+			.update(ownerRecord.id, { debt_sort_by: "monthly" }),
+		(error) => error?.status === 404,
+	);
 	const unchanged = await owner.collection("users").getOne(ownerRecord.id);
-	assert.equal(unchanged.debt_sort_by,"name");
-	assert.equal(unchanged.debt_sort_direction,"asc");
+	assert.equal(unchanged.debt_sort_by, "name");
+	assert.equal(unchanged.debt_sort_direction, "asc");
 });
 
 async function invitePartner(debtId = debt.id) {
-	return (await owner.send(`/api/debt-detox/debts/${debtId}/invite`, {method:"POST",body:{email:"OTHER@debt-detox.test"}})).invitation;
+	return (
+		await owner.send(`/api/debt-detox/debts/${debtId}/invite`, {
+			method: "POST",
+			body: { email: "OTHER@debt-detox.test" },
+		})
+	).invitation;
 }
 async function acceptPartner(debtId = debt.id) {
-	const invitation=await invitePartner(debtId);
-	await otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`, {method:"POST",body:{action:"accept"}});
+	const invitation = await invitePartner(debtId);
+	await otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`, {
+		method: "POST",
+		body: { action: "accept" },
+	});
 	return invitation;
 }
 
-test("pending invitations reveal no debt or payment data and only the recipient can accept", async()=>{
-	const invitation=await invitePartner();
-	const inbox=await otherUser.collection("debt_invitations").getFullList();
-	assert.ok(inbox.some(i=>i.id===invitation.id));
-	await assert.rejects(otherUser.collection("debts").getOne(debt.id), e=>e.status===404);
-	await assert.rejects(owner.send(`/api/debt-detox/invitations/${invitation.id}/respond`,{method:"POST",body:{action:"accept"}}), e=>e.status===400);
-	await assert.rejects(otherUser.collection("debt_invitations").update(invitation.id,{status:"accepted"}),e=>[403,404].includes(e.status));
-	await assert.rejects(invitePartner(),e=>e.status===400);
+test("pending invitations reveal no debt or payment data and only the recipient can accept", async () => {
+	const invitation = await invitePartner();
+	const inbox = await otherUser.collection("debt_invitations").getFullList();
+	assert.ok(inbox.some((i) => i.id === invitation.id));
+	await assert.rejects(
+		otherUser.collection("debts").getOne(debt.id),
+		(e) => e.status === 404,
+	);
+	await assert.rejects(
+		owner.send(`/api/debt-detox/invitations/${invitation.id}/respond`, {
+			method: "POST",
+			body: { action: "accept" },
+		}),
+		(e) => e.status === 400,
+	);
+	await assert.rejects(
+		otherUser
+			.collection("debt_invitations")
+			.update(invitation.id, { status: "accepted" }),
+		(e) => [403, 404].includes(e.status),
+	);
+	await assert.rejects(invitePartner(), (e) => e.status === 400);
 });
 
-test("acceptance grants access to one financing without exposing private user profiles",async()=>{
+test("acceptance grants access to one financing without exposing private user profiles", async () => {
 	await acceptPartner();
-	const shared=await otherUser.collection("debts").getOne(debt.id);
-	assert.equal(shared.collaborator_id,otherUser.authStore.record.id);
-	assert.equal(shared.is_shared,true);
-	assert.equal(shared.user_id,ownerRecord.id);
-	await assert.rejects(otherUser.collection("users").getOne(ownerRecord.id),e=>e.status===404);
-	await assert.rejects(otherUser.send(`/api/debt-detox/debts/${debt.id}`,{method:"DELETE"}),e=>e.status===404);
-	await assert.rejects(otherUser.collection("debts").update(debt.id,{name:"Hijacked"}),e=>e.status===403||e.status===404);
-	await assert.rejects(otherUser.send(`/api/debt-detox/debts/${debt.id}/complete`,{method:"POST"}),e=>e.status===404);
+	const shared = await otherUser.collection("debts").getOne(debt.id);
+	assert.equal(shared.collaborator_id, otherUser.authStore.record.id);
+	assert.equal(shared.is_shared, true);
+	assert.equal(shared.user_id, ownerRecord.id);
+	await assert.rejects(
+		otherUser.collection("users").getOne(ownerRecord.id),
+		(e) => e.status === 404,
+	);
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/debts/${debt.id}`, { method: "DELETE" }),
+		(e) => e.status === 404,
+	);
+	await assert.rejects(
+		otherUser.collection("debts").update(debt.id, { name: "Hijacked" }),
+		(e) => e.status === 403 || e.status === 404,
+	);
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/debts/${debt.id}/complete`, {
+			method: "POST",
+		}),
+		(e) => e.status === 404,
+	);
 });
 
-test("participants synchronize ordinary payments and preserve the first actor on duplicate marks",async()=>{
+test("participants synchronize ordinary payments and preserve the first actor on duplicate marks", async () => {
 	await acceptPartner();
-	const url=`/api/debt-detox/debts/${debt.id}/payments/2026/1`;
-	const first=await otherUser.send(url,{method:"PUT",body:{actual_amount:100}});
-	const duplicate=await owner.send(url,{method:"PUT",body:{actual_amount:100}});
-	assert.equal(first.payment.id,duplicate.payment.id);
-	const payment=await owner.collection("payments").getOne(first.payment.id);
-	assert.equal(payment.recorded_by,otherUser.authStore.record.id);
-	assert.equal(payment.sharing_snapshot.owner_percent,50);
-	assert.equal(payment.paid,true);
-	await otherUser.send(`/api/debt-detox/payments/${payment.id}/amount`,{method:"PATCH",body:{amount:90}});
-	assert.equal((await owner.collection("payments").getOne(payment.id)).actual_amount,90);
-	await otherUser.send(`/api/debt-detox/payments/${payment.id}/unmark`,{method:"POST"});
-	assert.equal((await owner.collection("payments").getOne(payment.id)).paid,false);
+	const url = `/api/debt-detox/debts/${debt.id}/payments/2026/1`;
+	const first = await otherUser.send(url, {
+		method: "PUT",
+		body: { actual_amount: 100 },
+	});
+	const duplicate = await owner.send(url, {
+		method: "PUT",
+		body: { actual_amount: 100 },
+	});
+	assert.equal(first.payment.id, duplicate.payment.id);
+	const payment = await owner.collection("payments").getOne(first.payment.id);
+	assert.equal(payment.recorded_by, otherUser.authStore.record.id);
+	assert.equal(payment.sharing_snapshot.owner_percent, 50);
+	assert.equal(payment.paid, true);
+	await otherUser.send(`/api/debt-detox/payments/${payment.id}/amount`, {
+		method: "PATCH",
+		body: { amount: 90 },
+	});
+	assert.equal(
+		(await owner.collection("payments").getOne(payment.id)).actual_amount,
+		90,
+	);
+	await otherUser.send(`/api/debt-detox/payments/${payment.id}/unmark`, {
+		method: "POST",
+	});
+	assert.equal(
+		(await owner.collection("payments").getOne(payment.id)).paid,
+		false,
+	);
 });
 
-test("revocation immediately blocks access and payments while preserving payment history",async()=>{
+test("revocation immediately blocks access and payments while preserving payment history", async () => {
 	await acceptPartner();
-	const result=await otherUser.send(`/api/debt-detox/debts/${debt.id}/payments/2026/1`,{method:"PUT",body:{}});
-	await assert.rejects(otherUser.send(`/api/debt-detox/debts/${debt.id}/collaborator`,{method:"DELETE"}),e=>e.status===404);
-	await owner.send(`/api/debt-detox/debts/${debt.id}/collaborator`,{method:"DELETE"});
-	await assert.rejects(otherUser.collection("debts").getOne(debt.id),e=>e.status===404);
-	await assert.rejects(otherUser.collection("payments").getOne(result.payment.id),e=>e.status===404);
-	await assert.rejects(otherUser.send(`/api/debt-detox/debts/${debt.id}/payments/2026/2`,{method:"PUT",body:{}}),e=>e.status===404);
-	const preserved=await owner.collection("payments").getOne(result.payment.id);
-	assert.equal(preserved.recorded_by,otherUser.authStore.record.id);
-	assert.equal(preserved.sharing_snapshot.collaborator,otherUser.authStore.record.id);
-	await owner.send(`/api/debt-detox/payments/${preserved.id}/amount`,{method:"PATCH",body:{amount:95}});
-	const corrected=await owner.collection("payments").getOne(preserved.id);
-	assert.deepEqual(corrected.sharing_snapshot,preserved.sharing_snapshot);
-	await assert.rejects(owner.collection("payments").update(preserved.id,{sharing_snapshot:{owner:"forged"}}));
-	assert.deepEqual((await owner.collection("payments").getOne(preserved.id)).sharing_snapshot,preserved.sharing_snapshot);
+	const result = await otherUser.send(
+		`/api/debt-detox/debts/${debt.id}/payments/2026/1`,
+		{ method: "PUT", body: {} },
+	);
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/debts/${debt.id}/collaborator`, {
+			method: "DELETE",
+		}),
+		(e) => e.status === 404,
+	);
+	await owner.send(`/api/debt-detox/debts/${debt.id}/collaborator`, {
+		method: "DELETE",
+	});
+	await assert.rejects(
+		otherUser.collection("debts").getOne(debt.id),
+		(e) => e.status === 404,
+	);
+	await assert.rejects(
+		otherUser.collection("payments").getOne(result.payment.id),
+		(e) => e.status === 404,
+	);
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/debts/${debt.id}/payments/2026/2`, {
+			method: "PUT",
+			body: {},
+		}),
+		(e) => e.status === 404,
+	);
+	const preserved = await owner
+		.collection("payments")
+		.getOne(result.payment.id);
+	assert.equal(preserved.recorded_by, otherUser.authStore.record.id);
+	assert.equal(
+		preserved.sharing_snapshot.collaborator,
+		otherUser.authStore.record.id,
+	);
+	await owner.send(`/api/debt-detox/payments/${preserved.id}/amount`, {
+		method: "PATCH",
+		body: { amount: 95 },
+	});
+	const corrected = await owner.collection("payments").getOne(preserved.id);
+	assert.deepEqual(corrected.sharing_snapshot, preserved.sharing_snapshot);
+	await assert.rejects(
+		owner
+			.collection("payments")
+			.update(preserved.id, { sharing_snapshot: { owner: "forged" } }),
+	);
+	assert.deepEqual(
+		(await owner.collection("payments").getOne(preserved.id)).sharing_snapshot,
+		preserved.sharing_snapshot,
+	);
 });
 
-test("rejected, cancelled, expired and deleted-debt invitations cannot be accepted",async()=>{
-	let invitation=await invitePartner();
-	await otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`,{method:"POST",body:{action:"reject"}});
-	await assert.rejects(otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`,{method:"POST",body:{action:"accept"}}),e=>e.status===400);
-	invitation=await invitePartner();
-	await owner.send(`/api/debt-detox/invitations/${invitation.id}/respond`,{method:"POST",body:{action:"cancel"}});
-	await assert.rejects(otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`,{method:"POST",body:{action:"accept"}}),e=>e.status===400);
-	invitation=await invitePartner();
-	await admin.collection("debt_invitations").update(invitation.id,{expires_at:"2020-01-01"});
-	await assert.rejects(otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`,{method:"POST",body:{action:"accept"}}),e=>e.status===400);
-	invitation=await invitePartner();
-	await owner.send(`/api/debt-detox/debts/${debt.id}`,{method:"DELETE"});
-	await assert.rejects(otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`,{method:"POST",body:{action:"accept"}}),e=>e.status===404);
+test("rejected, cancelled, expired and deleted-debt invitations cannot be accepted", async () => {
+	let invitation = await invitePartner();
+	await otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`, {
+		method: "POST",
+		body: { action: "reject" },
+	});
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`, {
+			method: "POST",
+			body: { action: "accept" },
+		}),
+		(e) => e.status === 400,
+	);
+	invitation = await invitePartner();
+	await owner.send(`/api/debt-detox/invitations/${invitation.id}/respond`, {
+		method: "POST",
+		body: { action: "cancel" },
+	});
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`, {
+			method: "POST",
+			body: { action: "accept" },
+		}),
+		(e) => e.status === 400,
+	);
+	invitation = await invitePartner();
+	await admin
+		.collection("debt_invitations")
+		.update(invitation.id, { expires_at: "2020-01-01" });
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`, {
+			method: "POST",
+			body: { action: "accept" },
+		}),
+		(e) => e.status === 400,
+	);
+	invitation = await invitePartner();
+	await owner.send(`/api/debt-detox/debts/${debt.id}`, { method: "DELETE" });
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`, {
+			method: "POST",
+			body: { action: "accept" },
+		}),
+		(e) => e.status === 404,
+	);
 });
 
-test("owners cannot forge membership or audit fields through direct collection writes",async()=>{
-	await assert.rejects(owner.collection("debts").update(debt.id,{collaborator_id:otherUser.authStore.record.id,collaborator_name:"Forged"}));
-	assert.equal((await owner.collection("debts").getOne(debt.id)).collaborator_id,"");
-	await assert.rejects(owner.collection("debts").update(debt.id,{completed_at:"2026-01-01",monthly_amount:1}));
-	assert.equal((await owner.collection("debts").getOne(debt.id)).monthly_amount,100);
+test("owners cannot forge membership or audit fields through direct collection writes", async () => {
+	await assert.rejects(
+		owner.collection("debts").update(debt.id, {
+			collaborator_id: otherUser.authStore.record.id,
+			collaborator_name: "Forged",
+		}),
+	);
+	assert.equal(
+		(await owner.collection("debts").getOne(debt.id)).collaborator_id,
+		"",
+	);
+	await assert.rejects(
+		owner
+			.collection("debts")
+			.update(debt.id, { completed_at: "2026-01-01", monthly_amount: 1 }),
+	);
+	assert.equal(
+		(await owner.collection("debts").getOne(debt.id)).monthly_amount,
+		100,
+	);
 	await acceptPartner();
-	await assert.rejects(owner.collection("debts").update(debt.id,{collaborator_id:"",is_shared:false}));
-	assert.equal((await owner.collection("debts").getOne(debt.id)).collaborator_id,otherUser.authStore.record.id);
-	await assert.rejects(owner.collection("payments").create({debt_id:debt.id,year:2026,month:1,planned_amount:100,paid:true,recorded_by:otherUser.authStore.record.id}));
+	await assert.rejects(
+		owner
+			.collection("debts")
+			.update(debt.id, { collaborator_id: "", is_shared: false }),
+	);
+	assert.equal(
+		(await owner.collection("debts").getOne(debt.id)).collaborator_id,
+		otherUser.authStore.record.id,
+	);
+	await assert.rejects(
+		owner.collection("payments").create({
+			debt_id: debt.id,
+			year: 2026,
+			month: 1,
+			planned_amount: 100,
+			paid: true,
+			recorded_by: otherUser.authStore.record.id,
+		}),
+	);
 });
 
-test("debt creation and invitation are atomic and self invitations are rejected",async()=>{
-	for(const email of ["owner@debt-detox.test","missing@debt-detox.test"]){
-		await assert.rejects(owner.send(`/api/debt-detox/debts/${debt.id}/invite`,{method:"POST",body:{email}}),e=>e.status===400);
+test("debt creation and invitation are atomic and self invitations are rejected", async () => {
+	for (const email of ["owner@debt-detox.test", "missing@debt-detox.test"]) {
+		await assert.rejects(
+			owner.send(`/api/debt-detox/debts/${debt.id}/invite`, {
+				method: "POST",
+				body: { email },
+			}),
+			(e) => e.status === 400,
+		);
 	}
-	const input={name:"Atomic collaboration",entity:"Bank",first_payment_date:"2026-01-01",monthly_amount:100,number_of_payments:12,invite_email:"missing@debt-detox.test"};
-	await assert.rejects(owner.send("/api/debt-detox/debts",{method:"POST",body:input}),e=>e.status===400);
-	assert.equal((await owner.collection("debts").getFullList({filter:'name = "Atomic collaboration"'})).length,0);
-	const result=await owner.send("/api/debt-detox/debts",{method:"POST",body:{...input,invite_email:"other@debt-detox.test"}});
-	assert.equal(result.debt.collaborator_id,"");
-	assert.equal((await owner.collection("debt_invitations").getFullList({filter:`debt_id = "${result.debt.id}"`})).length,1);
+	const input = {
+		name: "Atomic collaboration",
+		entity: "Bank",
+		first_payment_date: "2026-01-01",
+		monthly_amount: 100,
+		number_of_payments: 12,
+		invite_email: "missing@debt-detox.test",
+	};
+	await assert.rejects(
+		owner.send("/api/debt-detox/debts", { method: "POST", body: input }),
+		(e) => e.status === 400,
+	);
+	assert.equal(
+		(
+			await owner
+				.collection("debts")
+				.getFullList({ filter: 'name = "Atomic collaboration"' })
+		).length,
+		0,
+	);
+	const result = await owner.send("/api/debt-detox/debts", {
+		method: "POST",
+		body: { ...input, invite_email: "other@debt-detox.test" },
+	});
+	assert.equal(result.debt.collaborator_id, "");
+	assert.equal(
+		(
+			await owner
+				.collection("debt_invitations")
+				.getFullList({ filter: `debt_id = "${result.debt.id}"` })
+		).length,
+		1,
+	);
 });
 
-test("public share links omit collaboration identities and payment audit metadata",async()=>{
- await acceptPartner();
- const result=await otherUser.send(`/api/debt-detox/debts/${debt.id}/payments/2026/1`,{method:"PUT",body:{}});
- const token=`collaboration-${debt.id}-public-token`;
- const link=await owner.collection("shared_debts").create({debt_id:debt.id,user_id:ownerRecord.id,token,expires_at:"2099-01-01",show_amounts:true});
- const visitor=new PocketBase(BASE_URL);
- const options={headers:{"x-share-token":token}};
- const shared=await visitor.collection("debts").getOne(debt.id,options);
- assert.equal(shared.collaborator_id,undefined);
- assert.equal(shared.collaborator_name,undefined);
- const payment=await visitor.collection("payments").getOne(result.payment.id,options);
- assert.equal(payment.recorded_by,undefined);
- assert.equal(payment.recorded_by_name,undefined);
- assert.equal(payment.sharing_snapshot,undefined);
- assert.equal((await visitor.collection("debt_invitations").getFullList(options)).length,0);
- const foreign=await admin.collection("debts").create({user_id:ownerRecord.id,name:"Private",entity:"Bank",monthly_amount:50,number_of_payments:12,first_payment_date:"2026-01-01"});
- await owner.collection("shared_debts").create({debt_id:foreign.id,user_id:ownerRecord.id,token:`unrelated-live-link-${foreign.id}`,expires_at:"2099-01-01"});
- await assert.rejects(visitor.collection("debts").getOne(foreign.id,options),e=>e.status===404);
- await owner.collection("shared_debts").update(link.id,{expires_at:"2020-01-01"});
- await assert.rejects(visitor.collection("debts").getOne(debt.id,options),e=>e.status===404);
- await owner.collection("shared_debts").update(link.id,{expires_at:"2099-01-01",deleted:"2026-01-01"});
- await assert.rejects(visitor.collection("debts").getOne(debt.id,options),e=>e.status===404);
-});
-
-
-test("clean databases expose sortable timestamps used by the dashboard",async()=>{
- const list=await owner.collection("debts").getList(1,10,{sort:"-created"});
- assert.ok(list.items.length>0);
- assert.ok(list.items.every(record=>record.created));
-});
-
-test("payment changes are recorded in the debt activity for both members",async()=>{
+test("public share links omit collaboration identities and payment audit metadata", async () => {
 	await acceptPartner();
-	await otherUser.send(`/api/debt-detox/debts/${debt.id}/payments/2026/1`,{method:"PUT",body:{actual_amount:100}});
-	const activity=await owner.collection("debt_activity").getFullList({filter:`debt_id = "${debt.id}"`});
-	assert.equal(activity.length,1);
-	assert.equal(activity[0].action,"payment_marked");
-	assert.equal(activity[0].actor_id,otherUser.authStore.record.id);
-	assert.equal(activity[0].month,1);
-	await assert.rejects(owner.collection("debt_activity").create({debt_id:debt.id,action:"debt_edited"}));
+	const result = await otherUser.send(
+		`/api/debt-detox/debts/${debt.id}/payments/2026/1`,
+		{ method: "PUT", body: {} },
+	);
+	const token = `collaboration-${debt.id}-public-token`;
+	const link = await owner.collection("shared_debts").create({
+		debt_id: debt.id,
+		user_id: ownerRecord.id,
+		token,
+		expires_at: "2099-01-01",
+		show_amounts: true,
+	});
+	const visitor = new PocketBase(BASE_URL);
+	const options = { headers: { "x-share-token": token } };
+	const shared = await visitor.collection("debts").getOne(debt.id, options);
+	assert.equal(shared.collaborator_id, undefined);
+	assert.equal(shared.collaborator_name, undefined);
+	const payment = await visitor
+		.collection("payments")
+		.getOne(result.payment.id, options);
+	assert.equal(payment.recorded_by, undefined);
+	assert.equal(payment.recorded_by_name, undefined);
+	assert.equal(payment.sharing_snapshot, undefined);
+	assert.equal(
+		(await visitor.collection("debt_invitations").getFullList(options)).length,
+		0,
+	);
+	const foreign = await admin.collection("debts").create({
+		user_id: ownerRecord.id,
+		name: "Private",
+		entity: "Bank",
+		monthly_amount: 50,
+		number_of_payments: 12,
+		first_payment_date: "2026-01-01",
+	});
+	await owner.collection("shared_debts").create({
+		debt_id: foreign.id,
+		user_id: ownerRecord.id,
+		token: `unrelated-live-link-${foreign.id}`,
+		expires_at: "2099-01-01",
+	});
+	await assert.rejects(
+		visitor.collection("debts").getOne(foreign.id, options),
+		(e) => e.status === 404,
+	);
+	await owner
+		.collection("shared_debts")
+		.update(link.id, { expires_at: "2020-01-01" });
+	await assert.rejects(
+		visitor.collection("debts").getOne(debt.id, options),
+		(e) => e.status === 404,
+	);
+	await owner
+		.collection("shared_debts")
+		.update(link.id, { expires_at: "2099-01-01", deleted: "2026-01-01" });
+	await assert.rejects(
+		visitor.collection("debts").getOne(debt.id, options),
+		(e) => e.status === 404,
+	);
+});
+
+test("clean databases expose sortable timestamps used by the dashboard", async () => {
+	const list = await owner
+		.collection("debts")
+		.getList(1, 10, { sort: "-created" });
+	assert.ok(list.items.length > 0);
+	assert.ok(list.items.every((record) => record.created));
+});
+
+test("payment changes are recorded in the debt activity for both members", async () => {
+	await acceptPartner();
+	await otherUser.send(`/api/debt-detox/debts/${debt.id}/payments/2026/1`, {
+		method: "PUT",
+		body: { actual_amount: 100 },
+	});
+	const activity = await owner
+		.collection("debt_activity")
+		.getFullList({ filter: `debt_id = "${debt.id}"` });
+	assert.equal(activity.length, 1);
+	assert.equal(activity[0].action, "payment_marked");
+	assert.equal(activity[0].actor_id, otherUser.authStore.record.id);
+	assert.equal(activity[0].month, 1);
+	await assert.rejects(
+		owner
+			.collection("debt_activity")
+			.create({ debt_id: debt.id, action: "debt_edited" }),
+	);
 });

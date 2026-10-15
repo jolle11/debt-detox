@@ -69,10 +69,11 @@ export default function CurrencySection({
 			}
 		>
 			<div className="form-control">
-				<label className="label">
+				<label htmlFor="profile-currency" className="label">
 					<span className="label-text">{t("currency")}</span>
 				</label>
 				<select
+					id="profile-currency"
 					className="select select-bordered w-full"
 					value={currency}
 					onChange={(e) => setCurrency(e.target.value)}

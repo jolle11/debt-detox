@@ -36,8 +36,8 @@ export default function HeroSection({ onLoginClick }: HeroSectionProps) {
 							{tLanding("features.heading")}
 						</h2>
 						<div className="grid md:grid-cols-3 gap-8">
-							{heroFeatures.map((feature, index) => (
-								<FeatureCard key={index} feature={feature} />
+							{heroFeatures.map((feature) => (
+								<FeatureCard key={feature.titleKey} feature={feature} />
 							))}
 						</div>
 					</section>

@@ -4,11 +4,11 @@ import { CaretDownIcon } from "@phosphor-icons/react";
 import { useFormatter, useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useAuth } from "@/contexts/AuthContext";
 import DebtActivityList from "@/components/collaboration/DebtActivityList";
 import PrivateAmount from "@/components/ui/PrivateAmount";
-import { useCurrency } from "@/hooks/useCurrency";
+import { useAuth } from "@/contexts/AuthContext";
 import { useCollaboration } from "@/hooks/useCollaboration";
+import { useCurrency } from "@/hooks/useCurrency";
 import type { Debt } from "@/lib/types";
 
 export default function DebtCollaboration({ debt }: { debt: Debt }) {

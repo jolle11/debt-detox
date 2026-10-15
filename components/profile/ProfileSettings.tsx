@@ -5,8 +5,8 @@ import AmountFormatSection from "./AmountFormatSection";
 import CurrencySection from "./CurrencySection";
 import EmailSection from "./EmailSection";
 import NameSection from "./NameSection";
-import PrivacySection from "./PrivacySection";
 import PasswordSection from "./PasswordSection";
+import PrivacySection from "./PrivacySection";
 
 interface ProfileSettingsProps {
 	user: RecordModel;
