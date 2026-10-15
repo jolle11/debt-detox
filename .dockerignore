@@ -1,0 +1,11 @@
+.git
+.husky
+.next
+node_modules
+docs
+tests
+pocketbase
+*.md
+*.tsbuildinfo
+.env*
+docker-compose.yml
