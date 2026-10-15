@@ -1,0 +1,43 @@
+name: Railway config
+
+# Applies .railway/railway.ts to production whenever it changes on main.
+# Destructive changes (deleting services or variables) are refused without
+# --confirm-destructive, so those still have to be applied by hand.
+
+on:
+    push:
+        branches: [main]
+        paths:
+            - ".railway/**"
+    workflow_dispatch:
+
+concurrency:
+    group: railway-config
+    cancel-in-progress: false
+
+jobs:
+    apply:
+        runs-on: ubuntu-latest
+        env:
+            RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: pnpm/action-setup@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: pnpm
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile --ignore-scripts
+
+            - name: Install Railway CLI
+              run: npm install -g @railway/cli
+
+            - name: Plan
+              run: railway config plan
+
+            - name: Apply
+              run: railway config apply --yes
