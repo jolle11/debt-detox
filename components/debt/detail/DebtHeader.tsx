@@ -55,43 +55,68 @@ export default function DebtHeader({
 							<div className="hidden md:flex items-center gap-1 flex-shrink-0">
 								{status !== "completed" && (
 									<>
-										<button
-											onClick={onAddExtraPayment}
-											className="btn btn-ghost btn-sm text-primary hover:bg-primary/10"
-											title={t("debt.extraPayment.title")}
+										<div
+											className="tooltip tooltip-bottom"
+											data-tip={t("debt.extraPayment.title")}
 										>
-											<PlusCircle className="w-4 h-4" />
-										</button>
-										<button
-											onClick={onComplete}
-											className="btn btn-ghost btn-sm text-success hover:bg-success/10"
-											title={t("debt.complete.title")}
+											<button
+												onClick={onAddExtraPayment}
+												className="btn btn-ghost btn-sm text-primary hover:bg-primary/10"
+												aria-label={t("debt.extraPayment.title")}
+											>
+												<PlusCircle className="w-4 h-4" />
+											</button>
+										</div>
+										<div
+											className="tooltip tooltip-bottom"
+											data-tip={t("debt.complete.title")}
 										>
-											<CheckCircleIcon className="w-4 h-4" />
-										</button>
+											<button
+												onClick={onComplete}
+												className="btn btn-ghost btn-sm text-success hover:bg-success/10"
+												aria-label={t("debt.complete.title")}
+											>
+												<CheckCircleIcon className="w-4 h-4" />
+											</button>
+										</div>
 									</>
 								)}
-								<button
-									onClick={onShare}
-									className="btn btn-ghost btn-sm text-info hover:bg-info/10"
-									title={t("share.title")}
+								<div
+									className="tooltip tooltip-bottom"
+									data-tip={t("share.title")}
 								>
-									<ShareNetwork className="w-4 h-4" />
-								</button>
-								<button
-									onClick={onEdit}
-									className="btn btn-ghost btn-sm"
-									title={t("common.edit")}
+									<button
+										onClick={onShare}
+										className="btn btn-ghost btn-sm text-info hover:bg-info/10"
+										aria-label={t("share.title")}
+									>
+										<ShareNetwork className="w-4 h-4" />
+									</button>
+								</div>
+								<div
+									className="tooltip tooltip-bottom"
+									data-tip={t("common.edit")}
 								>
-									<PencilIcon className="w-4 h-4" />
-								</button>
-								<button
-									onClick={onDelete}
-									className="btn btn-ghost btn-sm text-error hover:bg-error/10"
-									title={t("common.delete")}
+									<button
+										onClick={onEdit}
+										className="btn btn-ghost btn-sm"
+										aria-label={t("common.edit")}
+									>
+										<PencilIcon className="w-4 h-4" />
+									</button>
+								</div>
+								<div
+									className="tooltip tooltip-bottom"
+									data-tip={t("common.delete")}
 								>
-									<TrashIcon className="w-4 h-4" />
-								</button>
+									<button
+										onClick={onDelete}
+										className="btn btn-ghost btn-sm text-error hover:bg-error/10"
+										aria-label={t("common.delete")}
+									>
+										<TrashIcon className="w-4 h-4" />
+									</button>
+								</div>
 							</div>
 							{/* Mobile Dropdown Menu */}
 							<div className="dropdown dropdown-end md:hidden flex-shrink-0">
