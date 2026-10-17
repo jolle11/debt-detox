@@ -472,7 +472,8 @@
 		"groups": {
 			"personal": "Datos personales",
 			"preferences": "Preferencias",
-			"security": "Seguridad"
+			"security": "Seguridad",
+			"account": "Datos y cuenta"
 		},
 		"edit": "Editar",
 		"title": "Perfil de Usuario",
@@ -520,7 +521,28 @@
 		},
 		"editName": "Editar Nombre",
 		"notLoggedIn": "No has iniciado sesión",
-		"loginRequired": "Por favor, inicia sesión para ver tu perfil"
+		"loginRequired": "Por favor, inicia sesión para ver tu perfil",
+		"memberSince": "Miembro desde {date}",
+		"shareProfile": "Compartir",
+		"saved": "Guardado",
+		"autosaveHint": "se guarda al cambiar",
+		"numberFormatShort": "Idioma",
+		"change": "Cambiar",
+		"changeEmail": "Cambiar email",
+		"newEmail": "Nuevo email",
+		"emailChangeRequested": "Revisa tu nuevo correo para confirmar el cambio",
+		"emailChangeError": "No se pudo solicitar el cambio de email",
+		"emailChangeHint": "Te enviaremos un enlace de confirmación a la nueva dirección.",
+		"exportData": "Exportar mis deudas",
+		"exportDescription": "Descarga tus deudas y pagos",
+		"exportError": "No se pudieron exportar tus datos",
+		"signOut": "Salir",
+		"delete": "Eliminar",
+		"deleteAccount": "Eliminar cuenta",
+		"deleteAccountDescription": "Borra permanentemente tus deudas, pagos y datos",
+		"deleteAccountConfirmTitle": "¿Eliminar tu cuenta?",
+		"deleteAccountConfirmText": "No se puede deshacer. Escribe {email} para confirmar.",
+		"deleteAccountError": "No se pudo eliminar la cuenta"
 	},
 	"theme": {
 		"light": "Claro",

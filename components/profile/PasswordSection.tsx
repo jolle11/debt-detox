@@ -64,6 +64,7 @@ export default function PasswordSection({ user }: PasswordSectionProps) {
 				cancelEditing();
 				reset();
 			}}
+			editLabel={t("change")}
 			editButtonText={t("changePassword") || "Change Password"}
 			submitButtonText={t("changePassword") || "Change Password"}
 		>

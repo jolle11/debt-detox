@@ -476,7 +476,8 @@
 		"groups": {
 			"personal": "Informations personnelles",
 			"preferences": "Préférences",
-			"security": "Sécurité"
+			"security": "Sécurité",
+			"account": "Données et compte"
 		},
 		"edit": "Modifier",
 		"title": "Profil Utilisateur",
@@ -524,7 +525,28 @@
 		},
 		"editName": "Modifier le Nom",
 		"notLoggedIn": "Non connecté",
-		"loginRequired": "Veuillez vous connecter pour voir votre profil"
+		"loginRequired": "Veuillez vous connecter pour voir votre profil",
+		"memberSince": "Membre depuis {date}",
+		"shareProfile": "Partager",
+		"saved": "Enregistré",
+		"autosaveHint": "enregistré automatiquement",
+		"numberFormatShort": "Langue",
+		"change": "Modifier",
+		"changeEmail": "Changer d'email",
+		"newEmail": "Nouvel email",
+		"emailChangeRequested": "Consultez votre nouvelle boîte mail pour confirmer",
+		"emailChangeError": "Impossible de demander le changement d'email",
+		"emailChangeHint": "Nous enverrons un lien de confirmation à la nouvelle adresse.",
+		"exportData": "Exporter mes dettes",
+		"exportDescription": "Téléchargez vos dettes et paiements",
+		"exportError": "Impossible d'exporter vos données",
+		"signOut": "Se déconnecter",
+		"delete": "Supprimer",
+		"deleteAccount": "Supprimer le compte",
+		"deleteAccountDescription": "Supprime définitivement vos dettes, paiements et données",
+		"deleteAccountConfirmTitle": "Supprimer votre compte ?",
+		"deleteAccountConfirmText": "Action irréversible. Saisissez {email} pour confirmer.",
+		"deleteAccountError": "Impossible de supprimer le compte"
 	},
 	"theme": {
 		"light": "Clair",

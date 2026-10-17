@@ -472,7 +472,8 @@
 		"groups": {
 			"personal": "Personal details",
 			"preferences": "Preferences",
-			"security": "Security"
+			"security": "Security",
+			"account": "Data & account"
 		},
 		"edit": "Edit",
 		"title": "User Profile",
@@ -520,7 +521,28 @@
 		},
 		"editName": "Edit Name",
 		"notLoggedIn": "Not logged in",
-		"loginRequired": "Please log in to view your profile"
+		"loginRequired": "Please log in to view your profile",
+		"memberSince": "Member since {date}",
+		"shareProfile": "Share",
+		"saved": "Saved",
+		"autosaveHint": "saves automatically",
+		"numberFormatShort": "Language",
+		"change": "Change",
+		"changeEmail": "Change email",
+		"newEmail": "New email",
+		"emailChangeRequested": "Check your new inbox to confirm the change",
+		"emailChangeError": "Failed to request email change",
+		"emailChangeHint": "We'll send a confirmation link to the new address.",
+		"exportData": "Export my debts",
+		"exportDescription": "Download your debts and payments",
+		"exportError": "Failed to export your data",
+		"signOut": "Sign out",
+		"delete": "Delete",
+		"deleteAccount": "Delete account",
+		"deleteAccountDescription": "Permanently removes your debts, payments and data",
+		"deleteAccountConfirmTitle": "Delete your account?",
+		"deleteAccountConfirmText": "This can't be undone. Type {email} to confirm.",
+		"deleteAccountError": "Failed to delete account"
 	},
 	"theme": {
 		"light": "Light",

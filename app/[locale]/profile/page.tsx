@@ -19,13 +19,9 @@ export default function ProfilePage() {
 	}
 
 	return (
-		<div className="max-w-2xl mx-auto">
-			<div className="card bg-base-100 shadow-xl">
-				<div className="card-body gap-0 p-5 sm:p-6">
-					<ProfileHeader user={user} />
-					<ProfileSettings user={user} refreshUser={refreshUser} />
-				</div>
-			</div>
+		<div className="max-w-2xl mx-auto space-y-4">
+			<ProfileHeader user={user} refreshUser={refreshUser} />
+			<ProfileSettings user={user} refreshUser={refreshUser} />
 		</div>
 	);
 }

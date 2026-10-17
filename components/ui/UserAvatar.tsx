@@ -5,7 +5,7 @@ interface UserAvatarProps {
 		name?: string;
 		email?: string;
 	};
-	size?: "xs" | "sm" | "md";
+	size?: "xs" | "sm" | "md" | "lg";
 }
 
 export default function UserAvatar({ user, size = "sm" }: UserAvatarProps) {
@@ -13,12 +13,14 @@ export default function UserAvatar({ user, size = "sm" }: UserAvatarProps) {
 		xs: "w-6 h-6",
 		sm: "w-8 h-8",
 		md: "w-12 h-12",
+		lg: "w-16 h-16",
 	};
 
 	const textClasses = {
 		xs: "text-xs",
 		sm: "text-sm",
 		md: "text-lg",
+		lg: "text-2xl",
 	};
 
 	const initial = user.name

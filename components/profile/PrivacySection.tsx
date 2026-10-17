@@ -13,7 +13,7 @@ export default function PrivacySection() {
 				</p>
 				<p
 					id="profile-privacy-description"
-					className="mt-1 max-w-md text-xs leading-relaxed text-base-content/60"
+					className="mt-0.5 max-w-md text-xs leading-relaxed text-base-content/60"
 				>
 					{t("description")}
 				</p>

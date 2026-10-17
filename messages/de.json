@@ -476,7 +476,8 @@
 		"groups": {
 			"personal": "Persönliche Daten",
 			"preferences": "Einstellungen",
-			"security": "Sicherheit"
+			"security": "Sicherheit",
+			"account": "Daten & Konto"
 		},
 		"edit": "Bearbeiten",
 		"title": "Benutzerprofil",
@@ -524,7 +525,28 @@
 		},
 		"editName": "Name bearbeiten",
 		"notLoggedIn": "Nicht angemeldet",
-		"loginRequired": "Bitte melden Sie sich an, um Ihr Profil anzuzeigen"
+		"loginRequired": "Bitte melden Sie sich an, um Ihr Profil anzuzeigen",
+		"memberSince": "Mitglied seit {date}",
+		"shareProfile": "Teilen",
+		"saved": "Gespeichert",
+		"autosaveHint": "wird automatisch gespeichert",
+		"numberFormatShort": "Sprache",
+		"change": "Ändern",
+		"changeEmail": "E-Mail ändern",
+		"newEmail": "Neue E-Mail",
+		"emailChangeRequested": "Prüfe dein neues Postfach, um die Änderung zu bestätigen",
+		"emailChangeError": "E-Mail-Änderung konnte nicht angefordert werden",
+		"emailChangeHint": "Wir senden einen Bestätigungslink an die neue Adresse.",
+		"exportData": "Meine Schulden exportieren",
+		"exportDescription": "Lade deine Schulden und Zahlungen herunter",
+		"exportError": "Daten konnten nicht exportiert werden",
+		"signOut": "Abmelden",
+		"delete": "Löschen",
+		"deleteAccount": "Konto löschen",
+		"deleteAccountDescription": "Löscht deine Schulden, Zahlungen und Daten dauerhaft",
+		"deleteAccountConfirmTitle": "Konto löschen?",
+		"deleteAccountConfirmText": "Dies kann nicht rückgängig gemacht werden. Gib {email} zur Bestätigung ein.",
+		"deleteAccountError": "Konto konnte nicht gelöscht werden"
 	},
 	"theme": {
 		"light": "Hell",

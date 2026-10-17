@@ -8,6 +8,7 @@ interface ProfileFormProps {
 	onEdit: () => void;
 	onSubmit: (e: React.FormEvent) => void;
 	onCancel: () => void;
+	editLabel?: string;
 	editButtonText?: string;
 	submitButtonText?: string;
 	children: ReactNode;
@@ -21,6 +22,7 @@ export default function ProfileForm({
 	onEdit,
 	onSubmit,
 	onCancel,
+	editLabel,
 	editButtonText,
 	submitButtonText,
 	children,
@@ -48,7 +50,7 @@ export default function ProfileForm({
 						onClick={onEdit}
 						aria-label={editButtonText || `${t("edit")} ${title}`}
 					>
-						{t("edit")}
+						{editLabel || t("edit")}
 					</button>
 				)}
 			</div>

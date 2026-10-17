@@ -472,7 +472,8 @@
 		"groups": {
 			"personal": "Persoonlijke gegevens",
 			"preferences": "Voorkeuren",
-			"security": "Beveiliging"
+			"security": "Beveiliging",
+			"account": "Gegevens & account"
 		},
 		"edit": "Bewerken",
 		"title": "Gebruikersprofiel",
@@ -520,7 +521,28 @@
 		},
 		"editName": "Naam Bewerken",
 		"notLoggedIn": "U bent niet ingelogd",
-		"loginRequired": "Log in om uw profiel te bekijken"
+		"loginRequired": "Log in om uw profiel te bekijken",
+		"memberSince": "Lid sinds {date}",
+		"shareProfile": "Delen",
+		"saved": "Opgeslagen",
+		"autosaveHint": "wordt automatisch opgeslagen",
+		"numberFormatShort": "Taal",
+		"change": "Wijzigen",
+		"changeEmail": "E-mail wijzigen",
+		"newEmail": "Nieuw e-mailadres",
+		"emailChangeRequested": "Controleer je nieuwe inbox om de wijziging te bevestigen",
+		"emailChangeError": "Kan e-mailwijziging niet aanvragen",
+		"emailChangeHint": "We sturen een bevestigingslink naar het nieuwe adres.",
+		"exportData": "Mijn schulden exporteren",
+		"exportDescription": "Download je schulden en betalingen",
+		"exportError": "Kan je gegevens niet exporteren",
+		"signOut": "Uitloggen",
+		"delete": "Verwijderen",
+		"deleteAccount": "Account verwijderen",
+		"deleteAccountDescription": "Verwijdert je schulden, betalingen en gegevens permanent",
+		"deleteAccountConfirmTitle": "Je account verwijderen?",
+		"deleteAccountConfirmText": "Dit kan niet ongedaan worden gemaakt. Typ {email} om te bevestigen.",
+		"deleteAccountError": "Kan account niet verwijderen"
 	},
 	"theme": {
 		"light": "Licht",
