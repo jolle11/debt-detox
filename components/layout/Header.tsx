@@ -27,7 +27,7 @@ export default function Header() {
 
 	return (
 		<>
-			<header className="bg-base-200 shadow-lg">
+			<header className="sticky top-0 z-30 bg-base-200 shadow-lg">
 				<div className="navbar container mx-auto gap-2">
 					<div className="flex-1">
 						<Link
