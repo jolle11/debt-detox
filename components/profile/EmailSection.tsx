@@ -11,14 +11,9 @@ export default function EmailSection({ user }: EmailSectionProps) {
 	const t = useTranslations("profile");
 
 	return (
-		<>
-			<div className="divider">{t("email") || "Email"}</div>
-
-			<div className="space-y-4">
-				<div>
-					<p className="text-base-content text-lg">{user.email}</p>
-				</div>
-			</div>
-		</>
+		<div className="py-3">
+			<p className="text-xs text-base-content/60">{t("email")}</p>
+			<p className="mt-1 break-words text-sm">{user.email}</p>
+		</div>
 	);
 }

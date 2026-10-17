@@ -66,11 +66,6 @@ export default function PasswordSection({ user }: PasswordSectionProps) {
 			}}
 			editButtonText={t("changePassword") || "Change Password"}
 			submitButtonText={t("changePassword") || "Change Password"}
-			displayContent={
-				<p className="text-base-content/70">
-					{t("passwordDescription") || "Change your current password"}
-				</p>
-			}
 		>
 			<FormInput
 				label={t("currentPassword") || "Current Password"}

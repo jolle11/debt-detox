@@ -469,6 +469,12 @@
 		"back": "Back"
 	},
 	"profile": {
+		"groups": {
+			"personal": "Personal details",
+			"preferences": "Preferences",
+			"security": "Security"
+		},
+		"edit": "Edit",
 		"title": "User Profile",
 		"subtitle": "Manage your account settings",
 		"profileInfo": "Profile Information",

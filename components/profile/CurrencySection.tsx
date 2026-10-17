@@ -60,7 +60,7 @@ export default function CurrencySection({
 			editButtonText={t("editCurrency")}
 			displayContent={
 				<div>
-					<p className="text-base-content text-lg">
+					<p className="text-base-content">
 						{currentCurrency
 							? `${currentCurrency.name} (${currentCurrency.symbol})`
 							: "Euro (€)"}

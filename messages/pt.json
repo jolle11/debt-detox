@@ -469,6 +469,12 @@
 		}
 	},
 	"profile": {
+		"groups": {
+			"personal": "Dados pessoais",
+			"preferences": "Preferências",
+			"security": "Segurança"
+		},
+		"edit": "Editar",
 		"title": "Perfil de Utilizador",
 		"subtitle": "Gerencie as configurações da sua conta",
 		"profileInfo": "Informações do Perfil",

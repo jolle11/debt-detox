@@ -473,6 +473,12 @@
 		"back": "Zurück"
 	},
 	"profile": {
+		"groups": {
+			"personal": "Persönliche Daten",
+			"preferences": "Einstellungen",
+			"security": "Sicherheit"
+		},
+		"edit": "Bearbeiten",
 		"title": "Benutzerprofil",
 		"subtitle": "Verwalten Sie Ihre Kontoeinstellungen",
 		"profileInfo": "Profilinformationen",

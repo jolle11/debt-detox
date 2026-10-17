@@ -6,14 +6,19 @@ import AmountPrivacyToggle from "@/components/ui/AmountPrivacyToggle";
 export default function PrivacySection() {
 	const t = useTranslations("privacy");
 	return (
-		<section className="card bg-base-100 shadow">
-			<div className="card-body">
-				<div className="flex items-center justify-between gap-4">
-					<h2 className="card-title">{t("title")}</h2>
-					<AmountPrivacyToggle />
-				</div>
-				<p className="text-sm text-base-content/70">{t("description")}</p>
+		<div className="flex items-center justify-between gap-4 py-3">
+			<div className="min-w-0">
+				<p className="text-sm" id="profile-privacy-title">
+					{t("hide")}
+				</p>
+				<p
+					id="profile-privacy-description"
+					className="mt-1 max-w-md text-xs leading-relaxed text-base-content/60"
+				>
+					{t("description")}
+				</p>
 			</div>
-		</section>
+			<AmountPrivacyToggle variant="switch" />
+		</div>
 	);
 }

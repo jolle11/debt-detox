@@ -469,6 +469,12 @@
 		}
 	},
 	"profile": {
+		"groups": {
+			"personal": "Persoonlijke gegevens",
+			"preferences": "Voorkeuren",
+			"security": "Beveiliging"
+		},
+		"edit": "Bewerken",
 		"title": "Gebruikersprofiel",
 		"subtitle": "Beheer uw accountinstellingen",
 		"profileInfo": "Profielinformatie",

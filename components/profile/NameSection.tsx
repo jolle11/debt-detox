@@ -66,7 +66,7 @@ export default function NameSection({ user, refreshUser }: NameSectionProps) {
 			editButtonText={t("editName") || "Edit Name"}
 			displayContent={
 				<div>
-					<p className="text-base-content text-lg">
+					<p className="text-base-content">
 						{user.name || t("noName") || "No name set"}
 					</p>
 				</div>

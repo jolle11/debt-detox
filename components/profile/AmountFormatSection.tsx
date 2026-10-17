@@ -73,7 +73,7 @@ export default function AmountFormatSection({
 			}}
 			editButtonText={t("editAmountFormat")}
 			displayContent={
-				<p className="text-base-content text-lg">
+				<p className="text-base-content">
 					{t(`numberFormatOptions.${currentNumberFormat}`)} ·{" "}
 					{formatCurrency(
 						1234.56,

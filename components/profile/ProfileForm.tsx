@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import type { ReactNode } from "react";
+import { type ReactNode, useId } from "react";
 
 interface ProfileFormProps {
 	title: string;
@@ -27,40 +27,62 @@ export default function ProfileForm({
 	displayContent,
 }: ProfileFormProps) {
 	const t = useTranslations("profile");
+	const titleId = useId();
+	const formId = useId();
 
 	return (
-		<>
-			<div className="divider">{title}</div>
-
-			{!isEditing ? (
-				<div className="space-y-4">
-					{displayContent}
-					<button className="btn btn-outline btn-sm" onClick={onEdit}>
-						{editButtonText || t("edit") || "Edit"}
-					</button>
+		<div className="py-3">
+			<div className="flex items-center justify-between gap-3 sm:gap-6">
+				<div className="min-w-0">
+					<p id={titleId} className="text-xs text-base-content/60">
+						{title}
+					</p>
+					{!isEditing && displayContent && (
+						<div className="mt-1 break-words text-sm">{displayContent}</div>
+					)}
 				</div>
-			) : (
-				<form onSubmit={onSubmit} className="space-y-6">
-					{children}
-
-					<div className="flex gap-3 pt-2">
-						<button
-							type="submit"
-							className={`btn btn-primary btn-sm ${loading ? "loading" : ""}`}
-							disabled={loading}
-						>
-							{submitButtonText || t("save") || "Save"}
-						</button>
-						<button
-							type="button"
-							className="btn btn-ghost btn-sm"
-							onClick={onCancel}
-						>
-							{t("cancel") || "Cancel"}
-						</button>
-					</div>
+				{!isEditing && (
+					<button
+						type="button"
+						className="btn btn-outline btn-sm shrink-0"
+						onClick={onEdit}
+						aria-label={editButtonText || `${t("edit")} ${title}`}
+					>
+						{t("edit")}
+					</button>
+				)}
+			</div>
+			{isEditing && (
+				<form
+					id={formId}
+					aria-labelledby={titleId}
+					onSubmit={onSubmit}
+					className="mt-3 space-y-3"
+				>
+					<fieldset disabled={loading} className="space-y-3">
+						{children}
+						<div className="flex flex-wrap gap-2 pt-1">
+							<button
+								type="submit"
+								className="btn btn-primary btn-sm"
+								disabled={loading}
+							>
+								{loading && (
+									<span className="loading loading-spinner loading-xs" />
+								)}
+								{submitButtonText || t("save")}
+							</button>
+							<button
+								type="button"
+								className="btn btn-ghost btn-sm"
+								onClick={onCancel}
+							>
+								{t("cancel")}
+							</button>
+						</div>
+					</fieldset>
 				</form>
 			)}
-		</>
+		</div>
 	);
 }
