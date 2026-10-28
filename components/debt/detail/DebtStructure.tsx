@@ -4,6 +4,10 @@ import { FileTextIcon } from "@phosphor-icons/react";
 import { useTranslations } from "next-intl";
 import PrivateAmount from "@/components/ui/PrivateAmount";
 import type { DebtStructureProps } from "@/data/debtDetail";
+import {
+	calculateMonthlyContribution,
+	isSplitDebt,
+} from "@/utils/debtCalculations";
 
 export default function DebtStructure({
 	debt,
@@ -11,7 +15,7 @@ export default function DebtStructure({
 	totalAmount,
 }: DebtStructureProps) {
 	const t = useTranslations();
-	const isShared = debt.is_shared || Boolean(debt.collaborator_id);
+	const isShared = isSplitDebt(debt);
 
 	const structureItems = [
 		{
@@ -72,7 +76,7 @@ export default function DebtStructure({
 							</span>
 							<span className="font-medium text-lg">
 								<PrivateAmount>
-									{formatCurrency(debt.monthly_amount / 2)}
+									{formatCurrency(calculateMonthlyContribution(debt))}
 								</PrivateAmount>
 							</span>
 						</div>

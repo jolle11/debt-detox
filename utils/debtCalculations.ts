@@ -2,8 +2,13 @@ import type { PaymentStats } from "@/data/debtDetail";
 import { parseDateOnly } from "@/lib/dateOnly";
 import type { Debt, Payment } from "@/lib/types";
 
+export function isSplitDebt(debt: Debt): boolean {
+	return Boolean(debt.is_shared || debt.collaborator_id);
+}
+
+// The user's half of the installment when the debt is split with someone.
 export function calculateMonthlyContribution(debt: Debt): number {
-	return debt.monthly_amount * (debt.is_shared ? 0.5 : 1);
+	return debt.monthly_amount * (isSplitDebt(debt) ? 0.5 : 1);
 }
 
 /**
@@ -71,6 +76,7 @@ export function calculatePaymentStats(
 	// El total incluye todos los pagos (cuotas + extras)
 	const totalRegisteredAmount = payments
 		.filter((p) => p.paid)
+		// PocketBase returns 0 for empty numbers and paid amounts are always > 0.
 		.reduce((sum, p) => sum + (p.actual_amount || p.planned_amount), 0);
 
 	const effectivePaidPayments = Math.min(

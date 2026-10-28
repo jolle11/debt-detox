@@ -3,6 +3,10 @@
 import { useTranslations } from "next-intl";
 import PrivateAmount from "@/components/ui/PrivateAmount";
 import type { DebtStatsProps } from "@/data/debtDetail";
+import {
+	calculateMonthlyContribution,
+	isSplitDebt,
+} from "@/utils/debtCalculations";
 
 export default function DebtQuickStats({
 	debt,
@@ -11,7 +15,7 @@ export default function DebtQuickStats({
 	totalAmount,
 }: DebtStatsProps) {
 	const t = useTranslations();
-	const isShared = debt.is_shared || Boolean(debt.collaborator_id);
+	const isShared = isSplitDebt(debt);
 
 	const stats = [
 		{
@@ -31,9 +35,7 @@ export default function DebtQuickStats({
 		},
 		{
 			key: "monthly",
-			value: formatCurrency(
-				isShared ? debt.monthly_amount / 2 : debt.monthly_amount,
-			),
+			value: formatCurrency(calculateMonthlyContribution(debt)),
 			color: "text-secondary",
 		},
 	];
