@@ -71,7 +71,10 @@ export function useShareDebt(debtId?: string) {
 			const records = await pb
 				.collection(COLLECTIONS.SHARED_DEBTS)
 				.getFullList({
-					filter: `debt_id = "${debtId}" && user_id = "${user.id}" && deleted = null && expires_at > @now`,
+					filter: pb.filter(
+						"debt_id = {:debtId} && user_id = {:userId} && deleted = null && expires_at > @now",
+						{ debtId, userId: user.id },
+					),
 					sort: "-created",
 				});
 			setActiveLinks(records as unknown as SharedDebt[]);

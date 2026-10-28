@@ -72,7 +72,10 @@ export function useShareProfile() {
 			const records = await pb
 				.collection(COLLECTIONS.SHARED_PROFILES)
 				.getFullList({
-					filter: `user_id = "${user.id}" && deleted = null && expires_at > @now`,
+					filter: pb.filter(
+						"user_id = {:userId} && deleted = null && expires_at > @now",
+						{ userId: user.id },
+					),
 					sort: "-created",
 				});
 			setActiveLinks(records as unknown as SharedProfile[]);
