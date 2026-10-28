@@ -2,6 +2,7 @@ routerAdd(
 	"PUT",
 	"/api/debt-detox/debts/{id}/payments/{year}/{month}",
 	(e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		const dates = require(`${__hooks}/lib/dates.js`);
 		const { addMonthsToDateOnly } = dates;
 
@@ -23,7 +24,7 @@ routerAdd(
 		e.app.runInTransaction((txApp) => {
 			const debt = txApp.findRecordById("debts", debtId);
 			if (
-				!require(`${__hooks}/lib/collaboration.js`).isMember(debt, e.auth.id)
+				!collaboration.isMember(debt, e.auth.id)
 			) {
 				throw new NotFoundError("Debt not found");
 			}
@@ -95,9 +96,9 @@ routerAdd(
 				"paid_date",
 				dates.isDateOnly(data.paid_date) ? data.paid_date : dates.today(e),
 			);
-			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
+			collaboration.stamp(payment, debt, e.auth);
 			txApp.save(payment);
-			require(`${__hooks}/lib/collaboration.js`).log(
+			collaboration.log(
 				txApp,
 				debt,
 				e.auth,
@@ -159,6 +160,7 @@ routerAdd(
 	"POST",
 	"/api/debt-detox/payments/{id}/unmark",
 	(e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		const paymentId = e.request.pathValue("id");
 		let savedPayment = null;
 		let savedDebt = null;
@@ -167,7 +169,7 @@ routerAdd(
 			const payment = txApp.findRecordById("payments", paymentId);
 			const debt = txApp.findRecordById("debts", payment.get("debt_id"));
 			if (
-				!require(`${__hooks}/lib/collaboration.js`).isMember(debt, e.auth.id) ||
+				!collaboration.isMember(debt, e.auth.id) ||
 				payment.getString("deleted") ||
 				payment.get("is_extra_payment")
 			) {
@@ -177,9 +179,9 @@ routerAdd(
 			payment.set("paid", false);
 			payment.set("paid_date", null);
 			payment.set("actual_amount", null);
-			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
+			collaboration.stamp(payment, debt, e.auth);
 			txApp.save(payment);
-			require(`${__hooks}/lib/collaboration.js`).log(
+			collaboration.log(
 				txApp,
 				debt,
 				e.auth,
@@ -206,6 +208,7 @@ routerAdd(
 	"POST",
 	"/api/debt-detox/payments/{id}/reactivate",
 	(e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		const dates = require(`${__hooks}/lib/dates.js`);
 		const { addMonthsToDateOnly } = dates;
 
@@ -216,7 +219,7 @@ routerAdd(
 			const payment = txApp.findRecordById("payments", paymentId);
 			const debt = txApp.findRecordById("debts", payment.get("debt_id"));
 			if (
-				!require(`${__hooks}/lib/collaboration.js`).isMember(debt, e.auth.id) ||
+				!collaboration.isMember(debt, e.auth.id) ||
 				payment.getString("deleted") ||
 				payment.get("is_extra_payment")
 			) {
@@ -226,9 +229,9 @@ routerAdd(
 			payment.set("paid", false);
 			payment.set("paid_date", null);
 			payment.set("actual_amount", null);
-			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
+			collaboration.stamp(payment, debt, e.auth);
 			txApp.save(payment);
-			require(`${__hooks}/lib/collaboration.js`).log(
+			collaboration.log(
 				txApp,
 				debt,
 				e.auth,
@@ -236,10 +239,14 @@ routerAdd(
 				{ year: payment.get("year"), month: payment.get("month") },
 			);
 
-			const paymentCount =
-				debt.get("original_number_of_payments") ||
-				debt.get("number_of_payments");
+			// A separate final payment stays due at the original contract end;
+			// otherwise the plan ends with the current last installment, which
+			// extra payments may have moved earlier.
 			const hasFinalPayment = (debt.get("final_payment") || 0) > 0;
+			const paymentCount = hasFinalPayment
+				? debt.get("original_number_of_payments") ||
+					debt.get("number_of_payments")
+				: debt.get("number_of_payments");
 			const finalMonthOffset = paymentCount - 1 + (hasFinalPayment ? 1 : 0);
 			debt.set(
 				"final_payment_date",
@@ -264,6 +271,7 @@ routerAdd(
 	"PATCH",
 	"/api/debt-detox/payments/{id}/amount",
 	(e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		const data = new DynamicModel({ amount: -0 });
 		e.bindBody(data);
 		if (data.amount <= 0) {
@@ -276,7 +284,7 @@ routerAdd(
 			const payment = txApp.findRecordById("payments", paymentId);
 			const debt = txApp.findRecordById("debts", payment.get("debt_id"));
 			if (
-				!require(`${__hooks}/lib/collaboration.js`).isMember(debt, e.auth.id) ||
+				!collaboration.isMember(debt, e.auth.id) ||
 				payment.getString("deleted") ||
 				!payment.get("paid") ||
 				(payment.get("is_extra_payment") &&
@@ -286,9 +294,9 @@ routerAdd(
 			}
 
 			payment.set("actual_amount", data.amount);
-			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
+			collaboration.stamp(payment, debt, e.auth);
 			txApp.save(payment);
-			require(`${__hooks}/lib/collaboration.js`).log(
+			collaboration.log(
 				txApp,
 				debt,
 				e.auth,
@@ -311,6 +319,7 @@ routerAdd(
 	"DELETE",
 	"/api/debt-detox/payments/{id}/extra",
 	(e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		const paymentId = e.request.pathValue("id");
 		let deletedAt = "";
 
@@ -357,9 +366,9 @@ routerAdd(
 
 				deletedAt = new Date().toISOString().replace("T", " ");
 				payment.set("deleted", deletedAt);
-				require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
+				collaboration.stamp(payment, debt, e.auth);
 				txApp.save(payment);
-				require(`${__hooks}/lib/collaboration.js`).log(
+				collaboration.log(
 					txApp,
 					debt,
 					e.auth,

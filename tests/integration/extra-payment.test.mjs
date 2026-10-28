@@ -1649,3 +1649,113 @@ test("payment changes are recorded in the debt activity for both members", async
 			.create({ debt_id: debt.id, action: "debt_edited" }),
 	);
 });
+
+test("unmarking a paid installment clears the payment and reopens the debt", async () => {
+	const marked = await owner.send(
+		`/api/debt-detox/debts/${debt.id}/payments/2026/1`,
+		{ method: "PUT", body: { actual_amount: 100 } },
+	);
+	const result = await owner.send(
+		`/api/debt-detox/payments/${marked.payment.id}/unmark`,
+		{ method: "POST" },
+	);
+
+	assert.equal(result.payment.paid, false);
+	assert.equal(result.payment.actual_amount, 0);
+	assert.equal(result.debt.completed_at, "");
+});
+
+test("another user cannot unmark someone else's payment", async () => {
+	const marked = await owner.send(
+		`/api/debt-detox/debts/${debt.id}/payments/2026/1`,
+		{ method: "PUT", body: {} },
+	);
+	await assert.rejects(
+		otherUser.send(`/api/debt-detox/payments/${marked.payment.id}/unmark`, {
+			method: "POST",
+		}),
+		(error) => error?.status === 404,
+	);
+});
+
+test("reactivating keeps the plan shortened by an extra payment", async () => {
+	await owner.send(`/api/debt-detox/debts/${debt.id}/extra-payment`, {
+		method: "POST",
+		body: { amount: 300, strategy: "reduce_installments" },
+	});
+	const shortened = await owner.collection("debts").getOne(debt.id);
+	assert.ok(shortened.number_of_payments < 12);
+
+	await owner.send(`/api/debt-detox/debts/${debt.id}/complete`, {
+		method: "POST",
+	});
+	const lastPayment = await owner
+		.collection("payments")
+		.getFirstListItem(`debt_id = "${debt.id}" && is_extra_payment = false`, {
+			sort: "-year,-month",
+		});
+	const result = await owner.send(
+		`/api/debt-detox/payments/${lastPayment.id}/reactivate`,
+		{ method: "POST" },
+	);
+
+	assert.equal(result.debt.completed_at, "");
+	assert.equal(result.debt.number_of_payments, shortened.number_of_payments);
+	assert.equal(
+		result.debt.final_payment_date.slice(0, 10),
+		shortened.final_payment_date.slice(0, 10),
+	);
+});
+
+test("collaborator can mark installments after accepting an invitation", async () => {
+	const { invitation } = await owner.send(
+		`/api/debt-detox/debts/${debt.id}/invite`,
+		{ method: "POST", body: { email: "other@debt-detox.test" } },
+	);
+	await otherUser.send(`/api/debt-detox/invitations/${invitation.id}/respond`, {
+		method: "POST",
+		body: { action: "accept" },
+	});
+
+	const marked = await otherUser.send(
+		`/api/debt-detox/debts/${debt.id}/payments/2026/2`,
+		{ method: "PUT", body: {} },
+	);
+	assert.equal(marked.payment.paid, true);
+	assert.equal(marked.debt.user_id, ownerRecord.id);
+
+	await owner.send(`/api/debt-detox/debts/${debt.id}/collaborator`, {
+		method: "DELETE",
+	});
+});
+
+test("users cannot verify their own account through the API", async () => {
+	await owner
+		.collection("users")
+		.update(ownerRecord.id, { verified: true })
+		.catch(() => {});
+	const record = await admin.collection("users").getOne(ownerRecord.id);
+	assert.equal(record.verified, false);
+});
+
+test("anonymous visitors can open a shared debt link with its token", async () => {
+	const token = "a".repeat(40);
+	await owner.collection("shared_debts").create({
+		token,
+		debt_id: debt.id,
+		user_id: ownerRecord.id,
+		expires_at: new Date(Date.now() + 86400000).toISOString(),
+	});
+
+	const visitor = new PocketBase(BASE_URL);
+	const withHeader = await visitor.collection("shared_debts").getList(1, 1, {
+		headers: { "x-share-token": token },
+		filter: visitor.filter("token = {:token}", { token }),
+	});
+	assert.equal(withHeader.items.length, 1);
+
+	const debts = await visitor.collection("debts").getList(1, 1, {
+		headers: { "x-share-token": token },
+	});
+	assert.equal(debts.items[0].id, debt.id);
+});

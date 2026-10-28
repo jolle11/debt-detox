@@ -2,6 +2,7 @@ routerAdd(
 	"POST",
 	"/api/debt-detox/debts/{id}/historical-payments",
 	(e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		const dates = require(`${__hooks}/lib/dates.js`);
 		const { addMonthsToDateOnly } = dates;
 
@@ -56,10 +57,10 @@ routerAdd(
 				payment.set("actual_amount", debt.get("monthly_amount"));
 				payment.set("paid", true);
 				payment.set("paid_date", paymentDate);
-				require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
+				collaboration.stamp(payment, debt, e.auth);
 				txApp.save(payment);
 			}
-			require(`${__hooks}/lib/collaboration.js`).log(
+			collaboration.log(
 				txApp,
 				debt,
 				e.auth,

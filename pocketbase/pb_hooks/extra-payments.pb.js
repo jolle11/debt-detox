@@ -2,6 +2,7 @@ routerAdd(
 	"POST",
 	"/api/debt-detox/debts/{id}/extra-payment",
 	(e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		const dates = require(`${__hooks}/lib/dates.js`);
 
 		const data = new DynamicModel({
@@ -138,9 +139,9 @@ routerAdd(
 				txApp.save(debt);
 			}
 
-			require(`${__hooks}/lib/collaboration.js`).stamp(payment, debt, e.auth);
+			collaboration.stamp(payment, debt, e.auth);
 			txApp.save(payment);
-			require(`${__hooks}/lib/collaboration.js`).log(
+			collaboration.log(
 				txApp,
 				debt,
 				e.auth,

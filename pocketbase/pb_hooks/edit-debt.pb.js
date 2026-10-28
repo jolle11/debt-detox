@@ -2,6 +2,7 @@ routerAdd(
 	"PATCH",
 	"/api/debt-detox/debts/{id}",
 	(e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		const dates = require(`${__hooks}/lib/dates.js`);
 		const { addMonthsToDateOnly } = dates;
 
@@ -138,14 +139,14 @@ routerAdd(
 			}
 
 			txApp.save(debt);
-			require(`${__hooks}/lib/collaboration.js`).log(
+			collaboration.log(
 				txApp,
 				debt,
 				e.auth,
 				"debt_edited",
 			);
 			if (data.invite_email.trim())
-				require(`${__hooks}/lib/collaboration.js`).invite(
+				collaboration.invite(
 					txApp,
 					debt,
 					e.auth,

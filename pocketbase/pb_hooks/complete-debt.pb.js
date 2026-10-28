@@ -2,6 +2,7 @@ routerAdd(
 	"POST",
 	"/api/debt-detox/debts/{id}/complete",
 	(e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		const dates = require(`${__hooks}/lib/dates.js`);
 		const { addMonthsToDateOnly } = dates;
 
@@ -55,7 +56,7 @@ routerAdd(
 					payment.set("paid", true);
 					payment.set("actual_amount", payment.get("planned_amount"));
 					payment.set("paid_date", today);
-					require(`${__hooks}/lib/collaboration.js`).stamp(
+					collaboration.stamp(
 						payment,
 						debt,
 						e.auth,
@@ -84,7 +85,7 @@ routerAdd(
 					finalPayment.set("paid", true);
 					finalPayment.set("actual_amount", finalAmount);
 					finalPayment.set("paid_date", today);
-					require(`${__hooks}/lib/collaboration.js`).stamp(
+					collaboration.stamp(
 						finalPayment,
 						debt,
 						e.auth,
@@ -95,7 +96,7 @@ routerAdd(
 
 			debt.set("completed_at", today);
 			txApp.save(debt);
-			require(`${__hooks}/lib/collaboration.js`).log(
+			collaboration.log(
 				txApp,
 				debt,
 				e.auth,

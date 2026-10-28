@@ -2,12 +2,13 @@ routerAdd(
 	"POST",
 	"/api/debt-detox/debts/{id}/invite",
 	(e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		const data = new DynamicModel({ email: "" });
 		e.bindBody(data);
 		let invitation;
 		e.app.runInTransaction((app) => {
 			const debt = app.findRecordById("debts", e.request.pathValue("id"));
-			invitation = require(`${__hooks}/lib/collaboration.js`).invite(
+			invitation = collaboration.invite(
 				app,
 				debt,
 				e.auth,
@@ -126,16 +127,18 @@ onRecordUpdateRequest((e) => {
 	e.next();
 }, "debts");
 onRecordCreateRequest((e) => {
+	const collaboration = require(`${__hooks}/lib/collaboration.js`);
 	if (!e.hasSuperuserAuth()) {
 		const debt = e.app.findRecordById("debts", e.record.getString("debt_id"));
-		require(`${__hooks}/lib/collaboration.js`).stamp(e.record, debt, e.auth);
+		collaboration.stamp(e.record, debt, e.auth);
 	}
 	e.next();
 }, "payments");
 onRecordUpdateRequest((e) => {
+	const collaboration = require(`${__hooks}/lib/collaboration.js`);
 	if (!e.hasSuperuserAuth()) {
 		const debt = e.app.findRecordById("debts", e.record.getString("debt_id"));
-		require(`${__hooks}/lib/collaboration.js`).stamp(e.record, debt, e.auth);
+		collaboration.stamp(e.record, debt, e.auth);
 	}
 	e.next();
 }, "payments");
@@ -156,11 +159,12 @@ onRecordEnrich((e) => {
 	e.next();
 }, "debts");
 onRecordEnrich((e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 	const userId = e.requestInfo?.auth?.id || "";
 	const debt = e.app.findRecordById("debts", e.record.getString("debt_id"));
 	if (
 		!userId ||
-		!require(`${__hooks}/lib/collaboration.js`).isMember(debt, userId)
+		!collaboration.isMember(debt, userId)
 	)
 		e.record.hide("recorded_by", "recorded_by_name", "sharing_snapshot");
 	e.next();
