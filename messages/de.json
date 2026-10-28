@@ -225,6 +225,15 @@
 			"title": "Sie haben keine registrierten Finanzierungen",
 			"description": "Fügen Sie Ihre erste Schuld oder Ihr erstes Darlehen hinzu, um mit der Verfolgung zu beginnen",
 			"addButton": "Erste Schuld Hinzufügen"
+		},
+		"evolution": {
+			"title": "Schuldenverlauf",
+			"subtitle": "Offener Betrag am Monatsende, tatsächlich und laut Plan prognostiziert",
+			"actual": "Tatsächlich",
+			"projected": "Prognose",
+			"showTable": "Als Tabelle anzeigen",
+			"month": "Monat",
+			"remaining": "Offen"
 		}
 	},
 	"notFound": {
@@ -622,6 +631,32 @@
 			"firstPayment": "Erste Rate",
 			"lastPayment": "Letzte Rate",
 			"notSpecified": "Nicht angegeben"
+		},
+		"simulator": {
+			"title": "Was-wäre-wenn-Simulator",
+			"description": "Teste die Wirkung höherer Zahlungen, ohne etwas zu speichern.",
+			"lumpSum": "Einmalige Sonderzahlung",
+			"reduceInstallments": "Weniger Raten",
+			"reduceAmount": "Niedrigere Rate",
+			"installmentsLeft": "{count, plural, =1 {# Rate übrig} other {# Raten übrig}}",
+			"perMonth": "/Monat",
+			"monthlyExtra": "Extra pro Monat",
+			"payoffIn": "Abbezahlt in {count, plural, =1 {# Monat} other {# Monaten}} ({date})",
+			"monthsSaved": "{count, plural, =1 {# Monat} other {# Monate}} früher als geplant",
+			"disclaimer": "Schätzung ohne Zinsen: Dein Kreditgeber kann anders rechnen."
+		},
+		"savings": {
+			"title": "Sparrechner",
+			"description": "Plane, wie viel du monatlich zurücklegen musst, um den Restbetrag zu tilgen.",
+			"descriptionFinal": "Plane, wie viel du monatlich für die Schlussrate zurücklegen musst.",
+			"goal": "Ziel",
+			"saved": "Gespart",
+			"targetDate": "Zieldatum",
+			"progress": "Fortschritt",
+			"reached": "Ziel erreicht!",
+			"monthlyNeeded": "Nötige monatliche Sparrate",
+			"stillToSave": "Noch zu sparen",
+			"monthsLeft": "{count, plural, =0 {Diesen Monat fällig} =1 {Noch # Monat} other {Noch # Monate}}"
 		}
 	},
 	"paymentsList": {
@@ -820,6 +855,35 @@
 		"completed": {
 			"title": "Sie haben keine abgeschlossenen Finanzierungen",
 			"description": "Sie haben noch keine Finanzierung abgeschlossen"
+		}
+	},
+	"export": {
+		"button": "Exportieren",
+		"csv": "Zahlungen (CSV)",
+		"pdf": "Bericht (PDF)",
+		"reportTitle": "Schuldenbericht",
+		"labels": {
+			"generated": "Erstellt am",
+			"debt": "Schuld",
+			"entity": "Kreditgeber",
+			"period": "Zeitraum",
+			"type": "Art",
+			"installment": "Rate",
+			"extra": "Sonderzahlung",
+			"planned": "Geplant",
+			"paid": "Bezahlt",
+			"paidDate": "Zahlungsdatum",
+			"status": "Bezahlt",
+			"yes": "Ja",
+			"no": "Nein",
+			"total": "Gesamt",
+			"remaining": "Offen",
+			"progress": "Fortschritt",
+			"annualSummary": "Jahresübersicht",
+			"year": "Jahr",
+			"installments": "Raten",
+			"extras": "Sonderzahlungen",
+			"payments": "Zahlungen"
 		}
 	}
 }

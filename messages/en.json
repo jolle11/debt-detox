@@ -223,6 +223,15 @@
 			"title": "You don't have any registered financing",
 			"description": "Add your first debt or loan to start tracking",
 			"addButton": "Add First Debt"
+		},
+		"evolution": {
+			"title": "Debt over time",
+			"subtitle": "Outstanding balance at the end of each month, actual and projected from the plan",
+			"actual": "Actual",
+			"projected": "Projected",
+			"showTable": "Show as table",
+			"month": "Month",
+			"remaining": "Outstanding"
 		}
 	},
 	"notFound": {
@@ -618,6 +627,32 @@
 			"firstPayment": "First Payment",
 			"lastPayment": "Last Payment",
 			"notSpecified": "Not specified"
+		},
+		"simulator": {
+			"title": "What-if simulator",
+			"description": "Try the effect of paying more without recording anything.",
+			"lumpSum": "One-off extra payment",
+			"reduceInstallments": "Fewer installments",
+			"reduceAmount": "Lower amount",
+			"installmentsLeft": "{count, plural, =1 {# installment left} other {# installments left}}",
+			"perMonth": "/mo",
+			"monthlyExtra": "Extra every month",
+			"payoffIn": "Paid off in {count, plural, =1 {# month} other {# months}} ({date})",
+			"monthsSaved": "{count, plural, =1 {# month} other {# months}} earlier than planned",
+			"disclaimer": "Interest-free estimate: your lender may calculate it differently."
+		},
+		"savings": {
+			"title": "Savings calculator",
+			"description": "Plan how much to set aside each month to clear the balance.",
+			"descriptionFinal": "Plan how much to set aside each month for the final payment.",
+			"goal": "Goal",
+			"saved": "Saved",
+			"targetDate": "Target date",
+			"progress": "Progress",
+			"reached": "Goal reached!",
+			"monthlyNeeded": "Monthly savings needed",
+			"stillToSave": "Still to save",
+			"monthsLeft": "{count, plural, =0 {Due this month} =1 {# month left} other {# months left}}"
 		}
 	},
 	"paymentsList": {
@@ -816,6 +851,35 @@
 		"completed": {
 			"title": "You have no completed financing",
 			"description": "You haven't completed any financing yet"
+		}
+	},
+	"export": {
+		"button": "Export",
+		"csv": "Payments (CSV)",
+		"pdf": "Report (PDF)",
+		"reportTitle": "Debt report",
+		"labels": {
+			"generated": "Generated on",
+			"debt": "Debt",
+			"entity": "Lender",
+			"period": "Period",
+			"type": "Type",
+			"installment": "Installment",
+			"extra": "Extra",
+			"planned": "Planned",
+			"paid": "Paid",
+			"paidDate": "Payment date",
+			"status": "Paid",
+			"yes": "Yes",
+			"no": "No",
+			"total": "Total",
+			"remaining": "Outstanding",
+			"progress": "Progress",
+			"annualSummary": "Annual summary",
+			"year": "Year",
+			"installments": "Installments",
+			"extras": "Extras",
+			"payments": "Payments"
 		}
 	}
 }

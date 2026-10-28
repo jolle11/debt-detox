@@ -15,9 +15,12 @@ import DebtPaymentDetails from "@/components/debt/detail/DebtPaymentDetails";
 import DebtProductImage from "@/components/debt/detail/DebtProductImage";
 import DebtProgressSection from "@/components/debt/detail/DebtProgressSection";
 import DebtQuickStats from "@/components/debt/detail/DebtQuickStats";
+import DebtSavingsCalculator from "@/components/debt/detail/DebtSavingsCalculator";
+import DebtSimulator from "@/components/debt/detail/DebtSimulator";
 import DebtStructure from "@/components/debt/detail/DebtStructure";
 import EditDebtModal from "@/components/debt/EditDebtModal";
 import ShareDebtModal from "@/components/debt/ShareDebtModal";
+import ExportMenu from "@/components/ui/ExportMenu";
 import SkeletonDebtDetail from "@/components/ui/skeletons/SkeletonDebtDetail";
 import { useDebtsContext } from "@/contexts/DebtsContext";
 import { useAuthRedirect } from "@/hooks/useAuthRedirect";
@@ -92,6 +95,15 @@ export default function DebtDetailPage() {
 				onShare={() => setShowShareModal(true)}
 				onBack={() => router.back()}
 			/>
+
+			<div className="flex justify-end -mt-2 mb-2">
+				<ExportMenu
+					debts={[debt]}
+					payments={payments}
+					filename={`debt-detox-${debt.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+					title={debt.name}
+				/>
+			</div>
 
 			<DebtCollaboration debt={debt} />
 
@@ -184,6 +196,20 @@ export default function DebtDetailPage() {
 						debt={debt}
 						payments={payments}
 						formatCurrency={formatCurrency}
+					/>
+
+					<DebtSimulator
+						debt={debt}
+						payments={payments}
+						formatCurrency={formatCurrency}
+						paymentStats={paymentStats}
+					/>
+
+					<DebtSavingsCalculator
+						debt={debt}
+						payments={payments}
+						formatCurrency={formatCurrency}
+						paymentStats={paymentStats}
 					/>
 				</div>
 			</div>

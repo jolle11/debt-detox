@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
 import { useToast } from "@/hooks/useToast";
+import { simulateExtraPayment } from "@/lib/simulator";
 import type { Debt, ExtraPaymentStrategy } from "@/lib/types";
 import { calculatePaymentStats } from "@/utils/debtCalculations";
 
@@ -52,53 +53,13 @@ export default function AddExtraPaymentModal({
 		if (!debt || !paymentStats) return null;
 
 		const numAmount = parseFloat(amount);
-		if (isNaN(numAmount) || numAmount <= 0) return null;
-
-		const paidInstallments = paymentStats.registeredPaidPayments;
-		const currentRemainingInstallments =
-			debt.number_of_payments - paidInstallments;
-		const remainingBalance = Math.max(
-			0,
-			paymentStats.pendingAmount - numAmount,
-		);
-
-		const originalMonthly = debt.original_monthly_amount || debt.monthly_amount;
-		const originalPayments =
-			debt.original_number_of_payments || debt.number_of_payments;
+		if (Number.isNaN(numAmount) || numAmount <= 0) return null;
 
 		return {
-			none: {
-				monthlyAmount: debt.monthly_amount,
-				totalInstallments: debt.number_of_payments,
-				remainingInstallments: currentRemainingInstallments,
-				note: "early_finish",
-			},
-			reduce_amount: {
-				monthlyAmount:
-					currentRemainingInstallments > 0
-						? Math.round(
-								(remainingBalance / currentRemainingInstallments) * 100,
-							) / 100
-						: 0,
-				totalInstallments: debt.number_of_payments,
-				remainingInstallments: currentRemainingInstallments,
-				note: "lower_amount",
-			},
-			reduce_installments: {
-				monthlyAmount: debt.monthly_amount,
-				totalInstallments:
-					debt.monthly_amount > 0
-						? paidInstallments +
-							Math.ceil(remainingBalance / debt.monthly_amount)
-						: debt.number_of_payments,
-				remainingInstallments:
-					debt.monthly_amount > 0
-						? Math.ceil(remainingBalance / debt.monthly_amount)
-						: currentRemainingInstallments,
-				note: "fewer_installments",
-			},
-			originalMonthly,
-			originalPayments,
+			...simulateExtraPayment(debt, paymentStats, numAmount),
+			originalMonthly: debt.original_monthly_amount || debt.monthly_amount,
+			originalPayments:
+				debt.original_number_of_payments || debt.number_of_payments,
 		};
 	}, [debt, paymentStats, amount]);
 
@@ -109,7 +70,7 @@ export default function AddExtraPaymentModal({
 		setError(null);
 
 		const numAmount = parseFloat(amount);
-		if (isNaN(numAmount) || numAmount <= 0) {
+		if (Number.isNaN(numAmount) || numAmount <= 0) {
 			setError(t("debt.extraPayment.invalidAmount"));
 			return;
 		}
@@ -125,7 +86,13 @@ export default function AddExtraPaymentModal({
 
 		setIsLoading(true);
 		try {
-			await addExtraPayment(debt.id!, numAmount, strategy, debt, debtPayments);
+			await addExtraPayment(
+				debt.id ?? "",
+				numAmount,
+				strategy,
+				debt,
+				debtPayments,
+			);
 			setAmount("");
 			setStrategy("none");
 			toast.success("extraPaymentAdded");
@@ -149,7 +116,7 @@ export default function AddExtraPaymentModal({
 	};
 
 	const numAmount = parseFloat(amount);
-	const hasValidAmount = !isNaN(numAmount) && numAmount > 0;
+	const hasValidAmount = !Number.isNaN(numAmount) && numAmount > 0;
 	const showStrategies = hasValidAmount && numAmount <= maxAmount;
 
 	return (

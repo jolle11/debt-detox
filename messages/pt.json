@@ -223,6 +223,15 @@
 			"title": "Você não tem financiamentos registrados",
 			"description": "Adicione sua primeira dívida ou empréstimo para começar o acompanhamento",
 			"addButton": "Adicionar Primeira Dívida"
+		},
+		"evolution": {
+			"title": "Evolução da dívida",
+			"subtitle": "Saldo pendente no fim de cada mês, real e projetado segundo o plano",
+			"actual": "Real",
+			"projected": "Projetado",
+			"showTable": "Ver como tabela",
+			"month": "Mês",
+			"remaining": "Pendente"
 		}
 	},
 	"notFound": {
@@ -618,6 +627,32 @@
 			"firstPayment": "Primeira Prestação",
 			"lastPayment": "Última Prestação",
 			"notSpecified": "Não especificada"
+		},
+		"simulator": {
+			"title": "Simulador «e se…?»",
+			"description": "Experimenta o efeito de pagar mais sem registar nada.",
+			"lumpSum": "Pagamento extra pontual",
+			"reduceInstallments": "Menos prestações",
+			"reduceAmount": "Prestação mais baixa",
+			"installmentsLeft": "{count, plural, =1 {# prestação restante} other {# prestações restantes}}",
+			"perMonth": "/mês",
+			"monthlyExtra": "Extra todos os meses",
+			"payoffIn": "Liquidada em {count, plural, =1 {# mês} other {# meses}} ({date})",
+			"monthsSaved": "{count, plural, =1 {# mês} other {# meses}} antes do previsto",
+			"disclaimer": "Estimativa sem juros: a tua entidade pode calcular de forma diferente."
+		},
+		"savings": {
+			"title": "Calculadora de poupança",
+			"description": "Planeia quanto pôr de lado por mês para liquidar o pendente.",
+			"descriptionFinal": "Planeia quanto pôr de lado por mês para o pagamento final.",
+			"goal": "Objetivo",
+			"saved": "Poupado",
+			"targetDate": "Data objetivo",
+			"progress": "Progresso",
+			"reached": "Objetivo alcançado!",
+			"monthlyNeeded": "Poupança mensal necessária",
+			"stillToSave": "Falta poupar",
+			"monthsLeft": "{count, plural, =0 {Vence este mês} =1 {Falta # mês} other {Faltam # meses}}"
 		}
 	},
 	"paymentsList": {
@@ -816,6 +851,35 @@
 		"completed": {
 			"title": "Você não tem financiamentos concluídos",
 			"description": "Ainda não concluiu nenhum financiamento"
+		}
+	},
+	"export": {
+		"button": "Exportar",
+		"csv": "Pagamentos (CSV)",
+		"pdf": "Relatório (PDF)",
+		"reportTitle": "Relatório de dívidas",
+		"labels": {
+			"generated": "Gerado em",
+			"debt": "Dívida",
+			"entity": "Entidade",
+			"period": "Período",
+			"type": "Tipo",
+			"installment": "Prestação",
+			"extra": "Extra",
+			"planned": "Previsto",
+			"paid": "Pago",
+			"paidDate": "Data de pagamento",
+			"status": "Paga",
+			"yes": "Sim",
+			"no": "Não",
+			"total": "Total",
+			"remaining": "Pendente",
+			"progress": "Progresso",
+			"annualSummary": "Resumo anual",
+			"year": "Ano",
+			"installments": "Prestações",
+			"extras": "Extras",
+			"payments": "Pagamentos"
 		}
 	}
 }

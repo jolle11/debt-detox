@@ -223,6 +223,15 @@
 			"title": "No tienes financiaciones registradas",
 			"description": "Añade tu primera deuda o préstamo para empezar a hacer seguimiento",
 			"addButton": "Añadir Primera Deuda"
+		},
+		"evolution": {
+			"title": "Evolución de la deuda",
+			"subtitle": "Deuda pendiente al final de cada mes, real y proyectada según el plan",
+			"actual": "Real",
+			"projected": "Proyectado",
+			"showTable": "Ver como tabla",
+			"month": "Mes",
+			"remaining": "Pendiente"
 		}
 	},
 	"notFound": {
@@ -618,6 +627,32 @@
 			"firstPayment": "Primera Cuota",
 			"lastPayment": "Última Cuota",
 			"notSpecified": "No especificada"
+		},
+		"simulator": {
+			"title": "Simulador ¿y si…?",
+			"description": "Prueba el efecto de pagar más sin registrar nada.",
+			"lumpSum": "Pago extra puntual",
+			"reduceInstallments": "Reducir cuotas",
+			"reduceAmount": "Reducir importe",
+			"installmentsLeft": "{count, plural, =1 {# cuota restante} other {# cuotas restantes}}",
+			"perMonth": "/mes",
+			"monthlyExtra": "Extra cada mes",
+			"payoffIn": "Liquidada en {count, plural, =1 {# mes} other {# meses}} ({date})",
+			"monthsSaved": "{count, plural, =1 {# mes antes} other {# meses antes}} de lo previsto",
+			"disclaimer": "Estimación sin intereses: tu entidad puede calcularlo de forma distinta."
+		},
+		"savings": {
+			"title": "Calculadora de ahorro",
+			"description": "Planifica cuánto apartar cada mes para liquidar lo pendiente.",
+			"descriptionFinal": "Planifica cuánto apartar cada mes para el pago final.",
+			"goal": "Objetivo",
+			"saved": "Ahorrado",
+			"targetDate": "Fecha objetivo",
+			"progress": "Progreso",
+			"reached": "¡Objetivo alcanzado!",
+			"monthlyNeeded": "Ahorro mensual necesario",
+			"stillToSave": "Falta por ahorrar",
+			"monthsLeft": "{count, plural, =0 {Vence este mes} =1 {Queda # mes} other {Quedan # meses}}"
 		}
 	},
 	"paymentsList": {
@@ -816,6 +851,35 @@
 		"completed": {
 			"title": "No tienes financiaciones completadas",
 			"description": "Aún no has completado ninguna financiación"
+		}
+	},
+	"export": {
+		"button": "Exportar",
+		"csv": "Pagos (CSV)",
+		"pdf": "Informe (PDF)",
+		"reportTitle": "Informe de deudas",
+		"labels": {
+			"generated": "Generado el",
+			"debt": "Deuda",
+			"entity": "Entidad",
+			"period": "Periodo",
+			"type": "Tipo",
+			"installment": "Cuota",
+			"extra": "Extra",
+			"planned": "Previsto",
+			"paid": "Pagado",
+			"paidDate": "Fecha de pago",
+			"status": "Pagada",
+			"yes": "Sí",
+			"no": "No",
+			"total": "Total",
+			"remaining": "Pendiente",
+			"progress": "Progreso",
+			"annualSummary": "Resumen anual",
+			"year": "Año",
+			"installments": "Cuotas",
+			"extras": "Extras",
+			"payments": "Pagos"
 		}
 	}
 }

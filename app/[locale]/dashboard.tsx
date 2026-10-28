@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import InvitationInbox from "@/components/collaboration/InvitationInbox";
 import DashboardWidgetEditor from "@/components/dashboard/DashboardWidgetEditor";
+import DebtEvolutionChart from "@/components/dashboard/DebtEvolutionChart";
 import DebtsList from "@/components/dashboard/DebtsList";
 import SummaryStats from "@/components/dashboard/SummaryStats";
 import CompleteDebtModal from "@/components/debt/CompleteDebtModal";
@@ -13,6 +14,7 @@ import CreateDebtModal from "@/components/debt/CreateDebtModal";
 import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
 import EditDebtModal from "@/components/debt/EditDebtModal";
 import LandingPage from "@/components/landing/LandingPage";
+import ExportMenu from "@/components/ui/ExportMenu";
 import SkeletonDebtsList from "@/components/ui/skeletons/SkeletonDebtsList";
 import SkeletonSummaryStats from "@/components/ui/skeletons/SkeletonSummaryStats";
 import { useDebtsContext } from "@/contexts/DebtsContext";
@@ -27,6 +29,7 @@ export default function Dashboard() {
 	const [completingDebt, setCompletingDebt] = useState<Debt | null>(null);
 	const [showWidgetEditor, setShowWidgetEditor] = useState(false);
 	const t = useTranslations("dashboard.customize");
+	const tExport = useTranslations("export");
 	const { debts, isLoading, error } = useDebtsContext();
 	const { widgets, saveWidgets, isSaving } = useDashboardWidgets();
 
@@ -54,7 +57,15 @@ export default function Dashboard() {
 					</div>
 				) : (
 					<>
-						<div className="flex justify-end">
+						<div className="flex justify-end gap-1">
+							{debts.length > 0 && (
+								<ExportMenu
+									debts={debts}
+									payments={payments}
+									filename="debt-detox"
+									title={tExport("reportTitle")}
+								/>
+							)}
 							<button
 								type="button"
 								className="btn btn-ghost btn-sm"
@@ -66,6 +77,8 @@ export default function Dashboard() {
 						</div>
 
 						<SummaryStats debts={debts} payments={payments} widgets={widgets} />
+
+						<DebtEvolutionChart debts={debts} payments={payments} />
 
 						{/* Debt List */}
 						<DebtsList

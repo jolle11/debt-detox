@@ -225,6 +225,15 @@
 			"title": "Vous n'avez aucun financement enregistré",
 			"description": "Ajoutez votre première dette ou prêt pour commencer le suivi",
 			"addButton": "Ajouter Première Dette"
+		},
+		"evolution": {
+			"title": "Évolution de la dette",
+			"subtitle": "Solde restant à la fin de chaque mois, réel et projeté selon le plan",
+			"actual": "Réel",
+			"projected": "Projeté",
+			"showTable": "Afficher en tableau",
+			"month": "Mois",
+			"remaining": "Restant"
 		}
 	},
 	"notFound": {
@@ -622,6 +631,32 @@
 			"firstPayment": "Premier Paiement",
 			"lastPayment": "Dernier Paiement",
 			"notSpecified": "Non spécifiée"
+		},
+		"simulator": {
+			"title": "Simulateur « et si… ? »",
+			"description": "Testez l'effet de payer plus sans rien enregistrer.",
+			"lumpSum": "Paiement supplémentaire ponctuel",
+			"reduceInstallments": "Moins d'échéances",
+			"reduceAmount": "Mensualité réduite",
+			"installmentsLeft": "{count, plural, =1 {# échéance restante} other {# échéances restantes}}",
+			"perMonth": "/mois",
+			"monthlyExtra": "Supplément chaque mois",
+			"payoffIn": "Remboursée en {count, plural, =1 {# mois} other {# mois}} ({date})",
+			"monthsSaved": "{count, plural, =1 {# mois} other {# mois}} plus tôt que prévu",
+			"disclaimer": "Estimation sans intérêts : votre organisme peut calculer différemment."
+		},
+		"savings": {
+			"title": "Calculateur d'épargne",
+			"description": "Planifiez combien mettre de côté chaque mois pour solder le restant.",
+			"descriptionFinal": "Planifiez combien mettre de côté chaque mois pour le paiement final.",
+			"goal": "Objectif",
+			"saved": "Épargné",
+			"targetDate": "Date cible",
+			"progress": "Progression",
+			"reached": "Objectif atteint !",
+			"monthlyNeeded": "Épargne mensuelle nécessaire",
+			"stillToSave": "Reste à épargner",
+			"monthsLeft": "{count, plural, =0 {Échéance ce mois-ci} =1 {Il reste # mois} other {Il reste # mois}}"
 		}
 	},
 	"paymentsList": {
@@ -820,6 +855,35 @@
 		"completed": {
 			"title": "Vous n'avez aucun financement terminé",
 			"description": "Vous n'avez encore terminé aucun financement"
+		}
+	},
+	"export": {
+		"button": "Exporter",
+		"csv": "Paiements (CSV)",
+		"pdf": "Rapport (PDF)",
+		"reportTitle": "Rapport des dettes",
+		"labels": {
+			"generated": "Généré le",
+			"debt": "Dette",
+			"entity": "Organisme",
+			"period": "Période",
+			"type": "Type",
+			"installment": "Échéance",
+			"extra": "Supplément",
+			"planned": "Prévu",
+			"paid": "Payé",
+			"paidDate": "Date de paiement",
+			"status": "Payée",
+			"yes": "Oui",
+			"no": "Non",
+			"total": "Total",
+			"remaining": "Restant",
+			"progress": "Progression",
+			"annualSummary": "Résumé annuel",
+			"year": "Année",
+			"installments": "Échéances",
+			"extras": "Suppléments",
+			"payments": "Paiements"
 		}
 	}
 }

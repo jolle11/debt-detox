@@ -223,6 +223,15 @@
 			"title": "U heeft geen geregistreerde financieringen",
 			"description": "Voeg uw eerste schuld of lening toe om te beginnen met bijhouden",
 			"addButton": "Eerste Schuld Toevoegen"
+		},
+		"evolution": {
+			"title": "Verloop van de schuld",
+			"subtitle": "Openstaand saldo aan het eind van elke maand, werkelijk en volgens plan geprojecteerd",
+			"actual": "Werkelijk",
+			"projected": "Prognose",
+			"showTable": "Als tabel tonen",
+			"month": "Maand",
+			"remaining": "Openstaand"
 		}
 	},
 	"notFound": {
@@ -618,6 +627,32 @@
 			"firstPayment": "Eerste Termijn",
 			"lastPayment": "Laatste Termijn",
 			"notSpecified": "Niet gespecificeerd"
+		},
+		"simulator": {
+			"title": "Wat-als-simulator",
+			"description": "Probeer het effect van meer betalen zonder iets te registreren.",
+			"lumpSum": "Eenmalige extra betaling",
+			"reduceInstallments": "Minder termijnen",
+			"reduceAmount": "Lager bedrag",
+			"installmentsLeft": "{count, plural, =1 {# termijn over} other {# termijnen over}}",
+			"perMonth": "/mnd",
+			"monthlyExtra": "Extra per maand",
+			"payoffIn": "Afbetaald in {count, plural, =1 {# maand} other {# maanden}} ({date})",
+			"monthsSaved": "{count, plural, =1 {# maand} other {# maanden}} eerder dan gepland",
+			"disclaimer": "Schatting zonder rente: je kredietverstrekker kan anders rekenen."
+		},
+		"savings": {
+			"title": "Spaarcalculator",
+			"description": "Plan hoeveel je per maand opzij moet zetten om het restant af te lossen.",
+			"descriptionFinal": "Plan hoeveel je per maand opzij moet zetten voor de slottermijn.",
+			"goal": "Doel",
+			"saved": "Gespaard",
+			"targetDate": "Streefdatum",
+			"progress": "Voortgang",
+			"reached": "Doel bereikt!",
+			"monthlyNeeded": "Benodigd maandelijks sparen",
+			"stillToSave": "Nog te sparen",
+			"monthsLeft": "{count, plural, =0 {Deze maand verschuldigd} =1 {Nog # maand} other {Nog # maanden}}"
 		}
 	},
 	"paymentsList": {
@@ -816,6 +851,35 @@
 		"completed": {
 			"title": "U heeft geen voltooide financieringen",
 			"description": "U heeft nog geen enkele financiering voltooid"
+		}
+	},
+	"export": {
+		"button": "Exporteren",
+		"csv": "Betalingen (CSV)",
+		"pdf": "Rapport (PDF)",
+		"reportTitle": "Schuldenrapport",
+		"labels": {
+			"generated": "Gegenereerd op",
+			"debt": "Schuld",
+			"entity": "Kredietverstrekker",
+			"period": "Periode",
+			"type": "Type",
+			"installment": "Termijn",
+			"extra": "Extra",
+			"planned": "Gepland",
+			"paid": "Betaald",
+			"paidDate": "Betaaldatum",
+			"status": "Betaald",
+			"yes": "Ja",
+			"no": "Nee",
+			"total": "Totaal",
+			"remaining": "Openstaand",
+			"progress": "Voortgang",
+			"annualSummary": "Jaaroverzicht",
+			"year": "Jaar",
+			"installments": "Termijnen",
+			"extras": "Extra's",
+			"payments": "Betalingen"
 		}
 	}
 }
