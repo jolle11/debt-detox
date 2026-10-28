@@ -43,7 +43,7 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 		lockoutTimer.current = setInterval(() => {
 			setLockoutSeconds((prev) => {
 				if (prev <= 1) {
-					clearInterval(lockoutTimer.current!);
+					if (lockoutTimer.current) clearInterval(lockoutTimer.current);
 					return 0;
 				}
 				return prev - 1;
@@ -67,7 +67,7 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 			setFailedAttempts(0);
 			toast.success("loginSuccess");
 			onSuccess?.();
-		} catch (err: any) {
+		} catch (err) {
 			const newAttempts = failedAttempts + 1;
 			setFailedAttempts(newAttempts);
 
@@ -77,7 +77,10 @@ export default function LoginForm({ onToggleForm, onSuccess }: LoginFormProps) {
 				setLockoutSeconds(seconds);
 			}
 
-			toast.error("genericError", err?.data?.message || t("error"));
+			toast.error(
+				"genericError",
+				(err as { data?: { message?: string } })?.data?.message || t("error"),
+			);
 		} finally {
 			setLoading(false);
 		}

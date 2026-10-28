@@ -30,7 +30,7 @@ export default function DebtProgressWithPayments({
 
 	const totalAmount = calculateTotalAmount(debt);
 	const paidAmount = calculatePaidAmountWithPayments(debt, payments);
-	const remainingAmount = calculateRemainingAmountWithPayments(debt, payments);
+	const _remainingAmount = calculateRemainingAmountWithPayments(debt, payments);
 	const progress = calculatePaymentProgressWithPayments(debt, payments);
 
 	// Check if we have unrealistic data (indicates initial calculation issue)
@@ -40,7 +40,7 @@ export default function DebtProgressWithPayments({
 	const validatedProgress = {
 		...progress,
 		percentage:
-			!hasValidData || isNaN(progress.percentage)
+			!hasValidData || Number.isNaN(progress.percentage)
 				? 0
 				: Math.min(progress.percentage, 100),
 	};

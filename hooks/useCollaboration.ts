@@ -17,7 +17,7 @@ export function useCollaboration(debtId?: string) {
 					? pb.filter("debt_id = {:id}", { id: debtId })
 					: pb.filter(
 							"recipient_id = {:id} && status = 'pending' && expires_at > @now",
-							{ id: user!.id },
+							{ id: user?.id },
 						),
 				sort: "-created",
 			}),

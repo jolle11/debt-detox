@@ -45,8 +45,9 @@ export default function RegisterForm({
 			);
 			toast.success("registerSuccess");
 			onSuccess?.();
-		} catch (err: any) {
-			toast.error("genericError", err?.data?.message || t("error"));
+		} catch (err) {
+			const message = (err as { data?: { message?: string } })?.data?.message;
+			toast.error("genericError", message || t("error"));
 		} finally {
 			setLoading(false);
 		}

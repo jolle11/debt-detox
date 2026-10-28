@@ -34,7 +34,7 @@ export default function EditDebtModal({
 			toast.success("debtUpdated");
 			onSuccess?.();
 			onClose();
-		} catch (err) {
+		} catch (_err) {
 			toast.error("genericError");
 		}
 	};

@@ -66,8 +66,6 @@ export default function DebtCard({
 	};
 
 	return (
-		// biome-ignore lint/a11y/useKeyWithClickEvents: the disclosure button provides equivalent keyboard interaction.
-		// biome-ignore lint/a11y/noNoninteractiveElementInteractions: card clicks delegate to the accessible disclosure button without nesting interactive controls.
 		<article
 			onClick={handleCardClick}
 			className={`relative focus-within:z-10 cursor-pointer rounded-xl border border-base-300 bg-base-100 transition-colors hover:border-primary/40 ${status === "completed" ? "opacity-75" : ""}`}

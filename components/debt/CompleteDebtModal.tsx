@@ -43,7 +43,7 @@ export default function CompleteDebtModal({
 			toast.success("debtCompleted");
 			onSuccess?.();
 			onClose();
-		} catch (err) {
+		} catch (_err) {
 			toast.error("genericError");
 		}
 	};

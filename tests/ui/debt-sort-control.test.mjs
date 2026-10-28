@@ -11,7 +11,7 @@ const mocks = {
 	"@phosphor-icons/react":
 		'export const CaretDownIcon = "caret"; export const UsersThreeIcon = "users";',
 	"@/hooks/useCurrency":
-		"export const useCurrency = () => ({formatCurrency: x => `${x} EUR`});",
+		"export const useCurrency = () => ({formatCurrency: x => x + ' EUR'});",
 	"@/i18n/routing": 'export const Link = "a";',
 	...Object.fromEntries(
 		[

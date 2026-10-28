@@ -31,7 +31,7 @@ export default function DeleteDebtModal({
 			toast.success("debtDeleted");
 			onSuccess?.();
 			onClose();
-		} catch (err) {
+		} catch (_err) {
 			toast.error("genericError");
 		}
 	};

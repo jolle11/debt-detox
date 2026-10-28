@@ -45,7 +45,7 @@ export default function CreateDebtModal({
 				onSuccess?.();
 				onClose();
 			}
-		} catch (err) {
+		} catch (_err) {
 			toast.error("genericError");
 		}
 	};

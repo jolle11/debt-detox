@@ -252,7 +252,7 @@ export default function ShareDebtModal({
 									</div>
 									<button
 										className="btn btn-ghost btn-xs text-error"
-										onClick={() => handleRevoke(link.id!)}
+										onClick={() => handleRevoke(link.id ?? "")}
 										title={t("share.revoke")}
 									>
 										<Trash className="w-3.5 h-3.5" />

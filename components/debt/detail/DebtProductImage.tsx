@@ -18,6 +18,7 @@ export default function DebtProductImage({ debt }: DebtProductImageProps) {
 					<FileTextIcon className="w-5 h-5" />
 					{t("debtDetail.sections.product")}
 				</h2>
+				{/* biome-ignore lint/performance/noImgElement: user-provided URLs from any host can't go through next/image without a domain allowlist. */}
 				<img
 					src={debt.product_image}
 					alt={debt.name}

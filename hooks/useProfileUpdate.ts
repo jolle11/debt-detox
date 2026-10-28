@@ -21,7 +21,7 @@ export function useProfileUpdate({
 	const [isEditing, setIsEditing] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const handleUpdate = async (updateData: Record<string, any>) => {
+	const handleUpdate = async (updateData: Record<string, unknown>) => {
 		setLoading(true);
 
 		try {
@@ -36,8 +36,8 @@ export function useProfileUpdate({
 			toast.success(successMessage);
 			setIsEditing(false);
 			return true;
-		} catch (error: any) {
-			toast.error(error?.message || errorMessage);
+		} catch (error) {
+			toast.error(error instanceof Error ? error.message : errorMessage);
 			return false;
 		} finally {
 			setLoading(false);

@@ -178,7 +178,7 @@ export default function DebtPaymentsList({
 		plannedAmount: number,
 	) => {
 		try {
-			await markPaymentAsPaid(debt.id!, month, year, plannedAmount);
+			await markPaymentAsPaid(debt.id ?? "", month, year, plannedAmount);
 		} catch (error) {
 			console.error("Error marking payment as paid:", error);
 		}
@@ -297,7 +297,7 @@ export default function DebtPaymentsList({
 									<div className="flex items-center gap-2">
 										<CheckCircle className="w-4 h-4 text-primary" />
 										<span className="text-sm">
-											{formatPaymentDate(payment.paid_date!)}
+											{formatPaymentDate(payment.paid_date ?? "")}
 										</span>
 									</div>
 									<div className="flex items-center gap-2">
@@ -312,7 +312,7 @@ export default function DebtPaymentsList({
 													step="0.01"
 												/>
 												<button
-													onClick={() => handleSaveEdit(payment.id!)}
+													onClick={() => handleSaveEdit(payment.id ?? "")}
 													className="btn btn-xs btn-success"
 												>
 													<CheckCircle className="w-3 h-3" />
@@ -334,7 +334,7 @@ export default function DebtPaymentsList({
 												<button
 													onClick={() =>
 														handleStartEdit(
-															payment.id!,
+															payment.id ?? "",
 															payment.actual_amount || 0,
 														)
 													}
@@ -345,7 +345,9 @@ export default function DebtPaymentsList({
 													<PencilSimple className="w-3 h-3" />
 												</button>
 												<button
-													onClick={() => handleDeleteExtraPayment(payment.id!)}
+													onClick={() =>
+														handleDeleteExtraPayment(payment.id ?? "")
+													}
 													className="btn btn-xs btn-ghost text-error"
 													hidden={!canManage}
 													title="Delete extra payment"
@@ -490,7 +492,7 @@ export default function DebtPaymentsList({
 																step="0.01"
 															/>
 															<button
-																onClick={() => handleSaveEdit(payment.id!)}
+																onClick={() => handleSaveEdit(payment.id ?? "")}
 																className="btn btn-xs btn-success"
 																title="Save"
 															>
@@ -509,7 +511,7 @@ export default function DebtPaymentsList({
 															<button
 																onClick={() =>
 																	handleStartEdit(
-																		payment.id!,
+																		payment.id ?? "",
 																		totalActualAmount,
 																	)
 																}
@@ -519,7 +521,9 @@ export default function DebtPaymentsList({
 																<PencilSimple className="w-3 h-3" />
 															</button>
 															<button
-																onClick={() => handleUnmarkPayment(payment.id!)}
+																onClick={() =>
+																	handleUnmarkPayment(payment.id ?? "")
+																}
 																className="btn btn-xs btn-ghost text-warning"
 																title="Unmark as paid"
 															>

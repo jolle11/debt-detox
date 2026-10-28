@@ -17,7 +17,6 @@ export function useDebtFilter(debts: Debt[]) {
 				return debts.filter(
 					(debt) => calculateDebtStatus(debt.completed_at) === "completed",
 				);
-			case "all":
 			default:
 				return debts;
 		}
