@@ -94,16 +94,16 @@ export default function DebtDetailPage() {
 				onAddExtraPayment={() => setShowExtraPaymentModal(true)}
 				onShare={() => setShowShareModal(true)}
 				onBack={() => router.back()}
+				exportAction={
+					<ExportMenu
+						iconOnly
+						debts={[debt]}
+						payments={payments}
+						filename={`debt-detox-${debt.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+						title={debt.name}
+					/>
+				}
 			/>
-
-			<div className="flex justify-end -mt-2 mb-2">
-				<ExportMenu
-					debts={[debt]}
-					payments={payments}
-					filename={`debt-detox-${debt.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
-					title={debt.name}
-				/>
-			</div>
 
 			<DebtCollaboration debt={debt} />
 

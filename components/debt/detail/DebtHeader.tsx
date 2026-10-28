@@ -24,6 +24,7 @@ export default function DebtHeader({
 	onAddExtraPayment,
 	onShare,
 	onBack,
+	exportAction,
 }: DebtHeaderProps) {
 	const t = useTranslations();
 	const { user } = useAuth();
@@ -49,6 +50,7 @@ export default function DebtHeader({
 							{debt.entity}
 						</p>
 					</div>
+					{exportAction && <div className="flex-shrink-0">{exportAction}</div>}
 					{canManage && (
 						<>
 							{/* Desktop Action Buttons */}

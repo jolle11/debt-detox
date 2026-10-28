@@ -23,6 +23,8 @@ interface ExportMenuProps {
 	filename: string;
 	title: string;
 	className?: string;
+	/** Icon button with a tooltip instead of a labelled button. */
+	iconOnly?: boolean;
 }
 
 const LABEL_KEYS = [
@@ -55,6 +57,7 @@ export default function ExportMenu({
 	filename,
 	title,
 	className = "",
+	iconOnly = false,
 }: ExportMenuProps) {
 	const t = useTranslations("export");
 	const locale = useLocale();
@@ -78,10 +81,23 @@ export default function ExportMenu({
 
 	return (
 		<div className={`dropdown dropdown-end ${className}`}>
-			<button type="button" tabIndex={0} className="btn btn-ghost btn-sm">
-				<DownloadSimpleIcon className="w-4 h-4" />
-				{t("button")}
-			</button>
+			{iconOnly ? (
+				<div className="tooltip tooltip-bottom" data-tip={t("button")}>
+					<button
+						type="button"
+						tabIndex={0}
+						className="btn btn-ghost btn-sm"
+						aria-label={t("button")}
+					>
+						<DownloadSimpleIcon className="w-4 h-4" />
+					</button>
+				</div>
+			) : (
+				<button type="button" tabIndex={0} className="btn btn-ghost btn-sm">
+					<DownloadSimpleIcon className="w-4 h-4" />
+					{t("button")}
+				</button>
+			)}
 			<ul className="menu dropdown-content bg-base-100 rounded-box z-10 w-48 p-2 shadow border border-base-300">
 				<li>
 					<button type="button" onClick={exportCsv}>

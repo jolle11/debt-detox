@@ -24,6 +24,7 @@ export interface DebtHeaderProps extends DebtDetailProps {
 	onAddExtraPayment: () => void;
 	onShare: () => void;
 	onBack: () => void;
+	exportAction?: React.ReactNode;
 }
 
 export interface DebtStatsProps extends DebtDetailProps {
