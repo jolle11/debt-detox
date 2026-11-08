@@ -104,7 +104,8 @@
 	"nav": {
 		"title": "💰 Debt Detox",
 		"addDebt": "Adicionar Dívida",
-		"profile": "Perfil"
+		"profile": "Perfil",
+		"metrics": "Métricas"
 	},
 	"dashboard": {
 		"title": "Seus Financiamentos",
@@ -223,15 +224,6 @@
 			"title": "Você não tem financiamentos registrados",
 			"description": "Adicione sua primeira dívida ou empréstimo para começar o acompanhamento",
 			"addButton": "Adicionar Primeira Dívida"
-		},
-		"evolution": {
-			"title": "Evolução da dívida",
-			"subtitle": "Saldo pendente no fim de cada mês, real e projetado segundo o plano",
-			"actual": "Real",
-			"projected": "Projetado",
-			"showTable": "Ver como tabela",
-			"month": "Mês",
-			"remaining": "Pendente"
 		}
 	},
 	"notFound": {
@@ -880,6 +872,57 @@
 			"installments": "Prestações",
 			"extras": "Extras",
 			"payments": "Pagamentos"
+		}
+	},
+	"metrics": {
+		"title": "Métricas",
+		"subtitle": "Como a tua dívida evolui e para onde vai",
+		"empty": "Adiciona uma dívida para veres as tuas métricas.",
+		"backToDashboard": "Voltar ao painel",
+		"viewMetrics": "Ver métricas",
+		"kpi": {
+			"debtFree": "Sem dívidas",
+			"monthsLeft": "{count, plural, =0 {este mês} =1 {em # mês} other {em # meses}}",
+			"debtFreeNow": "Sem dívidas",
+			"debtFreeDone": "Concluído",
+			"remaining": "Em dívida",
+			"changeFromLastMonth": "{amount} face ao mês passado",
+			"yearChange": "Variação em 12 meses",
+			"yearChangeHint": "Saldo em dívida face a há um ano",
+			"paidPercent": "Amortizado",
+			"paidPercentHint": "De tudo o que financiaste",
+			"noHistory": "Sem histórico suficiente"
+		},
+		"evolution": {
+			"title": "Evolução da dívida",
+			"subtitle": "Saldo pendente no fim de cada mês, real e projetado segundo o plano",
+			"actual": "Real",
+			"projected": "Projetado",
+			"showTable": "Ver como tabela",
+			"month": "Mês",
+			"remaining": "Pendente",
+			"newDebt": "Nova dívida",
+			"range1y": "1A",
+			"range3y": "3A",
+			"rangeAll": "Tudo",
+			"newDebtNames": "Nova: {names}"
+		},
+		"load": {
+			"title": "Próximos pagamentos",
+			"subtitle": "O que vais pagar em cada mês segundo o plano",
+			"relief": "A partir de {date} pagas menos {amount} por mês",
+			"empty": "Sem pagamentos próximos.",
+			"showTable": "Ver como tabela",
+			"month": "Mês",
+			"amount": "A pagar"
+		},
+		"breakdown": {
+			"title": "Onde está a tua dívida",
+			"subtitle": "Saldo em dívida e peso no total",
+			"debt": "Dívida",
+			"entity": "Entidade",
+			"noEntity": "Sem entidade",
+			"empty": "Nada em dívida."
 		}
 	}
 }

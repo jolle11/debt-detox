@@ -84,6 +84,14 @@ export default function Header() {
 											</Link>
 										</li>
 										<li>
+											<Link
+												href="/metrics"
+												className="font-medium hover:bg-primary hover:text-white active:bg-primary/90 transition-all duration-200 hover:scale-[1.02]"
+											>
+												{t("nav.metrics")}
+											</Link>
+										</li>
+										<li>
 											<button
 												onClick={logout}
 												className="text-error font-bold hover:bg-error hover:text-white active:bg-error/90 transition-all duration-200 hover:scale-[1.02]"

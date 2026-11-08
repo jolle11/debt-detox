@@ -18,7 +18,7 @@ function nextPeriod(period: string): string {
 	return addMonthsToDateOnly(`${period}-01`, 1).slice(0, 7);
 }
 
-function schedule(debt: Debt): Map<string, number> {
+export function schedule(debt: Debt): Map<string, number> {
 	const amounts = new Map<string, number>();
 	for (let offset = 0; offset < debt.number_of_payments; offset++) {
 		const period = addMonthsToDateOnly(debt.first_payment_date, offset).slice(

@@ -8,6 +8,7 @@ export default function robots(): MetadataRoute.Robots {
 		.flatMap((locale) => [
 			`/${locale}/dashboard`,
 			`/${locale}/profile`,
+			`/${locale}/metrics`,
 			`/${locale}/debt`,
 		]);
 
@@ -18,6 +19,7 @@ export default function robots(): MetadataRoute.Robots {
 			disallow: [
 				"/dashboard",
 				"/profile",
+				"/metrics",
 				"/debt",
 				"/share",
 				...localizedDisallow,

@@ -104,7 +104,8 @@
 	"nav": {
 		"title": "💰 Debt Detox",
 		"addDebt": "Ajouter Dette",
-		"profile": "Profil"
+		"profile": "Profil",
+		"metrics": "Statistiques"
 	},
 	"dashboard": {
 		"title": "Vos Financements",
@@ -225,15 +226,6 @@
 			"title": "Vous n'avez aucun financement enregistré",
 			"description": "Ajoutez votre première dette ou prêt pour commencer le suivi",
 			"addButton": "Ajouter Première Dette"
-		},
-		"evolution": {
-			"title": "Évolution de la dette",
-			"subtitle": "Solde restant à la fin de chaque mois, réel et projeté selon le plan",
-			"actual": "Réel",
-			"projected": "Projeté",
-			"showTable": "Afficher en tableau",
-			"month": "Mois",
-			"remaining": "Restant"
 		}
 	},
 	"notFound": {
@@ -884,6 +876,57 @@
 			"installments": "Échéances",
 			"extras": "Suppléments",
 			"payments": "Paiements"
+		}
+	},
+	"metrics": {
+		"title": "Statistiques",
+		"subtitle": "L'évolution de votre dette et sa trajectoire",
+		"empty": "Ajoutez une dette pour voir vos statistiques.",
+		"backToDashboard": "Retour au tableau de bord",
+		"viewMetrics": "Voir les statistiques",
+		"kpi": {
+			"debtFree": "Sans dette",
+			"monthsLeft": "{count, plural, =0 {ce mois-ci} =1 {dans # mois} other {dans # mois}}",
+			"debtFreeNow": "Aucune dette",
+			"debtFreeDone": "Terminé",
+			"remaining": "Restant dû",
+			"changeFromLastMonth": "{amount} par rapport au mois dernier",
+			"yearChange": "Variation sur 12 mois",
+			"yearChangeHint": "Solde restant par rapport à il y a un an",
+			"paidPercent": "Remboursé",
+			"paidPercentHint": "De tout ce que vous avez financé",
+			"noHistory": "Historique insuffisant"
+		},
+		"evolution": {
+			"title": "Évolution de la dette",
+			"subtitle": "Solde restant à la fin de chaque mois, réel et projeté selon le plan",
+			"actual": "Réel",
+			"projected": "Projeté",
+			"showTable": "Afficher en tableau",
+			"month": "Mois",
+			"remaining": "Restant",
+			"newDebt": "Nouvelle dette",
+			"range1y": "1A",
+			"range3y": "3A",
+			"rangeAll": "Tout",
+			"newDebtNames": "Nouvelle : {names}"
+		},
+		"load": {
+			"title": "Prochains paiements",
+			"subtitle": "Ce que vous paierez chaque mois selon le plan",
+			"relief": "À partir de {date}, vous payez {amount} de moins par mois",
+			"empty": "Aucun paiement à venir.",
+			"showTable": "Afficher en tableau",
+			"month": "Mois",
+			"amount": "À payer"
+		},
+		"breakdown": {
+			"title": "Où se trouve votre dette",
+			"subtitle": "Solde restant et part du total",
+			"debt": "Dette",
+			"entity": "Organisme",
+			"noEntity": "Sans organisme",
+			"empty": "Rien à payer."
 		}
 	}
 }

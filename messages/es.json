@@ -104,7 +104,8 @@
 	"nav": {
 		"title": "💰 Debt Detox",
 		"addDebt": "Añadir Deuda",
-		"profile": "Perfil"
+		"profile": "Perfil",
+		"metrics": "Métricas"
 	},
 	"dashboard": {
 		"title": "Tus Financiaciones",
@@ -223,15 +224,6 @@
 			"title": "No tienes financiaciones registradas",
 			"description": "Añade tu primera deuda o préstamo para empezar a hacer seguimiento",
 			"addButton": "Añadir Primera Deuda"
-		},
-		"evolution": {
-			"title": "Evolución de la deuda",
-			"subtitle": "Deuda pendiente al final de cada mes, real y proyectada según el plan",
-			"actual": "Real",
-			"projected": "Proyectado",
-			"showTable": "Ver como tabla",
-			"month": "Mes",
-			"remaining": "Pendiente"
 		}
 	},
 	"notFound": {
@@ -880,6 +872,57 @@
 			"installments": "Cuotas",
 			"extras": "Extras",
 			"payments": "Pagos"
+		}
+	},
+	"metrics": {
+		"title": "Métricas",
+		"subtitle": "Cómo evoluciona tu deuda y hacia dónde va",
+		"empty": "Añade una deuda para ver tus métricas.",
+		"backToDashboard": "Volver al panel",
+		"viewMetrics": "Ver métricas",
+		"kpi": {
+			"debtFree": "Libre de deudas",
+			"monthsLeft": "{count, plural, =0 {este mes} =1 {en # mes} other {en # meses}}",
+			"debtFreeNow": "Sin deudas",
+			"debtFreeDone": "Completado",
+			"remaining": "Pendiente",
+			"changeFromLastMonth": "{amount} respecto al mes pasado",
+			"yearChange": "Variación en 12 meses",
+			"yearChangeHint": "Saldo pendiente frente a hace un año",
+			"paidPercent": "Amortizado",
+			"paidPercentHint": "De todo lo que has financiado",
+			"noHistory": "Sin histórico suficiente"
+		},
+		"evolution": {
+			"title": "Evolución de la deuda",
+			"subtitle": "Deuda pendiente al final de cada mes, real y proyectada según el plan",
+			"actual": "Real",
+			"projected": "Proyectado",
+			"showTable": "Ver como tabla",
+			"month": "Mes",
+			"remaining": "Pendiente",
+			"newDebt": "Deuda nueva",
+			"range1y": "1A",
+			"range3y": "3A",
+			"rangeAll": "Todo",
+			"newDebtNames": "Nueva: {names}"
+		},
+		"load": {
+			"title": "Próximos pagos",
+			"subtitle": "Lo que pagarás cada mes según el plan",
+			"relief": "Desde {date} pagas {amount} menos al mes",
+			"empty": "No hay pagos próximos.",
+			"showTable": "Ver como tabla",
+			"month": "Mes",
+			"amount": "A pagar"
+		},
+		"breakdown": {
+			"title": "Dónde está tu deuda",
+			"subtitle": "Saldo pendiente y peso sobre el total",
+			"debt": "Deuda",
+			"entity": "Entidad",
+			"noEntity": "Sin entidad",
+			"empty": "Nada pendiente."
 		}
 	}
 }

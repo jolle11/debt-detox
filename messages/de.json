@@ -104,7 +104,8 @@
 	"nav": {
 		"title": "💰 Debt Detox",
 		"addDebt": "Schuld Hinzufügen",
-		"profile": "Profil"
+		"profile": "Profil",
+		"metrics": "Kennzahlen"
 	},
 	"dashboard": {
 		"title": "Ihre Finanzierungen",
@@ -225,15 +226,6 @@
 			"title": "Sie haben keine registrierten Finanzierungen",
 			"description": "Fügen Sie Ihre erste Schuld oder Ihr erstes Darlehen hinzu, um mit der Verfolgung zu beginnen",
 			"addButton": "Erste Schuld Hinzufügen"
-		},
-		"evolution": {
-			"title": "Schuldenverlauf",
-			"subtitle": "Offener Betrag am Monatsende, tatsächlich und laut Plan prognostiziert",
-			"actual": "Tatsächlich",
-			"projected": "Prognose",
-			"showTable": "Als Tabelle anzeigen",
-			"month": "Monat",
-			"remaining": "Offen"
 		}
 	},
 	"notFound": {
@@ -884,6 +876,57 @@
 			"installments": "Raten",
 			"extras": "Sonderzahlungen",
 			"payments": "Zahlungen"
+		}
+	},
+	"metrics": {
+		"title": "Kennzahlen",
+		"subtitle": "Wie sich deine Schulden entwickeln und wohin sie gehen",
+		"empty": "Füge eine Schuld hinzu, um deine Kennzahlen zu sehen.",
+		"backToDashboard": "Zurück zum Dashboard",
+		"viewMetrics": "Kennzahlen ansehen",
+		"kpi": {
+			"debtFree": "Schuldenfrei",
+			"monthsLeft": "{count, plural, =0 {diesen Monat} =1 {in # Monat} other {in # Monaten}}",
+			"debtFreeNow": "Keine Schulden",
+			"debtFreeDone": "Erledigt",
+			"remaining": "Ausstehend",
+			"changeFromLastMonth": "{amount} ggü. Vormonat",
+			"yearChange": "Veränderung in 12 Monaten",
+			"yearChangeHint": "Offener Saldo ggü. vor einem Jahr",
+			"paidPercent": "Getilgt",
+			"paidPercentHint": "Von allem, was du finanziert hast",
+			"noHistory": "Zu wenig Verlauf"
+		},
+		"evolution": {
+			"title": "Schuldenverlauf",
+			"subtitle": "Offener Betrag am Monatsende, tatsächlich und laut Plan prognostiziert",
+			"actual": "Tatsächlich",
+			"projected": "Prognose",
+			"showTable": "Als Tabelle anzeigen",
+			"month": "Monat",
+			"remaining": "Offen",
+			"newDebt": "Neue Schuld",
+			"range1y": "1J",
+			"range3y": "3J",
+			"rangeAll": "Alle",
+			"newDebtNames": "Neu: {names}"
+		},
+		"load": {
+			"title": "Kommende Zahlungen",
+			"subtitle": "Was du laut Plan jeden Monat zahlst",
+			"relief": "Ab {date} zahlst du {amount} weniger pro Monat",
+			"empty": "Keine kommenden Zahlungen.",
+			"showTable": "Als Tabelle anzeigen",
+			"month": "Monat",
+			"amount": "Zu zahlen"
+		},
+		"breakdown": {
+			"title": "Wo deine Schulden liegen",
+			"subtitle": "Offener Saldo und Anteil am Gesamtbetrag",
+			"debt": "Schuld",
+			"entity": "Anbieter",
+			"noEntity": "Kein Anbieter",
+			"empty": "Nichts ausstehend."
 		}
 	}
 }

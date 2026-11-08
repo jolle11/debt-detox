@@ -7,6 +7,11 @@ import PrivateAmount from "@/components/ui/PrivateAmount";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCurrency } from "@/hooks/useCurrency";
 import { calculateDebtEvolution } from "@/lib/debtEvolution";
+import {
+	calculateDebtStarts,
+	filterEvolutionRange,
+	niceMax,
+} from "@/lib/metrics";
 import type { Debt, Payment } from "@/lib/types";
 
 interface DebtEvolutionChartProps {
@@ -20,28 +25,34 @@ const PAD = { top: 16, right: 16, bottom: 28, left: 64 };
 const PLOT_W = WIDTH - PAD.left - PAD.right;
 const PLOT_H = HEIGHT - PAD.top - PAD.bottom;
 
-function niceMax(value: number) {
-	if (value <= 0) return 1;
-	const magnitude = 10 ** Math.floor(Math.log10(value));
-	const step = [1, 2, 2.5, 5, 10].find((s) => s * magnitude >= value / 4) ?? 10;
-	return Math.ceil(value / (step * magnitude)) * step * magnitude;
-}
+const RANGES = [
+	{ id: "range1y", months: 12 },
+	{ id: "range3y", months: 36 },
+	{ id: "rangeAll", months: null },
+] as const;
 
 export default function DebtEvolutionChart({
 	debts,
 	payments,
 }: DebtEvolutionChartProps) {
-	const t = useTranslations("dashboard.evolution");
+	const t = useTranslations("metrics.evolution");
 	const locale = useLocale();
 	const { formatCurrency } = useCurrency();
 	const [hover, setHover] = useState<number | null>(null);
 	const { user } = useAuth();
 	const hideAmounts = user?.hide_amounts === true;
 
+	const [range, setRange] = useState<(typeof RANGES)[number]>(RANGES[2]);
+
 	const points = useMemo(
-		() => calculateDebtEvolution(debts, payments),
-		[debts, payments],
+		() =>
+			filterEvolutionRange(
+				calculateDebtEvolution(debts, payments),
+				range.months,
+			),
+		[debts, payments, range],
 	);
+	const starts = useMemo(() => calculateDebtStarts(debts), [debts]);
 
 	if (points.length < 2) return null;
 
@@ -80,7 +91,12 @@ export default function DebtEvolutionChart({
 		setHover(Math.min(points.length - 1, Math.max(0, index)));
 	};
 
-	const hovered = hover === null ? null : points[hover];
+	// Clamped: the range can shrink the series while the pointer is still over it.
+	const hoverIndex = hover === null ? null : Math.min(hover, points.length - 1);
+	const hovered = hoverIndex === null ? null : points[hoverIndex];
+	const markers = points
+		.map((p, i) => ({ p, i }))
+		.filter(({ p, i }) => i > 0 && starts.has(p.period));
 
 	return (
 		<section className="card bg-base-100 border border-base-300">
@@ -123,6 +139,34 @@ export default function DebtEvolutionChart({
 								{t("projected")}
 							</span>
 						)}
+						{markers.length > 0 && (
+							<span className="flex items-center gap-1.5">
+								<svg width="10" height="10" aria-hidden="true">
+									<circle
+										cx="5"
+										cy="5"
+										r="4"
+										fill="var(--color-base-100)"
+										stroke="var(--color-primary)"
+										strokeWidth="2"
+									/>
+								</svg>
+								{t("newDebt")}
+							</span>
+						)}
+						<div className="join">
+							{RANGES.map((option) => (
+								<button
+									key={option.id}
+									type="button"
+									aria-pressed={range.id === option.id}
+									className={`btn btn-xs join-item ${range.id === option.id ? "btn-primary" : "btn-ghost"}`}
+									onClick={() => setRange(option)}
+								>
+									{t(option.id)}
+								</button>
+							))}
+						</div>
 					</div>
 				</div>
 
@@ -170,21 +214,25 @@ export default function DebtEvolutionChart({
 								</text>
 							))}
 
-						<path
-							d={`${path(0, lastActual)} L${x(lastActual)},${y(0)} L${x(0)},${y(0)} Z`}
-							fill="var(--color-primary)"
-							opacity="0.08"
-						/>
-						<path
-							d={path(0, lastActual)}
-							fill="none"
-							stroke="var(--color-primary)"
-							strokeWidth="2"
-							strokeLinejoin="round"
-						/>
+						{lastActual >= 0 && (
+							<>
+								<path
+									d={`${path(0, lastActual)} L${x(lastActual)},${y(0)} L${x(0)},${y(0)} Z`}
+									fill="var(--color-primary)"
+									opacity="0.08"
+								/>
+								<path
+									d={path(0, lastActual)}
+									fill="none"
+									stroke="var(--color-primary)"
+									strokeWidth="2"
+									strokeLinejoin="round"
+								/>
+							</>
+						)}
 						{hasProjection && (
 							<path
-								d={path(lastActual, points.length - 1)}
+								d={path(Math.max(lastActual, 0), points.length - 1)}
 								fill="none"
 								stroke="var(--color-primary)"
 								strokeWidth="2"
@@ -192,28 +240,41 @@ export default function DebtEvolutionChart({
 								strokeLinejoin="round"
 							/>
 						)}
-						<circle
-							cx={x(lastActual)}
-							cy={y(points[lastActual].remaining)}
-							r="4"
-							fill="var(--color-primary)"
-							stroke="var(--color-base-100)"
-							strokeWidth="2"
-						/>
+						{lastActual >= 0 && (
+							<circle
+								cx={x(lastActual)}
+								cy={y(points[lastActual].remaining)}
+								r="4"
+								fill="var(--color-primary)"
+								stroke="var(--color-base-100)"
+								strokeWidth="2"
+							/>
+						)}
+						{markers.map(({ p, i }) => (
+							<circle
+								key={p.period}
+								cx={x(i)}
+								cy={y(p.remaining)}
+								r="4"
+								fill="var(--color-base-100)"
+								stroke="var(--color-primary)"
+								strokeWidth="2"
+							/>
+						))}
 
-						{hover !== null && (
+						{hoverIndex !== null && (
 							<g pointerEvents="none">
 								<line
-									x1={x(hover)}
-									x2={x(hover)}
+									x1={x(hoverIndex)}
+									x2={x(hoverIndex)}
 									y1={PAD.top}
 									y2={PAD.top + PLOT_H}
 									stroke="currentColor"
 									className="text-base-content/30"
 								/>
 								<circle
-									cx={x(hover)}
-									cy={y(points[hover].remaining)}
+									cx={x(hoverIndex)}
+									cy={y(points[hoverIndex].remaining)}
 									r="5"
 									fill="var(--color-primary)"
 									stroke="var(--color-base-100)"
@@ -223,13 +284,13 @@ export default function DebtEvolutionChart({
 						)}
 					</svg>
 
-					{hovered && hover !== null && (
+					{hovered && hoverIndex !== null && (
 						<div
 							className="absolute top-0 pointer-events-none rounded-lg border border-base-300 bg-base-100 px-3 py-2 text-xs shadow-md"
 							style={{
-								left: `${(x(hover) / WIDTH) * 100}%`,
+								left: `${(x(hoverIndex) / WIDTH) * 100}%`,
 								transform:
-									hover > points.length / 2
+									hoverIndex > points.length / 2
 										? "translateX(calc(-100% - 8px))"
 										: "translateX(8px)",
 							}}
@@ -243,6 +304,13 @@ export default function DebtEvolutionChart({
 									{formatCurrency(hovered.remaining)}
 								</PrivateAmount>
 							</div>
+							{hoverIndex > 0 && starts.has(hovered.period) && (
+								<div className="max-w-48 text-base-content/60">
+									{t("newDebtNames", {
+										names: starts.get(hovered.period)?.join(", ") ?? "",
+									})}
+								</div>
+							)}
 						</div>
 					)}
 				</div>

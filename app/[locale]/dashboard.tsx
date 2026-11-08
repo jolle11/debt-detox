@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import InvitationInbox from "@/components/collaboration/InvitationInbox";
 import DashboardWidgetEditor from "@/components/dashboard/DashboardWidgetEditor";
-import DebtEvolutionChart from "@/components/dashboard/DebtEvolutionChart";
+import DebtEvolutionMini from "@/components/dashboard/DebtEvolutionMini";
 import DebtsList from "@/components/dashboard/DebtsList";
 import SummaryStats from "@/components/dashboard/SummaryStats";
 import CompleteDebtModal from "@/components/debt/CompleteDebtModal";
@@ -78,7 +78,7 @@ export default function Dashboard() {
 
 						<SummaryStats debts={debts} payments={payments} widgets={widgets} />
 
-						<DebtEvolutionChart debts={debts} payments={payments} />
+						<DebtEvolutionMini debts={debts} payments={payments} />
 
 						{/* Debt List */}
 						<DebtsList

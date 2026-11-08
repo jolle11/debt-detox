@@ -104,7 +104,8 @@
 	"nav": {
 		"title": "💰 Debt Detox",
 		"addDebt": "Add Debt",
-		"profile": "Profile"
+		"profile": "Profile",
+		"metrics": "Metrics"
 	},
 	"dashboard": {
 		"title": "Your Financing",
@@ -223,15 +224,6 @@
 			"title": "You don't have any registered financing",
 			"description": "Add your first debt or loan to start tracking",
 			"addButton": "Add First Debt"
-		},
-		"evolution": {
-			"title": "Debt over time",
-			"subtitle": "Outstanding balance at the end of each month, actual and projected from the plan",
-			"actual": "Actual",
-			"projected": "Projected",
-			"showTable": "Show as table",
-			"month": "Month",
-			"remaining": "Outstanding"
 		}
 	},
 	"notFound": {
@@ -880,6 +872,57 @@
 			"installments": "Installments",
 			"extras": "Extras",
 			"payments": "Payments"
+		}
+	},
+	"metrics": {
+		"title": "Metrics",
+		"subtitle": "How your debt is evolving and where it is heading",
+		"empty": "Add a debt to see your metrics.",
+		"backToDashboard": "Back to dashboard",
+		"viewMetrics": "View metrics",
+		"kpi": {
+			"debtFree": "Debt-free",
+			"monthsLeft": "{count, plural, =0 {this month} =1 {in # month} other {in # months}}",
+			"debtFreeNow": "No debt left",
+			"debtFreeDone": "Done",
+			"remaining": "Outstanding",
+			"changeFromLastMonth": "{amount} vs last month",
+			"yearChange": "12-month change",
+			"yearChangeHint": "Outstanding balance vs a year ago",
+			"paidPercent": "Paid off",
+			"paidPercentHint": "Of everything you have financed",
+			"noHistory": "Not enough history"
+		},
+		"evolution": {
+			"title": "Debt over time",
+			"subtitle": "Outstanding balance at the end of each month, actual and projected from the plan",
+			"actual": "Actual",
+			"projected": "Projected",
+			"showTable": "Show as table",
+			"month": "Month",
+			"remaining": "Outstanding",
+			"newDebt": "New debt",
+			"range1y": "1Y",
+			"range3y": "3Y",
+			"rangeAll": "All",
+			"newDebtNames": "New: {names}"
+		},
+		"load": {
+			"title": "Upcoming payments",
+			"subtitle": "What you will owe each month according to the plan",
+			"relief": "From {date} you pay {amount} less each month",
+			"empty": "No upcoming payments.",
+			"showTable": "Show as table",
+			"month": "Month",
+			"amount": "To pay"
+		},
+		"breakdown": {
+			"title": "Where your debt is",
+			"subtitle": "Outstanding balance by share of the total",
+			"debt": "Debt",
+			"entity": "Entity",
+			"noEntity": "No entity",
+			"empty": "Nothing outstanding."
 		}
 	}
 }

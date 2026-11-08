@@ -1,5 +1,6 @@
 "use client";
 
+import MetricsLink from "@/components/profile/MetricsLink";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileSettings from "@/components/profile/ProfileSettings";
 import SkeletonProfile from "@/components/ui/skeletons/SkeletonProfile";
@@ -21,6 +22,7 @@ export default function ProfilePage() {
 	return (
 		<div className="max-w-2xl mx-auto space-y-4">
 			<ProfileHeader user={user} refreshUser={refreshUser} />
+			<MetricsLink />
 			<ProfileSettings user={user} refreshUser={refreshUser} />
 		</div>
 	);

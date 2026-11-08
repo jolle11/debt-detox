@@ -122,6 +122,14 @@ export default function MobileMenu({
 								{t("nav.profile") || "Profile"}
 							</Link>
 
+							<Link
+								href="/metrics"
+								className="btn btn-outline w-full"
+								onClick={onClose}
+							>
+								{t("nav.metrics")}
+							</Link>
+
 							<button
 								className="btn btn-outline w-full gap-2"
 								onClick={handleShareProfileModalOpen}

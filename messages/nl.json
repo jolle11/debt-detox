@@ -104,7 +104,8 @@
 	"nav": {
 		"title": "💰 Debt Detox",
 		"addDebt": "Schuld Toevoegen",
-		"profile": "Profiel"
+		"profile": "Profiel",
+		"metrics": "Statistieken"
 	},
 	"dashboard": {
 		"title": "Uw Financieringen",
@@ -223,15 +224,6 @@
 			"title": "U heeft geen geregistreerde financieringen",
 			"description": "Voeg uw eerste schuld of lening toe om te beginnen met bijhouden",
 			"addButton": "Eerste Schuld Toevoegen"
-		},
-		"evolution": {
-			"title": "Verloop van de schuld",
-			"subtitle": "Openstaand saldo aan het eind van elke maand, werkelijk en volgens plan geprojecteerd",
-			"actual": "Werkelijk",
-			"projected": "Prognose",
-			"showTable": "Als tabel tonen",
-			"month": "Maand",
-			"remaining": "Openstaand"
 		}
 	},
 	"notFound": {
@@ -880,6 +872,57 @@
 			"installments": "Termijnen",
 			"extras": "Extra's",
 			"payments": "Betalingen"
+		}
+	},
+	"metrics": {
+		"title": "Statistieken",
+		"subtitle": "Hoe je schuld zich ontwikkelt en waar die naartoe gaat",
+		"empty": "Voeg een schuld toe om je statistieken te zien.",
+		"backToDashboard": "Terug naar dashboard",
+		"viewMetrics": "Statistieken bekijken",
+		"kpi": {
+			"debtFree": "Schuldenvrij",
+			"monthsLeft": "{count, plural, =0 {deze maand} =1 {over # maand} other {over # maanden}}",
+			"debtFreeNow": "Geen schulden",
+			"debtFreeDone": "Klaar",
+			"remaining": "Openstaand",
+			"changeFromLastMonth": "{amount} t.o.v. vorige maand",
+			"yearChange": "Verandering in 12 maanden",
+			"yearChangeHint": "Openstaand saldo t.o.v. een jaar geleden",
+			"paidPercent": "Afgelost",
+			"paidPercentHint": "Van alles wat je hebt gefinancierd",
+			"noHistory": "Onvoldoende historie"
+		},
+		"evolution": {
+			"title": "Verloop van de schuld",
+			"subtitle": "Openstaand saldo aan het eind van elke maand, werkelijk en volgens plan geprojecteerd",
+			"actual": "Werkelijk",
+			"projected": "Prognose",
+			"showTable": "Als tabel tonen",
+			"month": "Maand",
+			"remaining": "Openstaand",
+			"newDebt": "Nieuwe schuld",
+			"range1y": "1J",
+			"range3y": "3J",
+			"rangeAll": "Alles",
+			"newDebtNames": "Nieuw: {names}"
+		},
+		"load": {
+			"title": "Komende betalingen",
+			"subtitle": "Wat je volgens het plan elke maand betaalt",
+			"relief": "Vanaf {date} betaal je {amount} minder per maand",
+			"empty": "Geen komende betalingen.",
+			"showTable": "Als tabel tonen",
+			"month": "Maand",
+			"amount": "Te betalen"
+		},
+		"breakdown": {
+			"title": "Waar je schuld zit",
+			"subtitle": "Openstaand saldo en aandeel in het totaal",
+			"debt": "Schuld",
+			"entity": "Instelling",
+			"noEntity": "Geen instelling",
+			"empty": "Niets openstaand."
 		}
 	}
 }
