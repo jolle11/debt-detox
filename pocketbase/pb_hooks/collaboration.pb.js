@@ -26,6 +26,7 @@ routerAdd(
 	(e) => {
 		const data = new DynamicModel({ action: "" });
 		e.bindBody(data);
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		let result;
 		e.app.runInTransaction((app) => {
 			const invitation = app.findRecordById(
@@ -48,17 +49,10 @@ routerAdd(
 				if (
 					new Date(invitation.getString("expires_at")).getTime() <=
 						Date.now() ||
-					debt.getString("completed_at") ||
-					debt.getString("collaborator_id")
+					debt.getString("completed_at")
 				)
 					throw new BadRequestError("Invitation no longer available");
-				const owner = app.findRecordById("users", debt.getString("user_id"));
-				debt.set("previous_is_shared", debt.get("is_shared"));
-				debt.set("collaborator_id", e.auth.id);
-				debt.set("collaborator_name", e.auth.getString("name") || "Member");
-				debt.set("owner_name", owner.getString("name") || "Member");
-				debt.set("is_shared", true);
-				app.save(debt);
+				collaboration.join(app, debt, e.auth);
 				invitation.set("status", "accepted");
 			} else throw new BadRequestError("Invalid invitation action");
 			app.save(invitation);
@@ -71,58 +65,58 @@ routerAdd(
 
 routerAdd(
 	"DELETE",
-	"/api/debt-detox/debts/{id}/collaborator",
+	"/api/debt-detox/debts/{id}/participants/{userId}",
 	(e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		e.app.runInTransaction((app) => {
 			const debt = app.findRecordById("debts", e.request.pathValue("id"));
 			if (debt.getString("user_id") !== e.auth.id || debt.getString("deleted"))
 				throw new NotFoundError("Debt not found");
-			if (!debt.getString("collaborator_id")) return;
-			for (const invitation of app.findRecordsByFilter(
-				"debt_invitations",
-				"debt_id = {:debt} && status = 'accepted'",
-				"",
-				0,
-				0,
-				{ debt: debt.id },
-			)) {
-				invitation.set("status", "revoked");
-				app.save(invitation);
-			}
-			debt.set("collaborator_id", "");
-			debt.set("collaborator_name", "");
-			debt.set("owner_name", "");
-			debt.set("is_shared", debt.get("previous_is_shared"));
-			app.save(debt);
+			collaboration.removeMember(app, debt, e.request.pathValue("userId"));
 		});
 		return e.json(200, { removed: true });
 	},
 	$apis.requireAuth("users"),
 );
 
+routerAdd(
+	"PUT",
+	"/api/debt-detox/debts/{id}/participants",
+	(e) => {
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
+		let body;
+		try {
+			body = JSON.parse(toString(e.request.body));
+		} catch (_) {
+			throw new BadRequestError("Invalid split");
+		}
+		let saved;
+		e.app.runInTransaction((app) => {
+			const debt = app.findRecordById("debts", e.request.pathValue("id"));
+			collaboration.updateSplit(app, debt, e.auth, body.participants);
+			saved = debt;
+		});
+		return e.json(200, { debt: saved });
+	},
+	$apis.requireAuth("users"),
+);
+
 // Membership and audit fields are managed only by domain routes.
 onRecordCreateRequest((e) => {
-	if (!e.hasSuperuserAuth())
-		for (const name of [
-			"collaborator_id",
-			"collaborator_name",
-			"owner_name",
-			"previous_is_shared",
-		])
-			e.record.set(name, name === "previous_is_shared" ? false : "");
+	if (!e.hasSuperuserAuth()) {
+		e.record.set("participants", []);
+		e.record.set("member_ids", []);
+	}
 	e.next();
 }, "debts");
 onRecordUpdateRequest((e) => {
 	if (!e.hasSuperuserAuth()) {
 		const original = e.record.original();
-		for (const name of [
-			"collaborator_id",
-			"collaborator_name",
-			"owner_name",
-			"previous_is_shared",
-		])
+		for (const name of ["participants", "member_ids"])
 			e.record.set(name, original.get(name));
-		if (original.getString("collaborator_id")) e.record.set("is_shared", true);
+		const collaboration = require(`${__hooks}/lib/collaboration.js`);
+		if (collaboration.participants(original).length)
+			e.record.set("is_shared", true);
 	}
 	e.next();
 }, "debts");
@@ -144,18 +138,18 @@ onRecordUpdateRequest((e) => {
 }, "payments");
 
 onRecordEnrich((e) => {
+	const collaboration = require(`${__hooks}/lib/collaboration.js`);
 	const userId = e.requestInfo?.auth?.id || "";
-	if (
-		!userId ||
-		(e.record.getString("user_id") !== userId &&
-			e.record.getString("collaborator_id") !== userId)
-	)
-		e.record.hide(
-			"collaborator_id",
-			"collaborator_name",
-			"owner_name",
-			"previous_is_shared",
-		);
+	const list = collaboration.participants(e.record);
+	const member = !!userId && collaboration.isMember(e.record, userId);
+	if (!member) e.record.hide("participants", "member_ids");
+	if (list.length) {
+		// Outsiders only reach a debt through its owner's public links.
+		const viewer = member ? userId : e.record.getString("user_id");
+		const person = list.find((entry) => entry.user_id === viewer);
+		e.record.withCustomData(true);
+		e.record.set("my_percent", person ? person.percent : 0);
+	}
 	e.next();
 }, "debts");
 onRecordEnrich((e) => {
@@ -167,5 +161,14 @@ onRecordEnrich((e) => {
 		!collaboration.isMember(debt, userId)
 	)
 		e.record.hide("recorded_by", "recorded_by_name", "sharing_snapshot");
+	else {
+		const snapshot = JSON.parse(
+			e.record.getString("sharing_snapshot") || "null",
+		);
+		if (snapshot && snapshot.shares) {
+			e.record.withCustomData(true);
+			e.record.set("my_percent", snapshot.shares[userId] || 0);
+		}
+	}
 	e.next();
 }, "payments");

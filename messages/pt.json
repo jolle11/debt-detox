@@ -2,16 +2,16 @@
 	"collaboration": {
 		"title": "Partilhar com uma pessoa",
 		"invitations": "Convites para financiamentos",
-		"acceptHelp": "Ao aceitar, terás acesso ao financiamento e a todo o histórico. A tua parte será de 50 %. Ambos podem registar e corrigir prestações; o criador gere as condições e o acesso.",
-		"from": "Convite de {name} · divisão 50/50",
+		"acceptHelp": "Ao aceitar verás o financiamento e todo o histórico. Todos podem registar e corrigir prestações; o criador gere as condições, a repartição e o acesso.",
+		"from": "Convite de {name} · a tua parte: {percent} %",
 		"accept": "Aceitar",
 		"reject": "Recusar",
 		"accepted": "Convite aceite",
 		"rejected": "Convite recusado",
 		"with": "Partilhado com {name}",
 		"member": "Participante",
-		"paymentHelp": "O detalhe apresenta os valores totais. Marcar uma prestação regista o pagamento completo à entidade para ambos, sem registar transferências entre vocês.",
-		"removeHelp": "A outra pessoa perderá o acesso. Os pagamentos e os seus autores serão mantidos. Será recuperada a tua configuração anterior individual ou partilhada sem conta associada.",
+		"paymentHelp": "Os valores do detalhe são os totais do financiamento. Marcar uma prestação regista o pagamento completo à entidade para todos; não regista transferências entre vós.",
+		"removeHelp": "Esta pessoa perderá o acesso e a sua percentagem passará para ti. Os pagamentos e quem os registou são mantidos.",
 		"remove": "Retirar acesso",
 		"cancel": "Cancelar",
 		"pending": "Convite pendente para {name} · expira em {date}",
@@ -28,7 +28,7 @@
 		"yourMonthly": "A tua parte mensal",
 		"totalMonthly": "Prestação total",
 		"recordedBy": "Registado por {name}",
-		"fullAmounts": "Valores totais do financiamento (a tua parte: 50%)",
+		"fullAmounts": "Valores totais do financiamento (a tua parte: {percent} %)",
 		"inviteFormHelp": "O convite aparece no dashboard e expira após 7 dias. Até ser aceite, não dá acesso nem altera os totais da outra pessoa. Deixa o e-mail vazio para manter a partilha sem conta associada.",
 		"activity": {
 			"title": "Atividade recente",
@@ -44,8 +44,30 @@
 				"debt_completed": "concluiu o financiamento",
 				"debt_reactivated": "reativou o financiamento",
 				"debt_edited": "editou as condições",
-				"historical_confirmed": "confirmou as prestações anteriores"
+				"historical_confirmed": "confirmou as prestações anteriores",
+				"split_changed": "alterou a repartição da prestação"
 			}
+		},
+		"split": {
+			"invite": "Pagas isto com mais alguém?",
+			"edit": "Editar repartição",
+			"start": "Repartir a prestação",
+			"title": "Repartição da prestação",
+			"help": "Só afeta os pagamentos registados a partir de agora.",
+			"you": "Tu",
+			"guestName": "Nome",
+			"addGuest": "Adicionar pessoa sem conta",
+			"remove": "Remover",
+			"total": "Total: {total} %",
+			"mustTotal": "As percentagens têm de somar 100 %.",
+			"useIncomes": "Calcular segundo os salários",
+			"income": "Salário",
+			"apply": "Aplicar proporção",
+			"incomesPrivate": "Os salários não são guardados.",
+			"save": "Guardar repartição",
+			"cancel": "Cancelar",
+			"saved": "Repartição guardada",
+			"error": "Não foi possível guardar a repartição. Atualiza e tenta novamente."
 		}
 	},
 	"debtSort": {

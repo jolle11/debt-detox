@@ -47,7 +47,15 @@ test("summary has no debt-free date once everything is completed", () => {
 });
 
 test("upcoming load skips paid months and halves split debts", () => {
-	const shared = { ...debt, id: "sofa", collaborator_id: "partner" };
+	const shared = {
+		...debt,
+		id: "sofa",
+		participants: [
+			{ user_id: "owner", name: "", percent: 50 },
+			{ user_id: "partner", name: "", percent: 50 },
+		],
+		my_percent: 50,
+	};
 	const { points } = calculateUpcomingLoad(
 		[debt, shared],
 		[{ ...paid(4), id: "early" }],

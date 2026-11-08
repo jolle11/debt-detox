@@ -1287,6 +1287,124 @@ async function acceptPartner(debtId = debt.id) {
 	return invitation;
 }
 
+test("the app's list filter finds shared debts for the owner and the member", async () => {
+	await acceptPartner();
+	for (const [client, userId] of [
+		[owner, ownerRecord.id],
+		[otherUser, otherUser.authStore.record.id],
+	]) {
+		const debts = await client.collection("debts").getFullList({
+			filter: client.filter(
+				"deleted = null && (user_id = {:userId} || member_ids ~ {:userId})",
+				{ userId },
+			),
+		});
+		assert.ok(debts.some((item) => item.id === debt.id));
+	}
+});
+
+test("the owner sets custom percentages and only later payments use them", async () => {
+	await acceptPartner();
+	const ownerId = ownerRecord.id;
+	const partnerId = otherUser.authStore.record.id;
+	const url = `/api/debt-detox/debts/${debt.id}/participants`;
+	const first = await otherUser.send(
+		`/api/debt-detox/debts/${debt.id}/payments/2026/1`,
+		{ method: "PUT", body: {} },
+	);
+	const split = (ownerPercent, partnerPercent, extra = []) => ({
+		method: "PUT",
+		body: {
+			participants: [
+				{ user_id: ownerId, percent: ownerPercent },
+				{ user_id: partnerId, percent: partnerPercent },
+				...extra,
+			],
+		},
+	});
+
+	await assert.rejects(owner.send(url, split(60, 30)), (e) => e.status === 400);
+	await assert.rejects(
+		owner.send(url, {
+			method: "PUT",
+			body: { participants: [{ user_id: ownerId, percent: 100 }] },
+		}),
+		(e) => e.status === 400,
+	);
+	await assert.rejects(
+		otherUser.send(url, split(20, 80)),
+		(e) => e.status === 404,
+	);
+	await assert.rejects(
+		owner.send(url, split(40, 40, [{ name: "  ", percent: 20 }])),
+		(e) => e.status === 400,
+	);
+
+	await owner.send(url, split(50, 30, [{ name: "Guest", percent: 20 }]));
+	const seen = await otherUser.collection("debts").getOne(debt.id);
+	assert.equal(seen.my_percent, 30);
+	assert.equal(seen.participants.length, 3);
+	assert.equal(
+		(await owner.collection("debts").getOne(debt.id)).my_percent,
+		50,
+	);
+
+	const second = await owner.send(
+		`/api/debt-detox/debts/${debt.id}/payments/2026/2`,
+		{ method: "PUT", body: {} },
+	);
+	const getShare = async (client, id) =>
+		(await client.collection("payments").getOne(id)).my_percent;
+	assert.equal(await getShare(otherUser, first.payment.id), 50);
+	assert.equal(await getShare(otherUser, second.payment.id), 30);
+	assert.equal(await getShare(owner, second.payment.id), 50);
+
+	const activity = await owner.collection("debt_activity").getFullList({
+		filter: `debt_id = "${debt.id}" && action = "split_changed"`,
+	});
+	assert.equal(activity.length, 1);
+
+	await owner.send(`${url}/${partnerId}`, { method: "DELETE" });
+	const after = await owner.collection("debts").getOne(debt.id);
+	assert.equal(after.my_percent, 80);
+	assert.deepEqual(after.member_ids, []);
+	assert.equal(after.is_shared, true);
+});
+
+test("several accounts can join one financing, each taking half of the owner's part", async () => {
+	await acceptPartner();
+	const third = new PocketBase(BASE_URL);
+	await admin.collection("users").create({
+		email: "third@debt-detox.test",
+		password: "integration-password",
+		passwordConfirm: "integration-password",
+		name: "Third",
+	});
+	await third
+		.collection("users")
+		.authWithPassword("third@debt-detox.test", "integration-password");
+	const { invitation } = await owner.send(
+		`/api/debt-detox/debts/${debt.id}/invite`,
+		{ method: "POST", body: { email: "third@debt-detox.test" } },
+	);
+	assert.equal(invitation.percent, 25);
+	await third.send(`/api/debt-detox/invitations/${invitation.id}/respond`, {
+		method: "POST",
+		body: { action: "accept" },
+	});
+	const seen = await third.collection("debts").getOne(debt.id);
+	assert.equal(seen.my_percent, 25);
+	assert.equal(
+		(await owner.collection("debts").getOne(debt.id)).my_percent,
+		25,
+	);
+	assert.equal(
+		(await otherUser.collection("debts").getOne(debt.id)).my_percent,
+		50,
+	);
+	await admin.collection("users").delete(third.authStore.record.id);
+});
+
 test("pending invitations reveal no debt or payment data and only the recipient can accept", async () => {
 	const invitation = await invitePartner();
 	const inbox = await otherUser.collection("debt_invitations").getFullList();
@@ -1314,7 +1432,8 @@ test("pending invitations reveal no debt or payment data and only the recipient 
 test("acceptance grants access to one financing without exposing private user profiles", async () => {
 	await acceptPartner();
 	const shared = await otherUser.collection("debts").getOne(debt.id);
-	assert.equal(shared.collaborator_id, otherUser.authStore.record.id);
+	assert.deepEqual(shared.member_ids, [otherUser.authStore.record.id]);
+	assert.equal(shared.my_percent, 50);
 	assert.equal(shared.is_shared, true);
 	assert.equal(shared.user_id, ownerRecord.id);
 	await assert.rejects(
@@ -1377,14 +1496,20 @@ test("revocation immediately blocks access and payments while preserving payment
 		{ method: "PUT", body: {} },
 	);
 	await assert.rejects(
-		otherUser.send(`/api/debt-detox/debts/${debt.id}/collaborator`, {
-			method: "DELETE",
-		}),
+		otherUser.send(
+			`/api/debt-detox/debts/${debt.id}/participants/${otherUser.authStore.record.id}`,
+			{
+				method: "DELETE",
+			},
+		),
 		(e) => e.status === 404,
 	);
-	await owner.send(`/api/debt-detox/debts/${debt.id}/collaborator`, {
-		method: "DELETE",
-	});
+	await owner.send(
+		`/api/debt-detox/debts/${debt.id}/participants/${otherUser.authStore.record.id}`,
+		{
+			method: "DELETE",
+		},
+	);
 	await assert.rejects(
 		otherUser.collection("debts").getOne(debt.id),
 		(e) => e.status === 404,
@@ -1475,13 +1600,13 @@ test("rejected, cancelled, expired and deleted-debt invitations cannot be accept
 test("owners cannot forge membership or audit fields through direct collection writes", async () => {
 	await assert.rejects(
 		owner.collection("debts").update(debt.id, {
-			collaborator_id: otherUser.authStore.record.id,
-			collaborator_name: "Forged",
+			member_ids: [otherUser.authStore.record.id],
+			participants: [{ user_id: otherUser.authStore.record.id, percent: 100 }],
 		}),
 	);
-	assert.equal(
-		(await owner.collection("debts").getOne(debt.id)).collaborator_id,
-		"",
+	assert.deepEqual(
+		(await owner.collection("debts").getOne(debt.id)).member_ids,
+		[],
 	);
 	await assert.rejects(
 		owner
@@ -1496,11 +1621,11 @@ test("owners cannot forge membership or audit fields through direct collection w
 	await assert.rejects(
 		owner
 			.collection("debts")
-			.update(debt.id, { collaborator_id: "", is_shared: false }),
+			.update(debt.id, { member_ids: [], is_shared: false }),
 	);
-	assert.equal(
-		(await owner.collection("debts").getOne(debt.id)).collaborator_id,
-		otherUser.authStore.record.id,
+	assert.deepEqual(
+		(await owner.collection("debts").getOne(debt.id)).member_ids,
+		[otherUser.authStore.record.id],
 	);
 	await assert.rejects(
 		owner.collection("payments").create({
@@ -1548,7 +1673,7 @@ test("debt creation and invitation are atomic and self invitations are rejected"
 		method: "POST",
 		body: { ...input, invite_email: "other@debt-detox.test" },
 	});
-	assert.equal(result.debt.collaborator_id, "");
+	assert.deepEqual(result.debt.member_ids, []);
 	assert.equal(
 		(
 			await owner
@@ -1576,8 +1701,8 @@ test("public share links omit collaboration identities and payment audit metadat
 	const visitor = new PocketBase(BASE_URL);
 	const options = { headers: { "x-share-token": token } };
 	const shared = await visitor.collection("debts").getOne(debt.id, options);
-	assert.equal(shared.collaborator_id, undefined);
-	assert.equal(shared.collaborator_name, undefined);
+	assert.equal(shared.member_ids, undefined);
+	assert.equal(shared.participants, undefined);
 	const payment = await visitor
 		.collection("payments")
 		.getOne(result.payment.id, options);
@@ -1724,9 +1849,12 @@ test("collaborator can mark installments after accepting an invitation", async (
 	assert.equal(marked.payment.paid, true);
 	assert.equal(marked.debt.user_id, ownerRecord.id);
 
-	await owner.send(`/api/debt-detox/debts/${debt.id}/collaborator`, {
-		method: "DELETE",
-	});
+	await owner.send(
+		`/api/debt-detox/debts/${debt.id}/participants/${otherUser.authStore.record.id}`,
+		{
+			method: "DELETE",
+		},
+	);
 });
 
 test("users cannot verify their own account through the API", async () => {

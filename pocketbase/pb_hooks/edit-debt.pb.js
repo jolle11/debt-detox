@@ -85,7 +85,7 @@ routerAdd(
 			debt.set("monthly_amount", data.monthly_amount);
 			debt.set(
 				"is_shared",
-				debt.getString("collaborator_id") ? true : data.is_shared,
+				collaboration.participants(debt).length ? true : data.is_shared,
 			);
 			debt.set("number_of_payments", data.number_of_payments);
 			debt.set("final_payment", data.final_payment);

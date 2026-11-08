@@ -16,6 +16,11 @@ import {
 	calculateRemainingAmountWithPayments,
 } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
+import {
+	debtShare,
+	hasParticipants,
+	otherParticipantNames,
+} from "@/utils/debtCalculations";
 import DemoDebtPaymentStatus from "./DemoDebtPaymentStatus";
 
 interface DemoDebtCardProps {
@@ -69,7 +74,7 @@ export default function DemoDebtCard({
 		(sortBy === "monthly"
 			? debt.monthly_amount
 			: calculateRemainingAmountWithPayments(debt, debtPayments)) *
-		(debt.collaborator_id ? 0.5 : 1);
+		debtShare(debt);
 	const completed = calculateDebtStatus(debt.completed_at) === "completed";
 
 	return (
@@ -100,11 +105,15 @@ export default function DemoDebtCard({
 						title={debt.entity}
 					>
 						{debt.entity}
-						{debt.collaborator_id && (
+						{hasParticipants(debt) && (
 							<>
 								{" · "}
 								{t("collaboration.with", {
-									name: debt.collaborator_name || t("collaboration.member"),
+									name: otherParticipantNames(
+										debt,
+										"demo-user",
+										t("collaboration.member"),
+									),
 								})}
 							</>
 						)}
@@ -113,20 +122,20 @@ export default function DemoDebtCard({
 				<div className="col-start-1 row-start-2 min-w-0 sm:col-start-2 sm:row-start-1 sm:text-right">
 					<p className="text-sm font-semibold tabular-nums text-primary sm:text-base">
 						{formatCurrency(amount)}
-						{debt.collaborator_id && (
+						{hasParticipants(debt) && (
 							<span className="text-xs font-normal text-base-content/60">
 								{" / "}
-								{formatCurrency(amount * 2)}
+								{formatCurrency(amount / debtShare(debt))}
 							</span>
 						)}
 					</p>
 					<p className="text-xs text-base-content/60">
 						{t(
 							sortBy === "monthly"
-								? debt.collaborator_id
+								? hasParticipants(debt)
 									? "collaboration.yourMonthly"
 									: "dashboard.debt.monthlyAmount"
-								: debt.collaborator_id
+								: hasParticipants(debt)
 									? "collaboration.yourRemaining"
 									: "dashboard.debt.remainingAmount",
 						)}

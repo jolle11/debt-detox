@@ -42,7 +42,14 @@ test("evolution starts at the full balance, follows payments and projects to zer
 
 test("the current month matches the dashboard remaining debt", () => {
 	const payments = [paid(1), paid(2), paid(3, 50, true)];
-	const linked = { ...debt, collaborator_id: "partner" };
+	const linked = {
+		...debt,
+		participants: [
+			{ user_id: "owner", name: "", percent: 50 },
+			{ user_id: "partner", name: "", percent: 50 },
+		],
+		my_percent: 50,
+	};
 	const points = calculateDebtEvolution([linked], payments, now);
 	const current = points.find((p) => p.period === "2026-03");
 	assert.equal(

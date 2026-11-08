@@ -5,6 +5,7 @@ import {
 	calculateRemainingAmountWithPayments,
 } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
+import { debtShare } from "@/utils/debtCalculations";
 
 export const DEBT_SORT_KEYS = [
 	"pending",
@@ -108,8 +109,7 @@ export function sortDebts(
 			end: end?.getTime() ?? null,
 			created: dateValue(debt.created),
 			remaining:
-				calculateRemainingAmountWithPayments(debt, records) *
-				(debt.collaborator_id ? 0.5 : 1),
+				calculateRemainingAmountWithPayments(debt, records) * debtShare(debt),
 			progress: debt.completed_at
 				? 100
 				: Math.min(
@@ -136,9 +136,8 @@ export function sortDebts(
 				break;
 			case "monthly":
 				result =
-					(left.debt.monthly_amount * (left.debt.collaborator_id ? 0.5 : 1) -
-						right.debt.monthly_amount *
-							(right.debt.collaborator_id ? 0.5 : 1)) *
+					(left.debt.monthly_amount * debtShare(left.debt) -
+						right.debt.monthly_amount * debtShare(right.debt)) *
 					direction;
 				break;
 			case "end_date":

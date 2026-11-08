@@ -2,16 +2,16 @@
 	"collaboration": {
 		"title": "Compartir con una persona",
 		"invitations": "Invitaciones a financiaciones",
-		"acceptHelp": "Al aceptar verás la financiación y su historial completo. Tu parte será del 50 %. Ambos podréis registrar y corregir cuotas; el creador gestionará las condiciones y el acceso.",
-		"from": "Invitación de {name} · reparto 50/50",
+		"acceptHelp": "Al aceptar verás la financiación y su historial completo. Todos podréis registrar y corregir cuotas; el creador gestionará las condiciones, el reparto y el acceso.",
+		"from": "Invitación de {name} · tu parte: {percent} %",
 		"accept": "Aceptar",
 		"reject": "Rechazar",
 		"accepted": "Invitación aceptada",
 		"rejected": "Invitación rechazada",
 		"with": "Compartida con {name}",
 		"member": "Participante",
-		"paymentHelp": "Los importes del detalle son los totales de la financiación. Marcar una cuota registra el pago completo a la entidad para ambos; no registra transferencias entre vosotros.",
-		"removeHelp": "La otra persona perderá acceso. Se conservarán los pagos y quién los registró. Se recuperará tu configuración anterior de financiación individual o compartida sin vincular.",
+		"paymentHelp": "Los importes del detalle son los totales de la financiación. Marcar una cuota registra el pago completo a la entidad para todos; no registra transferencias entre vosotros.",
+		"removeHelp": "Esta persona perderá acceso y su porcentaje pasará a ti. Se conservarán los pagos y quién los registró.",
 		"remove": "Retirar acceso",
 		"cancel": "Cancelar",
 		"pending": "Invitación pendiente para {name} · caduca el {date}",
@@ -28,7 +28,7 @@
 		"yourMonthly": "Tu cuota mensual",
 		"totalMonthly": "Cuota total",
 		"recordedBy": "Registrado por {name}",
-		"fullAmounts": "Importes totales de la financiación (tu parte: 50 %)",
+		"fullAmounts": "Importes totales de la financiación (tu parte: {percent} %)",
 		"inviteFormHelp": "La invitación aparece en su dashboard y caduca a los 7 días. Hasta que acepte no tendrá acceso ni se cambiarán sus totales. Puedes dejar el correo vacío y seguir usando la opción compartida sin vincular.",
 		"activity": {
 			"title": "Actividad reciente",
@@ -44,8 +44,30 @@
 				"debt_completed": "completó la financiación",
 				"debt_reactivated": "reactivó la financiación",
 				"debt_edited": "editó las condiciones",
-				"historical_confirmed": "confirmó las cuotas anteriores"
+				"historical_confirmed": "confirmó las cuotas anteriores",
+				"split_changed": "cambió el reparto de la cuota"
 			}
+		},
+		"split": {
+			"invite": "¿La pagas con alguien más?",
+			"edit": "Editar reparto",
+			"start": "Repartir la cuota",
+			"title": "Reparto de la cuota",
+			"help": "Solo afecta a los pagos que se registren a partir de ahora.",
+			"you": "Tú",
+			"guestName": "Nombre",
+			"addGuest": "Añadir persona sin cuenta",
+			"remove": "Quitar",
+			"total": "Total: {total} %",
+			"mustTotal": "Los porcentajes deben sumar 100 %.",
+			"useIncomes": "Calcular según sueldos",
+			"income": "Sueldo",
+			"apply": "Aplicar proporción",
+			"incomesPrivate": "Los sueldos no se guardan.",
+			"save": "Guardar reparto",
+			"cancel": "Cancelar",
+			"saved": "Reparto guardado",
+			"error": "No se pudo guardar el reparto. Actualiza e inténtalo de nuevo."
 		}
 	},
 	"debtSort": {

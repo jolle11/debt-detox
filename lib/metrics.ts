@@ -9,7 +9,8 @@ import { calculateRemainingAmountWithPayments } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
 import {
 	calculateMonthlyContribution,
-	isSplitDebt,
+	debtShare,
+	monthlyShare,
 } from "@/utils/debtCalculations";
 
 export interface MetricsSummary {
@@ -124,7 +125,7 @@ export function calculateUpcomingLoad(
 	const recurring = new Map<string, number>();
 
 	for (const debt of active) {
-		const share = isSplitDebt(debt) ? 0.5 : 1;
+		const share = monthlyShare(debt);
 		const paid = new Set(
 			payments
 				.filter(
@@ -193,7 +194,7 @@ export function calculateBreakdown(
 			calculateRemainingAmountWithPayments(
 				debt,
 				payments.filter((payment) => payment.debt_id === debt.id),
-			) * (debt.collaborator_id ? 0.5 : 1);
+			) * debtShare(debt);
 		const entity = debt.entity?.trim() ?? "";
 		const key = group === "debt" ? (debt.id ?? debt.name) : entity;
 		const label = group === "debt" ? debt.name : entity;

@@ -2,16 +2,16 @@
 	"collaboration": {
 		"title": "Mit einer Person teilen",
 		"invitations": "Finanzierungseinladungen",
-		"acceptHelp": "Nach der Annahme siehst du die Finanzierung und ihren gesamten Verlauf. Dein Anteil beträgt 50 %. Beide können Raten erfassen und korrigieren; der Ersteller verwaltet Konditionen und Zugriff.",
-		"from": "Einladung von {name} · Aufteilung 50/50",
+		"acceptHelp": "Nach dem Annehmen siehst du die Finanzierung und ihren gesamten Verlauf. Alle können Raten erfassen und korrigieren; der Ersteller verwaltet Bedingungen, Aufteilung und Zugriff.",
+		"from": "Einladung von {name} · dein Anteil: {percent} %",
 		"accept": "Annehmen",
 		"reject": "Ablehnen",
 		"accepted": "Einladung angenommen",
 		"rejected": "Einladung abgelehnt",
 		"with": "Geteilt mit {name}",
 		"member": "Teilnehmer",
-		"paymentHelp": "Die Detailansicht zeigt die Gesamtbeträge. Das Markieren einer Rate erfasst die vollständige Zahlung an den Kreditgeber für beide, keine Überweisungen zwischen euch.",
-		"removeHelp": "Die andere Person verliert den Zugriff. Zahlungen und ihre Bearbeiter bleiben erhalten. Deine vorherige Einstellung für eine individuelle oder unverbundene geteilte Finanzierung wird wiederhergestellt.",
+		"paymentHelp": "Die Beträge im Detail sind die Gesamtbeträge der Finanzierung. Eine Rate zu markieren erfasst die volle Zahlung an den Anbieter für alle; Überweisungen untereinander werden nicht erfasst.",
+		"removeHelp": "Diese Person verliert den Zugriff und ihr Anteil geht auf dich über. Zahlungen und wer sie erfasst hat bleiben erhalten.",
 		"remove": "Zugriff entziehen",
 		"cancel": "Abbrechen",
 		"pending": "Einladung für {name} ausstehend · gültig bis {date}",
@@ -28,7 +28,7 @@
 		"yourMonthly": "Dein monatlicher Anteil",
 		"totalMonthly": "Gesamtrate",
 		"recordedBy": "Erfasst von {name}",
-		"fullAmounts": "Gesamtbeträge der Finanzierung (dein Anteil: 50 %)",
+		"fullAmounts": "Gesamtbeträge der Finanzierung (dein Anteil: {percent} %)",
 		"inviteFormHelp": "Die Einladung erscheint im Dashboard und läuft nach 7 Tagen ab. Bis zur Annahme gibt es keinen Zugriff und keine Änderung der Summen. Ohne E-Mail bleibt das Teilen ohne verknüpftes Konto verfügbar.",
 		"activity": {
 			"title": "Letzte Aktivität",
@@ -44,8 +44,30 @@
 				"debt_completed": "hat die Finanzierung abgeschlossen",
 				"debt_reactivated": "hat die Finanzierung reaktiviert",
 				"debt_edited": "hat die Konditionen bearbeitet",
-				"historical_confirmed": "hat frühere Raten bestätigt"
+				"historical_confirmed": "hat frühere Raten bestätigt",
+				"split_changed": "hat die Aufteilung der Rate geändert"
 			}
+		},
+		"split": {
+			"invite": "Zahlst du das mit jemandem zusammen?",
+			"edit": "Aufteilung bearbeiten",
+			"start": "Rate aufteilen",
+			"title": "Aufteilung der Rate",
+			"help": "Gilt nur für Zahlungen, die ab jetzt erfasst werden.",
+			"you": "Du",
+			"guestName": "Name",
+			"addGuest": "Person ohne Konto hinzufügen",
+			"remove": "Entfernen",
+			"total": "Gesamt: {total} %",
+			"mustTotal": "Die Prozente müssen 100 % ergeben.",
+			"useIncomes": "Nach Gehältern berechnen",
+			"income": "Gehalt",
+			"apply": "Verhältnis anwenden",
+			"incomesPrivate": "Gehälter werden nicht gespeichert.",
+			"save": "Aufteilung speichern",
+			"cancel": "Abbrechen",
+			"saved": "Aufteilung gespeichert",
+			"error": "Die Aufteilung konnte nicht gespeichert werden. Aktualisiere und versuche es erneut."
 		}
 	},
 	"debtSort": {

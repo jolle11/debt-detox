@@ -2,16 +2,16 @@
 	"collaboration": {
 		"title": "Met iemand delen",
 		"invitations": "Uitnodigingen voor financieringen",
-		"acceptHelp": "Na acceptatie zie je de financiering en de volledige geschiedenis. Jouw aandeel is 50%. Beiden kunnen termijnen registreren en corrigeren; de maker beheert de voorwaarden en toegang.",
-		"from": "Uitnodiging van {name} · verdeling 50/50",
+		"acceptHelp": "Na het accepteren zie je de financiering en de volledige historie. Iedereen kan termijnen registreren en corrigeren; de maker beheert de voorwaarden, de verdeling en de toegang.",
+		"from": "Uitnodiging van {name} · jouw deel: {percent}%",
 		"accept": "Accepteren",
 		"reject": "Afwijzen",
 		"accepted": "Uitnodiging geaccepteerd",
 		"rejected": "Uitnodiging afgewezen",
 		"with": "Gedeeld met {name}",
 		"member": "Deelnemer",
-		"paymentHelp": "De detailpagina toont de volledige bedragen. Een termijn markeren registreert de volledige betaling aan de kredietgever voor beiden, geen onderlinge overboekingen.",
-		"removeHelp": "De andere persoon verliest toegang. Betalingen en hun auteurs blijven bewaard. Je vorige instelling voor individuele of niet-gekoppelde gedeelde financiering wordt hersteld.",
+		"paymentHelp": "De bedragen in het detail zijn de totalen van de financiering. Een termijn markeren registreert de volledige betaling aan de instelling voor iedereen; overboekingen onderling worden niet geregistreerd.",
+		"removeHelp": "Deze persoon verliest de toegang en het percentage gaat naar jou. Betalingen en wie ze registreerde blijven bewaard.",
 		"remove": "Toegang intrekken",
 		"cancel": "Annuleren",
 		"pending": "Uitnodiging voor {name} in afwachting · verloopt op {date}",
@@ -28,7 +28,7 @@
 		"yourMonthly": "Jouw maandelijkse aandeel",
 		"totalMonthly": "Totale termijn",
 		"recordedBy": "Geregistreerd door {name}",
-		"fullAmounts": "Totale financieringsbedragen (jouw aandeel: 50%)",
+		"fullAmounts": "Totaalbedragen van de financiering (jouw deel: {percent}%)",
 		"inviteFormHelp": "De uitnodiging verschijnt op het dashboard en verloopt na 7 dagen. Tot acceptatie is er geen toegang en veranderen de totalen niet. Laat het e-mailadres leeg om zonder gekoppeld account te blijven delen.",
 		"activity": {
 			"title": "Recente activiteit",
@@ -44,8 +44,30 @@
 				"debt_completed": "rondde de financiering af",
 				"debt_reactivated": "heropende de financiering",
 				"debt_edited": "bewerkte de voorwaarden",
-				"historical_confirmed": "bevestigde eerdere termijnen"
+				"historical_confirmed": "bevestigde eerdere termijnen",
+				"split_changed": "heeft de verdeling van de termijn gewijzigd"
 			}
+		},
+		"split": {
+			"invite": "Betaal je dit samen met iemand?",
+			"edit": "Verdeling bewerken",
+			"start": "Termijn verdelen",
+			"title": "Verdeling van de termijn",
+			"help": "Geldt alleen voor betalingen die vanaf nu worden geregistreerd.",
+			"you": "Jij",
+			"guestName": "Naam",
+			"addGuest": "Persoon zonder account toevoegen",
+			"remove": "Verwijderen",
+			"total": "Totaal: {total}%",
+			"mustTotal": "De percentages moeten samen 100% zijn.",
+			"useIncomes": "Berekenen op basis van salarissen",
+			"income": "Salaris",
+			"apply": "Verhouding toepassen",
+			"incomesPrivate": "Salarissen worden niet opgeslagen.",
+			"save": "Verdeling opslaan",
+			"cancel": "Annuleren",
+			"saved": "Verdeling opgeslagen",
+			"error": "De verdeling kon niet worden opgeslagen. Vernieuw en probeer het opnieuw."
 		}
 	},
 	"debtSort": {

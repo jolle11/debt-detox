@@ -48,8 +48,11 @@ export const mockDebts: Debt[] = [
 		user_id: "demo-user",
 		name: "Móvil compartido",
 		entity: "Operadora",
-		collaborator_id: "demo-collaborator",
-		collaborator_name: "Bruc",
+		participants: [
+			{ user_id: "demo-user", name: "", percent: 50 },
+			{ user_id: "demo-collaborator", name: "Bruc", percent: 50 },
+		],
+		my_percent: 50,
 		is_shared: true,
 		down_payment: 0,
 		first_payment_date: dateAt(-2),

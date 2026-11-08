@@ -26,7 +26,7 @@ export default function DebtActions({
 	const menuRef = useRef<HTMLDivElement>(null);
 	const menuId = useId();
 	const { user } = useAuth();
-	const canManage = !debt.collaborator_id || debt.user_id === user?.id;
+	const canManage = debt.user_id === user?.id;
 	const status = calculateDebtStatus(debt.completed_at);
 
 	useEffect(() => {

@@ -2,16 +2,16 @@
 	"collaboration": {
 		"title": "Share with another person",
 		"invitations": "Financing invitations",
-		"acceptHelp": "Accepting gives you access to the financing and its full history. Your share is 50%. Both people can record and correct installments; the creator manages terms and access.",
-		"from": "Invitation from {name} · 50/50 split",
+		"acceptHelp": "Once you accept you will see the financing and its full history. Everyone can record and correct installments; the creator manages the terms, the split and access.",
+		"from": "Invitation from {name} · your share: {percent}%",
 		"accept": "Accept",
 		"reject": "Decline",
 		"accepted": "Invitation accepted",
 		"rejected": "Invitation declined",
 		"with": "Shared with {name}",
 		"member": "Participant",
-		"paymentHelp": "The detail shows the full financing amounts. Marking an installment records the full payment to the lender for both people; it does not record transfers between you.",
-		"removeHelp": "The other person will lose access. Payments and their recorded authors will remain. Your previous individual or unlinked shared setting will be restored.",
+		"paymentHelp": "Amounts in the detail are the financing totals. Marking an installment records the full payment to the lender for everyone; it does not record transfers between you.",
+		"removeHelp": "This person will lose access and their percentage will move to you. Payments and who recorded them are kept.",
 		"remove": "Remove access",
 		"cancel": "Cancel",
 		"pending": "Invitation pending for {name} · expires {date}",
@@ -28,7 +28,7 @@
 		"yourMonthly": "Your monthly share",
 		"totalMonthly": "Total installment",
 		"recordedBy": "Recorded by {name}",
-		"fullAmounts": "Full financing amounts (your share: 50%)",
+		"fullAmounts": "Total financing amounts (your share: {percent}%)",
 		"inviteFormHelp": "The invitation appears on their dashboard and expires after 7 days. Until they accept, they have no access and their totals stay unchanged. Leave the email empty to keep using unlinked sharing.",
 		"activity": {
 			"title": "Recent activity",
@@ -44,8 +44,30 @@
 				"debt_completed": "completed the financing",
 				"debt_reactivated": "reactivated the financing",
 				"debt_edited": "edited the terms",
-				"historical_confirmed": "confirmed past installments"
+				"historical_confirmed": "confirmed past installments",
+				"split_changed": "changed the installment split"
 			}
+		},
+		"split": {
+			"invite": "Paying this with someone else?",
+			"edit": "Edit split",
+			"start": "Split the installment",
+			"title": "Installment split",
+			"help": "Only affects payments recorded from now on.",
+			"you": "You",
+			"guestName": "Name",
+			"addGuest": "Add person without an account",
+			"remove": "Remove",
+			"total": "Total: {total}%",
+			"mustTotal": "Percentages must add up to 100%.",
+			"useIncomes": "Calculate from salaries",
+			"income": "Salary",
+			"apply": "Apply proportion",
+			"incomesPrivate": "Salaries are not saved.",
+			"save": "Save split",
+			"cancel": "Cancel",
+			"saved": "Split saved",
+			"error": "Could not save the split. Refresh and try again."
 		}
 	},
 	"debtSort": {

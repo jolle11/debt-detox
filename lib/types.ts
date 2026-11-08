@@ -6,11 +6,11 @@ export interface Debt {
 	down_payment?: number; // Entrada/pago inicial
 	first_payment_date: string; // Fecha de la primera cuota
 	monthly_amount: number; // Importe mensual actual (puede cambiar con aportaciones extra)
-	collaborator_id?: string;
-	collaborator_name?: string;
-	owner_name?: string;
+	participants?: DebtParticipant[]; // Vacío si no hay reparto definido
+	member_ids?: string[];
+	my_percent?: number; // Porcentaje de quien consulta; lo calcula el servidor
 	invite_email?: string; // Request-only: not stored on the debt.
-	is_shared?: boolean; // El usuario asume el 50 % de la cuota mensual
+	is_shared?: boolean; // Sin participantes: el usuario asume el 50 % de la cuota
 	number_of_payments: number; // Número de cuotas actual (puede cambiar con aportaciones extra)
 	original_monthly_amount?: number; // Importe mensual original (inmutable)
 	original_number_of_payments?: number; // Número de cuotas original (inmutable)
@@ -21,6 +21,12 @@ export interface Debt {
 	created?: string;
 	updated?: string;
 	deleted?: string;
+}
+
+export interface DebtParticipant {
+	user_id?: string; // Vacío para personas sin cuenta
+	name: string;
+	percent: number;
 }
 
 export type ExtraPaymentStrategy =
@@ -37,6 +43,7 @@ export interface DebtInvitation {
 	recipient_id: string;
 	recipient_name: string;
 	status: "pending" | "accepted" | "rejected" | "cancelled" | "revoked";
+	percent: number;
 	expires_at: string;
 }
 
@@ -49,7 +56,8 @@ export type DebtActivityAction =
 	| "debt_completed"
 	| "debt_reactivated"
 	| "debt_edited"
-	| "historical_confirmed";
+	| "historical_confirmed"
+	| "split_changed";
 
 export interface DebtActivity {
 	id: string;
@@ -70,7 +78,9 @@ export interface Payment {
 		owner: string;
 		collaborator: string;
 		owner_percent: number;
+		shares?: Record<string, number>;
 	};
+	my_percent?: number; // Parte de quien consulta cuando se registró el pago
 	id?: string;
 	debt_id: string;
 	month: number;

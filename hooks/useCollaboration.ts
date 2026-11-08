@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import pb from "@/lib/pocketbase";
-import type { DebtInvitation } from "@/lib/types";
+import type { DebtInvitation, DebtParticipant } from "@/lib/types";
 
 export function useCollaboration(debtId?: string) {
 	const { user } = useAuth();
@@ -30,7 +30,7 @@ export function useCollaboration(debtId?: string) {
 		}: {
 			url: string;
 			method: string;
-			body?: Record<string, string>;
+			body?: Record<string, unknown>;
 		}) => pb.send(url, { method, body }),
 		onSuccess: async () => {
 			await Promise.all(
@@ -57,10 +57,16 @@ export function useCollaboration(debtId?: string) {
 				method: "POST",
 				body: { action },
 			}),
-		remove: () =>
+		remove: (userId: string) =>
 			mutation.mutateAsync({
-				url: `/api/debt-detox/debts/${debtId}/collaborator`,
+				url: `/api/debt-detox/debts/${debtId}/participants/${userId}`,
 				method: "DELETE",
+			}),
+		saveSplit: (participants: DebtParticipant[]) =>
+			mutation.mutateAsync({
+				url: `/api/debt-detox/debts/${debtId}/participants`,
+				method: "PUT",
+				body: { participants },
 			}),
 	};
 }

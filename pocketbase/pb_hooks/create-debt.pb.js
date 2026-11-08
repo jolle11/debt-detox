@@ -92,10 +92,7 @@ routerAdd(
 			debt.set("down_payment", data.down_payment);
 			debt.set("first_payment_date", data.first_payment_date);
 			debt.set("monthly_amount", data.monthly_amount);
-			debt.set(
-				"is_shared",
-				debt.getString("collaborator_id") ? true : data.is_shared,
-			);
+			debt.set("is_shared", data.is_shared);
 			debt.set("number_of_payments", numberOfPayments);
 			debt.set("original_monthly_amount", data.monthly_amount);
 			debt.set("original_number_of_payments", numberOfPayments);

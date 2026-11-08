@@ -160,7 +160,15 @@ for (const linked of [false, true]) {
 			monthly_amount: 100,
 			number_of_payments: 12,
 			first_payment_date: "2026-01-01",
-			collaborator_id: linked ? "partner" : undefined,
+			...(linked
+				? {
+						participants: [
+							{ user_id: "owner", name: "", percent: 50 },
+							{ user_id: "partner", name: "", percent: 50 },
+						],
+						my_percent: 50,
+					}
+				: {}),
 		};
 		for (const dir of ["desc", "asc"]) {
 			h.render()[1].props.onChange({ target: { value: dir } });

@@ -14,6 +14,11 @@ import {
 	calculateRemainingAmountWithPayments,
 } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
+import {
+	debtShare,
+	hasParticipants,
+	otherParticipantNames,
+} from "@/utils/debtCalculations";
 import DebtActions from "./DebtActions";
 import DebtInfo from "./DebtInfo";
 import DebtPaymentStatus from "./DebtPaymentStatus";
@@ -96,14 +101,15 @@ export default function DebtCard({
 						title={debt.entity}
 					>
 						{debt.entity}
-						{debt.collaborator_id && (
+						{hasParticipants(debt) && (
 							<>
 								{" · "}
 								{t("collaboration.with", {
-									name:
-										debt.user_id === user?.id
-											? debt.collaborator_name || t("collaboration.member")
-											: debt.owner_name || t("collaboration.member"),
+									name: otherParticipantNames(
+										debt,
+										user?.id,
+										t("collaboration.member"),
+									),
 								})}
 							</>
 						)}
@@ -115,10 +121,10 @@ export default function DebtCard({
 						<PrivateAmount>
 							{formatCurrency(
 								(sortBy === "monthly" ? debt.monthly_amount : remainingAmount) *
-									(debt.collaborator_id ? 0.5 : 1),
+									debtShare(debt),
 							)}
 						</PrivateAmount>
-						{debt.collaborator_id && (
+						{hasParticipants(debt) && (
 							<span className="text-xs font-normal text-base-content/60">
 								{" / "}
 								<PrivateAmount>
@@ -134,10 +140,10 @@ export default function DebtCard({
 					<p className="text-xs text-base-content/60">
 						{t(
 							sortBy === "monthly"
-								? debt.collaborator_id
+								? hasParticipants(debt)
 									? "collaboration.yourMonthly"
 									: "dashboard.debt.monthlyAmount"
-								: debt.collaborator_id
+								: hasParticipants(debt)
 									? "collaboration.yourRemaining"
 									: "dashboard.debt.remainingAmount",
 						)}

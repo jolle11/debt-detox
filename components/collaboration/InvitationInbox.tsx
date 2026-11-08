@@ -26,7 +26,10 @@ export default function InvitationInbox() {
 					<div>
 						<p className="font-medium">{invitation.debt_name}</p>
 						<p className="text-sm text-base-content/70">
-							{t("from", { name: invitation.sender_name })}
+							{t("from", {
+								name: invitation.sender_name,
+								percent: invitation.percent,
+							})}
 						</p>
 					</div>
 					<div className="flex gap-2">

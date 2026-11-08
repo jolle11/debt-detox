@@ -9,6 +9,7 @@ import { normalizeDateOnlyString } from "@/lib/dateOnly";
 import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import { type EditDebtFormData, editDebtSchema } from "@/lib/schemas";
 import type { Debt } from "@/lib/types";
+import { hasParticipants } from "@/utils/debtCalculations";
 
 interface EditDebtFormProps {
 	debt: Debt;
@@ -190,7 +191,7 @@ export default function EditDebtForm({
 						<input
 							type="checkbox"
 							className="checkbox checkbox-primary mt-0.5"
-							disabled={!!debt.collaborator_id}
+							disabled={hasParticipants(debt)}
 							{...register("is_shared")}
 						/>
 						<span>
@@ -203,19 +204,17 @@ export default function EditDebtForm({
 						</span>
 					</label>
 
-					{!debt.collaborator_id && (
-						<div className="rounded-xl border border-base-300 p-4 space-y-2">
-							<FormInput
-								label={tc("optionalEmail")}
-								type="email"
-								registration={register("invite_email")}
-								error={errors.invite_email ? tv("email") : undefined}
-							/>
-							<p className="text-sm text-base-content/60">
-								{tc("inviteFormHelp")}
-							</p>
-						</div>
-					)}
+					<div className="rounded-xl border border-base-300 p-4 space-y-2">
+						<FormInput
+							label={tc("optionalEmail")}
+							type="email"
+							registration={register("invite_email")}
+							error={errors.invite_email ? tv("email") : undefined}
+						/>
+						<p className="text-sm text-base-content/60">
+							{tc("inviteFormHelp")}
+						</p>
+					</div>
 
 					<div className="card-actions justify-end mt-8">
 						<button

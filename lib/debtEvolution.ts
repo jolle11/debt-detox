@@ -2,6 +2,7 @@ import { addMonthsToDateOnly, parseDateOnly } from "@/lib/dateOnly";
 import { resolveFinalPaymentDate } from "@/lib/debtDates";
 import { calculateTotalAmount } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
+import { debtShare } from "@/utils/debtCalculations";
 
 export interface EvolutionPoint {
 	/** "YYYY-MM" */
@@ -49,7 +50,7 @@ export function calculateDebtEvolution(
 	if (valid.length === 0) return [];
 
 	const series = valid.map((debt) => {
-		const share = debt.collaborator_id ? 0.5 : 1;
+		const share = debtShare(debt);
 		const total = calculateTotalAmount(debt);
 		const start = addMonthsToDateOnly(debt.first_payment_date, -1).slice(0, 7);
 		const completed = debt.completed_at?.slice(0, 7) || "";
@@ -58,6 +59,7 @@ export function calculateDebtEvolution(
 
 		const paidByPeriod = new Map<string, number>();
 		const paidInstallments = new Set<string>();
+		const shareChanges: [string, number][] = [];
 		for (const payment of payments) {
 			if (payment.debt_id !== debt.id || !payment.paid) continue;
 			const period = toPeriod(payment.year, payment.month);
@@ -67,7 +69,20 @@ export function calculateDebtEvolution(
 					(payment.actual_amount || payment.planned_amount),
 			);
 			if (!payment.is_extra_payment) paidInstallments.add(period);
+			if (payment.my_percent !== undefined) {
+				shareChanges.push([period, payment.my_percent / 100]);
+			}
 		}
+		shareChanges.sort(([left], [right]) => left.localeCompare(right));
+
+		// Past months keep the split in force then; from today on, the current one.
+		const shareAt = (period: string) => {
+			if (period >= current || shareChanges.length === 0) return share;
+			return (
+				shareChanges.findLast(([changed]) => changed <= period)?.[1] ??
+				shareChanges[0][1]
+			);
+		};
 
 		const remainingAt = (period: string, paidSoFar: number) => {
 			if (period < start) return 0;
@@ -81,7 +96,7 @@ export function calculateDebtEvolution(
 				period <= current
 					? (debt.final_payment ?? 0)
 					: 0;
-			return Math.max(0, total - paidSoFar - finalDue) * share;
+			return Math.max(0, total - paidSoFar - finalDue) * shareAt(period);
 		};
 
 		// Installments still owed for projection, overdue ones included.

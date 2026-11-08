@@ -77,7 +77,7 @@ routerAdd(
 			}
 
 			if (
-				debt.getString("collaborator_id") &&
+				collaboration.participants(debt).length &&
 				payment.get("paid") &&
 				!payment.getString("deleted")
 			) {

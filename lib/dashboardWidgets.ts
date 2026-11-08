@@ -5,7 +5,11 @@ import {
 	calculateTotalAmount,
 } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
-import { calculateMonthlyContribution } from "@/utils/debtCalculations";
+import {
+	calculateMonthlyContribution,
+	debtShare,
+	paymentShare,
+} from "@/utils/debtCalculations";
 
 export const DASHBOARD_WIDGET_IDS = [
 	"remainingDebt",
@@ -69,11 +73,27 @@ export function calculateDashboardMetrics(
 		paymentsByDebt.set(payment.debt_id, debtPayments);
 	}
 
-	const originalDebt = debts.reduce(
-		(sum, debt) =>
-			sum + calculateTotalAmount(debt) * (debt.collaborator_id ? 0.5 : 1),
-		0,
-	);
+	const debtsById = new Map(debts.map((debt) => [debt.id, debt]));
+	const paymentAmount = (payment: Payment) =>
+		payment.actual_amount ?? payment.planned_amount;
+	const personalPaymentAmount = (payment: Payment) => {
+		const debt = debtsById.get(payment.debt_id);
+		return paymentAmount(payment) * (debt ? paymentShare(payment, debt) : 1);
+	};
+	// Payments made under a different split keep the share they were made with.
+	const splitAdjustment = payments.reduce((sum, payment) => {
+		const debt = debtsById.get(payment.debt_id);
+		if (!payment.paid || !debt) return sum;
+		return (
+			sum +
+			paymentAmount(payment) * (paymentShare(payment, debt) - debtShare(debt))
+		);
+	}, 0);
+	const originalDebt =
+		debts.reduce(
+			(sum, debt) => sum + calculateTotalAmount(debt) * debtShare(debt),
+			0,
+		) + splitAdjustment;
 	const remainingDebt = activeDebts.reduce(
 		(sum, debt) =>
 			sum +
@@ -81,7 +101,7 @@ export function calculateDashboardMetrics(
 				debt,
 				paymentsByDebt.get(debt.id ?? "") ?? [],
 			) *
-				(debt.collaborator_id ? 0.5 : 1),
+				debtShare(debt),
 		0,
 	);
 	const activeProgress = activeDebts.map(
@@ -91,11 +111,6 @@ export function calculateDashboardMetrics(
 				paymentsByDebt.get(debt.id ?? "") ?? [],
 			).percentage,
 	);
-	const personalPaymentAmount = (payment: Payment) =>
-		(payment.actual_amount ?? payment.planned_amount) *
-		(debts.find((debt) => debt.id === payment.debt_id)?.collaborator_id
-			? 0.5
-			: 1);
 	const paidThisMonth = payments
 		.filter(
 			(payment) =>

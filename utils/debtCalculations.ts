@@ -2,13 +2,59 @@ import type { PaymentStats } from "@/data/debtDetail";
 import { parseDateOnly } from "@/lib/dateOnly";
 import type { Debt, Payment } from "@/lib/types";
 
-export function isSplitDebt(debt: Debt): boolean {
-	return Boolean(debt.is_shared || debt.collaborator_id);
+export function hasParticipants(debt: Debt): boolean {
+	return (debt.participants?.length ?? 0) > 1;
 }
 
-// The user's half of the installment when the debt is split with someone.
+export function isSplitDebt(debt: Debt): boolean {
+	return Boolean(debt.is_shared || hasParticipants(debt));
+}
+
+/** The user's part of the debt's totals; only a defined split reduces them. */
+export function debtShare(debt: Debt): number {
+	return hasParticipants(debt) ? (debt.my_percent ?? 100) / 100 : 1;
+}
+
+/** The user's part of the installment. Shared debts without a split pay half. */
+export function monthlyShare(debt: Debt): number {
+	if (debt.my_percent !== undefined) return debt.my_percent / 100;
+	return isSplitDebt(debt) ? 0.5 : 1;
+}
+
 export function calculateMonthlyContribution(debt: Debt): number {
-	return debt.monthly_amount * (isSplitDebt(debt) ? 0.5 : 1);
+	return debt.monthly_amount * monthlyShare(debt);
+}
+
+/** The user's part of a payment, using the split in force when it was made. */
+export function paymentShare(payment: Payment, debt: Debt): number {
+	return payment.my_percent !== undefined
+		? payment.my_percent / 100
+		: debtShare(debt);
+}
+
+/** Percentages proportional to incomes, with two decimals, adding up to 100. */
+export function percentagesFromIncomes(incomes: number[]): number[] | null {
+	const total = incomes.reduce((sum, income) => sum + income, 0);
+	if (incomes.length === 0 || incomes.some((income) => !(income > 0)))
+		return null;
+	const percents = incomes.map(
+		(income) => Math.round((income / total) * 10000) / 100,
+	);
+	const drift = 100 - percents.reduce((sum, percent) => sum + percent, 0);
+	const largest = percents.indexOf(Math.max(...percents));
+	percents[largest] = Math.round((percents[largest] + drift) * 100) / 100;
+	return percents;
+}
+
+export function otherParticipantNames(
+	debt: Debt,
+	userId: string | undefined,
+	fallback: string,
+): string {
+	return (debt.participants ?? [])
+		.filter((person) => !person.user_id || person.user_id !== userId)
+		.map((person) => person.name || fallback)
+		.join(", ");
 }
 
 /**

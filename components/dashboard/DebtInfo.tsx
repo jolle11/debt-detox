@@ -7,6 +7,7 @@ import {
 	calculateTotalAmount,
 } from "@/lib/format";
 import type { Debt, Payment } from "@/lib/types";
+import { hasParticipants } from "@/utils/debtCalculations";
 
 interface DebtInfoProps {
 	debt: Debt;
@@ -79,9 +80,9 @@ export default function DebtInfo({ debt, payments = [] }: DebtInfoProps) {
 
 	return (
 		<div className="space-y-2 sm:space-y-3">
-			{debt.collaborator_id && (
+			{hasParticipants(debt) && (
 				<p className="text-xs text-base-content/70">
-					{t("collaboration.fullAmounts")}
+					{t("collaboration.fullAmounts", { percent: debt.my_percent ?? 100 })}
 				</p>
 			)}
 			{/* Primary financial stats — always 4 columns on desktop */}
