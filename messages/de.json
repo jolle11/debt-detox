@@ -420,7 +420,17 @@
 			"success": "Finanzierung erfolgreich erstellt!",
 			"error": "Fehler beim Erstellen der Finanzierung",
 			"shared": "Geteilte Finanzierung",
-			"sharedDescription": "Nur 50 % der Rate werden zu Ihrer monatlichen Gesamtsumme addiert."
+			"sharedDescription": "Nur 50 % der Rate werden zu Ihrer monatlichen Gesamtsumme addiert.",
+			"financing": {
+				"title": "Finanzdaten (optional)",
+				"help": "Du findest sie in deinem Vertrag. Mit dem Finanzierungsbetrag berechnen wir Zinsen, Sollzins und Effektivzins, auch ohne die übrigen Angaben.",
+				"financed": "Finanzierungsbetrag",
+				"fee": "Abschlussgebühr",
+				"tin": "Sollzins (%)",
+				"tae": "Effektivzins (%)",
+				"suggested": "Vorgeschlagene Rate: {amount}",
+				"useSuggested": "Diese Rate verwenden"
+			}
 		},
 		"shared": {
 			"badge": "Geteilt"
@@ -657,7 +667,9 @@
 			"monthlyExtra": "Extra pro Monat",
 			"payoffIn": "Abbezahlt in {count, plural, =1 {# Monat} other {# Monaten}} ({date})",
 			"monthsSaved": "{count, plural, =1 {# Monat} other {# Monate}} früher als geplant",
-			"disclaimer": "Schätzung ohne Zinsen: Dein Kreditgeber kann anders rechnen."
+			"disclaimer": "Schätzung ohne Zinsen: Dein Kreditgeber kann anders rechnen.",
+			"interestSaved": "Zinsersparnis:",
+			"disclaimerInterest": "Schätzung mit festem Zins: Dein Anbieter kann anders rechnen."
 		},
 		"savings": {
 			"title": "Sparrechner",
@@ -671,6 +683,27 @@
 			"monthlyNeeded": "Nötige monatliche Sparrate",
 			"stillToSave": "Noch zu sparen",
 			"monthsLeft": "{count, plural, =0 {Diesen Monat fällig} =1 {Noch # Monat} other {Noch # Monate}}"
+		},
+		"financing": {
+			"title": "Kosten der Finanzierung",
+			"assumption": "Schätzung mit festem Zins und gleichbleibender Rate.",
+			"tin": "Sollzins",
+			"tae": "Effektivzins",
+			"tinImplied": "Sollzins (berechnet)",
+			"taeImplied": "Effektivzins (berechnet)",
+			"financed": "Finanzierungsbetrag",
+			"interest": "Zinsen",
+			"fee": "Gebühr",
+			"totalCost": "Gesamtkosten",
+			"capitalOutstanding": "Offenes Kapital",
+			"ratesDiffer": "Die Zinssätze des Vertrags passen nicht zu deinen Raten. Meist sind Versicherungen oder Gebühren in der Rate enthalten.",
+			"inconsistent": "Der Finanzierungsbetrag ist höher als alles, was du zahlen wirst. Bitte prüfe die Angaben.",
+			"addData": "Füge den Finanzierungsbetrag hinzu, um die Kosten zu sehen.",
+			"showTable": "Tilgungsplan anzeigen",
+			"month": "Monat",
+			"payment": "Rate",
+			"capital": "Kapital",
+			"balance": "Offenes Kapital"
 		}
 	},
 	"paymentsList": {
@@ -949,6 +982,13 @@
 			"entity": "Anbieter",
 			"noEntity": "Kein Anbieter",
 			"empty": "Nichts ausstehend."
+		},
+		"financing": {
+			"cost": "Finanzierungskosten",
+			"costHint": "Zinsen und Gebühren, dein Anteil",
+			"missing": "{count, plural, =1 {Finanzierungsbetrag fehlt bei # Schuld} other {Finanzierungsbetrag fehlt bei # Schulden}}",
+			"tae": "Mittlerer Effektivzins",
+			"taeHint": "Gewichtet nach Finanzierungsbetrag"
 		}
 	}
 }

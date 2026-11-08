@@ -426,7 +426,17 @@
 			"success": "¡Financiación creada correctamente!",
 			"error": "Error al crear la financiación",
 			"shared": "Financiación compartida",
-			"sharedDescription": "Solo se sumará el 50 % de la cuota al total mensual que pagas."
+			"sharedDescription": "Solo se sumará el 50 % de la cuota al total mensual que pagas.",
+			"financing": {
+				"title": "Datos financieros (opcional)",
+				"help": "Están en tu contrato. Con el importe financiado calculamos intereses, TIN y TAE aunque no tengas los demás.",
+				"financed": "Importe financiado",
+				"fee": "Comisión de apertura",
+				"tin": "TIN (%)",
+				"tae": "TAE (%)",
+				"suggested": "Cuota sugerida: {amount}",
+				"useSuggested": "Usar esta cuota"
+			}
 		},
 		"shared": {
 			"badge": "Compartida"
@@ -653,7 +663,9 @@
 			"monthlyExtra": "Extra cada mes",
 			"payoffIn": "Liquidada en {count, plural, =1 {# mes} other {# meses}} ({date})",
 			"monthsSaved": "{count, plural, =1 {# mes antes} other {# meses antes}} de lo previsto",
-			"disclaimer": "Estimación sin intereses: tu entidad puede calcularlo de forma distinta."
+			"disclaimer": "Estimación sin intereses: tu entidad puede calcularlo de forma distinta.",
+			"interestSaved": "Ahorro en intereses:",
+			"disclaimerInterest": "Estimación con tipo fijo: tu entidad puede calcularlo de forma distinta."
 		},
 		"savings": {
 			"title": "Calculadora de ahorro",
@@ -667,6 +679,27 @@
 			"monthlyNeeded": "Ahorro mensual necesario",
 			"stillToSave": "Falta por ahorrar",
 			"monthsLeft": "{count, plural, =0 {Vence este mes} =1 {Queda # mes} other {Quedan # meses}}"
+		},
+		"financing": {
+			"title": "Coste de la financiación",
+			"assumption": "Estimación con tipo fijo y cuota constante.",
+			"tin": "TIN",
+			"tae": "TAE",
+			"tinImplied": "TIN (calculado)",
+			"taeImplied": "TAE (calculada)",
+			"financed": "Importe financiado",
+			"interest": "Intereses",
+			"fee": "Comisión",
+			"totalCost": "Coste total",
+			"capitalOutstanding": "Capital pendiente",
+			"ratesDiffer": "El TIN o la TAE del contrato no cuadran con tus cuotas. Suele deberse a seguros o comisiones que van dentro de la cuota.",
+			"inconsistent": "El importe financiado es mayor que todo lo que vas a pagar. Revisa los datos.",
+			"addData": "Añade el importe financiado para ver el coste.",
+			"showTable": "Ver cuadro de amortización",
+			"month": "Mes",
+			"payment": "Cuota",
+			"capital": "Capital",
+			"balance": "Capital pendiente"
 		}
 	},
 	"paymentsList": {
@@ -945,6 +978,13 @@
 			"entity": "Entidad",
 			"noEntity": "Sin entidad",
 			"empty": "Nada pendiente."
+		},
+		"financing": {
+			"cost": "Coste de financiación",
+			"costHint": "Intereses y comisiones, tu parte",
+			"missing": "{count, plural, =1 {Falta el importe financiado en # deuda} other {Falta el importe financiado en # deudas}}",
+			"tae": "TAE media",
+			"taeHint": "Ponderada por importe financiado"
 		}
 	}
 }

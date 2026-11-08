@@ -4,9 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import FinancingFields from "@/components/debt/FinancingFields";
 import FormInput from "@/components/ui/FormInput";
+import { useCurrency } from "@/hooks/useCurrency";
 import { normalizeDateOnlyString } from "@/lib/dateOnly";
 import { resolveFinalPaymentDate } from "@/lib/debtDates";
+import { suggestMonthlyAmount } from "@/lib/financing";
 import { type EditDebtFormData, editDebtSchema } from "@/lib/schemas";
 import type { Debt } from "@/lib/types";
 import { hasParticipants } from "@/utils/debtCalculations";
@@ -27,10 +30,13 @@ export default function EditDebtForm({
 	const t = useTranslations();
 	const tv = useTranslations("validation");
 	const tc = useTranslations("collaboration");
+	const { formatCurrency } = useCurrency();
 
 	const {
 		register,
 		handleSubmit,
+		watch,
+		setValue,
 		reset,
 		formState: { errors },
 	} = useForm<EditDebtFormData>({
@@ -49,6 +55,10 @@ export default function EditDebtForm({
 			final_payment_date: normalizeDateOnlyString(
 				debt.final_payment_date || "",
 			),
+			financed_amount: debt.financed_amount || undefined,
+			tin: debt.tin || undefined,
+			tae: debt.tae || undefined,
+			opening_fee: debt.opening_fee || undefined,
 		},
 	});
 
@@ -67,8 +77,19 @@ export default function EditDebtForm({
 			final_payment_date: normalizeDateOnlyString(
 				debt.final_payment_date || "",
 			),
+			financed_amount: debt.financed_amount || undefined,
+			tin: debt.tin || undefined,
+			tae: debt.tae || undefined,
+			opening_fee: debt.opening_fee || undefined,
 		});
 	}, [debt, reset]);
+
+	const suggestedMonthly = suggestMonthlyAmount(
+		watch("financed_amount"),
+		watch("tin"),
+		watch("number_of_payments"),
+		watch("final_payment"),
+	);
 
 	const onFormSubmit = (data: EditDebtFormData) => {
 		let finalPaymentDate = data.final_payment_date || "";
@@ -94,6 +115,10 @@ export default function EditDebtForm({
 			number_of_payments: data.number_of_payments,
 			final_payment: data.final_payment || undefined,
 			final_payment_date: finalPaymentDate || undefined,
+			financed_amount: data.financed_amount || undefined,
+			tin: data.tin || undefined,
+			tae: data.tae || undefined,
+			opening_fee: data.opening_fee || undefined,
 		};
 
 		onSubmit(debtData);
@@ -186,6 +211,37 @@ export default function EditDebtForm({
 							placeholder="0.00"
 						/>
 					</div>
+
+					<FinancingFields
+						fields={{
+							financed_amount: {
+								registration: register("financed_amount"),
+								error: errors.financed_amount ? tv("positive") : undefined,
+							},
+							tin: {
+								registration: register("tin"),
+								error: errors.tin ? tv("positive") : undefined,
+							},
+							tae: {
+								registration: register("tae"),
+								error: errors.tae ? tv("positive") : undefined,
+							},
+							opening_fee: {
+								registration: register("opening_fee"),
+								error: errors.opening_fee ? tv("positive") : undefined,
+							},
+						}}
+						defaultOpen={Boolean(debt.financed_amount || debt.tin || debt.tae)}
+						suggestedMonthly={suggestedMonthly}
+						suggestedLabel={
+							suggestedMonthly === null
+								? null
+								: formatCurrency(suggestedMonthly)
+						}
+						onUseSuggestion={(amount) =>
+							setValue("monthly_amount", amount, { shouldValidate: true })
+						}
+					/>
 
 					<label className="flex items-start gap-3 p-4 rounded-xl border border-base-300 cursor-pointer hover:bg-base-200/50 transition-colors">
 						<input

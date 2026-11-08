@@ -426,7 +426,17 @@
 			"success": "Financiering succesvol aangemaakt!",
 			"error": "Fout bij aanmaken van financiering",
 			"shared": "Gedeelde financiering",
-			"sharedDescription": "Slechts 50% van de termijn telt mee in je maandtotaal."
+			"sharedDescription": "Slechts 50% van de termijn telt mee in je maandtotaal.",
+			"financing": {
+				"title": "Financiële gegevens (optioneel)",
+				"help": "Je vindt ze in je contract. Met het gefinancierde bedrag berekenen we rente, nominale rente en JKP, ook zonder de rest.",
+				"financed": "Gefinancierd bedrag",
+				"fee": "Afsluitkosten",
+				"tin": "Nominale rente (%)",
+				"tae": "JKP (%)",
+				"suggested": "Voorgestelde termijn: {amount}",
+				"useSuggested": "Deze termijn gebruiken"
+			}
 		},
 		"shared": {
 			"badge": "Gedeeld"
@@ -653,7 +663,9 @@
 			"monthlyExtra": "Extra per maand",
 			"payoffIn": "Afbetaald in {count, plural, =1 {# maand} other {# maanden}} ({date})",
 			"monthsSaved": "{count, plural, =1 {# maand} other {# maanden}} eerder dan gepland",
-			"disclaimer": "Schatting zonder rente: je kredietverstrekker kan anders rekenen."
+			"disclaimer": "Schatting zonder rente: je kredietverstrekker kan anders rekenen.",
+			"interestSaved": "Bespaarde rente:",
+			"disclaimerInterest": "Schatting met vaste rente: je instelling kan het anders berekenen."
 		},
 		"savings": {
 			"title": "Spaarcalculator",
@@ -667,6 +679,27 @@
 			"monthlyNeeded": "Benodigd maandelijks sparen",
 			"stillToSave": "Nog te sparen",
 			"monthsLeft": "{count, plural, =0 {Deze maand verschuldigd} =1 {Nog # maand} other {Nog # maanden}}"
+		},
+		"financing": {
+			"title": "Kosten van de financiering",
+			"assumption": "Schatting met vaste rente en gelijkblijvende termijn.",
+			"tin": "Nominale rente",
+			"tae": "JKP",
+			"tinImplied": "Nominale rente (berekend)",
+			"taeImplied": "JKP (berekend)",
+			"financed": "Gefinancierd bedrag",
+			"interest": "Rente",
+			"fee": "Kosten",
+			"totalCost": "Totale kosten",
+			"capitalOutstanding": "Openstaand kapitaal",
+			"ratesDiffer": "De rentes uit het contract kloppen niet met je termijnen. Meestal zitten er verzekeringen of kosten in de termijn.",
+			"inconsistent": "Het gefinancierde bedrag is hoger dan alles wat je gaat betalen. Controleer de gegevens.",
+			"addData": "Voeg het gefinancierde bedrag toe om de kosten te zien.",
+			"showTable": "Aflossingsschema tonen",
+			"month": "Maand",
+			"payment": "Termijn",
+			"capital": "Kapitaal",
+			"balance": "Openstaand kapitaal"
 		}
 	},
 	"paymentsList": {
@@ -945,6 +978,13 @@
 			"entity": "Instelling",
 			"noEntity": "Geen instelling",
 			"empty": "Niets openstaand."
+		},
+		"financing": {
+			"cost": "Financieringskosten",
+			"costHint": "Rente en kosten, jouw deel",
+			"missing": "{count, plural, =1 {Gefinancierd bedrag ontbreekt bij # schuld} other {Gefinancierd bedrag ontbreekt bij # schulden}}",
+			"tae": "Gemiddeld JKP",
+			"taeHint": "Gewogen naar gefinancierd bedrag"
 		}
 	}
 }

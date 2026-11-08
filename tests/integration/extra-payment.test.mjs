@@ -1287,6 +1287,39 @@ async function acceptPartner(debtId = debt.id) {
 	return invitation;
 }
 
+test("financing details are saved, cleared and validated by the debt routes", async () => {
+	const input = {
+		name: "Financed",
+		entity: "Bank",
+		first_payment_date: "2026-01-15",
+		monthly_amount: 100,
+		number_of_payments: 12,
+		financed_amount: 1100,
+		tin: 6.5,
+		tae: 6.9,
+		opening_fee: 25,
+	};
+	const created = (
+		await owner.send("/api/debt-detox/debts", { method: "POST", body: input })
+	).debt;
+	const saved = await owner.collection("debts").getOne(created.id);
+	assert.equal(saved.financed_amount, 1100);
+	assert.equal(saved.tin, 6.5);
+	assert.equal(saved.tae, 6.9);
+	assert.equal(saved.opening_fee, 25);
+
+	const url = `/api/debt-detox/debts/${created.id}`;
+	await assert.rejects(
+		owner.send(url, { method: "PATCH", body: { ...input, tin: -1 } }),
+		(e) => e.status === 400,
+	);
+	const { financed_amount, tin, tae, opening_fee, ...plain } = input;
+	await owner.send(url, { method: "PATCH", body: plain });
+	const cleared = await owner.collection("debts").getOne(created.id);
+	assert.equal(cleared.financed_amount, 0);
+	assert.equal(cleared.tin, 0);
+});
+
 test("the app's list filter finds shared debts for the owner and the member", async () => {
 	await acceptPartner();
 	for (const [client, userId] of [
@@ -1703,6 +1736,8 @@ test("public share links omit collaboration identities and payment audit metadat
 	const shared = await visitor.collection("debts").getOne(debt.id, options);
 	assert.equal(shared.member_ids, undefined);
 	assert.equal(shared.participants, undefined);
+	assert.equal(shared.financed_amount, undefined);
+	assert.equal(shared.tin, undefined);
 	const payment = await visitor
 		.collection("payments")
 		.getOne(result.payment.id, options);

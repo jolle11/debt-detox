@@ -142,7 +142,15 @@ onRecordEnrich((e) => {
 	const userId = e.requestInfo?.auth?.id || "";
 	const list = collaboration.participants(e.record);
 	const member = !!userId && collaboration.isMember(e.record, userId);
-	if (!member) e.record.hide("participants", "member_ids");
+	if (!member)
+		e.record.hide(
+			"participants",
+			"member_ids",
+			"financed_amount",
+			"tin",
+			"tae",
+			"opening_fee",
+		);
 	if (list.length) {
 		// Outsiders only reach a debt through its owner's public links.
 		const viewer = member ? userId : e.record.getString("user_id");

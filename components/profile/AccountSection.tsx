@@ -26,6 +26,10 @@ const EXPORT_FIELDS = [
 	"final_payment_date",
 	"completed_at",
 	"is_shared",
+	"financed_amount",
+	"tin",
+	"tae",
+	"opening_fee",
 	"created",
 ] as const;
 

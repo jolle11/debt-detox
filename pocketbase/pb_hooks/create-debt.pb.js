@@ -4,6 +4,7 @@ routerAdd(
 	(e) => {
 		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		const dates = require(`${__hooks}/lib/dates.js`);
+		const financing = require(`${__hooks}/lib/financing.js`);
 		const { addMonthsToDateOnly } = dates;
 		const calculateNumberOfPayments = (
 			firstPaymentDate,
@@ -42,8 +43,10 @@ routerAdd(
 			number_of_payments: 0,
 			final_payment: -0,
 			final_payment_date: "",
+			...financing.defaults,
 		});
 		e.bindBody(data);
+		financing.validate(data);
 		data.first_payment_date = String(data.first_payment_date).slice(0, 10);
 		if (!dates.isDateOnly(data.first_payment_date)) {
 			throw new BadRequestError("Invalid payment dates");
@@ -93,6 +96,7 @@ routerAdd(
 			debt.set("first_payment_date", data.first_payment_date);
 			debt.set("monthly_amount", data.monthly_amount);
 			debt.set("is_shared", data.is_shared);
+			financing.apply(debt, data);
 			debt.set("number_of_payments", numberOfPayments);
 			debt.set("original_monthly_amount", data.monthly_amount);
 			debt.set("original_number_of_payments", numberOfPayments);

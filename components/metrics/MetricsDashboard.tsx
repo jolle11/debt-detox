@@ -2,6 +2,7 @@
 
 import {
 	CalendarCheckIcon,
+	CoinsIcon,
 	PercentIcon,
 	TrendDownIcon,
 	WalletIcon,
@@ -19,6 +20,7 @@ import { useDebtsContext } from "@/contexts/DebtsContext";
 import { useCurrency } from "@/hooks/useCurrency";
 import { usePayments } from "@/hooks/usePayments";
 import { Link } from "@/i18n/routing";
+import { calculateFinancingSummary } from "@/lib/financing";
 import { calculateMetricsSummary } from "@/lib/metrics";
 
 export default function MetricsDashboard() {
@@ -32,6 +34,8 @@ export default function MetricsDashboard() {
 		() => calculateMetricsSummary(debts, payments),
 		[debts, payments],
 	);
+
+	const financing = useMemo(() => calculateFinancingSummary(debts), [debts]);
 
 	if (isLoading || paymentsLoading) {
 		return (
@@ -133,6 +137,37 @@ export default function MetricsDashboard() {
 					title={t("kpi.paidPercent")}
 					value={`${summary.paidPercent}%`}
 					description={t("kpi.paidPercentHint")}
+					icon={<PercentIcon className="w-4 h-4 sm:w-5 sm:h-5" />}
+					variant="info"
+				/>
+			</div>
+
+			<div className="grid grid-cols-2 gap-2 sm:gap-4">
+				<StatCard
+					title={t("financing.cost")}
+					monetary={financing.included > 0}
+					value={
+						financing.included > 0 ? formatCurrency(financing.totalCost) : "—"
+					}
+					description={
+						financing.missing > 0
+							? t("financing.missing", { count: financing.missing })
+							: t("financing.costHint")
+					}
+					icon={<CoinsIcon className="w-4 h-4 sm:w-5 sm:h-5" />}
+					variant="secondary"
+				/>
+				<StatCard
+					title={t("financing.tae")}
+					value={
+						financing.averageTae === null
+							? "—"
+							: `${new Intl.NumberFormat(locale, {
+									minimumFractionDigits: 2,
+									maximumFractionDigits: 2,
+								}).format(financing.averageTae)} %`
+					}
+					description={t("financing.taeHint")}
 					icon={<PercentIcon className="w-4 h-4 sm:w-5 sm:h-5" />}
 					variant="info"
 				/>

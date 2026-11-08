@@ -9,6 +9,7 @@ import AddExtraPaymentModal from "@/components/debt/AddExtraPaymentModal";
 import CompleteDebtModal from "@/components/debt/CompleteDebtModal";
 import DeleteDebtModal from "@/components/debt/DeleteDebtModal";
 import DebtDates from "@/components/debt/detail/DebtDates";
+import DebtFinancing from "@/components/debt/detail/DebtFinancing";
 import DebtHeader from "@/components/debt/detail/DebtHeader";
 import DebtNotFound from "@/components/debt/detail/DebtNotFound";
 import DebtPaymentDetails from "@/components/debt/detail/DebtPaymentDetails";
@@ -176,6 +177,12 @@ export default function DebtDetailPage() {
 							totalAmount={totalAmount}
 						/>
 					</div>
+
+					<DebtFinancing
+						debt={debt}
+						payments={payments}
+						formatCurrency={formatCurrency}
+					/>
 
 					{/* Payments List */}
 					<DebtPaymentsList

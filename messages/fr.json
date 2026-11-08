@@ -420,7 +420,17 @@
 			"success": "Financement créé avec succès !",
 			"error": "Erreur lors de la création du financement",
 			"shared": "Financement partagé",
-			"sharedDescription": "Seuls 50 % de la mensualité seront ajoutés à votre total mensuel."
+			"sharedDescription": "Seuls 50 % de la mensualité seront ajoutés à votre total mensuel.",
+			"financing": {
+				"title": "Données financières (facultatif)",
+				"help": "Elles figurent dans votre contrat. Avec le montant financé, nous calculons les intérêts, le taux nominal et le TAEG même sans le reste.",
+				"financed": "Montant financé",
+				"fee": "Frais de dossier",
+				"tin": "Taux nominal (%)",
+				"tae": "TAEG (%)",
+				"suggested": "Échéance suggérée : {amount}",
+				"useSuggested": "Utiliser cette échéance"
+			}
 		},
 		"shared": {
 			"badge": "Partagé"
@@ -657,7 +667,9 @@
 			"monthlyExtra": "Supplément chaque mois",
 			"payoffIn": "Remboursée en {count, plural, =1 {# mois} other {# mois}} ({date})",
 			"monthsSaved": "{count, plural, =1 {# mois} other {# mois}} plus tôt que prévu",
-			"disclaimer": "Estimation sans intérêts : votre organisme peut calculer différemment."
+			"disclaimer": "Estimation sans intérêts : votre organisme peut calculer différemment.",
+			"interestSaved": "Intérêts économisés :",
+			"disclaimerInterest": "Estimation à taux fixe : votre organisme peut calculer différemment."
 		},
 		"savings": {
 			"title": "Calculateur d'épargne",
@@ -671,6 +683,27 @@
 			"monthlyNeeded": "Épargne mensuelle nécessaire",
 			"stillToSave": "Reste à épargner",
 			"monthsLeft": "{count, plural, =0 {Échéance ce mois-ci} =1 {Il reste # mois} other {Il reste # mois}}"
+		},
+		"financing": {
+			"title": "Coût du financement",
+			"assumption": "Estimation à taux fixe et échéance constante.",
+			"tin": "Taux nominal",
+			"tae": "TAEG",
+			"tinImplied": "Taux nominal (calculé)",
+			"taeImplied": "TAEG (calculé)",
+			"financed": "Montant financé",
+			"interest": "Intérêts",
+			"fee": "Frais",
+			"totalCost": "Coût total",
+			"capitalOutstanding": "Capital restant dû",
+			"ratesDiffer": "Les taux du contrat ne correspondent pas à vos échéances. Cela vient souvent d'assurances ou de frais inclus dans l'échéance.",
+			"inconsistent": "Le montant financé dépasse tout ce que vous allez payer. Vérifiez les données.",
+			"addData": "Ajoutez le montant financé pour voir le coût.",
+			"showTable": "Voir le tableau d'amortissement",
+			"month": "Mois",
+			"payment": "Échéance",
+			"capital": "Capital",
+			"balance": "Capital restant dû"
 		}
 	},
 	"paymentsList": {
@@ -949,6 +982,13 @@
 			"entity": "Organisme",
 			"noEntity": "Sans organisme",
 			"empty": "Rien à payer."
+		},
+		"financing": {
+			"cost": "Coût du financement",
+			"costHint": "Intérêts et frais, votre part",
+			"missing": "{count, plural, =1 {Montant financé manquant pour # dette} other {Montant financé manquant pour # dettes}}",
+			"tae": "TAEG moyen",
+			"taeHint": "Pondéré par le montant financé"
 		}
 	}
 }

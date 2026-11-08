@@ -426,7 +426,17 @@
 			"success": "Financiamento criado com sucesso!",
 			"error": "Erro ao criar o financiamento",
 			"shared": "Financiamento partilhado",
-			"sharedDescription": "Apenas 50% da prestação será incluída no seu total mensal."
+			"sharedDescription": "Apenas 50% da prestação será incluída no seu total mensal.",
+			"financing": {
+				"title": "Dados financeiros (opcional)",
+				"help": "Estão no teu contrato. Com o valor financiado calculamos juros, TAN e TAEG mesmo sem os restantes.",
+				"financed": "Valor financiado",
+				"fee": "Comissão de abertura",
+				"tin": "TAN (%)",
+				"tae": "TAEG (%)",
+				"suggested": "Prestação sugerida: {amount}",
+				"useSuggested": "Usar esta prestação"
+			}
 		},
 		"shared": {
 			"badge": "Partilhado"
@@ -653,7 +663,9 @@
 			"monthlyExtra": "Extra todos os meses",
 			"payoffIn": "Liquidada em {count, plural, =1 {# mês} other {# meses}} ({date})",
 			"monthsSaved": "{count, plural, =1 {# mês} other {# meses}} antes do previsto",
-			"disclaimer": "Estimativa sem juros: a tua entidade pode calcular de forma diferente."
+			"disclaimer": "Estimativa sem juros: a tua entidade pode calcular de forma diferente.",
+			"interestSaved": "Juros poupados:",
+			"disclaimerInterest": "Estimativa com taxa fixa: a tua entidade pode calcular de forma diferente."
 		},
 		"savings": {
 			"title": "Calculadora de poupança",
@@ -667,6 +679,27 @@
 			"monthlyNeeded": "Poupança mensal necessária",
 			"stillToSave": "Falta poupar",
 			"monthsLeft": "{count, plural, =0 {Vence este mês} =1 {Falta # mês} other {Faltam # meses}}"
+		},
+		"financing": {
+			"title": "Custo do financiamento",
+			"assumption": "Estimativa com taxa fixa e prestação constante.",
+			"tin": "TAN",
+			"tae": "TAEG",
+			"tinImplied": "TAN (calculada)",
+			"taeImplied": "TAEG (calculada)",
+			"financed": "Valor financiado",
+			"interest": "Juros",
+			"fee": "Comissão",
+			"totalCost": "Custo total",
+			"capitalOutstanding": "Capital em dívida",
+			"ratesDiffer": "As taxas do contrato não batem certo com as tuas prestações. Costuma dever-se a seguros ou comissões incluídos na prestação.",
+			"inconsistent": "O valor financiado é superior a tudo o que vais pagar. Revê os dados.",
+			"addData": "Adiciona o valor financiado para ver o custo.",
+			"showTable": "Ver plano de amortização",
+			"month": "Mês",
+			"payment": "Prestação",
+			"capital": "Capital",
+			"balance": "Capital em dívida"
 		}
 	},
 	"paymentsList": {
@@ -945,6 +978,13 @@
 			"entity": "Entidade",
 			"noEntity": "Sem entidade",
 			"empty": "Nada em dívida."
+		},
+		"financing": {
+			"cost": "Custo do financiamento",
+			"costHint": "Juros e comissões, a tua parte",
+			"missing": "{count, plural, =1 {Falta o valor financiado em # dívida} other {Falta o valor financiado em # dívidas}}",
+			"tae": "TAEG média",
+			"taeHint": "Ponderada pelo valor financiado"
 		}
 	}
 }

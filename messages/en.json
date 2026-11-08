@@ -416,7 +416,17 @@
 			"success": "Financing created successfully!",
 			"error": "Error creating financing",
 			"shared": "Shared financing",
-			"sharedDescription": "Only 50% of the payment will count toward your monthly total."
+			"sharedDescription": "Only 50% of the payment will count toward your monthly total.",
+			"financing": {
+				"title": "Financial details (optional)",
+				"help": "You will find these in your contract. With the financed amount we work out interest, nominal rate and APR even if you don't have the rest.",
+				"financed": "Financed amount",
+				"fee": "Opening fee",
+				"tin": "Nominal rate (%)",
+				"tae": "APR (%)",
+				"suggested": "Suggested installment: {amount}",
+				"useSuggested": "Use this installment"
+			}
 		},
 		"shared": {
 			"badge": "Shared"
@@ -653,7 +663,9 @@
 			"monthlyExtra": "Extra every month",
 			"payoffIn": "Paid off in {count, plural, =1 {# month} other {# months}} ({date})",
 			"monthsSaved": "{count, plural, =1 {# month} other {# months}} earlier than planned",
-			"disclaimer": "Interest-free estimate: your lender may calculate it differently."
+			"disclaimer": "Interest-free estimate: your lender may calculate it differently.",
+			"interestSaved": "Interest saved:",
+			"disclaimerInterest": "Estimate assuming a fixed rate: your lender may calculate it differently."
 		},
 		"savings": {
 			"title": "Savings calculator",
@@ -667,6 +679,27 @@
 			"monthlyNeeded": "Monthly savings needed",
 			"stillToSave": "Still to save",
 			"monthsLeft": "{count, plural, =0 {Due this month} =1 {# month left} other {# months left}}"
+		},
+		"financing": {
+			"title": "Cost of financing",
+			"assumption": "Estimate assuming a fixed rate and constant installments.",
+			"tin": "Nominal rate",
+			"tae": "APR",
+			"tinImplied": "Nominal rate (calculated)",
+			"taeImplied": "APR (calculated)",
+			"financed": "Financed amount",
+			"interest": "Interest",
+			"fee": "Fee",
+			"totalCost": "Total cost",
+			"capitalOutstanding": "Outstanding capital",
+			"ratesDiffer": "The contract's rates don't match your installments. This usually means insurance or fees are included in the installment.",
+			"inconsistent": "The financed amount is more than everything you will pay. Please check the details.",
+			"addData": "Add the financed amount to see the cost.",
+			"showTable": "Show amortization schedule",
+			"month": "Month",
+			"payment": "Installment",
+			"capital": "Capital",
+			"balance": "Outstanding capital"
 		}
 	},
 	"paymentsList": {
@@ -945,6 +978,13 @@
 			"entity": "Entity",
 			"noEntity": "No entity",
 			"empty": "Nothing outstanding."
+		},
+		"financing": {
+			"cost": "Cost of financing",
+			"costHint": "Interest and fees, your share",
+			"missing": "{count, plural, =1 {Financed amount missing on # debt} other {Financed amount missing on # debts}}",
+			"tae": "Average APR",
+			"taeHint": "Weighted by financed amount"
 		}
 	}
 }

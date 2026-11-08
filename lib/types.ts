@@ -16,6 +16,10 @@ export interface Debt {
 	original_number_of_payments?: number; // Número de cuotas original (inmutable)
 	final_payment?: number; // Importe de la última cuota
 	final_payment_date?: string; // Fecha de la última cuota (opcional)
+	financed_amount?: number; // Capital prestado; 0 si no se conoce
+	tin?: number; // % nominal del contrato; 0 si no se conoce
+	tae?: number; // % efectivo del contrato; 0 si no se conoce
+	opening_fee?: number; // Comisión de apertura
 	completed_at?: string; // Fecha real en la que se completó la financiación
 	product_image?: string;
 	created?: string;

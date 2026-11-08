@@ -37,6 +37,10 @@ const debtFields = {
 	),
 	final_payment: z.coerce.number().min(0).optional(),
 	final_payment_date: z.string().optional(),
+	financed_amount: z.coerce.number().min(0).optional(),
+	tin: z.coerce.number().min(0).max(1000).optional(),
+	tae: z.coerce.number().min(0).max(1000).optional(),
+	opening_fee: z.coerce.number().min(0).optional(),
 };
 
 export const createDebtSchema = z

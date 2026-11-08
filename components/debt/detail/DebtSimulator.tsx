@@ -6,6 +6,11 @@ import { useState } from "react";
 import PrivateAmount from "@/components/ui/PrivateAmount";
 import type { DebtPaymentDetailsProps } from "@/data/debtDetail";
 import { parseDateOnly } from "@/lib/dateOnly";
+import {
+	analyzeFinancing,
+	calculateOutstandingCapital,
+	estimateInterestSaving,
+} from "@/lib/financing";
 import { simulateExtraPayment, simulateMonthlyExtra } from "@/lib/simulator";
 
 function parseAmount(value: string) {
@@ -15,6 +20,7 @@ function parseAmount(value: string) {
 
 export default function DebtSimulator({
 	debt,
+	payments,
 	paymentStats,
 	formatCurrency,
 }: DebtPaymentDetailsProps) {
@@ -42,6 +48,29 @@ export default function DebtSimulator({
 				extra,
 			)
 		: null;
+	const { plan } = analyzeFinancing(debt);
+	const hasInterest = Boolean(plan && plan.monthlyRate > 0);
+	const saving = (
+		mode: "term" | "amount",
+		amounts: { lump?: number; extraPerMonth?: number },
+	) =>
+		plan
+			? estimateInterestSaving({
+					capital: calculateOutstandingCapital(debt, plan, payments),
+					monthlyRate: plan.monthlyRate,
+					monthly: debt.monthly_amount,
+					installmentsLeft: remainingInstallments,
+					finalPayment: debt.final_payment ?? 0,
+					mode,
+					...amounts,
+				})
+			: 0;
+	const interestSaved = (amount: number) => (
+		<span className="block text-xs font-normal text-success">
+			{t("interestSaved")}{" "}
+			<PrivateAmount>{formatCurrency(amount)}</PrivateAmount>
+		</span>
+	);
 	const formatMonth = (date: string) =>
 		parseDateOnly(date)?.toLocaleDateString(locale, {
 			month: "long",
@@ -91,6 +120,7 @@ export default function DebtSimulator({
 											strategies.reduce_installments.remainingInstallments}
 									</span>
 								)}
+								{hasInterest && interestSaved(saving("term", { lump }))}
 							</span>
 						</li>
 						<li className="flex justify-between gap-2">
@@ -100,6 +130,7 @@ export default function DebtSimulator({
 									{formatCurrency(strategies.reduce_amount.monthlyAmount)}
 								</PrivateAmount>
 								{t("perMonth")}
+								{hasInterest && interestSaved(saving("amount", { lump }))}
 							</span>
 						</li>
 					</ul>
@@ -134,10 +165,14 @@ export default function DebtSimulator({
 								{t("monthsSaved", { count: projection.monthsSaved })}
 							</div>
 						)}
+						{hasInterest &&
+							interestSaved(saving("term", { lump, extraPerMonth: extra }))}
 					</div>
 				)}
 
-				<p className="text-xs text-base-content/50">{t("disclaimer")}</p>
+				<p className="text-xs text-base-content/50">
+					{t(hasInterest ? "disclaimerInterest" : "disclaimer")}
+				</p>
 			</div>
 		</div>
 	);

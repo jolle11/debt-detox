@@ -4,6 +4,7 @@ routerAdd(
 	(e) => {
 		const collaboration = require(`${__hooks}/lib/collaboration.js`);
 		const dates = require(`${__hooks}/lib/dates.js`);
+		const financing = require(`${__hooks}/lib/financing.js`);
 		const { addMonthsToDateOnly } = dates;
 
 		const data = new DynamicModel({
@@ -17,8 +18,10 @@ routerAdd(
 			number_of_payments: 0,
 			final_payment: -0,
 			final_payment_date: "",
+			...financing.defaults,
 		});
 		e.bindBody(data);
+		financing.validate(data);
 		data.first_payment_date = String(data.first_payment_date).slice(0, 10);
 		if (!dates.isDateOnly(data.first_payment_date)) {
 			throw new BadRequestError("Invalid payment dates");
@@ -88,6 +91,7 @@ routerAdd(
 				collaboration.participants(debt).length ? true : data.is_shared,
 			);
 			debt.set("number_of_payments", data.number_of_payments);
+			financing.apply(debt, data);
 			debt.set("final_payment", data.final_payment);
 
 			const lastMonthlyDate = addMonthsToDateOnly(

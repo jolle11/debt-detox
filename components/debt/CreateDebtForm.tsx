@@ -3,11 +3,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
+import FinancingFields from "@/components/debt/FinancingFields";
 import FormInput from "@/components/ui/FormInput";
+import { useCurrency } from "@/hooks/useCurrency";
 import {
 	calculateNumberOfPayments,
 	resolveFinalPaymentDate,
 } from "@/lib/debtDates";
+import { suggestMonthlyAmount } from "@/lib/financing";
 import { type CreateDebtFormData, createDebtSchema } from "@/lib/schemas";
 import type { Debt } from "@/lib/types";
 
@@ -27,10 +30,13 @@ export default function CreateDebtForm({
 	const t = useTranslations();
 	const tv = useTranslations("validation");
 	const tc = useTranslations("collaboration");
+	const { formatCurrency } = useCurrency();
 
 	const {
 		register,
 		handleSubmit,
+		watch,
+		setValue,
 		formState: { errors },
 	} = useForm<CreateDebtFormData>({
 		resolver: zodResolver(createDebtSchema),
@@ -46,6 +52,13 @@ export default function CreateDebtForm({
 			final_payment_date: "",
 		},
 	});
+
+	const suggestedMonthly = suggestMonthlyAmount(
+		watch("financed_amount"),
+		watch("tin"),
+		watch("number_of_payments"),
+		watch("final_payment"),
+	);
 
 	const onFormSubmit = (data: CreateDebtFormData) => {
 		const numberOfPayments =
@@ -79,6 +92,10 @@ export default function CreateDebtForm({
 			number_of_payments: numberOfPayments,
 			final_payment: data.final_payment || undefined,
 			final_payment_date: finalPaymentDate || undefined,
+			financed_amount: data.financed_amount || undefined,
+			tin: data.tin || undefined,
+			tae: data.tae || undefined,
+			opening_fee: data.opening_fee || undefined,
 		};
 
 		onSubmit(debtData);
@@ -184,6 +201,36 @@ export default function CreateDebtForm({
 							placeholder="0.00"
 						/>
 					</div>
+
+					<FinancingFields
+						fields={{
+							financed_amount: {
+								registration: register("financed_amount"),
+								error: errors.financed_amount ? tv("positive") : undefined,
+							},
+							tin: {
+								registration: register("tin"),
+								error: errors.tin ? tv("positive") : undefined,
+							},
+							tae: {
+								registration: register("tae"),
+								error: errors.tae ? tv("positive") : undefined,
+							},
+							opening_fee: {
+								registration: register("opening_fee"),
+								error: errors.opening_fee ? tv("positive") : undefined,
+							},
+						}}
+						suggestedMonthly={suggestedMonthly}
+						suggestedLabel={
+							suggestedMonthly === null
+								? null
+								: formatCurrency(suggestedMonthly)
+						}
+						onUseSuggestion={(amount) =>
+							setValue("monthly_amount", amount, { shouldValidate: true })
+						}
+					/>
 
 					<label className="flex items-start gap-3 p-4 rounded-xl border border-base-300 cursor-pointer hover:bg-base-200/50 transition-colors">
 						<input
